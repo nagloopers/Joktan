@@ -19,7 +19,7 @@ public sealed record HelpTopic(string Id, string Title, string? Parent = null)
         new("themes", "Themes", "Settings and data"),
         new("folders-and-backup", "Folders and backup", "Settings and data"),
         new("dashboard", "Dashboard"),
-        new("topic-dashboards", "Topic Dashboards"),
+        new("topic-dashboards", "MQTT Dashboards"),
         new("notes", "Notes"),
         new("passwords", "Passwords"),
         new("mqtt", "MQTT"),

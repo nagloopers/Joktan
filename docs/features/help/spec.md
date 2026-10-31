@@ -28,7 +28,7 @@ does nothing.
 |-------------------------|-----------------------|
 | MQTT client settings    | Clients and brokers   |
 | Message settings        | Message settings      |
-| Graph editor            | Topic Dashboards      |
+| Graph editor            | MQTT Dashboards      |
 | New certificate, Export | Certificates          |
 | Topic Explorer's own window | Topic Explorer    |
 
@@ -68,7 +68,7 @@ subject, such as MQTT, is several topics.
 | Getting started                      | `getting-started.md`                                    |
 | Settings and data                    | `settings-and-data.md`                                  |
 | Dashboard                            | `dashboard.md`                                          |
-| Topic Dashboards                     | `topic-dashboards.md`                                   |
+| MQTT Dashboards                     | `topic-dashboards.md`                                   |
 | Notes                                | `notes.md`                                              |
 | Passwords                            | `passwords.md`                                          |
 | MQTT, and below it Clients and brokers, TLS and mutual TLS, Folder messages, Message settings, Varying fields | `mqtt.md`, `mqtt-clients.md`, `mqtt-tls.md`, `mqtt-folder-messages.md`, `mqtt-message-settings.md`, `mqtt-varying-fields.md` |

@@ -61,7 +61,7 @@ public sealed class MenuLayout
         var ordered = new List<NavItemViewModel>();
         foreach (var entry in saved)
         {
-            if (defaults.Find(item => item.Title == entry.Title) is not { } item || ordered.Contains(item))
+            if (defaults.Find(item => item.Title == entry.Title || item.FormerTitle == entry.Title) is not { } item || ordered.Contains(item))
                 continue;
 
             ordered.Add(item);

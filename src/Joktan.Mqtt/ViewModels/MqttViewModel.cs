@@ -13,7 +13,7 @@ using Joktan.Core.ViewModels;
 namespace Joktan.Mqtt.ViewModels;
 
 /// <summary>
-/// Dev Tools / Connectivity / MQTT: one tab per MQTT client. Each client connects to its own
+/// Dev Tools / Brokers / MQTT: one tab per MQTT client. Each client connects to its own
 /// broker and publishes test messages, typed in by hand or read from its own folder of JSON files.
 /// Specified in docs/features/dev-tools/connectivity/mqtt/spec.md.
 /// </summary>
@@ -27,7 +27,7 @@ public partial class MqttViewModel : PageViewModel
     /// <param name="certificates">The certificates made on the Certificates page, offered in the client settings.</param>
     /// <param name="settings">The settings, if already read; otherwise they are read here.</param>
     public MqttViewModel(CertificateStore? certificates = null, MqttSettings? settings = null)
-        : base("MQTT", "Dev Tools / Connectivity / MQTT")
+        : base("MQTT", "Dev Tools / Brokers / MQTT")
     {
         _certificates = certificates;
         _settings = settings ?? MqttSettings.Load();

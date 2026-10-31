@@ -77,4 +77,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ needs.version.outputs.version }}
-        run: gh release create "$VERSION" dist/*.zip --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "Joktan $VERSION" --generate-notes
+        run: gh release create "$VERSION" dist/* --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "Joktan $VERSION" --generate-notes

@@ -11,7 +11,7 @@ using Joktan.TopicDashboards.ViewModels;
 namespace Joktan.TopicExplorer.ViewModels;
 
 /// <summary>
-/// Dev Tools / Connectivity / Topic Explorer: one tab per MQTT client, each showing what arrives
+/// Dev Tools / Brokers / Topic Explorer: one tab per MQTT client, each showing what arrives
 /// on that client's broker. It can be moved into its own window. Specified in
 /// docs/features/dev-tools/connectivity/topic-explorer/spec.md.
 /// </summary>
@@ -22,7 +22,7 @@ public partial class TopicExplorerViewModel : PageViewModel
 
     /// <param name="dashboards">Where a topic's graph goes when it is added to a dashboard.</param>
     public TopicExplorerViewModel(MqttViewModel mqtt, TopicDashboardsViewModel dashboards)
-        : base("Topic Explorer", "Dev Tools / Connectivity / Topic Explorer")
+        : base("Topic Explorer", "Dev Tools / Brokers / Topic Explorer")
     {
         Mqtt = mqtt;
         _dashboards = dashboards;

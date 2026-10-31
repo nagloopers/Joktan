@@ -1,5 +1,6 @@
-# Builds and tests Joktan, reports code coverage, and packages it for Windows and macOS.
-# Windows builds are zipped as a single .exe and the README; macOS builds are zipped, unsigned .app bundles.
+# Builds and tests Joktan, reports code coverage, and packages it for Windows, macOS and Linux.
+# Windows builds are zipped as a single .exe and the README; macOS builds are zipped, unsigned .app bundles;
+# Linux builds are a .tar.gz of a single executable and the README, since a tar keeps the executable's permission.
 # It only runs when started by hand, from the Actions tab or with `gh workflow run build.yml`.
 # The builds take their version from the commit's tag, which the Tag workflow makes.
 # The Release workflow runs this one to make the builds it publishes.
@@ -50,7 +51,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ windows-latest, macos-latest ]
+        os: [ windows-latest, macos-latest, ubuntu-latest ]
 
     steps:
       - uses: actions/checkout@v7
@@ -58,6 +59,11 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 10.0.x
+
+      # SkiaSharp needs fontconfig to load, and the tests of opening a terminal need one to find.
+      - name: Install what the tests need on Linux
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libfontconfig1 xterm
 
       - name: Build
         run: dotnet build Joktan.slnx -c Release
@@ -178,3 +184,47 @@ jobs:
         with:
           name: Joktan-${{ matrix.rid }}
           path: Joktan-${{ matrix.rid }}.zip
+
+  linux:
+    needs: [ version, test ]
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ needs.version.outputs.version }}
+    strategy:
+      matrix:
+        rid: [ linux-x64, linux-arm64 ]
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Publish
+        run: >
+          dotnet publish src/Joktan/Joktan.csproj -c Release -r ${{ matrix.rid }} --self-contained
+          -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:DebugType=embedded
+          -p:Version=${VERSION#v}
+          -o publish/${{ matrix.rid }}
+
+      - name: Keep only the executable
+        run: |
+          # SkiaSharp and HarfBuzz can bring native debug files that publishing copies next to it.
+          rm -f publish/${{ matrix.rid }}/*.pdb publish/${{ matrix.rid }}/*.dbg
+          extra=$(ls publish/${{ matrix.rid }} | grep -vx Joktan || true)
+          if [ -n "$extra" ]; then
+            echo "::error::Files were left outside Joktan:" $extra
+            exit 1
+          fi
+
+      - name: Pack the executable with the README
+        run: |
+          chmod +x publish/${{ matrix.rid }}/Joktan
+          tar -czf Joktan-${{ matrix.rid }}.tar.gz -C publish/${{ matrix.rid }} Joktan -C "$PWD" README.md
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: Joktan-${{ matrix.rid }}
+          path: Joktan-${{ matrix.rid }}.tar.gz

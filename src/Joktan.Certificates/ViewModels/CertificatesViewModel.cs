@@ -11,7 +11,7 @@ using Joktan.Core.ViewModels;
 namespace Joktan.Certificates.ViewModels;
 
 /// <summary>
-/// Dev Tools / Connectivity / Certificates: certificate authorities and the server and client
+/// Dev Tools / Certificates: certificate authorities and the server and client
 /// certificates they sign, for MQTT brokers and clients. Specified in
 /// docs/features/dev-tools/connectivity/certificates/spec.md.
 /// </summary>
@@ -22,7 +22,7 @@ public partial class CertificatesViewModel : PageViewModel
 
     /// <param name="usedBy">Names the MQTT clients that use a certificate.</param>
     public CertificatesViewModel(CertificateStore store, Func<StoredCertificate, List<string>> usedBy)
-        : base("Certificates", "Dev Tools / Connectivity / Certificates")
+        : base("Certificates", "Dev Tools / Certificates")
     {
         _store = store;
         _usedBy = usedBy;

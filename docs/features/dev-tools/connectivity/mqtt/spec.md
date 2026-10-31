@@ -7,7 +7,7 @@ folder messages can be sent on a schedule with fields that change on every send.
 
 | Item      | Value                           |
 |-----------|---------------------------------|
-| Menu path | Dev Tools / Connectivity / MQTT |
+| Menu path | Dev Tools / Brokers / MQTT |
 | Status    | Implemented                     |
 
 ![MQTT page](../../../../images/mqtt-dark.png)
@@ -20,7 +20,7 @@ repeatedly with fresh timestamps and identifiers.
 
 ## Page layout
 
-1. Page header: title "MQTT", subtitle "Dev Tools / Connectivity / MQTT", and **Add client** on
+1. Page header: title "MQTT", subtitle "Dev Tools / Brokers / MQTT", and **Add client** on
    the right.
 2. A row of tabs, one per client. Each tab shows the client's name with a dot in the colour of
    its connection state, so every client's state can be seen at a glance; hovering shows its

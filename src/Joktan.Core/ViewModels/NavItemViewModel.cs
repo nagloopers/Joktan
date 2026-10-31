@@ -19,6 +19,9 @@ public partial class NavItemViewModel : ViewModelBase
 
     public string Title { get; }
 
+    /// <summary>The title this entry had before it was renamed, by which a saved menu layout may still know it.</summary>
+    public string? FormerTitle { get; init; }
+
     public Geometry? Icon { get; }
 
     /// <summary>The group this entry is in; null at the top of the menu.</summary>

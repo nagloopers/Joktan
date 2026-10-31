@@ -1,15 +1,15 @@
 # Features
 
 One folder per feature, each holding that feature's specification. Related features are grouped
-under shared parent folders that follow the menu, such as `dev-tools/connectivity/`.
+under shared parent folders that follow the menu, such as `dev-tools/`. `dev-tools/connectivity/` keeps its name from before the menu group became Brokers.
 
 | Feature                                 | Spec                                                                                           | Status                         |
 |-----------------------------------------|------------------------------------------------------------------------------------------------|--------------------------------|
-| Dashboards                              | [dashboards/spec.md](dashboards/spec.md)                                                       | Overview and Topic Dashboards implemented |
-| Dashboards: Topic Dashboards, state and design | [dashboards/topic-dashboards.md](dashboards/topic-dashboards.md)                       | Implemented                    |
-| Dev tools: connectivity: MQTT publisher | [dev-tools/connectivity/mqtt/spec.md](dev-tools/connectivity/mqtt/spec.md)                     | Implemented                    |
-| Dev tools: connectivity: topic explorer | [dev-tools/connectivity/topic-explorer/spec.md](dev-tools/connectivity/topic-explorer/spec.md) | Implemented                    |
-| Dev tools: connectivity: certificates   | [dev-tools/connectivity/certificates/spec.md](dev-tools/connectivity/certificates/spec.md)     | Implemented                    |
+| Dashboards                              | [dashboards/spec.md](dashboards/spec.md)                                                       | Overview and MQTT Dashboards implemented |
+| Dashboards: MQTT Dashboards, state and design | [dashboards/topic-dashboards.md](dashboards/topic-dashboards.md)                       | Implemented                    |
+| Dev tools: brokers: MQTT publisher      | [dev-tools/connectivity/mqtt/spec.md](dev-tools/connectivity/mqtt/spec.md)                     | Implemented                    |
+| Dev tools: brokers: topic explorer      | [dev-tools/connectivity/topic-explorer/spec.md](dev-tools/connectivity/topic-explorer/spec.md) | Implemented                    |
+| Dev tools: certificates                 | [dev-tools/connectivity/certificates/spec.md](dev-tools/connectivity/certificates/spec.md)     | Implemented                    |
 | Dev tools: containers                   | [dev-tools/containers/spec.md](dev-tools/containers/spec.md)                                   | Implemented                    |
 | Dev tools: API client                   | [dev-tools/api-client/spec.md](dev-tools/api-client/spec.md)                                   | Implemented                    |
 | Notes                                   | [notes/spec.md](notes/spec.md)                                                                 | Implemented                    |

@@ -6,7 +6,7 @@ Any number of CAs can be made, and a CA can sign more certificates at any time w
 
 | Item      | Value                                   |
 |-----------|-----------------------------------------|
-| Menu path | Dev Tools / Connectivity / Certificates |
+| Menu path | Dev Tools / Certificates |
 | Status    | Implemented                             |
 
 ## Purpose
@@ -17,7 +17,7 @@ pick the client's files in its MQTT settings.
 
 ## Page layout
 
-1. Page header: title "Certificates", subtitle "Dev Tools / Connectivity / Certificates", and
+1. Page header: title "Certificates", subtitle "Dev Tools / Certificates", and
    **New root CA** on the right.
 2. A line saying what happened last, such as which files were exported, and any error.
 3. On the left, **Authorities and certificates**: a tree with each root CA at the top and every

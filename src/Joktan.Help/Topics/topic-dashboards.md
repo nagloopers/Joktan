@@ -1,6 +1,6 @@
-# Topic Dashboards
+# MQTT Dashboards
 
-**Dashboard / Topic Dashboards** draws the numbers on MQTT topics as graphs, on dashboards you name and
+**Dashboard / MQTT Dashboards** draws the numbers on MQTT topics as graphs, on dashboards you name and
 lay out yourself. Each dashboard has its own tab. Graphs use the clients on the [MQTT](help:mqtt) page.
 
 ## Adding a graph

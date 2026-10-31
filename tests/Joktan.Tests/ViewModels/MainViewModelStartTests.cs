@@ -82,12 +82,84 @@ public class MainViewModelStartTests : DataFolderTest, IDisposable
     {
         var main = New();
 
-        main.NavigateCommand.Execute(Item(main, "Charts"));
+        var later = new NavItemViewModel("Later");
+        main.MenuItems.Add(later);
 
-        Assert.Equal("Charts", main.CurrentPage!.Title);
-        Assert.Equal("Charts", main.CurrentPage.Subtitle);
+        main.NavigateCommand.Execute(later);
+
+        Assert.Equal("Later", main.CurrentPage!.Title);
+        Assert.Equal("Later", main.CurrentPage.Subtitle);
         Assert.Equal(HelpTopic.Home, main.CurrentHelpTopic);
         Assert.Equal("Help: getting started (F1)", main.HelpTip);
+    });
+
+    [Fact]
+    public Task Every_entry_on_the_menu_has_a_page_of_its_own() => Headless.Run(() =>
+    {
+        var main = New();
+
+        Assert.All(Leaves(main.MenuItems), item => Assert.NotNull(item.Page));
+        Assert.DoesNotContain(Leaves(main.MenuItems), item => item.Title is "Analytics" or "Reports" or "Charts" or "Tables");
+    });
+
+    [Fact]
+    public Task Brokers_holds_mqtt_and_the_explorer_and_certificates_sit_beside_it() => Headless.Run(() =>
+    {
+        var devTools = New().MenuItems.First(i => i.Title == "Dev Tools");
+
+        Assert.Equal(["Brokers", "Certificates", "API Client", "Containers"], devTools.Children.Select(i => i.Title));
+        Assert.Equal(["MQTT", "Topic Explorer"], devTools.Children[0].Children.Select(i => i.Title));
+        Assert.Equal("Dev Tools / Certificates", devTools.Children[1].Page!.Subtitle);
+    });
+
+    [Fact]
+    public Task A_layout_saved_under_the_old_group_name_still_applies_to_brokers() => Headless.Run(() =>
+    {
+        var layout = new Joktan.Settings.MenuLayout
+        {
+            Entries =
+            [
+                new Joktan.Settings.MenuLayoutEntry
+                {
+                    Title = "Dev Tools",
+                    Children =
+                    [
+                        new Joktan.Settings.MenuLayoutEntry
+                        {
+                            Title = "Connectivity",
+                            Children = [new Joktan.Settings.MenuLayoutEntry { Title = "Topic Explorer", Shown = false }],
+                        },
+                    ],
+                },
+            ],
+        };
+        new ComposeSettings { ComposeFiles = [] }.Save();
+
+        var main = new MainViewModel(_monitor, menuLayout: layout);
+
+        Assert.False(Item(main, "Topic Explorer").IsShown);
+    });
+
+    [Fact]
+    public Task A_layout_saved_under_the_old_name_still_applies_to_mqtt_dashboards() => Headless.Run(() =>
+    {
+        var layout = new Joktan.Settings.MenuLayout
+        {
+            Entries =
+            [
+                new Joktan.Settings.MenuLayoutEntry
+                {
+                    Title = "Dashboard",
+                    Children = [new Joktan.Settings.MenuLayoutEntry { Title = "Topic Dashboards", Shown = false }],
+                },
+            ],
+        };
+        new ComposeSettings { ComposeFiles = [] }.Save();
+
+        var main = new MainViewModel(_monitor, menuLayout: layout);
+
+        Assert.False(Item(main, "MQTT Dashboards").IsShown);
+        Assert.Equal("MQTT Dashboards", Item(main, "MQTT Dashboards").Page!.Title);
     });
 
     [Fact]
@@ -285,7 +357,7 @@ public class MainViewModelStartTests : DataFolderTest, IDisposable
         // Written another way, as the very path shown counts as no change at all.
         var row = await Change(Backup(main), "dashboards", folder + Path.DirectorySeparatorChar);
 
-        Assert.Contains("under Folder on the Topic Dashboards page", row.Problem);
+        Assert.Contains("under Folder on the MQTT Dashboards page", row.Problem);
         Assert.True(dashboards.IsChoosingFolder);
     });
 

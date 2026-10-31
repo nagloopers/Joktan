@@ -9,7 +9,7 @@ them from one.
 2. Type a full path, or use **Browse**. `~` stands for your home folder. **Default** fills in Joktan's own folder.
 3. Press **Use folder**.
 
-This does the same as the folder buttons on the Notes, Topic Dashboards and API Client pages, which still work:
+This does the same as the folder buttons on the Notes, MQTT Dashboards and API Client pages, which still work:
 
 - If the folder already holds data, it is opened as it is.
 - If not, what is open now is copied there. The originals stay where they were, so nothing is lost.

@@ -14,7 +14,7 @@ developers working with MQTT, REST, gRPC and containers.
 ## What each page is for
 
 - [Dashboard](help:dashboard): how busy this machine is.
-- [Topic Dashboards](help:topic-dashboards): your own graphs of the numbers on one or more MQTT topics.
+- [MQTT Dashboards](help:topic-dashboards): your own graphs of the numbers on one or more MQTT topics.
 - [Notes](help:notes): pages of Markdown that nest below one another.
 - [Passwords](help:passwords): logins in folders, in an encrypted vault or the system keychain.
 - [MQTT](help:mqtt): send test messages to brokers, by hand or on a schedule.
@@ -32,7 +32,6 @@ What applies to the whole app is under [Settings and data](help:settings-and-dat
 
 These are there but do not do anything yet:
 
-- the Analytics, Reports, Charts and Tables pages, which are placeholders;
 - the search box, messages and notifications in the top bar.
 
 ## Try it: send a message and watch it arrive
@@ -42,13 +41,13 @@ and sample messages.
 
 1. Open **Dev Tools / Containers** and press **Start** on the `joktan` project. Wait for the
    `mosquitto` row to turn green.
-2. Open **Dev Tools / Connectivity / MQTT**. The `main` client already points at `localhost`, port
+2. Open **Dev Tools / Brokers / MQTT**. The `main` client already points at `localhost`, port
    `1883`. Press **Connect**.
 3. Under **Folder messages**, press **Choose folder** and pick `samples/mqtt-messages` in the
    repository.
 4. Every message starts switched off. Turn on a message, or a whole group, with its switch in the
    **On** column.
-5. Open **Dev Tools / Connectivity / Topic Explorer** to watch the messages arrive.
+5. Open **Dev Tools / Brokers / Topic Explorer** to watch the messages arrive.
 
 Switch the messages off again when you are done: they stay on, and start again the next time the
 client connects.

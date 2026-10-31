@@ -24,7 +24,7 @@ to see those too.
   remembered for each client.
 - **Unsubscribe** drops them. Topics already in the tree stay.
 - Subscriptions are made again by themselves after a reconnect.
-- Graphs on [Topic Dashboards](help:topic-dashboards) have subscriptions of their own, so they keep
+- Graphs on [MQTT Dashboards](help:topic-dashboards) have subscriptions of their own, so they keep
   receiving after **Unsubscribe**, and their topics do not appear here unless the filters match them.
 
 ## The tree
@@ -49,7 +49,7 @@ Items of an array share a line, named with `[*]`. Numbers that stay the same, an
 at most 12 lines are shown.
 
 To keep a graph, with a name and a type of your choosing, press **Add to dashboard** beside the topic.
-See [Topic Dashboards](help:topic-dashboards).
+See [MQTT Dashboards](help:topic-dashboards).
 
 **Choose values** picks what is drawn instead. It lists every number in the payload, as a single value, as
 a whole array, or as one position of an array. Once you tick or clear one, only what is ticked is drawn,

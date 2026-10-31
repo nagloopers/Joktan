@@ -1,13 +1,13 @@
-# Topic Dashboards: current state and design
+# MQTT Dashboards: current state and design
 
-The MQTT dashboard, called Topic Dashboards in the app, is implemented. It draws numbers from MQTT topics
+MQTT Dashboards is implemented. It draws numbers from MQTT topics
 as live graphs, on named tabs laid out by the user. Readings are held in memory only, so every graph starts
 empty on each run.
 
 A number is identified by keys rather than its position in a message, and topics can hold wildcards. Phase 1 of the
 [design](#design-keys-wildcards-and-grouping) is built. [Phases 2 to 4](#other-telemetry-gaps) are not.
 
-This page records what the code does as of app version 2.0.0, and what to look at before changing it. The rules for each behaviour are in the [spec](spec.md#topic-dashboards), and the user help is in
+This page records what the code does as of app version 2.0.0, and what to look at before changing it. The rules for each behaviour are in the [spec](spec.md#mqtt-dashboards), and the user help is in
 `src/Joktan.Help/Topics/topic-dashboards.md`. Change those two with any change to the feature.
 
 The items under [Known gaps](#known-gaps) come from reading the code, and have not been reproduced in the app.

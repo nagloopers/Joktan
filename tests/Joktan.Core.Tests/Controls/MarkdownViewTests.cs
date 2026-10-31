@@ -181,7 +181,8 @@ public class MarkdownViewTests
         var text = Headless.Find<SelectableTextBlock>(window);
         var lineCentre = text.TextLayout.Height / 2;
         var onLink = text.TranslatePoint(new Point(text.Padding.Left + 4, text.Padding.Top + lineCentre), window)!.Value;
-        var last = text.TextLayout.HitTestTextPosition(text.TextLayout.TextLines[0].Length - 1);
+        // Not the line's own length, which on Linux counts a position past the last character and so off the text.
+        var last = text.TextLayout.HitTestTextPosition(text.Inlines!.Text!.Length - 1);
         var offLink = text.TranslatePoint(new Point(text.Padding.Left + last.Center.X, text.Padding.Top + lineCentre), window)!.Value;
         return (window, text, onLink, offLink);
     }

@@ -6,9 +6,7 @@ view of one subject.
 | Dashboard | Menu path | Status |
 | --- | --- | --- |
 | Overview | Dashboard / Overview | Implemented; specified below |
-| Topic Dashboards | Dashboard / Topic Dashboards | Implemented; specified [below](#topic-dashboards) |
-| Analytics | Dashboard / Analytics | Placeholder page, not specified yet |
-| Reports | Dashboard / Reports | Placeholder page, not specified yet |
+| MQTT Dashboards | Dashboard / MQTT Dashboards | Implemented; specified [below](#mqtt-dashboards) |
 
 ## Overview dashboard
 
@@ -152,7 +150,7 @@ Styles and colour tokens are covered in [design.md](../../design.md#dashboard).
 - History beyond the last minute, or any history kept between runs
 - Alerts or notifications when a level is reached
 
-## Topic Dashboards
+## MQTT Dashboards
 
 ### Purpose
 

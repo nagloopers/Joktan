@@ -15,7 +15,7 @@ using Joktan.Mqtt.ViewModels;
 namespace Joktan.TopicDashboards.ViewModels;
 
 /// <summary>
-/// Dashboard / Topic Dashboards: dashboards of graphs, drawn from MQTT topics, one tab each. Specified
+/// Dashboard / MQTT Dashboards: dashboards of graphs, drawn from MQTT topics, one tab each. Specified
 /// in docs/features/dashboards/spec.md.
 /// </summary>
 public partial class TopicDashboardsViewModel : PageViewModel
@@ -36,7 +36,7 @@ public partial class TopicDashboardsViewModel : PageViewModel
     private DashboardStore _store;
 
     public TopicDashboardsViewModel(MqttViewModel mqtt, DashboardStore? store = null)
-        : base("Topic Dashboards", "Dashboard / Topic Dashboards")
+        : base("MQTT Dashboards", "Dashboard / MQTT Dashboards")
     {
         Mqtt = mqtt;
         _store = store ?? DashboardStore.Load();

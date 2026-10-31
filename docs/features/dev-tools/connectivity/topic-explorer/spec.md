@@ -7,7 +7,7 @@ window of its own beside the main one.
 
 | Item      | Value                                     |
 |-----------|-------------------------------------------|
-| Menu path | Dev Tools / Connectivity / Topic Explorer |
+| Menu path | Dev Tools / Brokers / Topic Explorer |
 | Status    | Implemented                               |
 
 ![Topic explorer on its page, drawing the numbers that change in a topic's JSON](../../../../images/topic-explorer-dark.png)
@@ -58,7 +58,7 @@ page, and connecting or disconnecting in either place affects both.
 - Narrowing the filters stops new messages for the topics no longer matched. Topics already in
   the tree stay there until **Clear**.
 
-The connection also carries the subscriptions of [Topic Dashboards](../../../dashboards/spec.md#topic-dashboards),
+The connection also carries the subscriptions of [MQTT Dashboards](../../../dashboards/spec.md#mqtt-dashboards),
 so each part keeps its own filters and neither replaces the other's:
 
 - The tree only takes in messages its own filters match. A topic only a dashboard subscribes to does not

@@ -52,7 +52,7 @@ public partial class MainViewModel : ViewModelBase
     /// <param name="mqttSettings">The MQTT settings, if already read; otherwise they are read here.</param>
     /// <param name="notes">The notes, if already read; otherwise they are read here.</param>
     /// <param name="passwordSettings">The password manager's settings, if already read; otherwise they are read here.</param>
-    /// <param name="dashboards">The topic dashboards, if already read; otherwise they are read here.</param>
+    /// <param name="dashboards">The MQTT dashboards, if already read; otherwise they are read here.</param>
     /// <param name="menuLayout">The order of the menu and what it shows, if already read; otherwise they are read here.</param>
     /// <param name="themes">The themes, if already read; otherwise they are read here.</param>
     public MainViewModel(MachineMonitor monitor, CertificateStore? certificates = null, MqttSettings? mqttSettings = null,
@@ -78,18 +78,14 @@ public partial class MainViewModel : ViewModelBase
         [
             new NavItemViewModel("Dashboard", Icons.Dashboard,
                 new NavItemViewModel("Overview") { Page = new DashboardViewModel(monitor), HelpTopic = "dashboard" },
-                new NavItemViewModel("Topic Dashboards") { Page = _topicDashboards, HelpTopic = "topic-dashboards" },
-                new NavItemViewModel("Analytics"),
-                new NavItemViewModel("Reports")),
+                new NavItemViewModel("MQTT Dashboards") { FormerTitle = "Topic Dashboards", Page = _topicDashboards, HelpTopic = "topic-dashboards" }),
             new NavItemViewModel("Notes", Icons.Notes) { Page = _notes, HelpTopic = "notes" },
             passwordsItem,
-            new NavItemViewModel("Charts", Icons.Chart),
-            new NavItemViewModel("Tables", Icons.Table),
             new NavItemViewModel("Dev Tools", Icons.DevTools,
-                new NavItemViewModel("Connectivity", null,
+                new NavItemViewModel("Brokers", null,
                     new NavItemViewModel("MQTT") { Page = mqtt, HelpTopic = "mqtt" },
-                    new NavItemViewModel("Topic Explorer") { Page = new TopicExplorerViewModel(mqtt, _topicDashboards), HelpTopic = "topic-explorer" },
-                    new NavItemViewModel("Certificates") { Page = new CertificatesViewModel(certificates, mqtt.ClientsUsing), HelpTopic = "certificates" }),
+                    new NavItemViewModel("Topic Explorer") { Page = new TopicExplorerViewModel(mqtt, _topicDashboards), HelpTopic = "topic-explorer" }) { FormerTitle = "Connectivity" },
+                new NavItemViewModel("Certificates") { Page = new CertificatesViewModel(certificates, mqtt.ClientsUsing), HelpTopic = "certificates" },
                 new NavItemViewModel("API Client") { Page = _apiClient, HelpTopic = "api-client" },
                 new NavItemViewModel("Containers") { Page = _containers, HelpTopic = "containers" }),
             new NavItemViewModel("Settings", Icons.Settings,

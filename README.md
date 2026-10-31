@@ -18,8 +18,6 @@ The project is at an early stage. So far it has:
 - settings for which features the menu shows and in what order, and themes that hold every colour,
   font and text size, with Light, Dark and Green Dark built in.
 
-The other menu entries (Analytics, Reports, Charts and Tables) open placeholder pages.
-
 ## Requirements
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download)
@@ -89,27 +87,28 @@ To build without releasing, start the **Build** workflow on `main` from the Acti
 Releases are published from the fork, [Caracal-IT/Joktan](https://github.com/Caracal-IT/Joktan), and the
 original repository refuses to run the workflow. Sync the fork's `main`, open **Release** on the fork's
 Actions tab and press **Run workflow**, or run `gh workflow run release.yml --repo Caracal-IT/Joktan`. If
-the tests pass on Windows and macOS, the commit's version is published as a release of the fork with the
-builds attached: for Windows, a zip of the single `Joktan.exe` and this README; for macOS, a zipped `.app`. A version can only be released once, and a commit with no tag of its own gets the next
-free version. There are no secrets to set up, but Actions must be turned on in the fork, and the
+the tests pass on Windows, macOS and Linux, the commit's version is published as a release of the fork with the
+builds attached: for Windows, a zip of the single `Joktan.exe` and this README; for macOS, a zipped `.app`; for Linux, a `.tar.gz` of the single `Joktan`
+executable and this README, which needs fontconfig (`libfontconfig1` on Debian and Ubuntu). A version can only be
+released once, and a commit with no tag of its own gets the next free version. There are no secrets to set up, but Actions must be turned on in the fork, and the
 organisation must let workflows have write access.
 
 ## Dev tools
 
-**Dev Tools / Connectivity / MQTT** sends test messages to MQTT brokers, typed in by hand or read from
+**Dev Tools / Brokers / MQTT** sends test messages to MQTT brokers, typed in by hand or read from
 a folder of JSON files, on a schedule and with fields that change on every send. Each client has
 its own tab, broker, folder and activity log, any number can be connected at once, and each can
 use TLS or mutual TLS with certificates from PEM or PFX/P12 files. It is specified
 in [docs/features/dev-tools/connectivity/mqtt/spec.md](docs/features/dev-tools/connectivity/mqtt/spec.md).
 
-**Dev Tools / Connectivity / Topic Explorer** has a tab per client; each subscribes to that
+**Dev Tools / Brokers / Topic Explorer** has a tab per client; each subscribes to that
 client's broker and shows every topic as a tree with its latest value, history and a publish
 form. It draws a graph of each number that is changing in a topic's JSON, and **Choose values**
 picks which to draw: a value, a whole array, or one item of an array. It can be moved into a
 window of its own. It is specified in
 [docs/features/dev-tools/connectivity/topic-explorer/spec.md](docs/features/dev-tools/connectivity/topic-explorer/spec.md).
 
-**Dev Tools / Connectivity / Certificates** makes certificate authorities, and the server and
+**Dev Tools / Certificates** makes certificate authorities, and the server and
 client certificates they sign, for brokers and clients using TLS and mutual TLS. Any number of
 CAs can be made, each certificate is kept below the CA that signed it, and the subject, key and
 expiry date of each can be set, starting from defaults that can be changed. Certificates can be
@@ -137,14 +136,14 @@ To try them:
    docker compose -f containers/docker-compose.yml up -d
    ```
 
-2. In Joktan, open Dev Tools / Connectivity / MQTT and connect the `main` client, which points at
+2. In Joktan, open Dev Tools / Brokers / MQTT and connect the `main` client, which points at
    host `localhost`, port `1883`. To try TLS or mutual TLS, make the broker's certificates on
-   Dev Tools / Connectivity / Certificates, or use its development ones, as
+   Dev Tools / Certificates, or use its development ones, as
    [containers/README.md](containers/README.md#tls-and-mutual-tls) describes, and add a client
    for port 8883 or 8884.
 3. Press **Choose folder** and pick `samples/mqtt-messages`. Every message starts switched off;
    turn on a message, or a whole group, with the switch in the **On** column.
-4. Open Dev Tools / Connectivity / Topic Explorer to watch the messages arrive.
+4. Open Dev Tools / Brokers / Topic Explorer to watch the messages arrive.
 
 ## Telemetry
 
@@ -195,12 +194,12 @@ and logic together, and the app references the modules and puts them on the menu
 | `Joktan.slnx` | The solution |
 | `Directory.Build.props`, `Directory.Packages.props` | Settings and package versions shared by every project |
 | `.github/workflows/tag.yml` | Tags every commit that reaches `main` with its version, such as `v2.0.17` |
-| `.github/workflows/build.yml` | Started by hand: builds, tests and reports coverage, then packages for Windows and macOS with the version from the tag |
+| `.github/workflows/build.yml` | Started by hand: builds, tests and reports coverage, then packages for Windows, macOS and Linux with the version from the tag |
 | `.github/workflows/release.yml` | Started by hand: runs the build, then publishes a GitHub release with the builds attached |
 | `src/Joktan/` | The app: entry point, shell window, main menu, splash, and `ViewLocator` |
 | `src/Joktan.Core/` | What modules share: base view models, styles and colours, icons, shared controls such as the Markdown view, the data folder, the credential store |
 | `src/Joktan.Dashboard/` | Dashboard page, machine sampling, OpenTelemetry instruments and SDK setup |
-| `src/Joktan.TopicDashboards/` | Topic Dashboards page: graphs of one or more MQTT topics, the graph editor and its storage |
+| `src/Joktan.TopicDashboards/` | MQTT Dashboards page: graphs of one or more MQTT topics, the graph editor and its storage |
 | `src/Joktan.Notes/` | Notes page and its storage |
 | `src/Joktan.Passwords/` | Password manager page and its storage |
 | `src/Joktan.Mqtt/` | MQTT page, connection, folder messages, schedules and varying fields |

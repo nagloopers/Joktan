@@ -173,7 +173,7 @@ Styles live in [`src/Joktan.Core/Styles/Shell.axaml`](../src/Joktan.Core/Styles/
 | `log` | `ListBox` | Bordered, selectable list of log lines |
 | `compact` | `ToggleSwitch` | Switch with no On/Off caption, for a table column |
 | `group-row`, `group-toggle` | `Border`, `Button` | Header of a group of table rows; the button collapses the group, and takes `collapsed` |
-| `client-tabs`, `tab-header` | `TabControl`, `Border` | The tabs of an MQTT client or a topic dashboard; a tab's coloured header |
+| `client-tabs`, `tab-header` | `TabControl`, `Border` | The tabs of an MQTT client or an MQTT dashboard; a tab's coloured header |
 | `tab-button` | `Button` | Added to `icon-button` for a small icon on a tab |
 | `swatch` | `Button` | One colour in the palette of a client's settings or a dashboard |
 | `console` | `ListBox` | Added to `log` for one close-set line per item, for a container's logs and a command's output |
@@ -238,7 +238,7 @@ What the dashboard shows and how each value is calculated is specified in
 
 ## Graphs
 
-Topic Dashboards draw several numbers at once, so unlike the Overview they need colours to tell them
+MQTT Dashboards draw several numbers at once, so unlike the Overview they need colours to tell them
 apart.
 
 - **Colours.** `Chart1Brush` to `Chart8Brush`, with their own steps for each theme. Their order was checked
@@ -255,7 +255,7 @@ apart.
 ## Navigation
 
 - The menu has up to three levels. An entry either opens a page or is a group with children, and
-  a second-level entry can itself be a group, as in Dev Tools / Connectivity / MQTT.
+  a second-level entry can itself be a group, as in Dev Tools / Brokers / MQTT.
 - Clicking a group expands or collapses it; several groups can be open at once.
 - Clicking a leaf selects it and shows its page. Every group above the selected leaf is
   highlighted as well.
@@ -272,11 +272,11 @@ its own assembly. `MainViewModel.CurrentPage` holds the view model of the page b
 
 - The shell: sidebar, top bar and page header.
 - The dashboard at Dashboard / Overview.
-- Topic Dashboards at Dashboard / Topic Dashboards: graphs of MQTT topics, on dashboards laid out as wanted.
-- The MQTT publisher at Dev Tools / Connectivity / MQTT.
-- The topic explorer at Dev Tools / Connectivity / Topic Explorer, which can also run in its own
+- MQTT Dashboards at Dashboard / MQTT Dashboards: graphs of MQTT topics, on dashboards laid out as wanted.
+- The MQTT publisher at Dev Tools / Brokers / MQTT.
+- The topic explorer at Dev Tools / Brokers / Topic Explorer, which can also run in its own
   window.
-- Certificates at Dev Tools / Connectivity / Certificates: CAs and the certificates they sign.
+- Certificates at Dev Tools / Certificates: CAs and the certificates they sign.
 - Notes, at Notes: pages of Markdown that nest below one another.
 - Passwords, at Passwords: logins in folders, in an encrypted vault file or the system keychain.
 - The API client at Dev Tools / API Client: REST and gRPC requests kept as files in a folder.
@@ -284,11 +284,9 @@ its own assembly. `MainViewModel.CurrentPage` holds the view model of the page b
 - [Help](features/help/spec.md), in a tool window opened from the top bar or with F1.
 - [Settings](features/settings/spec.md), at Settings: which entries the menu shows and in what order, and themes.
 
-Every other menu entry opens the same placeholder page (`PageView`).
+A menu entry with no page of its own opens the placeholder page (`PageView`). No entry does at present.
 
 Not built yet:
 
-- The remaining pages and their view models
 - Search, messages and notifications (the controls are present but do nothing)
-- Charts and tables from the reference image
 - A compact icon-only sidebar

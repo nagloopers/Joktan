@@ -60,11 +60,11 @@ internal sealed class FolderSources(
             new()
             {
                 Id = "dashboards",
-                Name = "Topic Dashboards",
+                Name = "MQTT Dashboards",
                 CurrentPath = () => dashboards.Folder,
                 DefaultPath = dashboards.DefaultFolder,
                 Change = ChangeDashboards,
-                Item = () => new BackupItem("dashboards", "Topic Dashboards", [new BackupRoot("file", Path.Combine(dashboards.Folder, "dashboards.json"), IsFile: true)]),
+                Item = () => new BackupItem("dashboards", "MQTT Dashboards", [new BackupRoot("file", Path.Combine(dashboards.Folder, "dashboards.json"), IsFile: true)]),
             },
             new()
             {
@@ -218,7 +218,7 @@ internal sealed class FolderSources(
         if (dashboards.CanStartEmpty)
         {
             dashboards.IsChoosingFolder = true;
-            return new FolderChange($"{dashboards.FolderMessage} That button is under Folder on the Topic Dashboards page.");
+            return new FolderChange($"{dashboards.FolderMessage} That button is under Folder on the MQTT Dashboards page.");
         }
 
         return new FolderChange(dashboards.FolderMessage, dashboards.Message);

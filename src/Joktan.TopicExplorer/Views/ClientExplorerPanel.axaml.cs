@@ -36,6 +36,6 @@ public partial class ClientExplorerPanel : UserControl
         // The owner is whichever window the explorer is in, which may be its own.
         await new GraphEditorWindow { DataContext = editor }.ShowDialog(owner);
         if (editor.AddedTo is { } dashboard)
-            vm.DashboardStatus = $"Added to {dashboard}. See Dashboard / Topic Dashboards.";
+            vm.DashboardStatus = $"Added to {dashboard}. See Dashboard / MQTT Dashboards.";
     }
 }

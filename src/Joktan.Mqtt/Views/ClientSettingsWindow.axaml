@@ -112,7 +112,7 @@
                                               SelectedItem="{Binding SelectedStoreAuthority}"
                                               PlaceholderText="Choose a CA"
                                               MinWidth="280"
-                                              ToolTip.Tip="A CA made on Dev Tools / Connectivity / Certificates. When saved, its file, with any CAs above it, is copied into this client's folder of certificates and used from there." />
+                                              ToolTip.Tip="A CA made on Dev Tools / Certificates. When saved, its file, with any CAs above it, is copied into this client's folder of certificates and used from there." />
                                 </StackPanel>
                             </StackPanel>
 
@@ -133,7 +133,7 @@
                                               SelectedItem="{Binding SelectedStoreClient}"
                                               PlaceholderText="Choose a client certificate"
                                               MinWidth="280"
-                                              ToolTip.Tip="A client certificate made on Dev Tools / Connectivity / Certificates. Its key is filled in, and its CA too when none is chosen. When saved, they are copied into this client's folder of certificates and used from there." />
+                                              ToolTip.Tip="A client certificate made on Dev Tools / Certificates. Its key is filled in, and its CA too when none is chosen. When saved, they are copied into this client's folder of certificates and used from there." />
                                 </StackPanel>
                             </StackPanel>
 

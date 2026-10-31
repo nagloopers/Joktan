@@ -128,7 +128,7 @@ From top to bottom: **Back up**, **Folders** and **Restore** cards.
 |-----|---------|--------------|------------------------|-------|
 | App settings | The data folder | No: `JOKTAN_DATA_DIR` sets it | Yes | MQTT clients, the menu, themes and other settings |
 | Notes | `notes/` | Yes | Yes | The folder |
-| Topic Dashboards | The data folder | Yes | Yes | `dashboards.json` only |
+| MQTT Dashboards | The data folder | Yes | Yes | `dashboards.json` only |
 | API requests | `api/` | Yes | Yes | The folder |
 | Certificates | `certificates/` | No: each new certificate can choose its own folder | No, warns | The folder, `certificates.json`, and the folder of any certificate kept elsewhere |
 | MQTT client certificates | `mqtt-certificates/` | Yes | No, warns | The folder |
@@ -136,7 +136,7 @@ From top to bottom: **Back up**, **Folders** and **Restore** cards.
 | MQTT messages | None | Yes, or empty for none | Yes | One row per client, listed together. See below |
 
 - Changing a folder follows the same rule as the feature's own page, which is still there: a folder that already holds
-  data is opened as it is. Otherwise what is open now is copied there, and the originals stay. Notes, Topic Dashboards
+  data is opened as it is. Otherwise what is open now is copied there, and the originals stay. Notes, MQTT Dashboards
   and API requests use the page's own code. MQTT client certificates and MQTT messages use this rule here.
 - A path can be typed with `~` for the home folder, or picked with **Browse**. **Default** fills in the default, and
   **Use folder** applies it. Anything else is refused with the reason.

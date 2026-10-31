@@ -286,7 +286,7 @@ public partial class ClientExplorerViewModel : ViewModelBase, IDisposable
             _incoming.Enqueue(message);
     }
 
-    // The connection also delivers what the topic dashboards subscribe to.
+    // The connection also delivers what the MQTT dashboards subscribe to.
     private bool IsListeningTo(string topic)
     {
         foreach (var filter in _listeningTo)
