@@ -46,6 +46,7 @@ Plain text works too, as an Info alert.
 - **A name is not proof of who someone is.** Anyone who can publish on the server can use any name.
 - **Nothing is delivered later.** Only what arrives while you are connected is received.
 - The latest 200 messages and 200 alerts are kept. **Clear** empties a list on this computer only.
+- The [search box](help:search) in the top bar finds what is kept.
 
 ## Showing the server under Brokers
 

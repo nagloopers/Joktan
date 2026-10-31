@@ -15,6 +15,10 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+
+        // Ahead of the box, which would use the arrow keys for its caret.
+        SearchBox.AddHandler(KeyDownEvent, OnSearchKeyDown, RoutingStrategies.Tunnel);
+        SearchBox.AddHandler(PointerPressedEvent, (_, _) => Search?.Show(), RoutingStrategies.Tunnel, handledEventsToo: true);
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -48,6 +52,8 @@ public partial class MainWindow : Window
         base.OnDataContextChanged(e);
         if (DataContext is MainViewModel main)
         {
+            main.Inbox.MessagesPanelRequested += () => MessagesButton.Flyout?.ShowAt(MessagesButton);
+            main.Inbox.AlertsPanelRequested += () => AlertsButton.Flyout?.ShowAt(AlertsButton);
             main.PropertyChanged += (_, change) =>
             {
                 if (change.PropertyName == nameof(MainViewModel.CurrentPage))
@@ -60,6 +66,50 @@ public partial class MainWindow : Window
     }
 
     private InboxViewModel? Inbox => (DataContext as MainViewModel)?.Inbox;
+
+    private SearchViewModel? Search => (DataContext as MainViewModel)?.Search;
+
+    private void OnClearSearchClick(object? sender, RoutedEventArgs e)
+    {
+        Search?.Clear();
+        SearchBox.Focus();
+    }
+
+    private void OnSearchKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (Search is not { } search)
+            return;
+
+        switch (e.Key)
+        {
+            case Key.Down when search.IsOpen:
+                search.MoveHighlight(1);
+                break;
+            case Key.Up when search.IsOpen:
+                search.MoveHighlight(-1);
+                break;
+            case Key.Enter when search.IsOpen:
+                search.OpenCommand.Execute(search.Highlighted);
+                break;
+            case Key.Enter:
+                search.Show();
+                break;
+            case Key.Escape:
+                search.Dismiss();
+                break;
+            default:
+                return;
+        }
+
+        e.Handled = true;
+    }
+
+    // A press on the scroll bar is not on a result, so has no result as its context.
+    private void OnSearchResultTapped(object? sender, TappedEventArgs e)
+    {
+        if ((e.Source as StyledElement)?.DataContext is SearchHit hit)
+            Search?.OpenCommand.Execute(hit);
+    }
 
     private void OnMessagesOpened(object? sender, EventArgs e) => SetOpen(inbox => inbox.IsMessagesOpen = true);
 

@@ -30,8 +30,9 @@ Select a page in the list, then:
 - Pipe and grid tables.
 - Links. A click opens a full address in the browser; bare web addresses are links too.
 
-Images are not loaded: they show their description. Links from one note to another and search across
-notes are not built yet.
+Images are not loaded: they show their description. Links from one note to another are not built yet.
+
+To find something in your notes, use the [search box](help:search) in the top bar.
 
 ## Choosing where notes are kept
 

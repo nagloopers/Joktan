@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Joktan.Core;
 using Joktan.Core.ViewModels;
 
 namespace Joktan.Notes.ViewModels;
@@ -180,6 +181,43 @@ public partial class NotesViewModel : PageViewModel
         }
     }
 
+    /// <summary>The words to mark on the page, when search led to it. Choosing another page or editing ends it.</summary>
+    [ObservableProperty]
+    public partial IReadOnlyList<string>? HighlightWords { get; set; }
+
+    /// <summary>Shows this page in the app. Set by the app.</summary>
+    public Action? OpenPage { get; set; }
+
+    /// <summary>
+    /// The pages with all the words in their title or Markdown, for the search box of the top bar. Those
+    /// named by the words come first. A page not yet opened is read from its file, and kept.
+    /// </summary>
+    public IEnumerable<SearchHit> Search(IReadOnlyList<string> words)
+    {
+        var found = new List<NoteNodeViewModel>();
+        foreach (var node in AllNodes())
+        {
+            node.Text ??= _store.ReadText(node.Id);
+            if (TextSearch.HasAll(words, node.DisplayTitle, node.Text))
+                found.Add(node);
+        }
+
+        return found.OrderBy(n => TextSearch.HasAll(words, n.DisplayTitle) ? 0 : 1).Select(node => new SearchHit("Notes", node.DisplayTitle, SnippetOf(node, words), () =>
+        {
+            OpenPage?.Invoke();
+            Selected = node;
+            IsEditing = false;
+            HighlightWords = words;
+        }));
+    }
+
+    private static string SnippetOf(NoteNodeViewModel node, IReadOnlyList<string> words)
+    {
+        var text = TextSearch.Snippet(TextSearch.Lines(node.Text ?? ""), words);
+        var above = string.Join(" / ", node.SelfAndAncestors().SkipLast(1).Select(n => n.DisplayTitle));
+        return above.Length > 0 ? $"{above} · {text}" : text;
+    }
+
     /// <summary>Writes what has not been written yet and waits for it. Called when the app exits.</summary>
     public void SaveState()
     {
@@ -306,8 +344,15 @@ public partial class NotesViewModel : PageViewModel
     private void OnWriteFailed(string path, Exception e)
         => Dispatcher.UIThread.Post(() => Error = $"Could not write {path}: {e.Message}");
 
+    partial void OnIsEditingChanged(bool value)
+    {
+        if (value)
+            HighlightWords = null;
+    }
+
     partial void OnSelectedChanged(NoteNodeViewModel? value)
     {
+        HighlightWords = null;
         IsConfirmingDelete = false;
         IsEditing = false;
         NotifyMoveCommands();

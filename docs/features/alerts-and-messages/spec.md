@@ -46,6 +46,8 @@ one MQTT server kept apart from the clients on the MQTT page.
 | Sending | Choose a level and write the text. It goes to everyone with the same prefix, with your name as its title |
 | Retained alert | Counts once, though the server repeats it on each connection |
 
+The [search box](../search/spec.md) finds what is kept in both panels, and opens the panel on what it found.
+
 ## On the wire
 
 Prefix `joktan` shown. Payloads are JSON unless noted. All of it comes from whoever can publish on the server,

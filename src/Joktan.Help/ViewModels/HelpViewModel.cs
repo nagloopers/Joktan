@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Joktan.Core;
 using Joktan.Core.ViewModels;
 
 namespace Joktan.Help.ViewModels;
@@ -37,6 +38,10 @@ public partial class HelpViewModel : ViewModelBase
     [ObservableProperty]
     public partial string? SearchText { get; set; }
 
+    /// <summary>The words to mark in the topic, when the search box of the top bar led to it. Going to another topic ends it.</summary>
+    [ObservableProperty]
+    public partial IReadOnlyList<string>? HighlightWords { get; set; }
+
     public bool HasNoMatches => VisibleTopics.Count == 0;
 
     /// <summary>Shows a topic, or the first one when the id is null or not a topic's.</summary>
@@ -45,6 +50,16 @@ public partial class HelpViewModel : ViewModelBase
         SearchText = null;
         Show(_topics.Find(t => t.Topic.Id == id) ?? _topics[0]);
     }
+
+    /// <summary>The topics with all the words, for the search box of the top bar. Those named by the words come first.</summary>
+    public IEnumerable<SearchHit> Search(IReadOnlyList<string> words) => _topics
+        .Where(t => t.Matches(words))
+        .OrderBy(t => words.All(t.MatchesTitle) ? 0 : 1)
+        .Select(t => new SearchHit("Help", t.Title, t.SnippetFor(words), () =>
+        {
+            HelpContext.Opener?.Invoke(t.Topic.Id);
+            HighlightWords = words;
+        }));
 
     /// <summary>Follows a link if it leads to another topic; other links are not for this page to open.</summary>
     public bool OpenLink(Uri uri)
@@ -78,6 +93,8 @@ public partial class HelpViewModel : ViewModelBase
 
         ListSelection = VisibleTopics.Contains(topic) ? topic : null;
     }
+
+    partial void OnCurrentChanged(HelpTopicViewModel value) => HighlightWords = null;
 
     partial void OnListSelectionChanged(HelpTopicViewModel? value)
     {

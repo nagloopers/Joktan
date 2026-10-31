@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Joktan.Help.ViewModels;
 using Joktan.Tests.TestSupport;
 using Xunit;
+using System.Collections.Generic;
+using Joktan.Core;
 
 namespace Joktan.Help.Tests.ViewModels;
 
@@ -116,5 +118,59 @@ public class HelpViewModelTests
         Assert.Equal(HelpTopic.All.Count, vm.VisibleTopics.Count);
         Assert.Same(vm.Current, vm.ListSelection);
         Assert.Equal("mqtt", vm.Current.Topic.Id);
+    });
+
+    [Fact]
+    public Task Search_for_the_top_bar_finds_topics_and_leaves_the_help_windows_list_alone() => Headless.Run(() =>
+    {
+        var vm = new HelpViewModel();
+
+        var hits = vm.Search(["passwords"]).ToList();
+
+        Assert.Equal("Passwords", hits[0].Title);
+        Assert.All(hits, h => Assert.Equal("Help", h.Area));
+        Assert.Empty(vm.Search(["nosuchwordanywhere"]));
+        Assert.Equal(HelpTopic.All.Count, vm.VisibleTopics.Count);
+        Assert.False(vm.Current.HasSnippet);
+    });
+
+    [Fact]
+    public Task Opening_a_result_opens_help_on_that_topic() => Headless.Run(() =>
+    {
+        var opened = new List<string?>();
+        var before = HelpContext.Opener;
+        HelpContext.Opener = opened.Add;
+        try
+        {
+            new HelpViewModel().Search(["passwords"]).First().Open();
+        }
+        finally
+        {
+            HelpContext.Opener = before;
+        }
+
+        Assert.Equal(["passwords"], opened);
+    });
+
+    [Fact]
+    public Task Opening_a_result_marks_the_words_until_another_topic() => Headless.Run(() =>
+    {
+        var vm = new HelpViewModel();
+        var before = HelpContext.Opener;
+        HelpContext.Opener = id => vm.Open(id);
+        try
+        {
+            vm.Search(["passwords"]).First().Open();
+        }
+        finally
+        {
+            HelpContext.Opener = before;
+        }
+
+        Assert.Equal("passwords", vm.Current.Topic.Id);
+        Assert.Equal(["passwords"], vm.HighlightWords);
+
+        vm.Open("mqtt");
+        Assert.Null(vm.HighlightWords);
     });
 }

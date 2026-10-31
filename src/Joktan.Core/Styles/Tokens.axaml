@@ -67,6 +67,8 @@
     <SolidColorBrush x:Key="WarningBrush" Color="#E0920B" />
     <SolidColorBrush x:Key="DangerBrush" Color="#DC3545" />
     <SolidColorBrush x:Key="VioletBrush" Color="#9B7BF0" />
+    <SolidColorBrush x:Key="SearchMatchBrush" Color="#FFD54A" />
+    <SolidColorBrush x:Key="OnSearchMatchBrush" Color="#1C273C" />
 
     <!-- Meter tracks: the fill colour at low opacity, so the whole bar reads as one state -->
     <SolidColorBrush x:Key="AccentTrackBrush" Color="#5747B5" Opacity="0.18" />

@@ -16,6 +16,7 @@ under shared parent folders that follow the menu, such as `dev-tools/`. `dev-too
 | Notes                                   | [notes/spec.md](notes/spec.md)                                                                 | Implemented                    |
 | Passwords                               | [passwords/spec.md](passwords/spec.md)                                                         | Implemented                    |
 | Help                                    | [help/spec.md](help/spec.md)                                                                   | Implemented                    |
+| Search                                  | [search/spec.md](search/spec.md)                                                               | Implemented                    |
 | Settings and themes                     | [settings/spec.md](settings/spec.md)                                                           | Implemented                    |
 
 For the visual language shared by all features, see [../design.md](../design.md).

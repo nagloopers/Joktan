@@ -318,4 +318,61 @@ public class MarkdownViewTests
 
         Assert.NotEmpty(blocks);
     });
+
+    private static string[] Marked(InlineCollection inlines) => inlines.SelectMany(i => i switch
+    {
+        Run run when run.Classes.Contains(TextHighlight.MatchClass) => [run.Text!],
+        Span span => Marked(span.Inlines),
+        _ => Array.Empty<string>(),
+    }).ToArray();
+
+    [Fact]
+    public Task Words_are_marked_inside_formatting_and_code_and_the_text_stays_the_same() => Headless.Run(() =>
+    {
+        var view = new MarkdownView { DrawsAtOnce = true, Markdown = "A **Door** and a door\n\n```\nthe door\n```" };
+
+        view.HighlightWords = ["door"];
+
+        var paragraph = (SelectableTextBlock)Blocks(view).Children[0];
+        Assert.Equal(["Door", "door"], Marked(paragraph.Inlines!));
+        Assert.Equal("A Door and a door", Plain(paragraph.Inlines!));
+
+        var code = CodeOf(view);
+        Assert.Equal(["door"], Marked(code.Inlines!));
+        Assert.Equal("the door", Plain(code.Inlines!));
+
+        view.HighlightWords = null;
+        Assert.Empty(Marked(((SelectableTextBlock)Blocks(view).Children[0]).Inlines!));
+    });
+
+    private static SelectableTextBlock CodeOf(MarkdownView view)
+        => (SelectableTextBlock)((ScrollViewer)((Border)Blocks(view).Children[1]).Child!).Content!;
+
+    [Fact]
+    public Task Marking_around_a_link_leaves_its_text_whole() => Headless.Run(() =>
+    {
+        var view = new MarkdownView { DrawsAtOnce = true, Markdown = "door [site](https://example.com) door", HighlightWords = ["door"] };
+
+        var text = (SelectableTextBlock)Blocks(view).Children[0];
+
+        Assert.Equal("door site door", Plain(text.Inlines!));
+        Assert.Equal(["door", "door"], Marked(text.Inlines!));
+    });
+
+    [Fact]
+    public Task The_view_scrolls_to_the_first_place_marked() => Headless.Run(() =>
+    {
+        var markdown = string.Join("\n\n", Enumerable.Range(0, 200).Select(i => i == 150 ? "the needle" : $"line {i}"));
+        var view = new MarkdownView { DrawsAtOnce = true, Markdown = markdown };
+        var scroller = new ScrollViewer { Content = view };
+        var window = Headless.Show(scroller, null, 600, 300);
+
+        view.HighlightWords = ["needle"];
+        Headless.Settle();
+        window.CaptureRenderedFrame();
+        Headless.Settle();
+
+        Assert.True(scroller.Offset.Y > 0);
+        window.Close();
+    });
 }

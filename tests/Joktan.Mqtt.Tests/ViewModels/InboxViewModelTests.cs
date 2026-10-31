@@ -382,4 +382,104 @@ public class InboxViewModelTests : DataFolderTest
         Assert.Contains("@bob", page.DisplayNameWarning);
         await Stop(ada, bob);
     });
+
+    private static InboxViewModel WithHistory()
+    {
+        var mqtt = new MqttViewModel(null, new MqttSettings { Clients = [new ClientProfile { Name = "other", Host = "h" }] });
+        return new InboxViewModel(mqtt, new MessagingHistory
+        {
+            Messages =
+            [
+                new ChatMessage { Id = "1", Sender = "s1", Name = "alice", Text = "The door code changed", Sent = DateTimeOffset.Now },
+                new ChatMessage { Id = "2", Sender = "s2", Name = "bob", Text = "line one\nwhich door?", Sent = DateTimeOffset.Now },
+                new ChatMessage { Id = "3", Sender = "s2", Name = "bob", Text = "lunch", Sent = DateTimeOffset.Now },
+            ],
+            Alerts =
+            [
+                new AlertEntry { Title = "Disk full", Text = "Line 1 has 2% left", Severity = AlertSeverity.Critical, Received = DateTimeOffset.Now },
+                new AlertEntry { Title = "Started", Severity = AlertSeverity.Info, Received = DateTimeOffset.Now },
+            ],
+        });
+    }
+
+    [Fact]
+    public Task Search_finds_messages_by_text_and_sender_newest_first() => Headless.Run(() =>
+    {
+        var inbox = WithHistory();
+
+        var hits = inbox.SearchMessages(["DOOR"]).ToList();
+
+        Assert.Equal(["bob", "alice"], hits.Select(h => h.Title));
+        Assert.All(hits, h => Assert.Equal("Messages", h.Area));
+        Assert.EndsWith("· which door?", hits[0].Text);
+        Assert.Equal(["alice"], inbox.SearchMessages(["alice", "door"]).Select(h => h.Title));
+        Assert.Empty(inbox.SearchMessages(["alice", "lunch"]));
+    });
+
+    [Fact]
+    public Task Search_finds_alerts_by_title_level_and_text_whatever_the_filter_shows() => Headless.Run(() =>
+    {
+        var inbox = WithHistory();
+        inbox.AlertFilter = "Info";
+
+        Assert.Equal(["Disk full"], inbox.SearchAlerts(["critical"]).Select(h => h.Title));
+        Assert.Equal(["Disk full"], inbox.SearchAlerts(["disk", "left"]).Select(h => h.Title));
+        Assert.EndsWith("· Info", inbox.SearchAlerts(["started"]).Single().Text);
+        Assert.All(inbox.SearchAlerts(["started"]), h => Assert.Equal("Alerts", h.Area));
+    });
+
+    [Fact]
+    public Task Opening_a_message_asks_for_its_panel_and_marks_it_until_the_panel_closes() => Headless.Run(() =>
+    {
+        var inbox = WithHistory();
+        var asked = 0;
+        inbox.MessagesPanelRequested += () => asked++;
+        var row = inbox.Messages[2];
+
+        inbox.SearchMessages(["lunch"]).Single().Open();
+
+        Assert.Equal(1, asked);
+        Assert.Same(row, inbox.FoundMessage);
+        Assert.True(row.IsFound);
+        Assert.Equal(["lunch"], row.FoundWords);
+
+        inbox.IsMessagesOpen = true;
+        Assert.True(row.IsFound);
+        inbox.IsMessagesOpen = false;
+        Assert.Null(inbox.FoundMessage);
+        Assert.False(row.IsFound);
+    });
+
+    [Fact]
+    public Task Opening_an_alert_hidden_by_the_filter_shows_all_levels() => Headless.Run(() =>
+    {
+        var inbox = WithHistory();
+        var asked = 0;
+        inbox.AlertsPanelRequested += () => asked++;
+        inbox.AlertFilter = "Info";
+        var row = inbox.Alerts[0];
+        Assert.False(row.IsShown);
+
+        inbox.SearchAlerts(["disk"]).Single().Open();
+
+        Assert.Equal(1, asked);
+        Assert.Equal("All levels", inbox.AlertFilter);
+        Assert.True(row.IsShown);
+        Assert.True(row.IsFound);
+
+        inbox.IsAlertsOpen = true;
+        inbox.IsAlertsOpen = false;
+        Assert.False(row.IsFound);
+    });
+
+    [Fact]
+    public Task Opening_an_alert_the_filter_shows_leaves_the_filter() => Headless.Run(() =>
+    {
+        var inbox = WithHistory();
+        inbox.AlertFilter = "Critical";
+
+        inbox.SearchAlerts(["disk"]).Single().Open();
+
+        Assert.Equal("Critical", inbox.AlertFilter);
+    });
 }

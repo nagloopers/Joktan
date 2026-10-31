@@ -102,5 +102,5 @@ An index that cannot be read is treated as no notes; the page files are left whe
 ## Not built yet
 
 - Dragging pages in the tree to move them
-- Links from one page to another, and search across pages
+- Links from one page to another
 - Showing images

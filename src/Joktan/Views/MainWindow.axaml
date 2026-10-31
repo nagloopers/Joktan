@@ -127,13 +127,27 @@
                           MaxWidth="804"
                           ColumnDefinitions="*,Auto"
                           ColumnSpacing="8">
-                        <TextBox VerticalAlignment="Center"
-                                 PlaceholderText="Search for anything...">
+                        <TextBox Name="SearchBox"
+                                 VerticalAlignment="Center"
+                                 Text="{Binding Search.Text}"
+                                 PlaceholderText="{Binding Search.Placeholder}">
                             <TextBox.InnerRightContent>
-                                <PathIcon Data="{x:Static core:Icons.Search}"
-                                          Width="16" Height="16"
-                                          Margin="0,0,10,0"
-                                          Foreground="{DynamicResource TextMutedBrush}" />
+                                <StackPanel Orientation="Horizontal" Spacing="4" Margin="0,0,10,0">
+                                    <Button Name="ClearSearchButton"
+                                            Classes="icon-button tab-button"
+                                            VerticalAlignment="Center"
+                                            ToolTip.Tip="Clear the search"
+                                            IsVisible="{Binding Search.HasText}"
+                                            Click="OnClearSearchClick">
+                                        <PathIcon Data="{x:Static core:Icons.WindowClose}"
+                                                  Width="12" Height="12"
+                                                  Foreground="{DynamicResource TextMutedBrush}" />
+                                    </Button>
+                                    <PathIcon Data="{x:Static core:Icons.Search}"
+                                              Width="16" Height="16"
+                                              VerticalAlignment="Center"
+                                              Foreground="{DynamicResource TextMutedBrush}" />
+                                </StackPanel>
                             </TextBox.InnerRightContent>
                         </TextBox>
                         <help:HelpButton Grid.Column="1"
@@ -190,6 +204,55 @@
             <!-- Page content, resolved to a view by ViewLocator -->
             <ContentControl Content="{Binding CurrentPage}" />
         </DockPanel>
+
+        <!-- Outside the top bar, whose handler would otherwise take presses in the results for moving the window -->
+        <Popup Name="SearchResults"
+               PlacementTarget="{Binding #SearchBox}"
+               Placement="BottomEdgeAlignedLeft"
+               IsLightDismissEnabled="True"
+               OverlayDismissEventPassThrough="True"
+               WindowManagerAddShadowHint="False"
+               IsOpen="{Binding Search.IsOpen, Mode=TwoWay}">
+            <Border Width="{Binding #SearchBox.Bounds.Width}"
+                    MaxHeight="480"
+                    Margin="0,4,0,0"
+                    Padding="4"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="6">
+                <Panel>
+                    <TextBlock Classes="info-label" Margin="12"
+                               Text="Nothing found."
+                               IsVisible="{Binding Search.HasNoMatches}" />
+                    <StackPanel Margin="12" Spacing="8" IsVisible="{Binding Search.IsAllOff}">
+                        <TextBlock Classes="info-label" TextWrapping="Wrap" Text="Every area of search is switched off." />
+                        <Button Classes="small" Content="Choose what to search" Command="{Binding Search.ShowSettingsCommand}" />
+                    </StackPanel>
+                    <ListBox Name="SearchResultList"
+                             Background="Transparent"
+                             ItemsSource="{Binding Search.Results}"
+                             SelectedItem="{Binding Search.Highlighted}"
+                             Tapped="OnSearchResultTapped">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="core:SearchHit">
+                                <StackPanel>
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                        <TextBlock TextTrimming="CharacterEllipsis"
+                                                   help:TextHighlight.Source="{Binding Title}"
+                                                   help:TextHighlight.Words="{Binding #SearchResultList.((vm:MainViewModel)DataContext).Search.Words}" />
+                                        <TextBlock Grid.Column="1" Classes="info-label" VerticalAlignment="Center" Text="{Binding Area}" />
+                                    </Grid>
+                                    <TextBlock Classes="info-label" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"
+                                               help:TextHighlight.Source="{Binding Text}"
+                                               help:TextHighlight.Words="{Binding #SearchResultList.((vm:MainViewModel)DataContext).Search.Words}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Panel>
+            </Border>
+        </Popup>
     </Grid>
 
 </Window>

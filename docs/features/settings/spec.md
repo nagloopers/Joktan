@@ -5,7 +5,7 @@ kept in themes, and where Joktan keeps things, with backing them up and restorin
 
 | Item      | Value       |
 |-----------|-------------|
-| Menu path | Settings / Menu, Themes, Colours, Fonts, Text Sizes, Alerts and Messages, Folders and Backup |
+| Menu path | Settings / Menu, Search, Themes, Colours, Fonts, Text Sizes, Alerts and Messages, Folders and Backup |
 | Status    | Implemented |
 
 ## Purpose
@@ -20,6 +20,7 @@ Settings is a group in the menu, with one page for each kind of setting.
 | Page | Holds |
 |------|-------|
 | Menu | Which entries the menu shows, and their order |
+| Search | What the search box looks through. See [its spec](../search/spec.md) |
 | Themes | The theme in use, and removing saved themes |
 | Colours | Every colour of the theme, and whether its controls are dark |
 | Fonts | Every font of the theme |

@@ -11,6 +11,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Joktan.Core;
 using Joktan.Core.ViewModels;
 
 namespace Joktan.Mqtt.ViewModels;
@@ -47,6 +48,13 @@ public partial class ChatRowViewModel(ChatMessage message, bool isOwn) : ViewMod
     public partial IImage? Avatar { get; set; }
 
     public bool HasAvatar => Avatar is not null;
+
+    /// <summary>The words to mark, when the search box led here, while the panel stays open.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsFound))]
+    public partial IReadOnlyList<string>? FoundWords { get; set; }
+
+    public bool IsFound => FoundWords is not null;
 }
 
 /// <summary>One alert in the Alerts panel.</summary>
@@ -55,6 +63,13 @@ public sealed partial class AlertRowViewModel(AlertEntry alert) : ViewModelBase
     /// <summary>Whether the level filter lets it through.</summary>
     [ObservableProperty]
     public partial bool IsShown { get; set; } = true;
+
+    /// <summary>The words to mark, when the search box led here, while the panel stays open.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsFound))]
+    public partial IReadOnlyList<string>? FoundWords { get; set; }
+
+    public bool IsFound => FoundWords is not null;
 
     public string Level => Alert.Severity.ToString();
 
@@ -150,6 +165,20 @@ public partial class InboxViewModel : ViewModelBase
 
     /// <summary>Raised when the draft is ready to be added to, after Reply.</summary>
     public event Action? DraftFocusRequested;
+
+    /// <summary>Raised when the Messages panel should open, to show what the search box found.</summary>
+    public event Action? MessagesPanelRequested;
+
+    /// <summary>Raised when the Alerts panel should open, to show what the search box found.</summary>
+    public event Action? AlertsPanelRequested;
+
+    /// <summary>The message the search box led to, while its panel is open.</summary>
+    [ObservableProperty]
+    public partial ChatRowViewModel? FoundMessage { get; private set; }
+
+    /// <summary>The alert the search box led to, while its panel is open.</summary>
+    [ObservableProperty]
+    public partial AlertRowViewModel? FoundAlert { get; private set; }
 
     public bool HasMessages => Messages.Count > 0;
 
@@ -391,6 +420,38 @@ public partial class InboxViewModel : ViewModelBase
     [RelayCommand]
     private void ShowSettings() => OpenSettings?.Invoke();
 
+    /// <summary>The messages with all the words in their sender or text, newest first, for the search box of the top bar.</summary>
+    public IEnumerable<SearchHit> SearchMessages(IReadOnlyList<string> words) => Messages.Reverse()
+        .Where(row => TextSearch.HasAll(words, row.Name, row.Text))
+        .Select(row => new SearchHit("Messages", row.Name, $"{row.Time} · {TextSearch.Snippet(TextSearch.Lines(row.Text), words)}", () => ShowMessage(row, words)));
+
+    /// <summary>The alerts with all the words in their title, level or text, newest first, for the search box of the top bar. The panel's filter does not limit them.</summary>
+    public IEnumerable<SearchHit> SearchAlerts(IReadOnlyList<string> words) => Alerts
+        .Where(row => TextSearch.HasAll(words, row.Title, row.Level, row.Text))
+        .Select(row => new SearchHit("Alerts", row.Title, row.HasText ? $"{row.Time} · {row.Level} · {TextSearch.Snippet(TextSearch.Lines(row.Text), words)}" : $"{row.Time} · {row.Level}", () => ShowAlert(row, words)));
+
+    private void ShowMessage(ChatRowViewModel row, IReadOnlyList<string> words)
+    {
+        FoundMessage = row;
+        row.FoundWords = words;
+        MessagesPanelRequested?.Invoke();
+    }
+
+    // A filter that hides the alert would make it look as though it was not there.
+    private void ShowAlert(AlertRowViewModel row, IReadOnlyList<string> words)
+    {
+        if (!row.IsShown)
+            AlertFilter = AllLevels;
+
+        FoundAlert = row;
+        row.FoundWords = words;
+        AlertsPanelRequested?.Invoke();
+    }
+
+    partial void OnFoundMessageChanged(ChatRowViewModel? oldValue, ChatRowViewModel? newValue) => oldValue?.FoundWords = null;
+
+    partial void OnFoundAlertChanged(AlertRowViewModel? oldValue, AlertRowViewModel? newValue) => oldValue?.FoundWords = null;
+
     /// <summary>Writes the history now. It is otherwise written shortly after a change.</summary>
     public void SaveState()
     {
@@ -431,7 +492,11 @@ public partial class InboxViewModel : ViewModelBase
     partial void OnIsMessagesOpenChanged(bool value)
     {
         if (!value)
+        {
+            FoundMessage = null;
             return;
+        }
+
         foreach (var row in Messages)
             row.Message.IsRead = true;
         Changed();
@@ -440,7 +505,11 @@ public partial class InboxViewModel : ViewModelBase
     partial void OnIsAlertsOpenChanged(bool value)
     {
         if (!value)
+        {
+            FoundAlert = null;
             return;
+        }
+
         foreach (var row in Alerts)
             row.Alert.IsRead = true;
         Changed();

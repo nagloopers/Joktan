@@ -19,6 +19,8 @@ using Joktan.Mqtt;
 using Joktan.ViewModels;
 using Joktan.Views;
 using Xunit;
+using Joktan.Settings;
+using Joktan.Settings.ViewModels;
 
 namespace Joktan.Tests.Views;
 
@@ -259,5 +261,204 @@ public class AppWindowsTests : DataFolderTest, IDisposable
 
         opened[0].Close();
         owner.Close();
+    });
+
+    private static void SaveHistory() => new MessagingHistory
+    {
+        Messages = Enumerable.Range(0, 60)
+            .Select(i => new ChatMessage { Id = $"{i}", Sender = "other", Name = "alice", Text = i == 30 ? "the middle needle" : $"message {i}", Sent = DateTimeOffset.Now })
+            .ToList(),
+        Alerts = [new AlertEntry { Title = "Disk full", Text = "needle in the alert", Severity = AlertSeverity.Critical, Received = DateTimeOffset.Now }],
+    }.Save();
+
+    [Fact]
+    public Task Typing_in_the_search_box_shows_results_and_keys_work_them() => Headless.Run(() =>
+    {
+        SaveHistory();
+        var window = Main(out var main);
+        var box = window.FindControl<TextBox>("SearchBox")!;
+        var popup = window.FindControl<Avalonia.Controls.Primitives.Popup>("SearchResults")!;
+        Assert.Equal("Search notes, help, messages and alerts...", box.PlaceholderText);
+        Assert.False(popup.IsOpen);
+
+        box.Focus();
+        window.KeyTextInput("needle");
+        Headless.Settle();
+
+        Assert.Equal("needle", main.Search.Text);
+        Assert.True(popup.IsOpen);
+        Assert.True(box.IsFocused);
+        Assert.Equal(["Messages", "Alerts"], main.Search.Results.Select(h => h.Area));
+        Assert.Same(main.Search.Results[0], main.Search.Highlighted);
+
+        window.KeyPressQwerty(PhysicalKey.ArrowDown, RawInputModifiers.None);
+        Headless.Settle();
+        Assert.Same(main.Search.Results[1], main.Search.Highlighted);
+        window.KeyPressQwerty(PhysicalKey.ArrowUp, RawInputModifiers.None);
+        Headless.Settle();
+        Assert.Same(main.Search.Results[0], main.Search.Highlighted);
+
+        window.KeyPressQwerty(PhysicalKey.Escape, RawInputModifiers.None);
+        Headless.Settle();
+        Assert.False(popup.IsOpen);
+        Assert.Equal("needle", main.Search.Text);
+
+        window.KeyPressQwerty(PhysicalKey.Enter, RawInputModifiers.None);
+        Headless.Settle();
+        Assert.True(popup.IsOpen);
+
+        window.KeyPressQwerty(PhysicalKey.Enter, RawInputModifiers.None);
+        Headless.Settle();
+        Assert.False(popup.IsOpen);
+        Assert.True(main.Inbox.IsMessagesOpen);
+        window.FindControl<Button>("MessagesButton")!.Flyout!.Hide();
+        Headless.Settle();
+
+        box.Focus();
+        window.KeyPressQwerty(PhysicalKey.Escape, RawInputModifiers.None);
+        Headless.Settle();
+        Assert.Null(main.Search.Text);
+        Assert.False(popup.IsOpen);
+    });
+
+    [Fact]
+    public Task Opening_a_message_from_search_scrolls_its_panel_to_it() => Headless.Run(() =>
+    {
+        SaveHistory();
+        var window = Main(out var main);
+
+        main.Search.Text = "middle needle";
+        Headless.Settle();
+        main.Search.OpenCommand.Execute(main.Search.Results.First(h => h.Area == "Messages"));
+        Headless.Settle();
+
+        var button = window.FindControl<Button>("MessagesButton")!;
+        var panel = (Avalonia.Controls.Control)((Flyout)button.Flyout!).Content!;
+        Assert.True(main.Inbox.IsMessagesOpen);
+        Assert.True(main.Inbox.Messages[30].IsFound);
+        var scroller = panel.FindControl<ScrollViewer>("Scroller")!;
+        Assert.True(scroller.Offset.Y > 0);
+        Assert.True(scroller.Offset.Y < scroller.Extent.Height - scroller.Viewport.Height - 1);
+
+        button.Flyout.Hide();
+        Headless.Settle();
+        Assert.False(main.Inbox.Messages[30].IsFound);
+    });
+
+    [Fact]
+    public Task Opening_an_alert_from_search_opens_its_panel() => Headless.Run(() =>
+    {
+        SaveHistory();
+        var window = Main(out var main);
+
+        main.Search.Text = "disk";
+        Headless.Settle();
+        main.Search.OpenCommand.Execute(main.Search.Results.First(h => h.Area == "Alerts"));
+        Headless.Settle();
+
+        Assert.True(main.Inbox.IsAlertsOpen);
+        window.FindControl<Button>("AlertsButton")!.Flyout!.Hide();
+        Headless.Settle();
+    });
+
+    [Fact]
+    public Task Clicking_a_result_opens_it_and_clicking_the_box_brings_them_back() => Headless.Run(() =>
+    {
+        var window = Main(out var main);
+        var box = window.FindControl<TextBox>("SearchBox")!;
+        var popup = window.FindControl<Avalonia.Controls.Primitives.Popup>("SearchResults")!;
+
+        main.Search.Text = "Shortcut";
+        Headless.Settle();
+        Assert.True(popup.IsOpen);
+
+        var list = (TopLevel)TopLevel.GetTopLevel(popup.Child!)!;
+        list.CaptureRenderedFrame();
+        Headless.Settle();
+        var item = Headless.Find<ListBoxItem>(list, i => i.DataContext is SearchHit { Area: "Notes" });
+        var point = item.TranslatePoint(new Point(item.Bounds.Width / 2, item.Bounds.Height / 2), list)!.Value;
+        list.MouseMove(point);
+        list.MouseDown(point, MouseButton.Left);
+        list.MouseUp(point, MouseButton.Left);
+        Headless.Settle();
+
+        Assert.False(popup.IsOpen);
+        Assert.Equal("Notes", main.CurrentPage!.Title);
+
+        Headless.Click(box);
+        Assert.True(popup.IsOpen);
+
+        // Pressing somewhere else hides them.
+        var sidebar = window.FindControl<Border>("Sidebar")!;
+        Headless.Click(sidebar);
+        Assert.False(popup.IsOpen);
+    });
+
+    [Fact]
+    public Task Switching_areas_off_on_the_settings_page_changes_the_results_and_the_hint() => Headless.Run(() =>
+    {
+        SaveHistory();
+        var window = Main(out var main);
+        var box = window.FindControl<TextBox>("SearchBox")!;
+        var page = Assert.IsType<SearchSettingsViewModel>(Leaves(main.MenuItems).First(i => i.Title == "Search").Page);
+
+        main.Search.Text = "needle";
+        Headless.Settle();
+        Assert.Equal(2, main.Search.Results.Count);
+
+        page.Messages = false;
+        Headless.Settle();
+        Assert.Equal(["Alerts"], main.Search.Results.Select(h => h.Area));
+        Assert.Equal("Search notes, help and alerts...", box.PlaceholderText);
+
+        page.Notes = page.Help = page.Alerts = false;
+        Headless.Settle();
+        Assert.Empty(main.Search.Results);
+        Assert.Equal("Search is switched off", box.PlaceholderText);
+        Assert.True(main.Search.IsAllOff);
+        Assert.False(main.Search.HasNoMatches);
+
+        main.Search.ShowSettingsCommand.Execute(null);
+        Headless.Settle();
+        Assert.Same(page, main.CurrentPage);
+        Assert.False(main.Search.IsOpen);
+        Assert.False(SearchSettings.Load().Alerts);
+    });
+
+    [Fact]
+    public Task The_results_mark_the_words_and_the_clear_button_resets_everything() => Headless.Run(() =>
+    {
+        var window = Main(out var main);
+        var box = window.FindControl<TextBox>("SearchBox")!;
+        var clear = window.FindControl<Button>("ClearSearchButton")!;
+        var popup = window.FindControl<Avalonia.Controls.Primitives.Popup>("SearchResults")!;
+        Assert.False(clear.IsVisible);
+
+        main.Search.Text = "Shortcut";
+        Headless.Settle();
+        var root = (TopLevel)TopLevel.GetTopLevel(popup.Child!)!;
+        root.CaptureRenderedFrame();
+        Headless.Settle();
+
+        var marked = Headless.All<TextBlock>(root).SelectMany(t => t.Inlines?.OfType<Avalonia.Controls.Documents.Run>() ?? [])
+            .Where(r => r.Classes.Contains(Joktan.Core.Controls.TextHighlight.MatchClass)).Select(r => r.Text).ToList();
+        Assert.Contains("Shortcut", marked);
+        Assert.True(clear.IsVisible);
+
+        main.Search.OpenCommand.Execute(main.Search.Results.First(h => h.Area == "Notes"));
+        Headless.Settle();
+        var notes = Assert.IsType<Joktan.Notes.ViewModels.NotesViewModel>(main.CurrentPage);
+        Assert.Equal(["Shortcut"], notes.HighlightWords);
+
+        window.CaptureRenderedFrame();
+        Headless.Settle();
+        Headless.Click(clear);
+
+        Assert.Null(main.Search.Text);
+        Assert.False(popup.IsOpen);
+        Assert.True(box.IsFocused);
+        Assert.False(clear.IsVisible);
+        Assert.Null(notes.HighlightWords);
+        window.Close();
     });
 }

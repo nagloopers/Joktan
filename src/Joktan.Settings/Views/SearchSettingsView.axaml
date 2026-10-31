@@ -1,0 +1,58 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Joktan.Settings.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1040" d:DesignHeight="736"
+             x:Class="Joktan.Settings.Views.SearchSettingsView"
+             x:DataType="vm:SearchSettingsViewModel">
+
+    <DockPanel>
+        <Border DockPanel.Dock="Top" Classes="page-header">
+            <StackPanel>
+                <TextBlock Classes="page-title" Text="{Binding Title}" />
+                <TextBlock Classes="page-subtitle" Text="{Binding Subtitle}" />
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer>
+            <Border Classes="card" Margin="24" VerticalAlignment="Top">
+                <StackPanel>
+                    <TextBlock Classes="card-title" Text="Search" />
+                    <TextBlock Classes="card-subtitle"
+                               Text="Choose what the search box in the top bar looks through. Switching an area off only leaves it out of the results: nothing in it changes." />
+
+                    <Border Classes="table-row">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <TextBlock Classes="table-cell" Text="Notes" />
+                            <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding Notes}"
+                                          ToolTip.Tip="Search the titles and text of notes" />
+                        </Grid>
+                    </Border>
+                    <Border Classes="table-row">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <TextBlock Classes="table-cell" Text="Help" />
+                            <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding Help}"
+                                          ToolTip.Tip="Search the help topics" />
+                        </Grid>
+                    </Border>
+                    <Border Classes="table-row">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <TextBlock Classes="table-cell" Text="Messages" />
+                            <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding Messages}"
+                                          ToolTip.Tip="Search the messages kept on this computer" />
+                        </Grid>
+                    </Border>
+                    <Border Classes="table-row">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <TextBlock Classes="table-cell" Text="Alerts" />
+                            <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding Alerts}"
+                                          ToolTip.Tip="Search the alerts kept on this computer" />
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </ScrollViewer>
+    </DockPanel>
+
+</UserControl>

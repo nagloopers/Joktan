@@ -102,6 +102,7 @@
                 <ScrollViewer Name="TopicScroller" Padding="24,20">
                     <controls:MarkdownView DrawsAtOnce="True"
                                            Markdown="{Binding Current.Markdown}"
+                                           HighlightWords="{Binding HighlightWords}"
                                            LinkClicked="OnLinkClicked" />
                 </ScrollViewer>
             </Border>

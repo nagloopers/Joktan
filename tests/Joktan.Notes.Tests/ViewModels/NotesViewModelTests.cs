@@ -493,4 +493,84 @@ public class NotesViewModelTests : DataFolderTest
         await Headless.Until(() => vm.Error is not null);
         Assert.Contains("Could not write", vm.Error);
     });
+
+    [Fact]
+    public Task Search_finds_words_in_titles_and_in_pages_not_yet_opened() => Headless.Run(() =>
+    {
+        var vm = WithPages();
+        Node(vm, "a1").Text = "The door CODE changed";
+        File.WriteAllText(Data.At("notes", "b.md"), "first line\nthe code for the door\nlast line");
+
+        var hits = vm.Search(["door", "code"]).ToList();
+
+        Assert.Equal(["A1", "B"], hits.Select(h => h.Title));
+        Assert.All(hits, h => Assert.Equal("Notes", h.Area));
+        Assert.Equal("A · The door CODE changed", hits[0].Text);
+        Assert.Equal("the code for the door", hits[1].Text);
+        Assert.Empty(vm.Search(["door", "nowhere"]));
+    });
+
+    [Fact]
+    public Task Search_puts_pages_named_by_the_words_first_and_finds_untitled_ones() => Headless.Run(() =>
+    {
+        var vm = WithPages();
+        Node(vm, "a").Text = "about C";
+        Node(vm, "c").Title = "";
+        Node(vm, "c").Text = "";
+        Node(vm, "b").Title = "About";
+
+        Assert.Equal(["About", "A"], vm.Search(["about"]).Select(h => h.Title));
+        Assert.Equal(["Untitled"], vm.Search(["untitled"]).Select(h => h.Title));
+    });
+
+    [Fact]
+    public Task Searching_changes_no_page_on_disk_and_marks_none_as_changed() => Headless.Run(() =>
+    {
+        var vm = WithPages();
+        File.WriteAllText(Data.At("notes", "b.md"), "kept");
+
+        _ = vm.Search(["kept"]).ToList();
+
+        Assert.False(Node(vm, "b").IsDirty);
+        Assert.Equal("kept", File.ReadAllText(Data.At("notes", "b.md")));
+    });
+
+    [Fact]
+    public Task Opening_a_result_shows_the_notes_page_on_that_page() => Headless.Run(() =>
+    {
+        var vm = WithPages();
+        var shown = 0;
+        vm.OpenPage = () => shown++;
+        Node(vm, "a2").Text = "needle";
+        Node(vm, "a").IsExpanded = false;
+
+        vm.Search(["needle"]).Single().Open();
+
+        Assert.Equal(1, shown);
+        Assert.Equal("a2", vm.Selected!.Id);
+        Assert.True(Node(vm, "a").IsExpanded);
+    });
+
+    [Fact]
+    public Task Opening_a_result_marks_the_words_until_another_page_or_editing() => Headless.Run(() =>
+    {
+        var vm = WithPages();
+        Node(vm, "b").Text = "needle";
+        var open = vm.Search(["needle"]).Single().Open;
+
+        open();
+        Assert.Equal(["needle"], vm.HighlightWords);
+
+        vm.Selected = Node(vm, "c");
+        Assert.Null(vm.HighlightWords);
+
+        open();
+        Assert.Equal(["needle"], vm.HighlightWords);
+        vm.EditCommand.Execute(null);
+        Assert.Null(vm.HighlightWords);
+
+        open();
+        Assert.False(vm.IsEditing);
+        Assert.Equal(["needle"], vm.HighlightWords);
+    });
 }

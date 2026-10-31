@@ -26,7 +26,14 @@ public partial class InboxMessagesPanel : UserControl
             inbox.DraftFocusRequested += OnDraftFocusRequested;
         }
 
-        ScrollToEnd();
+        // Unless the search box led to one message, which is what it keeps in view instead.
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (Inbox?.FoundMessage is { } found)
+                MessageList.ContainerFromItem(found)?.BringIntoView();
+            else
+                Scroller.ScrollToEnd();
+        }, DispatcherPriority.Background);
     }
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)

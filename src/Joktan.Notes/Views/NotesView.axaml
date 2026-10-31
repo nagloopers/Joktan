@@ -170,7 +170,7 @@
                                            Text="Nothing on this page yet. Choose Edit to write it."
                                            IsVisible="{Binding IsEmptyView}" />
                                 <ScrollViewer>
-                                    <controls:MarkdownView Markdown="{Binding Text}" />
+                                    <controls:MarkdownView Markdown="{Binding Text}" HighlightWords="{Binding HighlightWords}" />
                                 </ScrollViewer>
                             </Panel>
                         </Border>

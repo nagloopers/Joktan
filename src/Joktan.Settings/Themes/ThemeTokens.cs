@@ -47,6 +47,9 @@ public static class ThemeTokens
         new("PinkBrush", "Pink", "Accent and status"),
         new("VioletBrush", "Violet", "Accent and status"),
 
+        new("SearchMatchBrush", "Highlight", "Search"),
+        new("OnSearchMatchBrush", "Text on the highlight", "Search"),
+
         new("Chart1Brush", "Series 1 (Blue)", "Graphs"),
         new("Chart2Brush", "Series 2 (Orange)", "Graphs"),
         new("Chart3Brush", "Series 3 (Aqua)", "Graphs"),

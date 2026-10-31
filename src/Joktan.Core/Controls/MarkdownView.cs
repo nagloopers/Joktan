@@ -7,6 +7,7 @@ using Avalonia.Controls.Documents;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
+using Avalonia.LogicalTree;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Markdig;
@@ -27,6 +28,10 @@ public sealed class MarkdownView : Decorator
 {
     public static readonly StyledProperty<string?> MarkdownProperty =
         AvaloniaProperty.Register<MarkdownView, string?>(nameof(Markdown));
+
+    /// <summary>The words to mark, for a page reached through search. The first place found is scrolled to.</summary>
+    public static readonly StyledProperty<IReadOnlyList<string>?> HighlightWordsProperty =
+        AvaloniaProperty.Register<MarkdownView, IReadOnlyList<string>?>(nameof(HighlightWords));
 
     /// <summary>Raised on a click on a link. Unless a handler marks it handled, the link opens in the browser.</summary>
     public static readonly RoutedEvent<LinkClickedEventArgs> LinkClickedEvent =
@@ -63,6 +68,12 @@ public sealed class MarkdownView : Decorator
         set => SetValue(MarkdownProperty, value);
     }
 
+    public IReadOnlyList<string>? HighlightWords
+    {
+        get => GetValue(HighlightWordsProperty);
+        set => SetValue(HighlightWordsProperty, value);
+    }
+
     /// <summary>Draws every change at once, for text that is read and not typed.</summary>
     public bool DrawsAtOnce { get; set; }
 
@@ -75,6 +86,13 @@ public sealed class MarkdownView : Decorator
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
+        if (change.Property == HighlightWordsProperty)
+        {
+            _timer.Stop();
+            Render();
+            return;
+        }
+
         if (change.Property != MarkdownProperty)
             return;
 
@@ -96,6 +114,18 @@ public sealed class MarkdownView : Decorator
         _blocks.Children.Clear();
         var document = Markdig.Markdown.Parse(Markdown ?? "", Pipeline);
         AddBlocks(_blocks, document);
+        MarkWords();
+    }
+
+    private void MarkWords()
+    {
+        if (HighlightWords is not { Count: > 0 } words)
+            return;
+
+        // Every place is marked, so this does not stop at the first.
+        var marked = _blocks.GetLogicalDescendants().OfType<TextBlock>().Where(text => TextHighlight.Mark(text, words)).ToList();
+        if (marked.Count > 0)
+            Dispatcher.UIThread.Post(() => marked[0].BringIntoView(), DispatcherPriority.Background);
     }
 
     private static void AddBlocks(Panel panel, ContainerBlock container)

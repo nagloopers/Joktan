@@ -340,6 +340,12 @@
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
     </Style>
 
+    <!-- A word someone searched for -->
+    <Style Selector="Run.search-match">
+        <Setter Property="Background" Value="{DynamicResource SearchMatchBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource OnSearchMatchBrush}" />
+    </Style>
+
     <!-- An icon-button small enough to sit on a tab -->
     <Style Selector="Button.tab-button">
         <Setter Property="Width" Value="22" />

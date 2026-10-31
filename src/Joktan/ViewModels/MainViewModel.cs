@@ -76,13 +76,32 @@ public partial class MainViewModel : ViewModelBase
         var alertsAndMessages = new NavItemViewModel("Alerts and Messages") { Page = new MessagingViewModel(mqtt, Inbox), HelpTopic = "alerts-and-messages" };
         Inbox.OpenSettings = () => NavigateCommand.Execute(alertsAndMessages);
         var menuSettings = new NavItemViewModel("Menu") { HelpTopic = "settings-and-data", CanHide = false };
+        var notesItem = new NavItemViewModel("Notes", Icons.Notes) { Page = _notes, HelpTopic = "notes" };
+        _notes.OpenPage = () => NavigateCommand.Execute(notesItem);
+
+        var searchSettings = SearchSettings.Load();
+        var searchPage = new SearchSettingsViewModel(searchSettings);
+        var searchItem = new NavItemViewModel("Search") { Page = searchPage, HelpTopic = "search" };
+        Search = new SearchViewModel(
+        [
+            new SearchSource("notes", () => searchSettings.Notes, _notes.Search),
+            new SearchSource("help", () => searchSettings.Help, Help.Search),
+            new SearchSource("messages", () => searchSettings.Messages, Inbox.SearchMessages),
+            new SearchSource("alerts", () => searchSettings.Alerts, Inbox.SearchAlerts),
+        ]) { OpenSettings = () => NavigateCommand.Execute(searchItem) };
+        searchPage.Changed += Search.AreasChanged;
+        Search.Cleared += () =>
+        {
+            _notes.HighlightWords = null;
+            Help.HighlightWords = null;
+        };
 
         MenuItems =
         [
             new NavItemViewModel("Dashboard", Icons.Dashboard,
                 new NavItemViewModel("Overview") { Page = new DashboardViewModel(monitor), HelpTopic = "dashboard" },
                 new NavItemViewModel("MQTT Dashboards") { FormerTitle = "Topic Dashboards", Page = _topicDashboards, HelpTopic = "topic-dashboards" }),
-            new NavItemViewModel("Notes", Icons.Notes) { Page = _notes, HelpTopic = "notes" },
+            notesItem,
             passwordsItem,
             new NavItemViewModel("Dev Tools", Icons.DevTools,
                 new NavItemViewModel("Brokers", null,
@@ -93,6 +112,7 @@ public partial class MainViewModel : ViewModelBase
                 new NavItemViewModel("Containers") { Page = _containers, HelpTopic = "containers" }),
             new NavItemViewModel("Settings", Icons.Settings,
                 menuSettings,
+                searchItem,
                 new NavItemViewModel("Themes") { Page = new ThemesViewModel(themes, themeBar), HelpTopic = "themes" },
                 new NavItemViewModel("Colours") { Page = new ColorsViewModel(themes, themeBar), HelpTopic = "themes" },
                 new NavItemViewModel("Fonts") { Page = new FontsViewModel(themes, themeBar), HelpTopic = "themes" },
@@ -116,6 +136,9 @@ public partial class MainViewModel : ViewModelBase
 
     /// <summary>The Messages and Alerts panels of the top bar.</summary>
     public InboxViewModel Inbox { get; }
+
+    /// <summary>The search box of the top bar.</summary>
+    public SearchViewModel Search { get; }
 
     /// <summary>The help topic for the page being shown; placeholder pages have none of their own.</summary>
     public string CurrentHelpTopic => _selectedItem?.HelpTopic ?? HelpTopic.Home;
@@ -203,15 +226,15 @@ public partial class MainViewModel : ViewModelBase
     private List<NavItemViewModel> PathTo(NavItemViewModel item)
     {
         var path = new List<NavItemViewModel>();
-        Search(MenuItems);
+        Walk(MenuItems);
         return path;
 
-        bool Search(IReadOnlyList<NavItemViewModel> entries)
+        bool Walk(IReadOnlyList<NavItemViewModel> entries)
         {
             foreach (var entry in entries)
             {
                 path.Add(entry);
-                if (entry == item || Search(entry.Children))
+                if (entry == item || Walk(entry.Children))
                     return true;
                 path.RemoveAt(path.Count - 1);
             }

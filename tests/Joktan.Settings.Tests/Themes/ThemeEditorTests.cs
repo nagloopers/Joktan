@@ -312,4 +312,21 @@ public class ThemeEditorTests : DataFolderTest
         File.Delete(file);
         return Path.GetFileName(file);
     }
+
+    [Fact]
+    public Task The_search_highlight_can_be_set_like_any_colour() => Headless.Run(() =>
+    {
+        Assert.Contains(ThemeTokens.Colors, t => t.Key == "SearchMatchBrush" && t.Label == "Highlight");
+        Assert.Contains(ThemeTokens.Colors, t => t.Key == "OnSearchMatchBrush" && t.Label == "Text on the highlight");
+
+        var editor = ThemeEditor.Load();
+        Assert.All(editor.Themes, theme => Assert.Equal("#FFD54A", theme.Colors["SearchMatchBrush"], ignoreCase: true));
+
+        editor.Apply();
+        editor.SetColor("SearchMatchBrush", "#123456");
+
+        Assert.Equal("#123456", editor.Draft.Colors["SearchMatchBrush"]);
+        Assert.True(Avalonia.Application.Current!.TryGetResource("SearchMatchBrush", null, out var brush));
+        Assert.Equal(Avalonia.Media.Color.Parse("#123456"), ((Avalonia.Media.ISolidColorBrush)brush!).Color);
+    });
 }

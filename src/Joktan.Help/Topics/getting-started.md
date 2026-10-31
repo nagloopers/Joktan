@@ -24,15 +24,10 @@ developers working with MQTT, REST, gRPC and containers.
 - [Containers](help:containers): run compose files with Docker or Podman.
 - [Settings](help:settings-and-data): choose which features the menu shows and in what order, and
   the [theme](help:themes) with its colours, fonts and text sizes.
+- [Search](help:search): the box in the top bar finds things in notes, help, messages and alerts.
 
 Each page is set up on the page itself, so its help topic covers both using it and configuring it.
 What applies to the whole app is under [Settings and data](help:settings-and-data).
-
-## Not built yet
-
-These are there but do not do anything yet:
-
-- the search box in the top bar.
 
 ## Try it: send a message and watch it arrive
 

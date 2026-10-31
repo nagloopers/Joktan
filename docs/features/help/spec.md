@@ -108,6 +108,6 @@ works offline.
 ## Not included
 
 - Screenshots, as `MarkdownView` does not load images
-- Links to a heading within a topic, and highlighting what was searched for
+- Links to a heading within a topic, and highlighting what was searched for in this window's own search box. A topic opened from the [search box of the top bar](../search/spec.md) does mark the words
 - A Help entry on the main menu; the top bar is always on screen, and the menu holds pages
 - A shortcut for macOS laptops, where F1 needs Fn, beyond the help icon and the app menu
