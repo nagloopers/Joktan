@@ -15,6 +15,7 @@ using Joktan.Dashboard.Telemetry;
 using Joktan.Help.Views;
 using Joktan.Settings.Themes;
 using Joktan.Tests.TestSupport;
+using Joktan.Mqtt;
 using Joktan.ViewModels;
 using Joktan.Views;
 using Xunit;
@@ -33,6 +34,33 @@ public class AppWindowsTests : DataFolderTest, IDisposable
         _monitor.Dispose();
         base.Dispose();
     }
+
+    [Fact]
+    public Task The_top_bar_opens_messages_and_alerts_and_marks_them_read() => Headless.Run(() =>
+    {
+        var window = Main(out var main);
+        Headless.Show(window);
+
+        var messages = window.FindControl<Button>("MessagesButton")!;
+        messages.Flyout!.ShowAt(messages);
+        Headless.Settle();
+        Assert.True(main.Inbox.IsMessagesOpen);
+        Assert.Same(main.Inbox, ((Avalonia.Controls.Control)((Flyout)messages.Flyout).Content!).DataContext);
+        messages.Flyout.Hide();
+        Headless.Settle();
+        Assert.False(main.Inbox.IsMessagesOpen);
+
+        var alerts = window.FindControl<Button>("AlertsButton")!;
+        alerts.Flyout!.ShowAt(alerts);
+        Headless.Settle();
+        Assert.True(main.Inbox.IsAlertsOpen);
+
+        main.Inbox.ShowSettingsCommand.Execute(null);
+        Headless.Settle();
+        Assert.Equal("Alerts and Messages", main.CurrentPage!.Title);
+        Assert.False(main.Inbox.IsAlertsOpen);
+        window.Close();
+    });
 
     private MainWindow Main(out MainViewModel main)
     {
@@ -159,6 +187,7 @@ public class AppWindowsTests : DataFolderTest, IDisposable
         // A closed port on this machine, so that no telemetry goes anywhere.
         Environment.SetEnvironmentVariable("OTEL_EXPORTER_OTLP_ENDPOINT", "http://127.0.0.1:9");
         new ComposeSettings { ComposeFiles = [] }.Save();
+        new MqttSettings { Messaging = new MessagingSettings { Server = new ClientProfile { Name = "server", Host = "127.0.0.1", Port = "9", ClientId = "server" } } }.Save();
         var lifetime = new ClassicDesktopStyleApplicationLifetime();
         var splash = new SplashWindow();
         Headless.Show(splash);
@@ -171,6 +200,11 @@ public class AppWindowsTests : DataFolderTest, IDisposable
         await (Task)start.Invoke(null, [lifetime, splash, themes])!;
 
         var window = Assert.IsType<MainWindow>(lifetime.MainWindow);
+
+        // The alerts and messages server is tried as soon as the app has started. Disconnecting ends the retries.
+        var inbox = ((MainViewModel)window.DataContext!).Inbox;
+        await Headless.Until(() => inbox.Client.IsFailed);
+        await inbox.Client.DisconnectCommand.ExecuteAsync(null);
         Assert.False(splash.IsVisible);
         Headless.Settle();
 

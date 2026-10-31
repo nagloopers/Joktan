@@ -1,0 +1,58 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Joktan.Mqtt.ViewModels"
+             xmlns:views="using:Joktan.Mqtt.Views"
+             x:Class="Joktan.Mqtt.Views.InboxAlertsPanel"
+             x:DataType="vm:InboxViewModel"
+             Width="380" Height="480">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Spacing="8" Margin="0,0,0,8">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Classes="card-title" VerticalAlignment="Center" Text="Alerts" />
+                <Button Grid.Column="1" Classes="small" Content="Clear" Command="{Binding ClearAlertsCommand}"
+                        ToolTip.Tip="Clear this list on this computer" />
+            </Grid>
+            <views:InboxConnectionBar />
+            <ComboBox ItemsSource="{Binding AlertFilters}" SelectedItem="{Binding AlertFilter}" MinWidth="140" ToolTip.Tip="Show only one level" />
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom" Spacing="4" Margin="0,8,0,0">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                <ComboBox ItemsSource="{Binding AlertLevels}" SelectedItem="{Binding AlertLevel}" ToolTip.Tip="The level of the alert" />
+                <TextBox Grid.Column="1" Text="{Binding AlertDraft}" MaxLength="{Binding MaxMessageLength}" PlaceholderText="Send an alert to everyone">
+                    <TextBox.KeyBindings>
+                        <KeyBinding Gesture="Enter" Command="{Binding SendAlertCommand}" />
+                    </TextBox.KeyBindings>
+                </TextBox>
+                <Button Grid.Column="2" Classes="accent" Content="Send" Command="{Binding SendAlertCommand}" />
+            </Grid>
+            <TextBlock Classes="error" TextWrapping="Wrap" Text="{Binding SendError}"
+                       IsVisible="{Binding SendError, Converter={x:Static ObjectConverters.IsNotNull}}" />
+        </StackPanel>
+
+        <Panel>
+            <TextBlock Classes="info-label" HorizontalAlignment="Center" VerticalAlignment="Center" Text="No alerts" IsVisible="{Binding !HasAlerts}" />
+            <ScrollViewer>
+                <ItemsControl ItemsSource="{Binding Alerts}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:AlertRowViewModel">
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8" Margin="0,4,12,4" IsVisible="{Binding IsShown}">
+                                <Ellipse Classes="state-dot" Margin="0,5,0,0" VerticalAlignment="Top"
+                                         Classes.pending="{Binding IsWarning}"
+                                         Classes.failed="{Binding IsCritical}" />
+                                <StackPanel Grid.Column="1">
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                        <TextBlock FontWeight="SemiBold" Foreground="{DynamicResource TextBrush}" TextWrapping="Wrap" Text="{Binding Title}" />
+                                        <TextBlock Grid.Column="1" Classes="info-label" Text="{Binding Time}" />
+                                    </Grid>
+                                    <TextBlock Classes="info-label" FontWeight="SemiBold" Text="{Binding Level}" />
+                                    <SelectableTextBlock Foreground="{DynamicResource TextBrush}" TextWrapping="Wrap" Text="{Binding Text}" IsVisible="{Binding HasText}" />
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Panel>
+    </DockPanel>
+</UserControl>

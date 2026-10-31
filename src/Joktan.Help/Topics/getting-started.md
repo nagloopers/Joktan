@@ -32,7 +32,7 @@ What applies to the whole app is under [Settings and data](help:settings-and-dat
 
 These are there but do not do anything yet:
 
-- the search box, messages and notifications in the top bar.
+- the search box in the top bar.
 
 ## Try it: send a message and watch it arrive
 

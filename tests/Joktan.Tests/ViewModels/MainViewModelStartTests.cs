@@ -9,6 +9,7 @@ using Joktan.Core.ViewModels;
 using Joktan.Dashboard.Telemetry;
 using Joktan.Help;
 using Joktan.Mqtt;
+using Joktan.Mqtt.ViewModels;
 using Joktan.Settings.ViewModels;
 using Joktan.Tests.TestSupport;
 using Joktan.ViewModels;
@@ -194,6 +195,20 @@ public class MainViewModelStartTests : DataFolderTest, IDisposable
         main.SaveState();
 
         Assert.Equal("typed", MqttSettings.Load().Clients[0].ManualTopic);
+    });
+
+    [Fact]
+    public Task Settings_has_the_alerts_and_messages_page_and_its_server_stays_off_the_clients() => Headless.Run(() =>
+    {
+        var main = New();
+        var item = Item(main, "Alerts and Messages");
+        main.NavigateCommand.Execute(item);
+
+        Assert.Equal("Settings", main.MenuItems.First(i => i.Children.Contains(item)).Title);
+        Assert.Equal("alerts-and-messages", main.CurrentHelpTopic);
+        var page = Assert.IsType<MessagingViewModel>(main.CurrentPage);
+        var clients = ((MqttViewModel)Item(main, "MQTT").Page!).Clients;
+        Assert.DoesNotContain(page.Client, clients);
     });
 
     private static BackupViewModel Backup(MainViewModel main) => (BackupViewModel)Item(main, "Folders and Backup").Page!;

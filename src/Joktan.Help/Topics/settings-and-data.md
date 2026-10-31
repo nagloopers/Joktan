@@ -1,7 +1,8 @@
 # Settings and data
 
 Settings is a group in the menu. Its Menu page arranges the menu, its Themes, Colours, Fonts and
-Text Sizes pages set how the app looks, and its [Folders and Backup](help:folders-and-backup) page shows
+Text Sizes pages set how the app looks, its [Alerts and Messages](help:alerts-and-messages) page sets
+up their MQTT server and how you appear in messages, and its [Folders and Backup](help:folders-and-backup) page shows
 where everything is kept, and backs it up and restores it. Everything else is set up on the page it
 belongs to, and is saved as it changes. Nothing here needs setting up before you start.
 
@@ -42,7 +43,9 @@ another folder. This is useful for testing, or for running a second, separate co
 
 | File or folder | Holds |
 | --- | --- |
-| `mqtt.json` | MQTT clients and Topic Explorer filters |
+| `mqtt.json` | MQTT clients, Topic Explorer filters, and the alerts and messages server with your display name |
+| `messaging-avatar.png` | Your picture for messages, if you chose one |
+| `messaging-history.json` | The latest messages and alerts |
 | `dashboards.json` | MQTT dashboards, their graphs, format and tab colours, unless another folder was chosen |
 | `dashboards-location.json` | The dashboards folder that was chosen |
 | `backup.json` | Where backups go, how many are kept, and what they hold |

@@ -76,6 +76,7 @@ public partial class App : Application
         splash.Status = "Opening…";
         await Rendered();
         var main = new MainViewModel(monitor, certificatesTask.Result, mqttSettingsTask.Result, notesTask.Result, passwordSettingsTask.Result, dashboardsTask.Result, menuLayoutTask.Result, themes);
+        _ = main.Inbox.StartAsync();
         var restart = false;
         main.RestartRequested = () =>
         {

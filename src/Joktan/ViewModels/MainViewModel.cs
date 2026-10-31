@@ -62,6 +62,7 @@ public partial class MainViewModel : ViewModelBase
         certificates ??= CertificateStore.Load();
         _notes = new NotesViewModel(notes ?? NoteStore.Load());
         var mqtt = _mqtt = new MqttViewModel(certificates, mqttSettings);
+        Inbox = new InboxViewModel(mqtt);
         _topicDashboards = new TopicDashboardsViewModel(mqtt, dashboards);
 
         var passwordsItem = new NavItemViewModel("Passwords", Icons.Key) { Page = _passwords, HelpTopic = "passwords" };
@@ -72,6 +73,8 @@ public partial class MainViewModel : ViewModelBase
 
         themes ??= ThemeEditor.Load();
         var themeBar = new ThemeBarViewModel(themes);
+        var alertsAndMessages = new NavItemViewModel("Alerts and Messages") { Page = new MessagingViewModel(mqtt, Inbox), HelpTopic = "alerts-and-messages" };
+        Inbox.OpenSettings = () => NavigateCommand.Execute(alertsAndMessages);
         var menuSettings = new NavItemViewModel("Menu") { HelpTopic = "settings-and-data", CanHide = false };
 
         MenuItems =
@@ -94,6 +97,7 @@ public partial class MainViewModel : ViewModelBase
                 new NavItemViewModel("Colours") { Page = new ColorsViewModel(themes, themeBar), HelpTopic = "themes" },
                 new NavItemViewModel("Fonts") { Page = new FontsViewModel(themes, themeBar), HelpTopic = "themes" },
                 new NavItemViewModel("Text Sizes") { Page = new TextSizesViewModel(themes, themeBar), HelpTopic = "themes" },
+                alertsAndMessages,
                 new NavItemViewModel("Folders and Backup") { Page = _backup, HelpTopic = "folders-and-backup" }) { CanHide = false },
         ];
 
@@ -109,6 +113,9 @@ public partial class MainViewModel : ViewModelBase
     public ObservableCollection<NavItemViewModel> MenuItems { get; }
 
     public HelpViewModel Help { get; } = new();
+
+    /// <summary>The Messages and Alerts panels of the top bar.</summary>
+    public InboxViewModel Inbox { get; }
 
     /// <summary>The help topic for the page being shown; placeholder pages have none of their own.</summary>
     public string CurrentHelpTopic => _selectedItem?.HelpTopic ?? HelpTopic.Home;
@@ -132,6 +139,7 @@ public partial class MainViewModel : ViewModelBase
     private Task FlushAsync()
     {
         _mqtt.SaveState();
+        Inbox.SaveState();
         _topicDashboards.SaveState();
         _notes.SaveState();
         _passwords.SaveState();
@@ -143,6 +151,7 @@ public partial class MainViewModel : ViewModelBase
     public void SaveState()
     {
         _mqtt.SaveState();
+        Inbox.SaveState();
         _topicDashboards.SaveState();
         _notes.SaveState();
         _passwords.SaveState();

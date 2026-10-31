@@ -438,6 +438,9 @@ public partial class MqttClientViewModel : ViewModelBase, IDisposable
         RefreshRows();
     }
 
+    /// <summary>Stops sending the folder's messages on their schedules, if they are being sent.</summary>
+    public void StopSending() => Stop();
+
     private void Stop()
     {
         if (!IsRunning)

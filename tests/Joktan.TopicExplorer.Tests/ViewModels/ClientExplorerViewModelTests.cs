@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Joktan.Mqtt;
 using Joktan.Mqtt.Tests;
@@ -448,6 +449,53 @@ public class TopicExplorerViewModelTests : ExplorerTest
         Assert.Equal(["open", "close"], calls);
         explorer.IsPoppedOut = true;
         Assert.False(explorer.ShowPage);
+    });
+
+    [Fact]
+    public Task The_messaging_server_has_a_tab_only_while_it_is_switched_on() => Headless.Run(() =>
+    {
+        var mqtt = Mqtt(1883, "a");
+        var explorer = Explorer(mqtt);
+        Assert.Equal(["a"], explorer.Tabs.Select(t => t.Client.Name));
+
+        mqtt.IsMessagingClientShown = true;
+        Assert.Equal(["a", MessagingSettings.DefaultServerName], explorer.Tabs.Select(t => t.Client.Name));
+
+        explorer.SelectedTab = explorer.Tabs[1];
+        mqtt.IsMessagingClientShown = false;
+        Assert.Equal(["a"], explorer.Tabs.Select(t => t.Client.Name));
+        Assert.Equal("a", explorer.SelectedTab!.Client.Name);
+    });
+
+    [Fact]
+    public Task Switching_the_server_off_stops_what_its_tab_subscribed_to_but_not_the_connection() => Headless.Run(async () =>
+    {
+        await using var broker = await TestBroker.StartAsync();
+        var mqtt = Mqtt(broker.Port, "a");
+        mqtt.MessagingClient.Profile.Host = "127.0.0.1";
+        mqtt.MessagingClient.Profile.Port = broker.Port.ToString();
+        var explorer = Explorer(mqtt);
+        explorer.Activate();
+        mqtt.IsMessagingClientShown = true;
+        await Connect(mqtt.MessagingClient);
+
+        var received = 0;
+        mqtt.MessagingClient.Connection.MessageReceived += _ => Interlocked.Increment(ref received);
+        await Headless.Until(() =>
+        {
+            _ = broker.SendAsync("t/one", "1");
+            return Volatile.Read(ref received) > 0;
+        });
+
+        mqtt.IsMessagingClientShown = false;
+        await Task.Delay(300);
+        Interlocked.Exchange(ref received, 0);
+        await broker.SendAsync("t/two", "2");
+        await Task.Delay(300);
+
+        Assert.Equal(0, Volatile.Read(ref received));
+        Assert.True(mqtt.MessagingClient.IsConnected);
+        await mqtt.MessagingClient.DisconnectCommand.ExecuteAsync(null);
     });
 }
 

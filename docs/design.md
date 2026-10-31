@@ -38,7 +38,7 @@ The app is named "Joktan" in the macOS menu bar, which has About Joktan and Jokt
 | Region | Size | Contents |
 | --- | --- | --- |
 | Sidebar | 240 wide, full height | Brand, "MAIN MENU" caption, navigation |
-| Top bar | 64 high | Menu toggle, search box with the help icon beside it, messages, notifications, then minimise, maximise and close. The window has no system title bar: the top bar is dragged to move the window and double-clicked to maximise it |
+| Top bar | 64 high | Menu toggle, search box with the help icon beside it, [messages and alerts](features/alerts-and-messages/spec.md), then minimise, maximise and close. The window has no system title bar: the top bar is dragged to move the window and double-clicked to maximise it |
 | Page header | Auto height, 24 × 20 padding | Page title and subtitle (breadcrumb) |
 | Page content | Fills the rest, scrolls | Cards on the app background, 24 outer margin |
 
@@ -288,5 +288,5 @@ A menu entry with no page of its own opens the placeholder page (`PageView`). No
 
 Not built yet:
 
-- Search, messages and notifications (the controls are present but do nothing)
+- Search (the control is present but does nothing)
 - A compact icon-only sidebar

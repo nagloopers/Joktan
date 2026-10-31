@@ -5,7 +5,7 @@ kept in themes, and where Joktan keeps things, with backing them up and restorin
 
 | Item      | Value       |
 |-----------|-------------|
-| Menu path | Settings / Menu, Themes, Colours, Fonts, Text Sizes, Folders and Backup |
+| Menu path | Settings / Menu, Themes, Colours, Fonts, Text Sizes, Alerts and Messages, Folders and Backup |
 | Status    | Implemented |
 
 ## Purpose
@@ -24,6 +24,7 @@ Settings is a group in the menu, with one page for each kind of setting.
 | Colours | Every colour of the theme, and whether its controls are dark |
 | Fonts | Every font of the theme |
 | Text Sizes | Every text size of the theme |
+| Alerts and Messages | The MQTT server for alerts and messages, and the name and picture on messages. See [its spec](../alerts-and-messages/spec.md) |
 | Folders and Backup | Every folder Joktan keeps things in, backing them up, and restoring them. See [below](#folders-and-backup) |
 
 ## Menu page layout
@@ -65,6 +66,11 @@ the entries in order, as a tree, each with its title and whether it is shown.
 | An entry in the file but not in the app | Ignored, and dropped at the next save |
 | A renamed entry | Entries are matched by title among their siblings, so it counts as a new one |
 | Settings, or Settings / Menu, marked as hidden in the file | Shown |
+
+## Alerts and Messages
+
+Sets up the MQTT server behind the Messages and Alerts panels of the top bar. See
+[alerts and messages](../alerts-and-messages/spec.md).
 
 ## Themes
 

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Joktan.Mqtt.ViewModels;
@@ -21,6 +22,15 @@ public partial class ClientSettingsWindow : Window
     public ClientSettingsWindow()
     {
         InitializeComponent();
+    }
+
+    /// <summary>Shows the editor over the window holding a view, and returns whether it was saved.</summary>
+    public static async Task<bool> ShowOverAsync(Visual view, ClientSettingsViewModel vm)
+    {
+        if (TopLevel.GetTopLevel(view) is not Window owner)
+            return false;
+
+        return await new ClientSettingsWindow { DataContext = vm }.ShowDialog<bool>(owner);
     }
 
     protected override void OnDataContextChanged(EventArgs e)

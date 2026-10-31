@@ -33,6 +33,9 @@ public partial class MqttViewModel : PageViewModel
         _settings = settings ?? MqttSettings.Load();
         foreach (var profile in _settings.Clients)
             Clients.Add(NewClient(profile));
+        MessagingClient = NewClient(_settings.MessagingServer());
+        if (_settings.Messaging.ShowInBrokers)
+            Clients.Add(MessagingClient);
         UpdateRemovable();
         SelectedClient = Find(_settings.SelectedClient) ?? Clients[0];
         _settings.Save();
@@ -41,13 +44,52 @@ public partial class MqttViewModel : PageViewModel
     /// <summary>The clients, one tab each. Shared with the topic explorer.</summary>
     public ObservableCollection<MqttClientViewModel> Clients { get; } = [];
 
+    /// <summary>The client for the alerts and messages server. It is in <see cref="Clients"/> only while <see cref="IsMessagingClientShown"/>.</summary>
+    public MqttClientViewModel MessagingClient { get; }
+
+    /// <summary>The server for alerts and messages, and how the user appears in messages.</summary>
+    public MessagingSettings Messaging => _settings.Messaging;
+
+    /// <summary>
+    /// Whether the alerts and messages server has a tab on this page and in the topic explorer. Taking
+    /// it away leaves it connected, but stops what only those tabs could stop.
+    /// </summary>
+    public bool IsMessagingClientShown
+    {
+        get => Clients.Contains(MessagingClient);
+        set
+        {
+            if (value == IsMessagingClientShown)
+                return;
+
+            Messaging.ShowInBrokers = value;
+            if (value)
+            {
+                Clients.Add(MessagingClient);
+            }
+            else
+            {
+                MessagingClient.StopSending();
+                Clients.Remove(MessagingClient);
+                if (SelectedClient == MessagingClient || SelectedClient is null)
+                    SelectedClient = Clients[0];
+            }
+
+            SaveSettings();
+            OnPropertyChanged();
+        }
+    }
+
+    // Every client, with the alerts and messages server even when it has no tab.
+    private IEnumerable<MqttClientViewModel> AllClients => IsMessagingClientShown ? Clients : Clients.Append(MessagingClient);
+
     /// <summary>
     /// Every MQTT client whose TLS settings use a file of this certificate, or a copy of one, by name.
     /// </summary>
     public List<string> ClientsUsing(StoredCertificate entry)
     {
         var folder = Path.GetFullPath(entry.Folder).TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
-        return Clients
+        return AllClients
             .Select(c => c.Profile)
             .Where(c => c.CaCertificateId == entry.Id || c.ClientCertificateId == entry.Id
                         || new[] { c.CaCertificate, c.ClientCertificate, c.ClientKey }.Any(path => IsIn(path, folder)))
@@ -82,13 +124,14 @@ public partial class MqttViewModel : PageViewModel
             return;
 
         var profile = new ClientProfile { Name = UnusedName(), Host = "localhost", ClientId = ClientProfile.NewClientId() };
-        var editor = new ClientSettingsViewModel(profile, "", "", Clients.Select(c => c.Name).ToList(), isNew: true, _certificates);
+        var editor = new ClientSettingsViewModel(profile, "", "", AllClients.Select(c => c.Name).ToList(), isNew: true, _certificates);
         if (!await EditClientSettings(editor))
             return;
 
         var client = NewClient(editor.ToProfile());
         client.Apply(client.Profile, editor.Password, editor.KeyPassword);
-        Clients.Add(client);
+        // The alerts and messages server stays the last tab.
+        Clients.Insert(IsMessagingClientShown ? Clients.Count - 1 : Clients.Count, client);
         UpdateRemovable();
         SelectedClient = client;
         SaveSettings();
@@ -99,7 +142,7 @@ public partial class MqttViewModel : PageViewModel
         if (EditClientSettings is null)
             return;
 
-        var others = Clients.Where(c => c != client).Select(c => c.Name).ToList();
+        var others = AllClients.Where(c => c != client).Select(c => c.Name).ToList();
         var editor = new ClientSettingsViewModel(client.Profile.Clone(), client.Password, client.KeyPassword, others, isNew: false, _certificates);
         if (!await EditClientSettings(editor) || !client.CanEdit)
             return;
@@ -110,7 +153,7 @@ public partial class MqttViewModel : PageViewModel
 
     private void RemoveClient(MqttClientViewModel client)
     {
-        if (Clients.Count <= 1 || !client.CanEdit)
+        if (!client.IsRemovable || !client.CanEdit)
             return;
 
         var index = Clients.IndexOf(client);
@@ -132,9 +175,10 @@ public partial class MqttViewModel : PageViewModel
     /// </summary>
     public void SaveSettings()
     {
-        foreach (var client in Clients)
+        foreach (var client in AllClients)
             client.StoreSettings();
-        _settings.Clients = Clients.Select(c => c.Profile).ToList();
+        _settings.Clients = Clients.Where(c => c != MessagingClient).Select(c => c.Profile).ToList();
+        Messaging.Server = MessagingClient.Profile;
         _settings.SelectedClient = SelectedClient?.Name ?? "";
         _settings.Save();
     }
@@ -143,7 +187,7 @@ public partial class MqttViewModel : PageViewModel
     public void SaveState()
     {
         SaveSettings();
-        foreach (var client in Clients)
+        foreach (var client in AllClients)
             client.FinishWrites();
     }
 
@@ -163,18 +207,19 @@ public partial class MqttViewModel : PageViewModel
             RemoveClientRequested = RemoveClient,
         };
 
-    // The last client cannot be removed.
+    // The last client cannot be removed, and the alerts and messages server neither counts as one nor can be.
     private void UpdateRemovable()
     {
+        var removable = Clients.Count(c => c != MessagingClient) > 1;
         foreach (var client in Clients)
-            client.IsRemovable = Clients.Count > 1;
+            client.IsRemovable = removable && client != MessagingClient;
     }
 
     private string UnusedName()
     {
         for (var i = Clients.Count + 1; ; i++)
         {
-            if (Find($"client {i}") is null)
+            if (!AllClients.Any(c => c.Name.Equals($"client {i}", StringComparison.OrdinalIgnoreCase)))
                 return $"client {i}";
         }
     }

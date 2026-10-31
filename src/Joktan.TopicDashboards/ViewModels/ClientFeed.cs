@@ -43,5 +43,11 @@ internal sealed class ClientFeed : IDisposable
             _incoming.Enqueue(message);
     }
 
-    public void Dispose() => Client.Connection.MessageReceived -= OnMessageReceived;
+    public void Dispose()
+    {
+        Client.Connection.MessageReceived -= OnMessageReceived;
+
+        // The client can stay connected without its tab, and the dashboards no longer want these.
+        _ = Client.Connection.SetSubscriptionsAsync(SubscriptionOwner, []);
+    }
 }

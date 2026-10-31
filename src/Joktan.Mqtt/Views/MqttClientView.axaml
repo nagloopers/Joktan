@@ -34,7 +34,7 @@
                                     ToolTip.Tip="Change the broker, login and certificates. Disconnect first." />
                             <Button Content="Remove client"
                                     Command="{Binding RemoveClientCommand}"
-                                    ToolTip.Tip="Remove this client and its tab. Disconnect first; the last client cannot be removed." />
+                                    ToolTip.Tip="Remove this client and its tab. Disconnect first. The last client and the alerts and messages server cannot be removed." />
                         </StackPanel>
                     </Grid>
 

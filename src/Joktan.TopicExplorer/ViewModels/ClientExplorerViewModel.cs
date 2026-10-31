@@ -413,5 +413,8 @@ public partial class ClientExplorerViewModel : ViewModelBase, IDisposable
         _flushTimer.Stop();
         _connection.MessageReceived -= OnMessageReceived;
         Client.PropertyChanged -= OnClientChanged;
+
+        // The client can stay connected without its tab, which no longer wants these.
+        _ = _connection.SetSubscriptionsAsync(SubscriptionOwner, []);
     }
 }

@@ -13,6 +13,8 @@ for each.
 4. Select a topic to see its value and history on the right.
 
 Brokers, logins and certificates are set on the MQTT page, under [Clients and brokers](help:mqtt-clients).
+The server for alerts and messages has a tab here only if you switch that on under
+[Settings / Alerts and Messages](help:alerts-and-messages).
 
 ## Choosing what to subscribe to
 

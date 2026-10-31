@@ -8,6 +8,9 @@ for `localhost` port 1883.
 - **Remove client** removes the client and its tab, also only while disconnected. The last client
   cannot be removed. Its folder and message files are left as they are.
 
+The server for alerts and messages is set up under
+[Settings / Alerts and Messages](help:alerts-and-messages). It has a tab here only if you switch that on.
+
 ## Broker settings
 
 | Setting | Notes |

@@ -12,6 +12,7 @@ under shared parent folders that follow the menu, such as `dev-tools/`. `dev-too
 | Dev tools: certificates                 | [dev-tools/connectivity/certificates/spec.md](dev-tools/connectivity/certificates/spec.md)     | Implemented                    |
 | Dev tools: containers                   | [dev-tools/containers/spec.md](dev-tools/containers/spec.md)                                   | Implemented                    |
 | Dev tools: API client                   | [dev-tools/api-client/spec.md](dev-tools/api-client/spec.md)                                   | Implemented                    |
+| Alerts and messages                     | [alerts-and-messages/spec.md](alerts-and-messages/spec.md)                                     | Implemented                    |
 | Notes                                   | [notes/spec.md](notes/spec.md)                                                                 | Implemented                    |
 | Passwords                               | [passwords/spec.md](passwords/spec.md)                                                         | Implemented                    |
 | Help                                    | [help/spec.md](help/spec.md)                                                                   | Implemented                    |

@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using Avalonia.Controls;
 using Joktan.Mqtt.ViewModels;
 
@@ -16,14 +15,6 @@ public partial class MqttView : UserControl
     {
         base.OnDataContextChanged(e);
         if (DataContext is MqttViewModel vm)
-            vm.EditClientSettings = EditClientSettingsAsync;
-    }
-
-    private async Task<bool> EditClientSettingsAsync(ClientSettingsViewModel vm)
-    {
-        if (TopLevel.GetTopLevel(this) is not Window owner)
-            return false;
-
-        return await new ClientSettingsWindow { DataContext = vm }.ShowDialog<bool>(owner);
+            vm.EditClientSettings = editor => ClientSettingsWindow.ShowOverAsync(this, editor);
     }
 }

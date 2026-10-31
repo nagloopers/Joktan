@@ -1,9 +1,12 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 using Joktan.Core;
+using Joktan.Mqtt.ViewModels;
+using Joktan.ViewModels;
 
 namespace Joktan.Views;
 
@@ -37,6 +40,39 @@ public partial class MainWindow : Window
             ToggleMaximized();
         else
             BeginMoveDrag(e);
+    }
+
+    // A panel of the top bar closes when its server button goes to the settings page.
+    protected override void OnDataContextChanged(EventArgs e)
+    {
+        base.OnDataContextChanged(e);
+        if (DataContext is MainViewModel main)
+        {
+            main.PropertyChanged += (_, change) =>
+            {
+                if (change.PropertyName == nameof(MainViewModel.CurrentPage))
+                {
+                    MessagesButton.Flyout?.Hide();
+                    AlertsButton.Flyout?.Hide();
+                }
+            };
+        }
+    }
+
+    private InboxViewModel? Inbox => (DataContext as MainViewModel)?.Inbox;
+
+    private void OnMessagesOpened(object? sender, EventArgs e) => SetOpen(inbox => inbox.IsMessagesOpen = true);
+
+    private void OnMessagesClosed(object? sender, EventArgs e) => SetOpen(inbox => inbox.IsMessagesOpen = false);
+
+    private void OnAlertsOpened(object? sender, EventArgs e) => SetOpen(inbox => inbox.IsAlertsOpen = true);
+
+    private void OnAlertsClosed(object? sender, EventArgs e) => SetOpen(inbox => inbox.IsAlertsOpen = false);
+
+    private void SetOpen(Action<InboxViewModel> set)
+    {
+        if (Inbox is { } inbox)
+            set(inbox);
     }
 
     private void OnMinimizeClick(object? sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;

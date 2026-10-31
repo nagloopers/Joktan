@@ -23,6 +23,9 @@ public sealed class MqttSettings
     /// <summary>The client whose tab was open last.</summary>
     public string SelectedClient { get; set; } = "";
 
+    /// <summary>The server for alerts and messages, and how the user appears in messages.</summary>
+    public MessagingSettings Messaging { get; set; } = new();
+
     // The single broker of earlier versions, read once and moved into the first client.
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -107,6 +110,24 @@ public sealed class MqttSettings
         ManualRetain = null;
         foreach (var client in Clients.Where(c => c.ClientId.Length == 0))
             client.ClientId = ClientProfile.NewClientId();
+    }
+
+    /// <summary>The server for alerts and messages, set up for <c>localhost</c> the first time. Its name is not one a client already has.</summary>
+    public ClientProfile MessagingServer()
+    {
+        Messaging ??= new();
+        var server = Messaging.Server ??= new ClientProfile { Name = UnusedServerName(), Host = "localhost" };
+        if (server.ClientId.Length == 0)
+            server.ClientId = ClientProfile.NewClientId();
+        return server;
+    }
+
+    private string UnusedServerName()
+    {
+        var name = MessagingSettings.DefaultServerName;
+        for (var i = 2; Clients.Exists(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase)); i++)
+            name = $"{MessagingSettings.DefaultServerName} {i}";
+        return name;
     }
 
     public void Save()

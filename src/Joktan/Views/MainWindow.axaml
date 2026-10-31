@@ -4,6 +4,7 @@
         xmlns:core="using:Joktan.Core"
         xmlns:nav="using:Joktan.Core.ViewModels"
         xmlns:help="using:Joktan.Core.Controls"
+        xmlns:inbox="using:Joktan.Mqtt.Views"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="800"
@@ -144,14 +145,30 @@
                     </Grid>
 
                     <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4">
-                        <Button Classes="icon-button" ToolTip.Tip="Messages">
-                            <PathIcon Data="{x:Static core:Icons.Message}" />
-                        </Button>
                         <Panel VerticalAlignment="Center">
-                            <Button Classes="icon-button" ToolTip.Tip="Notifications">
-                                <PathIcon Data="{x:Static core:Icons.Bell}" />
+                            <Button Name="MessagesButton" Classes="icon-button" ToolTip.Tip="{Binding Inbox.MessagesTip}">
+                                <PathIcon Data="{x:Static core:Icons.Message}" />
+                                <Button.Flyout>
+                                    <Flyout Placement="BottomEdgeAlignedRight" Opened="OnMessagesOpened" Closed="OnMessagesClosed">
+                                        <inbox:InboxMessagesPanel DataContext="{Binding Inbox}" />
+                                    </Flyout>
+                                </Button.Flyout>
                             </Button>
-                            <Ellipse Classes="badge" />
+                            <Ellipse Classes="badge" IsVisible="{Binding Inbox.HasUnreadMessages}" />
+                        </Panel>
+                        <Panel VerticalAlignment="Center">
+                            <Button Name="AlertsButton" Classes="icon-button" ToolTip.Tip="{Binding Inbox.AlertsTip}">
+                                <PathIcon Data="{x:Static core:Icons.Bell}" />
+                                <Button.Flyout>
+                                    <Flyout Placement="BottomEdgeAlignedRight" Opened="OnAlertsOpened" Closed="OnAlertsClosed">
+                                        <inbox:InboxAlertsPanel DataContext="{Binding Inbox}" />
+                                    </Flyout>
+                                </Button.Flyout>
+                            </Button>
+                            <Ellipse Classes="badge"
+                                     Classes.warning="{Binding Inbox.IsUnreadWarning}"
+                                     Classes.info="{Binding Inbox.IsUnreadInfo}"
+                                     IsVisible="{Binding Inbox.HasUnreadAlerts}" />
                         </Panel>
                     </StackPanel>
 

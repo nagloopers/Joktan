@@ -22,7 +22,8 @@ repeatedly with fresh timestamps and identifiers.
 
 1. Page header: title "MQTT", subtitle "Dev Tools / Brokers / MQTT", and **Add client** on
    the right.
-2. A row of tabs, one per client. Each tab shows the client's name with a dot in the colour of
+2. A row of tabs, one per client, and one for the [alerts and messages server](../../../alerts-and-messages/spec.md)
+   when it is switched on there. Each tab shows the client's name with a dot in the colour of
    its connection state, so every client's state can be seen at a glance; hovering shows its
    host and port.
 3. The selected client's tab, from top to bottom:
