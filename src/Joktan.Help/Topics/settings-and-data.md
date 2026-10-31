@@ -37,8 +37,10 @@ Everything Joktan keeps goes in a `Joktan` folder under your application data fo
 - macOS: `~/Library/Application Support/Joktan`
 - Linux: `~/.config/Joktan`
 
-To keep it somewhere else, start Joktan with the `JOKTAN_DATA_DIR` environment variable set to
-another folder. This is useful for testing, or for running a second, separate copy.
+To keep it somewhere else, change the **App settings** row on the
+[Folders and Backup](help:folders-and-backup) page. Starting Joktan with the `JOKTAN_DATA_DIR` environment
+variable set to another folder overrides that, which is useful for testing, or for running a second,
+separate copy.
 
 ## What is in it
 
@@ -50,6 +52,7 @@ another folder. This is useful for testing, or for running a second, separate co
 | `dashboards.json` | MQTT dashboards, their graphs, format and tab colours, unless another folder was chosen |
 | `dashboards-location.json` | The dashboards folder that was chosen |
 | `backup.json` | Where backups go, how many are kept, and what they hold |
+| `data-location.json` | The folder chosen for all of this. It stays in the default folder |
 | `menu.json` | The order of the menu, and what it shows |
 | `search.json` | What the search box looks through |
 | `themes.json` | The theme in use, and the themes you saved |

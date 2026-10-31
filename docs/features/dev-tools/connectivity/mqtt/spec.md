@@ -140,8 +140,8 @@ after it changes, and again when the app exits.
 
 Everything the page remembers is kept in one file, `mqtt.json`, in a `Joktan` folder under
 the user's application data folder: `%APPDATA%` on Windows, `~/Library/Application Support` on
-macOS and `~/.config` on Linux. Setting the `JOKTAN_DATA_DIR` environment variable keeps it in
-that folder instead.
+macOS and `~/.config` on Linux, unless [another folder has been chosen](../../../settings/spec.md#changing-the-app-settings-folder).
+Setting the `JOKTAN_DATA_DIR` environment variable keeps it in that folder instead.
 
 Passwords are never written to that file. The broker password and the key password are saved
 after a successful connection, in the operating system's credential store (see

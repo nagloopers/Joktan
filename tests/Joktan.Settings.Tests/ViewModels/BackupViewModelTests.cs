@@ -694,4 +694,33 @@ public class BackupViewModelTests : DataFolderTest
         Assert.Contains("It went wrong", page.Error);
         Assert.Contains("/safe.zip", page.Error);
     }
+
+    [Fact]
+    public Task A_problem_found_at_start_up_shows_and_applying_goes_ahead_even_with_the_folder_in_use() => Headless.Run(async () =>
+    {
+        var changed = new System.Collections.Generic.List<string>();
+        var folder = Data.At("in-use");
+        var source = new FolderSource
+        {
+            Id = "settings",
+            Name = "App settings",
+            CurrentPath = () => folder,
+            ChangeText = "Use folder and restart",
+            StartProblem = "It could not be found",
+            Change = path =>
+            {
+                changed.Add(path);
+                return Task.FromResult(new FolderChange(null));
+            },
+        };
+        var row = new FolderRowViewModel(source, new BackupViewModel(() => [source], new BackupSettings(), () => Task.CompletedTask, () => { }), false);
+
+        Assert.Equal("It could not be found", row.Problem);
+        Assert.Equal("Use folder and restart", row.ChangeText);
+
+        row.PathText = folder;
+        await row.ApplyCommand.ExecuteAsync(null);
+
+        Assert.Equal([folder], changed);
+    });
 }

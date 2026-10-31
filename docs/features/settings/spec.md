@@ -133,7 +133,7 @@ From top to bottom: **Back up**, **Folders** and **Restore** cards.
 
 | Row | Default | Changed here | In a backup by default | Holds |
 |-----|---------|--------------|------------------------|-------|
-| App settings | The data folder | No: `JOKTAN_DATA_DIR` sets it | Yes | MQTT clients, the menu, themes and other settings |
+| App settings | The data folder | Yes, and Joktan restarts. Not while `JOKTAN_DATA_DIR` sets it | Yes | MQTT clients, the menu, themes and other settings |
 | Notes | `notes/` | Yes | Yes | The folder |
 | MQTT Dashboards | The data folder | Yes | Yes | `dashboards.json` only |
 | API requests | `api/` | Yes | Yes | The folder |
@@ -153,6 +153,29 @@ From top to bottom: **Back up**, **Folders** and **Restore** cards.
   as clients are added, removed and renamed, at once, and a renamed client keeps its switch. A client with no folder has
   its switch off and disabled, and says there is nothing to back up. The heading is hidden if there are no rows.
 - Each row has a toggle switch, not a checkbox, saved at once to `backup.json`. A client with no folder of messages adds nothing to a backup.
+
+### Changing the App settings folder
+
+**Use folder and restart** writes what features hold in memory, then acts according to the folder chosen.
+
+| Folder chosen | Behaviour |
+|---------------|-----------|
+| Empty, or with only files starting with a dot | Everything in the data folder is copied there, including folders such as `notes/` that features keep inside it. The originals stay |
+| Already holds Joktan's settings | Opened as it is. Nothing is copied or replaced |
+| Holds other files | Refused with the reason, so settings are never mixed in with something else and do not look lost |
+| Inside the folder in use | Refused with the reason |
+| Cannot be written, or a copy that fails | Refused with the reason. What was copied is removed, and the folder in use stays |
+
+- The choice is kept in `data-location.json` in the default folder, as it has to be found first, and is left out of the copy and of backups.
+- In the copy, whole paths into the old folder in the `.json` files at its top level are changed to the new one, such as the certificates an MQTT client uses, so the old folder can be deleted. Folders chosen elsewhere are left alone.
+- The folder is read once for each run, and the run that made the change goes on saving to the old one until it closes.
+- **Default** and then the button goes back to the default folder, under the same rules, so settings left there are opened as they were.
+- `JOKTAN_DATA_DIR` wins over the choice, which stays for when it is not set. The row then shows the folder and cannot change it.
+- Passwords in the system keychain, and MQTT passwords, do not move, and are still found.
+
+| At start-up | Behaviour |
+|-------------|-----------|
+| The chosen folder cannot be found, such as on a drive not connected | The default folder is used for that run, Joktan opens on this page and the row says so. The choice stays, so the next start goes back to it once it is there |
 
 ### Back up
 
@@ -175,7 +198,7 @@ From top to bottom: **Back up**, **Folders** and **Restore** cards.
 
 ### Left out of app settings
 
-These say where things are on this computer: `notes-location.json`, `api-location.json`, `dashboards-location.json`,
+These say where things are on this computer: `data-location.json`, `notes-location.json`, `api-location.json`, `dashboards-location.json`,
 `passwords-settings.json` and `backup.json`. A restore puts things back where they are kept now, so they must stay. Also
 left out are files backed up on their own rows. Folders named inside `mqtt.json` do go with it, so a restored client on
 another computer may point at a folder that is not there, and its page says so.

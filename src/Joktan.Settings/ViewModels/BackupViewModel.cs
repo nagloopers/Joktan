@@ -25,6 +25,7 @@ public partial class FolderRowViewModel : ViewModelBase
         _shownPath = source.CurrentPath();
         PathText = _shownPath;
         IsIncluded = included;
+        Problem = source.StartProblem;
         _loading = false;
     }
 
@@ -41,6 +42,8 @@ public partial class FolderRowViewModel : ViewModelBase
     public bool IsFixed => !CanChange;
 
     public bool HasDefault => Source.DefaultPath is not null;
+
+    public string ChangeText => Source.ChangeText;
 
     public bool CanOpenPage => Source.OpenPage is not null;
 
@@ -146,7 +149,7 @@ public partial class FolderRowViewModel : ViewModelBase
             return;
         }
 
-        if (path == Source.CurrentPath())
+        if (path == Source.CurrentPath() && Source.StartProblem is null)
         {
             PathText = path;
             return;

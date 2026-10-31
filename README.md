@@ -36,8 +36,8 @@ settings or keychain.
 
 Settings and everything else Joktan keeps go in a `Joktan` folder under the user's application data
 folder: `%APPDATA%` on Windows, `~/Library/Application Support` on macOS and `~/.config` on Linux.
-Set the `JOKTAN_DATA_DIR` environment variable to keep them in another folder, for example while
-testing.
+To keep them elsewhere, change the App settings row under Settings / Folders and Backup. The
+`JOKTAN_DATA_DIR` environment variable overrides that, for example while testing.
 
 ## Tests
 

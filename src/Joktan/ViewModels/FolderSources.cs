@@ -24,7 +24,9 @@ internal sealed class FolderSources(
     CertificateStore certificates,
     PasswordsViewModel passwords,
     MqttViewModel mqtt,
-    Action openPasswords)
+    Action openPasswords,
+    Func<Task> flush,
+    Action restart)
 {
     private const string PrivateKeysWarning = "This holds private keys, and a backup zip is not encrypted. Keep the zip somewhere safe.";
 
@@ -32,7 +34,7 @@ internal sealed class FolderSources(
     // because a restore puts things back where they are kept now. The rest are backed up on their own rows.
     private static readonly string[] NotAppSettings =
     [
-        "notes-location.json", "api-location.json", "dashboards-location.json", "passwords-settings.json", "backup.json",
+        DataFolder.LocationFileName, "notes-location.json", "api-location.json", "dashboards-location.json", "passwords-settings.json", "backup.json",
         "certificates.json", "passwords.json", "passwords.vault", "dashboards.json", "notes", "api", "certificates", "mqtt-certificates",
     ];
 
@@ -40,14 +42,7 @@ internal sealed class FolderSources(
     {
         var sources = new List<FolderSource>
         {
-            new()
-            {
-                Id = "settings",
-                Name = "App settings",
-                Hint = "MQTT clients, the menu, themes and other settings. Start Joktan with JOKTAN_DATA_DIR set to keep them elsewhere.",
-                CurrentPath = () => DataFolder.Path,
-                Item = SettingsItem,
-            },
+            SettingsSource(),
             new()
             {
                 Id = "notes",
@@ -174,6 +169,38 @@ internal sealed class FolderSources(
                 Follow(added);
 
             changed();
+        };
+    }
+
+    private FolderSource SettingsSource()
+    {
+        const string name = "App settings";
+        const string id = "settings";
+        if (DataFolder.IsSetByVariable)
+        {
+            return new FolderSource
+            {
+                Id = id,
+                Name = name,
+                Hint = $"MQTT clients, the menu, themes and other settings. {DataFolder.Variable} sets this folder for this run, so it cannot be changed here.",
+                CurrentPath = () => DataFolder.Path,
+                Item = SettingsItem,
+            };
+        }
+
+        return new FolderSource
+        {
+            Id = id,
+            Name = name,
+            Hint = "MQTT clients, the menu, themes and other settings, and whatever else is kept in this folder. Joktan restarts to use a new one.",
+            CurrentPath = () => DataFolder.Path,
+            DefaultPath = DataFolder.DefaultPath,
+            ChangeText = "Use folder and restart",
+            StartProblem = DataFolder.MissingFolder is { } missing
+                ? $"{missing} could not be found, so Joktan is using its default folder for now. Connect it and restart Joktan, or choose another folder here."
+                : null,
+            Change = path => DataFolderMove.ApplyAsync(path, DataFolder.Path, DataFolder.DefaultPath, flush, restart),
+            Item = SettingsItem,
         };
     }
 

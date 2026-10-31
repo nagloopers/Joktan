@@ -16,13 +16,32 @@ This does the same as the folder buttons on the Notes, MQTT Dashboards and API C
 
 Some folders cannot be changed here, and their row says why:
 
-- **App settings**: start Joktan with the `JOKTAN_DATA_DIR` environment variable. See [Settings and data](help:settings-and-data).
 - **Certificates**: each new certificate can choose its own folder when you make it. See [Certificates](help:certificates).
 - **Passwords**: moving a vault needs it unlocked, so press **Open Passwords**. See [Passwords](help:passwords).
 
 **MQTT messages** has one row for each client on the [MQTT](help:mqtt) page, so you see as many rows as you have clients.
 Rows follow the clients as you add, rename and remove them. To give a client no folder, leave the box empty and press
 **Use folder**. Its **Back up** switch stays off until it has one.
+
+## Moving the app settings
+
+The **App settings** row says where your MQTT clients, the menu, themes and other settings are kept, along with anything
+else in that folder, such as notes you have not moved elsewhere. Choose a folder and press **Use folder and restart**.
+Joktan restarts to use it.
+
+- **An empty folder**: everything is copied there, and the originals stay where they were. You can delete the old folder
+  once you are happy.
+- **A folder that already holds Joktan's settings**: it is opened as it is, and nothing is copied. Use this to share one
+  folder between computers, one at a time.
+- **A folder with other files in it**: refused, so choose or make an empty one.
+
+**Default** then the button goes back to Joktan's own folder, where any settings you left are opened as they were.
+
+If the folder cannot be found when Joktan starts, such as on a drive that is not connected, Joktan uses its default folder
+for that run, opens on this page and says so. Connect the drive and restart to go back. Changes made in the meantime stay
+in the default folder.
+
+While Joktan is started with the `JOKTAN_DATA_DIR` environment variable, that sets the folder and this row cannot change it.
 
 ## Backing up
 

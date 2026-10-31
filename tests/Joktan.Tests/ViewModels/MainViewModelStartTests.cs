@@ -381,4 +381,17 @@ public class MainViewModelStartTests : DataFolderTest, IDisposable
         _monitor.Dispose();
         base.Dispose();
     }
+
+    [Fact]
+    public Task The_variable_keeps_the_app_settings_row_from_changing_and_a_backup_leaves_out_the_choice() => Headless.Run(() =>
+    {
+        var page = Assert.IsType<BackupViewModel>(Item(New(), "Folders and Backup").Page);
+
+        var row = page.Rows.Single(r => r.Source.Id == "settings");
+
+        Assert.False(row.CanChange);
+        Assert.Contains(Joktan.Core.DataFolder.Variable, row.Hint);
+        var exclude = row.Source.Item!()!.Roots.Single().Exclude!;
+        Assert.Contains(Path.Combine(Joktan.Core.DataFolder.Path, Joktan.Core.DataFolder.LocationFileName), exclude);
+    });
 }

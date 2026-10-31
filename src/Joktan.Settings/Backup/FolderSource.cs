@@ -30,6 +30,12 @@ public sealed class FolderSource
     /// <summary>Changes it; null when it cannot be changed here.</summary>
     public Func<string, Task<FolderChange>>? Change { get; init; }
 
+    /// <summary>What the button that changes it says.</summary>
+    public string ChangeText { get; init; } = "Use folder";
+
+    /// <summary>Something wrong with it found at start-up, shown on its row. Applying a folder then always goes ahead, to put it right.</summary>
+    public string? StartProblem { get; init; }
+
     /// <summary>What an empty box means; null when it must have a path, or there is no such thing as none.</summary>
     public string? DefaultPath { get; init; }
 

@@ -66,7 +66,7 @@ public partial class MainViewModel : ViewModelBase
         _topicDashboards = new TopicDashboardsViewModel(mqtt, dashboards);
 
         var passwordsItem = new NavItemViewModel("Passwords", Icons.Key) { Page = _passwords, HelpTopic = "passwords" };
-        var folders = new FolderSources(_notes, _topicDashboards, _apiClient, certificates, _passwords, mqtt, () => NavigateCommand.Execute(passwordsItem));
+        var folders = new FolderSources(_notes, _topicDashboards, _apiClient, certificates, _passwords, mqtt, () => NavigateCommand.Execute(passwordsItem), FlushAsync, () => RestartRequested?.Invoke());
         _backup = new BackupViewModel(folders.All, BackupSettings.Load(), FlushAsync, () => RestartRequested?.Invoke(),
             Assembly.GetEntryAssembly()?.GetName().Version?.ToString(3) ?? "");
         folders.Watch(_backup.Refresh, _backup.Renamed);
@@ -76,6 +76,7 @@ public partial class MainViewModel : ViewModelBase
         var alertsAndMessages = new NavItemViewModel("Alerts and Messages") { Page = new MessagingViewModel(mqtt, Inbox), HelpTopic = "alerts-and-messages" };
         Inbox.OpenSettings = () => NavigateCommand.Execute(alertsAndMessages);
         var menuSettings = new NavItemViewModel("Menu") { HelpTopic = "settings-and-data", CanHide = false };
+        var foldersItem = new NavItemViewModel("Folders and Backup") { Page = _backup, HelpTopic = "folders-and-backup" };
         var notesItem = new NavItemViewModel("Notes", Icons.Notes) { Page = _notes, HelpTopic = "notes" };
         _notes.OpenPage = () => NavigateCommand.Execute(notesItem);
 
@@ -118,7 +119,7 @@ public partial class MainViewModel : ViewModelBase
                 new NavItemViewModel("Fonts") { Page = new FontsViewModel(themes, themeBar), HelpTopic = "themes" },
                 new NavItemViewModel("Text Sizes") { Page = new TextSizesViewModel(themes, themeBar), HelpTopic = "themes" },
                 alertsAndMessages,
-                new NavItemViewModel("Folders and Backup") { Page = _backup, HelpTopic = "folders-and-backup" }) { CanHide = false },
+                foldersItem) { CanHide = false },
         ];
 
         menuSettings.Page = new MenuSettingsViewModel(MenuItems, menuLayout ?? MenuLayout.Load());
@@ -127,7 +128,8 @@ public partial class MainViewModel : ViewModelBase
         for (var group = first.Parent; group is not null; group = group.Parent)
             group.IsExpanded = true;
 
-        Navigate(first);
+        // Settings that seem to have gone would otherwise be the first sign of a folder that could not be found.
+        Navigate(DataFolder.MissingFolder is null ? first : foldersItem);
     }
 
     public ObservableCollection<NavItemViewModel> MenuItems { get; }
