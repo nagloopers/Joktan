@@ -10,6 +10,7 @@ An AI agent works in the app through the app's own MCP server, and the user talk
 - It can move to a window of its own and back. Both show the same `AgentViewModel`, so nothing is lost. The window has no owner, and it closes with the app.
 - Closing the window closes the panel. Open or closed, docked or not, and the sizes are remembered in `agent.json`.
 - The conversation lists messages in Markdown, tool calls with their state, approval questions and problems. It is kept in memory only, since it can hold a revealed password.
+- While a turn runs, a moving bar and "Working…" show above the message box, and Send becomes Stop.
 - Enter sends and Shift+Enter makes a new line. Stop ends the turn by killing the client's process tree. A bin button clears the chat: it stops any running turn, shows nothing more from it, and forgets the session and what was allowed.
 
 ## Prompts

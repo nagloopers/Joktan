@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Joktan.Agent\Joktan.Agent.csproj" />
+  </ItemGroup>
+</Project>

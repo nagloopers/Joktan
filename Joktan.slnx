@@ -26,6 +26,7 @@
     <Project Path="tests/Joktan.Mqtt.Tests/Joktan.Mqtt.Tests.csproj" />
     <Project Path="tests/Joktan.Notes.Tests/Joktan.Notes.Tests.csproj" />
     <Project Path="tests/Joktan.Passwords.Tests/Joktan.Passwords.Tests.csproj" />
+    <Project Path="tests/Joktan.Agent.Tests/Joktan.Agent.Tests.csproj" />
     <Project Path="tests/Joktan.Pomodoro.Tests/Joktan.Pomodoro.Tests.csproj" />
     <Project Path="tests/Joktan.Settings.Tests/Joktan.Settings.Tests.csproj" />
     <Project Path="tests/Joktan.TopicDashboards.Tests/Joktan.TopicDashboards.Tests.csproj" />

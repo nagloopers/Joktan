@@ -16,6 +16,8 @@ To give it a window of its own, press the window button in the panel's header. P
 The conversation carries on either way, and Joktan remembers where you left the panel. Closing the window closes the
 panel, and the icon brings it back.
 
+While the agent is working, **Working…** shows above the message box and **Send** becomes **Stop**.
+
 ## Talking to the agent
 
 Speech is off to begin with. Switch on **Voice input** on the Settings / Agent page, and a microphone appears beside the message box.
