@@ -1,0 +1,2 @@
+# Line breaks inside a resource's value are part of its text, so they must not depend on the checkout.
+*.resx text eol=lf
