@@ -81,6 +81,7 @@ public partial class AgentPanel : UserControl
 
     private void OnDraftFocusRequested()
     {
+        PromptsButton.Flyout?.Hide();
         DraftBox.Focus();
         DraftBox.CaretIndex = DraftBox.Text?.Length ?? 0;
     }

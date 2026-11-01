@@ -243,105 +243,12 @@
                         </StackPanel>
                     </Border>
 
-                    <!-- Defaults -->
-                    <Border Classes="card">
-                        <StackPanel Spacing="12" DataContext="{Binding $parent[UserControl].((vm:CertificatesViewModel)DataContext).Defaults}" x:DataType="vm:CertificateDefaultsViewModel">
-                            <Grid ColumnDefinitions="*,Auto">
-                                <StackPanel>
-                                    <TextBlock Classes="card-title" Text="Defaults" />
-                                    <TextBlock Classes="card-subtitle"
-                                               Text="What a new certificate is filled in with; each one can still be changed. A certificate signed by a CA takes the organisation, unit, locality, state and country from the CA, and these where the CA has none. Saved as you type." />
-                                </StackPanel>
-                                <Button Grid.Column="1" Classes="small" Content="Reset" VerticalAlignment="Top" Margin="16,0,0,0"
-                                        Command="{Binding ResetCommand}"
-                                        ToolTip.Tip="Go back to the built-in defaults" />
-                            </Grid>
-
-                            <Grid ColumnDefinitions="*,*" ColumnSpacing="16" RowDefinitions="Auto,Auto,Auto" RowSpacing="12">
-                                <StackPanel>
-                                    <TextBlock Classes="field-label" Text="Root CA common name" />
-                                    <TextBox Text="{Binding RootCommonName}" />
-                                </StackPanel>
-                                <StackPanel Grid.Column="1">
-                                    <TextBlock Classes="field-label" Text="Intermediate CA common name" />
-                                    <TextBox Text="{Binding IntermediateCommonName}" />
-                                </StackPanel>
-                                <StackPanel Grid.Row="1">
-                                    <TextBlock Classes="field-label" Text="Server common name" />
-                                    <TextBox Text="{Binding ServerCommonName}" />
-                                </StackPanel>
-                                <StackPanel Grid.Row="1" Grid.Column="1">
-                                    <TextBlock Classes="field-label" Text="Client common name" />
-                                    <TextBox Text="{Binding ClientCommonName}" />
-                                </StackPanel>
-                                <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
-                                    <TextBlock Classes="field-label" Text="Server host names and IP addresses" />
-                                    <TextBox Text="{Binding ServerAlternativeNames}" PlaceholderText="localhost, 127.0.0.1, ::1" />
-                                </StackPanel>
-                            </Grid>
-
-                            <Grid ColumnDefinitions="*,*" ColumnSpacing="16" RowDefinitions="Auto,Auto" RowSpacing="12">
-                                <StackPanel>
-                                    <TextBlock Classes="field-label" Text="Organisation (O)" />
-                                    <TextBox Text="{Binding Organization}" />
-                                </StackPanel>
-                                <StackPanel Grid.Column="1">
-                                    <TextBlock Classes="field-label" Text="Organisational unit (OU)" />
-                                    <TextBox Text="{Binding OrganizationalUnit}" />
-                                </StackPanel>
-                                <StackPanel Grid.Row="1">
-                                    <TextBlock Classes="field-label" Text="Locality (L)" />
-                                    <TextBox Text="{Binding Locality}" />
-                                </StackPanel>
-                                <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="*,90" ColumnSpacing="16">
-                                    <StackPanel>
-                                        <TextBlock Classes="field-label" Text="State or province (ST)" />
-                                        <TextBox Text="{Binding State}" />
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="1">
-                                        <TextBlock Classes="field-label" Text="Country (C)" />
-                                        <TextBox Text="{Binding Country}" MaxLength="2" PlaceholderText="ZA" />
-                                    </StackPanel>
-                                </Grid>
-                            </Grid>
-
-                            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="16">
-                                <StackPanel>
-                                    <TextBlock Classes="field-label" Text="Key" />
-                                    <ComboBox ItemsSource="{Binding KeyAlgorithms}" SelectedItem="{Binding SelectedKeyAlgorithm}" HorizontalAlignment="Stretch" />
-                                </StackPanel>
-                                <StackPanel Grid.Column="1">
-                                    <TextBlock Classes="field-label" Text="CAs valid for (days)" />
-                                    <TextBox Text="{Binding AuthorityValidityDays}" />
-                                </StackPanel>
-                                <StackPanel Grid.Column="2">
-                                    <TextBlock Classes="field-label" Text="Certificates valid for (days)" />
-                                    <TextBox Text="{Binding CertificateValidityDays}"
-                                             ToolTip.Tip="Apple's systems refuse TLS server certificates valid for more than 825 days" />
-                                </StackPanel>
-                            </Grid>
-
-                            <StackPanel>
-                                <TextBlock Classes="field-label" Text="Folder for MQTT clients' certificates" />
-                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                    <TextBox Classes="code" Text="{Binding ClientFolder}" PlaceholderText="{Binding DefaultClientFolder}" />
-                                    <Button Grid.Column="1" Content="Browse" Command="{Binding BrowseClientFolderCommand}" />
-                                </Grid>
-                                <TextBlock Classes="info-label" Margin="0,6,0,0" TextWrapping="Wrap"
-                                           Text="A CA or client certificate picked in an MQTT client's settings is copied here when the client is saved, into a folder named after the client: ca.crt, client.crt and client.key. The client uses the copies. Empty for the folder shown." />
-                            </StackPanel>
-
-                            <TextBlock Classes="error" TextWrapping="Wrap"
-                                       Text="{Binding Error}"
-                                       IsVisible="{Binding Error, Converter={x:Static ObjectConverters.IsNotNull}}" />
-                        </StackPanel>
-                    </Border>
-
                     <TextBlock Classes="info-label" TextWrapping="Wrap">
                         <Run Text="Each certificate is made in the folder chosen for it; the list is kept in" />
                         <Run FontFamily="{DynamicResource CodeFontFamily}" Text="{Binding IndexPath, Mode=OneWay}" />
                         <Run Text=". Private keys are stored unencrypted; on Linux and macOS only you can read them. " />
-                        <Run Text="Anyone with a CA's key can make certificates that clients and brokers trusting the CA accept." />
+                        <Run Text="Anyone with a CA's key can make certificates that clients and brokers trusting the CA accept. " />
+                        <Run Text="What a new certificate is filled in with is set on Settings / Certificate Defaults." />
                     </TextBlock>
                 </StackPanel>
             </ScrollViewer>

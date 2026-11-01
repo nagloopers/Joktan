@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:Joktan.Agent.ViewModels"
+             xmlns:agent="using:Joktan.Agent"
                       xmlns:core="using:Joktan.Core"
              xmlns:md="using:Joktan.Core.Controls"
              x:Class="Joktan.Agent.Views.AgentPanel"
@@ -86,21 +87,44 @@
                 <StackPanel Spacing="6">
                 <TextBlock Classes="info-label" TextWrapping="Wrap" Text="{Binding TalkMessage}"
                            IsVisible="{Binding TalkMessage, Converter={x:Static ObjectConverters.IsNotNull}}" />
-                <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
-                    <TextBox Name="DraftBox"
+                <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="8">
+                    <Button Name="PromptsButton" VerticalAlignment="Bottom" Classes="icon-button" ToolTip.Tip="Prompts">
+                        <PathIcon Data="{x:Static core:Icons.Prompt}" Foreground="{DynamicResource AgentPromptBrush}" />
+                        <Button.Flyout>
+                            <Flyout Placement="TopEdgeAlignedLeft">
+                                <ScrollViewer MaxHeight="320" MaxWidth="360" HorizontalScrollBarVisibility="Disabled">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Classes="info-label" TextWrapping="Wrap" IsVisible="{Binding HasNoPrompts}"
+                                                   Text="No prompts. Add them on the Settings / Agent page." />
+                                        <ItemsControl Name="PromptChoices" ItemsSource="{Binding Prompts}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="agent:AgentPrompt">
+                                                    <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent"
+                                                            Content="{Binding Name}" ToolTip.Tip="{Binding Text}"
+                                                            Command="{Binding $parent[UserControl].((vm:AgentViewModel)DataContext).UsePromptCommand}"
+                                                            CommandParameter="{Binding}" />
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                    <TextBox Name="DraftBox" Grid.Column="1"
                              Text="{Binding Draft}"
                              PlaceholderText="{Binding DraftHint}"
                              AcceptsReturn="True"
                              TextWrapping="Wrap"
                              MaxHeight="160" />
-                    <Button Name="TalkButton" Grid.Column="1" VerticalAlignment="Bottom" Classes="icon-button"
+                    <Button Name="TalkButton" Grid.Column="2" VerticalAlignment="Bottom" Classes="icon-button"
                             Focusable="False"
                             IsVisible="{Binding CanTalk}" IsEnabled="{Binding CanPressTalk}">
                         <PathIcon Classes.listening="{Binding IsListening}" Data="{x:Static core:Icons.Microphone}" />
                     </Button>
-                    <Button Grid.Column="2" VerticalAlignment="Bottom" Classes="small" Content="Send"
+                    <Button Grid.Column="3" VerticalAlignment="Bottom" Classes="small" Content="Send"
                             IsVisible="{Binding IsIdle}" Command="{Binding SendCommand}" />
-                    <Button Grid.Column="2" VerticalAlignment="Bottom" Classes="small" Content="Stop"
+                    <Button Grid.Column="3" VerticalAlignment="Bottom" Classes="small" Content="Stop"
                             IsVisible="{Binding IsBusy}" Command="{Binding StopCommand}" />
                 </Grid>
                 </StackPanel>

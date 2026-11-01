@@ -18,7 +18,7 @@ public static class AgentTools
         .. InboxTools.Create(app.Inbox, app.Messaging),
         .. ExplorerTools.Create(app.Explorer),
         .. DashboardTools.Create(app.Dashboards),
-        .. CertificateTools.Create(app.Certificates),
+        .. CertificateTools.Create(app.Certificates, app.CertificateDefaults),
         .. ApiTools.Create(app.Api),
         .. ContainerTools.Create(app.Containers),
         .. SettingsTools.Create(app),

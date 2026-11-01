@@ -117,6 +117,32 @@ public class CertificateDefaultsViewModelTests : CertificateTestBase
     }
 
     [Fact]
+    public void A_folder_changed_elsewhere_is_shown_and_not_put_back_by_the_next_edit()
+    {
+        var vm = new CertificateDefaultsViewModel(Store);
+        var defaults = Store.Defaults.Clone();
+        defaults.ClientFolder = Folder.Path;
+
+        Store.SaveDefaults(defaults);
+        Assert.Equal(Folder.Path, vm.ClientFolder);
+
+        vm.Organization = "Acme";
+
+        var loaded = CertificateStore.Load(Folder.Path).Defaults;
+        Assert.Equal(Folder.Path, loaded.ClientFolder);
+        Assert.Equal("Acme", loaded.Organization);
+    }
+
+    [Fact]
+    public void What_is_being_typed_is_not_replaced_by_what_was_saved()
+    {
+        var vm = new CertificateDefaultsViewModel(Store) { Organization = "Acme " };
+
+        Assert.Equal("Acme ", vm.Organization);
+        Assert.Equal("Acme", Store.Defaults.Organization);
+    }
+
+    [Fact]
     public async Task Browsing_uses_the_folder_picked_if_any()
     {
         var cancel = TestContext.Current.CancellationToken;

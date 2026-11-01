@@ -26,14 +26,11 @@ public partial class CertificatesViewModel : PageViewModel
     {
         _store = store;
         _usedBy = usedBy;
-        Defaults = new CertificateDefaultsViewModel(store);
         Refresh();
     }
 
     /// <summary>The root CAs, each with what it signed below it.</summary>
     public ObservableCollection<CertificateNodeViewModel> Roots { get; } = [];
-
-    public CertificateDefaultsViewModel Defaults { get; }
 
     public string IndexPath => _store.IndexPath;
 

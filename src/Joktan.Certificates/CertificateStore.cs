@@ -58,6 +58,9 @@ public sealed class CertificateStore
 
     public CertificateDefaults Defaults => _index.Defaults;
 
+    /// <summary>Raised when the defaults have been saved, as more than one page changes them.</summary>
+    public event Action? DefaultsChanged;
+
     /// <summary>The folder the last root CA was made in.</summary>
     public string AuthorityFolder => _index.AuthorityFolder is { Length: > 0 } folder ? folder : Folder;
 
@@ -255,6 +258,7 @@ public sealed class CertificateStore
     {
         _index.Defaults = defaults.Clone();
         Save();
+        DefaultsChanged?.Invoke();
     }
 
     /// <summary>

@@ -115,7 +115,7 @@ window of its own. It is specified in
 **Dev Tools / Certificates** makes certificate authorities, and the server and
 client certificates they sign, for brokers and clients using TLS and mutual TLS. Any number of
 CAs can be made, each certificate is kept below the CA that signed it, and the subject, key and
-expiry date of each can be set, starting from defaults that can be changed. Certificates can be
+expiry date of each can be set, starting from defaults set on Settings / Certificate Defaults. Certificates can be
 exported for a broker and picked in a client's settings. It is specified in
 [docs/features/dev-tools/connectivity/certificates/spec.md](docs/features/dev-tools/connectivity/certificates/spec.md).
 

@@ -117,6 +117,7 @@ public partial class MainViewModel : ViewModelBase
         var messaging = (MessagingViewModel)alertsAndMessages.Page!;
         var explorer = new TopicExplorerViewModel(mqtt, _topicDashboards);
         var certificatesPage = new CertificatesViewModel(certificates, mqtt.ClientsUsing);
+        var certificateDefaults = new CertificateDefaultsViewModel(certificates);
 
         // The tools are made when the server first starts, so a run without the agent pays nothing for them.
         Agent = new AgentViewModel(agentSettings ?? AgentSettings.Load(), () => AgentTools.All(new AgentContext
@@ -134,6 +135,7 @@ public partial class MainViewModel : ViewModelBase
             Explorer = explorer,
             Dashboards = _topicDashboards,
             Certificates = certificatesPage,
+            CertificateDefaults = certificateDefaults,
             Api = _apiClient,
             Containers = _containers,
             SearchSettings = searchPage,
@@ -166,6 +168,7 @@ public partial class MainViewModel : ViewModelBase
                 new NavItemViewModel("Fonts") { Page = new FontsViewModel(themes, themeBar), HelpTopic = "themes" },
                 new NavItemViewModel("Text Sizes") { Page = new TextSizesViewModel(themes, themeBar), HelpTopic = "themes" },
                 alertsAndMessages,
+                new NavItemViewModel("Certificate Defaults") { Page = certificateDefaults, HelpTopic = "certificates" },
                 foldersItem,
                 new NavItemViewModel("Agent") { Page = new AgentSettingsViewModel(Agent), HelpTopic = "agent" }) { CanHide = false },
         ];

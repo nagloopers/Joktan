@@ -3,7 +3,8 @@
 Settings is a group in the menu. Its Menu page arranges the menu, its [Search](help:search) page chooses
 what the search box looks through, its Themes, Colours, Fonts and
 Text Sizes pages set how the app looks, its [Alerts and Messages](help:alerts-and-messages) page sets
-up their MQTT server and how you appear in messages, its [Folders and Backup](help:folders-and-backup) page shows
+up their MQTT server and how you appear in messages, its [Certificate Defaults](help:certificates) page sets what a
+new certificate is filled in with, its [Folders and Backup](help:folders-and-backup) page shows
 where everything is kept, and backs it up and restores it, and its [Agent](help:agent) page chooses the command-line
 client the agent panel runs. Everything else is set up on the page it
 belongs to, and is saved as it changes. Nothing here needs setting up before you start.
@@ -70,6 +71,7 @@ separate copy.
 | `api-location.json` | The requests folder that was chosen |
 | `api-state.json` | The request open last |
 | `api-last-sent.json` | What each request last sent |
+| `agent.json` | The agent's client, speech settings and prompts, and where its panel was left |
 | `containers.json` | Compose files, the engine, and whether the logs are collapsed |
 
 Some things can be kept elsewhere, such as in a synced folder or in version control. See

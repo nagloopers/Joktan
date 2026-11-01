@@ -28,6 +28,7 @@
             <SolidColorBrush x:Key="Chart6Brush" Color="#008300" />
             <SolidColorBrush x:Key="Chart7Brush" Color="#6250D6" />
             <SolidColorBrush x:Key="Chart8Brush" Color="#E34948" />
+            <SolidColorBrush x:Key="AgentPromptBrush" Color="#EAB308" />
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
             <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="#1A1238" />
@@ -53,6 +54,7 @@
             <SolidColorBrush x:Key="Chart6Brush" Color="#008300" />
             <SolidColorBrush x:Key="Chart7Brush" Color="#9085E9" />
             <SolidColorBrush x:Key="Chart8Brush" Color="#E66767" />
+            <SolidColorBrush x:Key="AgentPromptBrush" Color="#FFD54A" />
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 

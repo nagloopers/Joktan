@@ -5,7 +5,7 @@ kept in themes, and where Joktan keeps things, with backing them up and restorin
 
 | Item      | Value       |
 |-----------|-------------|
-| Menu path | Settings / Menu, Search, Themes, Colours, Fonts, Text Sizes, Alerts and Messages, Folders and Backup |
+| Menu path | Settings / Menu, Search, Themes, Colours, Fonts, Text Sizes, Alerts and Messages, Certificate Defaults, Folders and Backup |
 | Status    | Implemented |
 
 ## Purpose
@@ -26,6 +26,7 @@ Settings is a group in the menu, with one page for each kind of setting.
 | Fonts | Every font of the theme |
 | Text Sizes | Every text size of the theme |
 | Alerts and Messages | The MQTT server for alerts and messages, and the name and picture on messages. See [its spec](../alerts-and-messages/spec.md) |
+| Certificate Defaults | What a new certificate is filled in with. See [its spec](../dev-tools/connectivity/certificates/spec.md#defaults) |
 | Folders and Backup | Every folder Joktan keeps things in, backing them up, and restoring them. See [below](#folders-and-backup) |
 
 ## Menu page layout

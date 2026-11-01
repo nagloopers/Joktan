@@ -92,18 +92,6 @@ public class CertificatesViewTests : CertificateTestBase
     });
 
     [Fact]
-    public Task Picking_a_folder_gives_nothing_without_a_system_dialog() => Headless.Run(async () =>
-    {
-        var vm = Page();
-        var view = new CertificatesView { DataContext = vm };
-        Assert.Null(await vm.Defaults.PickFolder!());
-
-        var window = Headless.Show(view);
-        Assert.Null(await vm.Defaults.PickFolder!());
-        window.Close();
-    });
-
-    [Fact]
     public Task Opening_the_folder_needs_a_selection_and_the_folder_there() => Headless.Run(() =>
     {
         var entry = Root();

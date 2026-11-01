@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -110,6 +111,22 @@ public partial class AgentSettingsViewModel : PageViewModel
 
     [ObservableProperty]
     public partial string? Message { get; private set; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(NewPromptProblem))]
+    [NotifyCanExecuteChangedFor(nameof(AddPromptCommand))]
+    public partial string NewPromptName { get; set; } = "";
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(AddPromptCommand))]
+    public partial string NewPromptText { get; set; } = "";
+
+    /// <summary>Why the new prompt's name cannot be used, or null.</summary>
+    public string? NewPromptProblem => IsNameTaken ? $"There is already a prompt called {NewPromptName.Trim()}." : null;
+
+    private bool IsNameTaken => Agent.Prompts.Any(p => p.Name.Equals(NewPromptName.Trim(), StringComparison.OrdinalIgnoreCase));
+
+    private bool CanAddPrompt => NewPromptName.Trim().Length > 0 && NewPromptText.Trim().Length > 0 && !IsNameTaken;
 
     public string CustomArguments
     {
@@ -222,6 +239,24 @@ public partial class AgentSettingsViewModel : PageViewModel
         var voices = await SpeechOutput.VoicesAsync();
         Voices = [SystemVoice, .. voices];
         OnPropertyChanged(nameof(SelectedVoice));
+    }
+
+    [RelayCommand(CanExecute = nameof(CanAddPrompt))]
+    private void AddPrompt()
+    {
+        Agent.Prompts.Add(new AgentPrompt { Name = NewPromptName.Trim(), Text = NewPromptText.Trim() });
+        _settings.Save();
+        NewPromptName = "";
+        NewPromptText = "";
+    }
+
+    [RelayCommand]
+    private void RemovePrompt(AgentPrompt prompt)
+    {
+        Agent.Prompts.Remove(prompt);
+        _settings.Save();
+        OnPropertyChanged(nameof(NewPromptProblem));
+        AddPromptCommand.NotifyCanExecuteChanged();
     }
 
     [RelayCommand]

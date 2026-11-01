@@ -32,7 +32,6 @@ public class CertificatesViewModelTests : CertificateTestBase
         Assert.False(vm.HasSelection);
         Assert.Equal("", vm.DeleteText);
         Assert.Equal(Store.IndexPath, vm.IndexPath);
-        Assert.NotNull(vm.Defaults);
     }
 
     [Fact]

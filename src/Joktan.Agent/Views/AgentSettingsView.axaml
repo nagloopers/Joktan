@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:Joktan.Agent.ViewModels"
+             xmlns:agent="using:Joktan.Agent"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="1040" d:DesignHeight="736"
@@ -57,6 +58,44 @@
                                 <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding AllowClientTools}" />
                             </Grid>
                         </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border Classes="card">
+                    <StackPanel Spacing="10">
+                        <TextBlock Classes="card-title" Text="Prompts" />
+                        <TextBlock Classes="card-subtitle" TextWrapping="Wrap"
+                                   Text="Requests kept ready, offered by the lightning button beside the message box in the chat. Picking one puts it in the box, to change or send." />
+
+                        <TextBlock Classes="info-label" Text="No prompts. Add one below." IsVisible="{Binding Agent.HasNoPrompts}" />
+                        <ItemsControl Name="PromptList" ItemsSource="{Binding Agent.Prompts}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="agent:AgentPrompt">
+                                    <Border Classes="table-row">
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <StackPanel>
+                                                <TextBlock Classes="table-cell" Text="{Binding Name}" />
+                                                <TextBlock Classes="info-label" TextWrapping="Wrap" Text="{Binding Text}" />
+                                            </StackPanel>
+                                            <Button Grid.Column="1" Classes="small" Content="Remove" VerticalAlignment="Center"
+                                                    Command="{Binding $parent[UserControl].((vm:AgentSettingsViewModel)DataContext).RemovePromptCommand}"
+                                                    CommandParameter="{Binding}" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock Classes="field-label" Text="Name" />
+                        <TextBox Text="{Binding NewPromptName}" PlaceholderText="What the chat lists it as" />
+                        <TextBlock Classes="error" TextWrapping="Wrap" Text="{Binding NewPromptProblem}"
+                                   IsVisible="{Binding NewPromptProblem, Converter={x:Static ObjectConverters.IsNotNull}}" />
+
+                        <TextBlock Classes="field-label" Text="Prompt" />
+                        <TextBox Text="{Binding NewPromptText}" AcceptsReturn="True" TextWrapping="Wrap" MaxHeight="160"
+                                 PlaceholderText="What goes in the message box" />
+
+                        <Button Classes="small" Content="Add prompt" Command="{Binding AddPromptCommand}" />
                     </StackPanel>
                 </Border>
 

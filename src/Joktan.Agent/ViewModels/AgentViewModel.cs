@@ -58,6 +58,7 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
         IsReadingAloud = settings.ReadAloud;
         _speech.SpeakingChanged += speaking => Dispatcher.UIThread.Post(() => IsSpeaking = speaking);
         Items.CollectionChanged += (_, _) => OnPropertyChanged(nameof(IsEmpty));
+        Prompts.CollectionChanged += (_, _) => OnPropertyChanged(nameof(HasNoPrompts));
     }
 
     /// <summary>Starts the server now if outside clients expect it, once the pages the tools act on exist.</summary>
@@ -72,6 +73,11 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
     public IReadOnlyList<AgentClient> Clients => AgentClient.All;
 
     public ObservableCollection<ViewModelBase> Items { get; } = [];
+
+    /// <summary>The prompts offered in the chat, added to and removed from on Settings / Agent.</summary>
+    public ObservableCollection<AgentPrompt> Prompts => Settings.Prompts;
+
+    public bool HasNoPrompts => Prompts.Count == 0;
 
     /// <summary>The MCP server's state, for the settings page. Null when it could not start.</summary>
     [ObservableProperty]
@@ -372,6 +378,14 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
         _sendAfterTurn = false;
         foreach (var approval in Items.OfType<ApprovalViewModel>())
             approval.Withdraw("Stopped");
+    }
+
+    // Into the box and not sent, so it can be finished off first, as the agent acts on what it is told.
+    [RelayCommand]
+    private void UsePrompt(AgentPrompt prompt)
+    {
+        Draft = Draft.Trim().Length > 0 ? $"{Draft.TrimEnd()} {prompt.Text}" : prompt.Text;
+        DraftFocusRequested?.Invoke();
     }
 
     private bool CanSend => !IsBusy && Draft.Trim().Length > 0;

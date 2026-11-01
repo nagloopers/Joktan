@@ -75,8 +75,8 @@ folder once it is empty. MQTT clients that picked them here keep their own copie
 
 ## Configuring the defaults
 
-The **Defaults** card sets what a new certificate is filled in with. Each change is saved as soon as it is
-valid; an invalid value is named under the card. **Reset** returns to the built-in ones.
+The Settings / Certificate Defaults page sets what a new certificate is filled in with. Each change is saved
+as soon as it is valid; an invalid value is named under the card. **Reset** returns to the built-in ones.
 
 - The common name for each kind, and **Server host names and IP addresses**.
 - **Organisation**, **Organisational unit**, **Locality**, **State or province** and **Country**. A certificate

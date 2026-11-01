@@ -4,7 +4,7 @@ namespace Joktan.Certificates;
 
 /// <summary>
 /// What a new certificate is filled in with. Every value can be changed for each certificate, and
-/// the defaults themselves can be changed on the Certificates page.
+/// the defaults themselves can be changed on the Settings / Certificate Defaults page.
 /// </summary>
 public sealed class CertificateDefaults
 {

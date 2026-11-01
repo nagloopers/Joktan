@@ -23,8 +23,8 @@ pick the client's files in its MQTT settings.
 3. On the left, **Authorities and certificates**: a tree with each root CA at the top and every
    certificate below the CA that signed it. Each entry shows a dot in the colour of its state, its
    name, its kind and its expiry date.
-4. On the right, the selected certificate, then the **Defaults** card, then where the
-   certificates are kept.
+4. On the right, the selected certificate, then where the certificates are kept, and that the
+   defaults are on Settings / Certificate Defaults.
 
 ## Kinds of certificate
 
@@ -127,8 +127,7 @@ rest is read from the certificate files.
 On Linux and macOS each certificate's folder and key file can be read only by the user. A
 chosen folder that does not exist is made with the usual permissions. The keys are not
 encrypted, so anyone who can read them can use them, and anyone with a CA's key can make
-certificates that brokers and clients trusting that CA accept. The page says so below the
-defaults.
+certificates that brokers and clients trusting that CA accept. The page says so at the bottom.
 
 ## Export
 
@@ -157,9 +156,9 @@ to connect with "The … file … does not exist".
 
 ## Defaults
 
-The **Defaults** card sets what a new certificate is filled in with. Each change is saved as
-soon as the values are valid; an invalid value is named under the card and not saved. **Reset**
-returns to the built-in defaults.
+The **Settings / Certificate Defaults** page sets what a new certificate is filled in with. Each
+change is saved as soon as the values are valid; an invalid value is named under the card and not
+saved. **Reset** returns to the built-in defaults.
 
 | Default                             | Built in                    |
 |-------------------------------------|-----------------------------|
@@ -189,7 +188,7 @@ refuse TLS server certificates valid for longer.
 
   When the client is saved with TLS on, what was picked is copied into a folder of its own, named
   after the client in lower case with dashes, inside the folder for MQTT clients' certificates
-  (see **Defaults**):
+  (see [Defaults](#defaults)):
 
   | File         | Copied from                                         |
   |--------------|-----------------------------------------------------|

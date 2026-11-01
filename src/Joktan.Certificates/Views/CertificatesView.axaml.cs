@@ -23,7 +23,6 @@ public partial class CertificatesView : UserControl
         {
             vm.EditNewCertificate = EditNewCertificateAsync;
             vm.EditExport = EditExportAsync;
-            vm.Defaults.PickFolder = PickFolderAsync;
         }
     }
 
@@ -48,19 +47,6 @@ public partial class CertificatesView : UserControl
             return false;
 
         return await new ExportCertificateWindow { DataContext = vm }.ShowDialog<bool>(owner);
-    }
-
-    private async Task<string?> PickFolderAsync()
-    {
-        if (TopLevel.GetTopLevel(this) is not { } top)
-            return null;
-
-        var folders = await top.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
-        {
-            Title = "Choose the folder for MQTT clients' certificates",
-            AllowMultiple = false,
-        });
-        return folders.Count > 0 ? folders[0].TryGetLocalPath() : null;
     }
 
     private async void OnOpenFolderClick(object? sender, RoutedEventArgs e)

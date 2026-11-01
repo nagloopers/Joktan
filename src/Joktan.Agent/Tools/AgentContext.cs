@@ -34,6 +34,7 @@ public sealed class AgentContext
     public required TopicExplorerViewModel Explorer { get; init; }
     public required TopicDashboardsViewModel Dashboards { get; init; }
     public required CertificatesViewModel Certificates { get; init; }
+    public required CertificateDefaultsViewModel CertificateDefaults { get; init; }
     public required ApiClientViewModel Api { get; init; }
     public required ContainersViewModel Containers { get; init; }
     public required SearchSettingsViewModel SearchSettings { get; init; }

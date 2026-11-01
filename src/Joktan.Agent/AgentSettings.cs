@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -29,6 +30,25 @@ public sealed class AgentClientProfile
     public string ExtraArguments { get; set; } = "";
 }
 
+/// <summary>A request kept ready to put in the message box.</summary>
+public sealed class AgentPrompt
+{
+    public string Name { get; set; } = "";
+
+    public string Text { get; set; } = "";
+
+    /// <summary>The prompts Joktan starts with, which can be removed like any other.</summary>
+    public static ObservableCollection<AgentPrompt> Predefined() =>
+    [
+        new() { Name = "What can you do?", Text = "What can you do in Joktan? Give me a short list, with an example of each." },
+        new() { Name = "Summarise the alerts", Text = "Summarise the latest alerts and messages, most important first." },
+        new() { Name = "Note the alerts", Text = "Make a note of today's alerts." },
+        new() { Name = "Check the certificates", Text = "List the certificates that have expired or expire within 30 days." },
+        new() { Name = "Check the MQTT clients", Text = "Which MQTT clients are connected, and which are not?" },
+        new() { Name = "Check the containers", Text = "Which containers are running, and do any look unwell?" },
+    ];
+}
+
 /// <summary>Settings / Agent, and where the panel was left. The token for outside clients is kept in the credential store.</summary>
 public sealed class AgentSettings
 {
@@ -56,6 +76,9 @@ public sealed class AgentSettings
 
     /// <summary>Whether the chat has the microphone button.</summary>
     public bool VoiceInput { get; set; }
+
+    /// <summary>The prompts offered in the chat. Saved whole, so one that was removed stays removed.</summary>
+    public ObservableCollection<AgentPrompt> Prompts { get; set; } = AgentPrompt.Predefined();
 
     /// <summary>Whether clients from outside the app may connect.</summary>
     public bool OutsideEnabled { get; set; }

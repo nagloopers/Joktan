@@ -8,19 +8,29 @@ using Joktan.Core.ViewModels;
 
 namespace Joktan.Certificates.ViewModels;
 
-/// <summary>The defaults new certificates are filled in with. Saved as soon as they are valid.</summary>
-public partial class CertificateDefaultsViewModel : ViewModelBase
+/// <summary>Settings / Certificate Defaults: what new certificates are filled in with. Saved as soon as they are valid.</summary>
+public partial class CertificateDefaultsViewModel : PageViewModel
 {
     private const int MaxValidityDays = 36500;
 
     private readonly CertificateStore _store;
     private bool _loading;
+    private bool _saving;
 
-    public CertificateDefaultsViewModel(CertificateStore store)
+    public CertificateDefaultsViewModel(CertificateStore store) : base("Certificate Defaults", "Settings / Certificate Defaults")
     {
         _store = store;
         KeyAlgorithms = System.Enum.GetValues<KeyAlgorithm>().Select(a => new Choice<KeyAlgorithm>(a, a.Text())).ToList();
         Load(store.Defaults);
+
+        // Folders and Backup changes the folder too. Without this, the next edit here would put the old one back.
+        store.DefaultsChanged += () =>
+        {
+            if (_saving)
+                return;
+            Load(store.Defaults);
+            Error = null;
+        };
     }
 
     public IReadOnlyList<Choice<KeyAlgorithm>> KeyAlgorithms { get; }
@@ -85,7 +95,7 @@ public partial class CertificateDefaultsViewModel : ViewModelBase
 
         Error = Check();
         if (Error is null)
-            _store.SaveDefaults(ToDefaults());
+            Save();
     }
 
     [RelayCommand]
@@ -100,7 +110,15 @@ public partial class CertificateDefaultsViewModel : ViewModelBase
     {
         Load(new CertificateDefaults());
         Error = null;
+        Save();
+    }
+
+    // What is being typed stays as it is, and is not replaced by the trimmed value saved.
+    private void Save()
+    {
+        _saving = true;
         _store.SaveDefaults(ToDefaults());
+        _saving = false;
     }
 
     private void Load(CertificateDefaults defaults)

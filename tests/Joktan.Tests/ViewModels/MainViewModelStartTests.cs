@@ -114,6 +114,18 @@ public class MainViewModelStartTests : DataFolderTest, IDisposable
     });
 
     [Fact]
+    public Task The_certificate_defaults_are_a_page_of_settings() => Headless.Run(() =>
+    {
+        var main = New();
+        var settings = main.MenuItems.First(i => i.Title == "Settings");
+        var defaults = settings.Children.Single(i => i.Title == "Certificate Defaults");
+
+        Assert.Equal("Settings / Certificate Defaults", defaults.Page!.Subtitle);
+        Assert.Equal("certificates", defaults.HelpTopic);
+        Assert.Single(Leaves(main.MenuItems), item => item.Title == "Certificates");
+    });
+
+    [Fact]
     public Task A_layout_saved_under_the_old_group_name_still_applies_to_brokers() => Headless.Run(() =>
     {
         var layout = new Joktan.Settings.MenuLayout

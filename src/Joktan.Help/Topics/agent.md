@@ -35,6 +35,14 @@ Anything you say is a request like any other, such as "make a note of today's al
 As messages go without being checked, a misheard word can reach the agent, which may act on it if it is an ordinary edit. Approval questions are always answered by clicking, so a misheard word cannot allow anything risky. A recording stops by itself after two
 minutes. It understands English.
 
+## Prompts
+
+Press the lightning button beside the message box to pick a prompt, a request kept ready. It goes in the box, where
+you can change it, and nothing is sent until you press **Send**.
+
+Joktan comes with a few. Add your own, or remove any of them, in the **Prompts** card on the Settings / Agent page.
+To change the colour of the button, set **Prompts button** on the Settings / Colours page, under Agent.
+
 ## What it asks you first
 
 | What the agent does | What happens |

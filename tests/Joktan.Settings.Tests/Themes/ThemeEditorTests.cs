@@ -314,6 +314,22 @@ public class ThemeEditorTests : DataFolderTest
     }
 
     [Fact]
+    public Task The_agents_prompts_button_is_yellow_and_can_be_set_like_any_colour() => Headless.Run(() =>
+    {
+        Assert.Contains(ThemeTokens.Colors, t => t.Key == "AgentPromptBrush" && t.Label == "Prompts button" && t.Group == "Agent");
+
+        var editor = ThemeEditor.Load();
+        Assert.Equal("#EAB308", editor.Themes.Single(t => t.Name == BuiltInThemes.LightName).Colors["AgentPromptBrush"], ignoreCase: true);
+        Assert.Equal("#FFD54A", editor.Themes.Single(t => t.Name == BuiltInThemes.DarkName).Colors["AgentPromptBrush"], ignoreCase: true);
+
+        editor.Apply();
+        editor.SetColor("AgentPromptBrush", "#123456");
+
+        Assert.True(Avalonia.Application.Current!.TryGetResource("AgentPromptBrush", null, out var brush));
+        Assert.Equal(Avalonia.Media.Color.Parse("#123456"), ((Avalonia.Media.ISolidColorBrush)brush!).Color);
+    });
+
+    [Fact]
     public Task The_search_highlight_can_be_set_like_any_colour() => Headless.Run(() =>
     {
         Assert.Contains(ThemeTokens.Colors, t => t.Key == "SearchMatchBrush" && t.Label == "Highlight");

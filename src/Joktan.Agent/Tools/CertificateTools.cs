@@ -21,7 +21,7 @@ public static class CertificateTools
         P.OptText("valid_until", "The last day it is valid, as yyyy-MM-dd."), P.OptText("folder", "Where its files go."),
     ];
 
-    public static IEnumerable<McpTool> Create(CertificatesViewModel page) =>
+    public static IEnumerable<McpTool> Create(CertificatesViewModel page, CertificateDefaultsViewModel d) =>
     [
         Read("certificates_list", "List the certificates as their chains, with validity and problems.", [], _ => page.Roots.Select(Describe).ToList()),
         Read("certificates_get", "Read a certificate's details. Private keys are not given.", [CertificateName], args =>
@@ -106,7 +106,6 @@ public static class CertificateTools
         }),
         Read("certificates_defaults", "Read the defaults for new certificates.", [], _ =>
         {
-            var d = page.Defaults;
             return new
             {
                 d.ClientFolder, d.RootCommonName, d.IntermediateCommonName, d.ServerCommonName, d.ServerAlternativeNames, d.ClientCommonName, d.Organization, d.OrganizationalUnit,
@@ -115,7 +114,6 @@ public static class CertificateTools
         }),
         Change("certificates_defaults_update", "Change the defaults for new certificates. Give the property names as certificates_defaults does.", [P.Map("values", "The names and new values.")], args =>
         {
-            var d = page.Defaults;
             foreach (var (name, value) in args.Map("values"))
             {
                 switch (name)

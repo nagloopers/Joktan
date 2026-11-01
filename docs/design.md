@@ -93,6 +93,7 @@ Green Dark is Dark with these changes:
 | `HoverBrush` | `#EDEFF4` | `#262C3D` | Hovered icon buttons |
 | `TextBrush` | `#1C273C` | `#E6E9F0` | Titles and body text |
 | `TextMutedBrush` | `#7987A1` | `#8D97AD` | Subtitles, captions, placeholder icons |
+| `AgentPromptBrush` | `#EAB308` | `#FFD54A` | The agent panel's prompts button |
 
 ### Accent and data colours
 

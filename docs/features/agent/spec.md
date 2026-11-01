@@ -12,6 +12,13 @@ An AI agent works in the app through the app's own MCP server, and the user talk
 - The conversation lists messages in Markdown, tool calls with their state, approval questions and problems. It is kept in memory only, since it can hold a revealed password.
 - Enter sends and Shift+Enter makes a new line. Stop ends the turn by killing the client's process tree. A bin button clears the chat: it stops any running turn, shows nothing more from it, and forgets the session and what was allowed.
 
+## Prompts
+
+- A lightning button beside the message box lists the prompts by name. It is yellow to begin with, and is **Prompts button** on Settings / Colours, under Agent. Picking one adds its text to the message box and puts the cursor there. It is not sent, so it can be finished off first, and it can be picked while a turn is running.
+- Settings / Agent has a **Prompts** card: each prompt with **Remove**, which takes effect at once, and **Add prompt** with a name and the text. Both are needed, and a name must not already be in use, ignoring case.
+- Six prompts come with the app, and can be removed like any other. The list is kept in `agent.json` whole, so one that was removed stays removed. A file from before there were prompts starts with the six.
+- No tool changes prompts, as with the rest of Settings / Agent.
+
 ## Speech
 
 - Replies are read aloud when switched on, in the panel's header or on Settings / Agent, with a voice and a speed from 50% to 200%. It is off to begin with.
