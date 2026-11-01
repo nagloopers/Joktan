@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
+using Google.Protobuf;
 using Grpc.Core;
 using Grpc.Net.Client;
 using Joktan.Tests.TestSupport;
@@ -68,6 +71,63 @@ public class GrpcCallerTests : IAsyncLifetime
 
         Assert.True(response.IsSuccess);
         Assert.Equal(["echo a", "echo b"], JsonNode.Parse(response.Body)!.AsArray().Select(n => n!["name"]!.GetValue<string>()));
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task A_duplex_write_failure_stops_and_observes_the_reader_without_masking_the_error(bool failOnComplete)
+    {
+        var reader = new BlockingReader();
+        var failure = new InvalidOperationException("write failed");
+        var writer = new FailingWriter(reader.Started.Task, failure, failOnComplete);
+        var disposed = false;
+        using var stream = new AsyncDuplexStreamingCall<byte[], byte[]>(writer, reader,
+            Task.FromResult(new Metadata()), () => Status.DefaultSuccess, () => new Metadata(), () =>
+            {
+                disposed = true;
+                reader.Stop.TrySetResult();
+            });
+        var method = typeof(GrpcCaller).GetMethod("DuplexAsync", BindingFlags.NonPublic | BindingFlags.Static)!;
+        var task = (Task)method.Invoke(null, [stream, new List<byte[]> { Array.Empty<byte>() }, new List<ByteString>(), Cancel])!;
+
+        var error = await Assert.ThrowsAsync<InvalidOperationException>(() => task.WaitAsync(TimeSpan.FromSeconds(5), Cancel));
+
+        Assert.Same(failure, error);
+        Assert.True(disposed);
+        Assert.True(reader.Finished);
+    }
+
+    private sealed class BlockingReader : IAsyncStreamReader<byte[]>
+    {
+        public TaskCompletionSource Started { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        public TaskCompletionSource Stop { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        public bool Finished { get; private set; }
+        public byte[] Current => [];
+
+        public async Task<bool> MoveNext(CancellationToken cancellationToken)
+        {
+            Started.TrySetResult();
+            await Stop.Task;
+            Finished = true;
+            throw new Exception("reader failed during cleanup");
+        }
+    }
+
+    private sealed class FailingWriter(Task readerStarted, Exception failure, bool failOnComplete) : IClientStreamWriter<byte[]>
+    {
+        public WriteOptions? WriteOptions { get; set; }
+
+        public async Task WriteAsync(byte[] message)
+        {
+            await readerStarted;
+            if (!failOnComplete)
+                throw failure;
+        }
+
+        public Task WriteAsync(byte[] message, CancellationToken cancellationToken) => WriteAsync(message);
+
+        public Task CompleteAsync() => Task.FromException(failure);
     }
 
     [Fact]

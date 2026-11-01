@@ -141,18 +141,7 @@ public static class GrpcCaller
                 default:
                 {
                     using var stream = invoker.AsyncDuplexStreamingCall(call, null, options);
-                    var reading = Task.Run(async () =>
-                    {
-                        while (await stream.ResponseStream.MoveNext(cancel))
-                        {
-                            lock (responses)
-                                responses.Add(ByteString.CopyFrom(stream.ResponseStream.Current));
-                        }
-                    }, cancel);
-                    foreach (var message in messages)
-                        await stream.RequestStream.WriteAsync(message, cancel);
-                    await stream.RequestStream.CompleteAsync();
-                    await reading;
+                    await DuplexAsync(stream, messages, responses, cancel);
                     headers = await stream.ResponseHeadersAsync;
                     (status, trailers) = (stream.GetStatus(), stream.GetTrailers());
                     break;
@@ -202,6 +191,33 @@ public static class GrpcCaller
             JsonNode? body = method.IsServerStreaming ? new JsonArray(decoded.ToArray<JsonNode?>()) : decoded.FirstOrDefault();
             return body is null ? "" : body.ToJsonString(RestSender.IndentedJson);
         }
+    }
+
+    private static async Task DuplexAsync(AsyncDuplexStreamingCall<byte[], byte[]> stream, List<byte[]> messages,
+        List<ByteString> responses, CancellationToken cancel)
+    {
+        var reading = Task.Run(async () =>
+        {
+            while (await stream.ResponseStream.MoveNext(cancel))
+            {
+                lock (responses)
+                    responses.Add(ByteString.CopyFrom(stream.ResponseStream.Current));
+            }
+        }, cancel);
+        try
+        {
+            foreach (var message in messages)
+                await stream.RequestStream.WriteAsync(message, cancel);
+            await stream.RequestStream.CompleteAsync();
+        }
+        catch
+        {
+            stream.Dispose();
+            try { await reading; }
+            catch { /* Preserve the write failure. */ }
+            throw;
+        }
+        await reading;
     }
 
     private static List<ApiPair> Pairs(Metadata? metadata) => metadata?

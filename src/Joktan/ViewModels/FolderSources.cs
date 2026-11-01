@@ -12,7 +12,6 @@ using Joktan.Notes.ViewModels;
 using Joktan.Passwords.ViewModels;
 using Joktan.Resources;
 using Joktan.Settings.Backup;
-using Joktan.TopicDashboards;
 using Joktan.TopicDashboards.ViewModels;
 
 namespace Joktan.ViewModels;

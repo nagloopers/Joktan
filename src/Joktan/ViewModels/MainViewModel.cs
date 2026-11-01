@@ -57,6 +57,7 @@ public partial class MainViewModel : ViewModelBase
     {
     }
 
+    /// <param name="monitor">The machine monitor used by the overview dashboard.</param>
     /// <param name="certificates">The certificate store, if already read; otherwise it is read here.</param>
     /// <param name="mqttSettings">The MQTT settings, if already read; otherwise they are read here.</param>
     /// <param name="notes">The notes, if already read; otherwise they are read here.</param>
@@ -123,7 +124,7 @@ public partial class MainViewModel : ViewModelBase
         // The tools are made when the server first starts, so a run without the agent pays nothing for them.
         Agent = new AgentViewModel(agentSettings ?? AgentSettings.Load(), () => AgentTools.All(new AgentContext
         {
-            Menu = MenuItems,
+            Menu = MenuItems ?? throw new InvalidOperationException("The menu must be initialized before starting the agent."),
             Navigate = item => NavigateCommand.Execute(item),
             CurrentPage = () => CurrentPage?.Title,
             Overview = overview,
