@@ -17,6 +17,7 @@ developers working with MQTT, REST, gRPC and containers.
 - [MQTT Dashboards](help:topic-dashboards): your own graphs of the numbers on one or more MQTT topics.
 - [Notes](help:notes): pages of Markdown that nest below one another.
 - [Passwords](help:passwords): logins in folders, in an encrypted vault or the system keychain.
+- [Pomodoro](help:pomodoro): a timer for periods of focus with breaks between them.
 - [MQTT](help:mqtt): send test messages to brokers, by hand or on a schedule.
 - [Topic Explorer](help:topic-explorer): watch what is on a broker.
 - [Certificates](help:certificates): make the certificates that brokers and clients use for TLS.

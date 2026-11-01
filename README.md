@@ -11,6 +11,7 @@ The project is at an early stage. So far it has:
 - dashboards of your own, with graphs of the numbers on MQTT topics;
 - notes written in Markdown, with pages that nest below one another;
 - a password manager that keeps logins in folders, in an encrypted vault or the system keychain;
+- a Pomodoro timer for periods of focus with breaks between them;
 - developer tools: an MQTT publisher for sending test messages, a topic explorer for watching a
   broker, a page for making the certificates they use for TLS, a REST and gRPC client, and a page
   for running compose files with Docker or Podman;
@@ -205,6 +206,7 @@ and logic together, and the app references the modules and puts them on the menu
 | `src/Joktan.TopicDashboards/` | MQTT Dashboards page: graphs of one or more MQTT topics, the graph editor and its storage |
 | `src/Joktan.Notes/` | Notes page and its storage |
 | `src/Joktan.Passwords/` | Password manager page and its storage |
+| `src/Joktan.Pomodoro/` | Pomodoro page and its settings |
 | `src/Joktan.Mqtt/` | MQTT page, connection, folder messages, schedules and varying fields |
 | `src/Joktan.TopicExplorer/` | Topic Explorer page and window |
 | `src/Joktan.Certificates/` | Certificates page; making, keeping and exporting CAs and certificates |
@@ -227,6 +229,7 @@ Every module depends on `Joktan.Core`. Beyond that, `Joktan.Mqtt` depends on `Jo
   [dashboards](docs/features/dashboards/spec.md),
   [notes](docs/features/notes/spec.md),
   [passwords](docs/features/passwords/spec.md),
+  [Pomodoro](docs/features/pomodoro/spec.md),
   [MQTT publisher](docs/features/dev-tools/connectivity/mqtt/spec.md),
   [topic explorer](docs/features/dev-tools/connectivity/topic-explorer/spec.md),
   [certificates](docs/features/dev-tools/connectivity/certificates/spec.md),

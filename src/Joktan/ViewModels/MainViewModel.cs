@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Agent;
+using Joktan.Agent.Speech;
 using Joktan.Agent.Tools;
 using Joktan.Agent.ViewModels;
 using Joktan.Api.ViewModels;
@@ -24,6 +25,8 @@ using Joktan.Notes;
 using Joktan.Notes.ViewModels;
 using Joktan.Passwords;
 using Joktan.Passwords.ViewModels;
+using Joktan.Pomodoro;
+using Joktan.Pomodoro.ViewModels;
 using Joktan.Settings;
 using Joktan.Settings.Backup;
 using Joktan.Settings.Themes;
@@ -44,6 +47,8 @@ public partial class MainViewModel : ViewModelBase
     private readonly ApiClientViewModel _apiClient = new();
     private readonly TopicDashboardsViewModel _topicDashboards;
     private readonly BackupViewModel _backup;
+    private readonly SpeechOutput _speech = new();
+    private readonly NavItemViewModel _pomodoroItem;
     private NavItemViewModel? _selectedItem;
 
     // Used by the XAML previewer.
@@ -84,6 +89,13 @@ public partial class MainViewModel : ViewModelBase
         var notesItem = new NavItemViewModel("Notes", Icons.Notes) { Page = _notes, HelpTopic = "notes" };
         _notes.OpenPage = () => NavigateCommand.Execute(notesItem);
 
+        Pomodoro = new PomodoroViewModel(PomodoroSettings.Load())
+        {
+            AddAlert = Inbox.AddLocalAlert,
+            Speak = text => _speech.Say(text, "", 100),
+        };
+        _pomodoroItem = new NavItemViewModel("Pomodoro", Icons.Timer) { Page = Pomodoro, HelpTopic = "pomodoro" };
+
         var searchSettings = SearchSettings.Load();
         var searchPage = new SearchSettingsViewModel(searchSettings);
         var searchItem = new NavItemViewModel("Search") { Page = searchPage, HelpTopic = "search" };
@@ -115,6 +127,7 @@ public partial class MainViewModel : ViewModelBase
             Overview = overview,
             Notes = _notes,
             Passwords = _passwords,
+            Pomodoro = Pomodoro,
             Mqtt = mqtt,
             Inbox = Inbox,
             Messaging = messaging,
@@ -137,6 +150,7 @@ public partial class MainViewModel : ViewModelBase
                 new NavItemViewModel("MQTT Dashboards") { FormerTitle = "Topic Dashboards", Page = _topicDashboards, HelpTopic = "topic-dashboards" }),
             notesItem,
             passwordsItem,
+            _pomodoroItem,
             new NavItemViewModel("Dev Tools", Icons.DevTools,
                 new NavItemViewModel("Brokers", null,
                     new NavItemViewModel("MQTT") { Page = mqtt, HelpTopic = "mqtt" },
@@ -176,6 +190,9 @@ public partial class MainViewModel : ViewModelBase
 
     /// <summary>The agent panel, docked or in its own window, and the app's MCP server behind it.</summary>
     public AgentViewModel Agent { get; }
+
+    /// <summary>The timer, which the top bar shows while a phase is under way.</summary>
+    public PomodoroViewModel Pomodoro { get; }
 
     /// <summary>The search box of the top bar.</summary>
     public SearchViewModel Search { get; }
@@ -221,10 +238,14 @@ public partial class MainViewModel : ViewModelBase
         _apiClient.SaveState();
         _containers.Shutdown();
         Agent.Dispose();
+        _speech.Dispose();
     }
 
     [RelayCommand]
     private void ToggleSidebar() => IsSidebarOpen = !IsSidebarOpen;
+
+    [RelayCommand]
+    private void OpenPomodoro() => Navigate(_pomodoroItem);
 
     [RelayCommand]
     private void Navigate(NavItemViewModel item)

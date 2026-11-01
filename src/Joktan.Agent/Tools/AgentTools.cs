@@ -13,6 +13,7 @@ public static class AgentTools
         .. AppTools.Create(app),
         .. NotesTools.Create(app.Notes),
         .. PasswordTools.Create(app.Passwords),
+        .. PomodoroTools.Create(app.Pomodoro),
         .. MqttTools.Create(app.Mqtt),
         .. InboxTools.Create(app.Inbox, app.Messaging),
         .. ExplorerTools.Create(app.Explorer),

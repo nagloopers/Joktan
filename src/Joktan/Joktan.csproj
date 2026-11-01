@@ -27,6 +27,7 @@
     <ProjectReference Include="..\Joktan.Mqtt\Joktan.Mqtt.csproj" />
     <ProjectReference Include="..\Joktan.Notes\Joktan.Notes.csproj" />
     <ProjectReference Include="..\Joktan.Passwords\Joktan.Passwords.csproj" />
+    <ProjectReference Include="..\Joktan.Pomodoro\Joktan.Pomodoro.csproj" />
     <ProjectReference Include="..\Joktan.Settings\Joktan.Settings.csproj" />
     <ProjectReference Include="..\Joktan.TopicDashboards\Joktan.TopicDashboards.csproj" />
     <ProjectReference Include="..\Joktan.TopicExplorer\Joktan.TopicExplorer.csproj" />

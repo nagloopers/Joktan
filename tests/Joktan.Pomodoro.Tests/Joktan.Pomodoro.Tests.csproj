@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Joktan.Pomodoro\Joktan.Pomodoro.csproj" />
+  </ItemGroup>
+</Project>

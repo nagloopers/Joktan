@@ -420,6 +420,10 @@ public partial class InboxViewModel : ViewModelBase
     [RelayCommand]
     private void ShowSettings() => OpenSettings?.Invoke();
 
+    /// <summary>Adds an alert from the app itself, which stays on this computer.</summary>
+    public void AddLocalAlert(string title, string text) =>
+        Add(new AlertEntry { Title = title, Text = text, Severity = AlertSeverity.Info, Received = DateTimeOffset.Now }, false);
+
     /// <summary>The messages with all the words in their sender or text, newest first, for the search box of the top bar.</summary>
     public IEnumerable<SearchHit> SearchMessages(IReadOnlyList<string> words) => Messages.Reverse()
         .Where(row => TextSearch.HasAll(words, row.Name, row.Text))

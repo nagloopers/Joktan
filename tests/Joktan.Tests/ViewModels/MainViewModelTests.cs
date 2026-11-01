@@ -12,6 +12,7 @@ using Joktan.Help;
 using Joktan.Mqtt.ViewModels;
 using Joktan.Notes.ViewModels;
 using Joktan.Passwords.ViewModels;
+using Joktan.Pomodoro.ViewModels;
 using Joktan.Settings.ViewModels;
 using Joktan.Tests.TestSupport;
 using Joktan.TopicDashboards.ViewModels;
@@ -34,6 +35,7 @@ public class MainViewModelTests
         typeof(MqttViewModel).Assembly,
         typeof(NotesViewModel).Assembly,
         typeof(PasswordsViewModel).Assembly,
+        typeof(PomodoroViewModel).Assembly,
         typeof(MenuSettingsViewModel).Assembly,
         typeof(TopicDashboardsViewModel).Assembly,
         typeof(TopicExplorerViewModel).Assembly,

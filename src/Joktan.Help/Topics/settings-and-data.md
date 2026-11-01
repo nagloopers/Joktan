@@ -65,6 +65,7 @@ separate copy.
 | `passwords.vault` | The default vault file |
 | `passwords.json` | Entries without their passwords, with the keychain |
 | `passwords-settings.json` | Where the passwords are, and the lock time |
+| `pomodoro.json` | The Pomodoro settings, and how many focus periods were finished today |
 | `api/` | API requests, unless another folder was chosen |
 | `api-location.json` | The requests folder that was chosen |
 | `api-state.json` | The request open last |

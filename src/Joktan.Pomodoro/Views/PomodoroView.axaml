@@ -1,0 +1,95 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Joktan.Pomodoro.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1040" d:DesignHeight="736"
+             x:Class="Joktan.Pomodoro.Views.PomodoroView"
+             x:DataType="vm:PomodoroViewModel">
+
+    <DockPanel>
+        <Border DockPanel.Dock="Top" Classes="page-header">
+            <StackPanel>
+                <TextBlock Classes="page-title" Text="{Binding Title}" />
+                <TextBlock Classes="page-subtitle" Text="{Binding Subtitle}" />
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer>
+            <StackPanel Margin="24" Spacing="16">
+                <Border Classes="card">
+                    <StackPanel HorizontalAlignment="Center" Width="360" Spacing="12">
+                        <TextBlock Classes="card-title" HorizontalAlignment="Center" Text="{Binding PhaseName}" />
+                        <TextBlock Name="RemainingText" Classes="tile-value" FontSize="72" HorizontalAlignment="Center" Text="{Binding RemainingText}" />
+                        <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress}" />
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
+                            <Button Name="StartPauseButton" Classes="accent" Content="{Binding StartPauseText}" Command="{Binding StartPauseCommand}" />
+                            <Button Content="Reset" Command="{Binding ResetCommand}"
+                                    ToolTip.Tip="Stop, and go back to the start of this phase" />
+                            <Button Content="Skip" Command="{Binding SkipCommand}"
+                                    ToolTip.Tip="Move on to the next phase without counting this one as finished" />
+                        </StackPanel>
+                        <TextBlock Classes="info-label" HorizontalAlignment="Center" TextWrapping="Wrap"
+                                   Text="{Binding Message}"
+                                   IsVisible="{Binding Message, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                        <TextBlock Classes="info-label" HorizontalAlignment="Center" Text="{Binding DoneTodayText}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Classes="card">
+                    <StackPanel>
+                        <TextBlock Classes="card-title" Text="Settings" />
+                        <TextBlock Classes="card-subtitle"
+                                   Text="A new length applies from the next time a phase begins, and at once to a phase that has not begun." />
+
+                        <Border Classes="table-row">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <TextBlock Classes="table-cell" Text="Focus, in minutes" />
+                                <NumericUpDown Grid.Column="1" Value="{Binding FocusMinutes}" Minimum="1" Maximum="180" Increment="5" FormatString="0" Width="120" />
+                            </Grid>
+                        </Border>
+                        <Border Classes="table-row">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <TextBlock Classes="table-cell" Text="Short break, in minutes" />
+                                <NumericUpDown Grid.Column="1" Value="{Binding ShortBreakMinutes}" Minimum="1" Maximum="180" Increment="1" FormatString="0" Width="120" />
+                            </Grid>
+                        </Border>
+                        <Border Classes="table-row">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <TextBlock Classes="table-cell" Text="Long break, in minutes" />
+                                <NumericUpDown Grid.Column="1" Value="{Binding LongBreakMinutes}" Minimum="1" Maximum="180" Increment="5" FormatString="0" Width="120" />
+                            </Grid>
+                        </Border>
+                        <Border Classes="table-row">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <TextBlock Classes="table-cell" Text="Focus periods before a long break" />
+                                <NumericUpDown Grid.Column="1" Value="{Binding FocusesBeforeLongBreak}" Minimum="1" Maximum="12" Increment="1" FormatString="0" Width="120" />
+                            </Grid>
+                        </Border>
+                        <Border Classes="table-row">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <TextBlock Classes="table-cell" Text="Start the next phase by itself" />
+                                <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding AutoStart}"
+                                              ToolTip.Tip="When a phase ends, the next one starts without pressing Start" />
+                            </Grid>
+                        </Border>
+                        <Border Classes="table-row">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <TextBlock Classes="table-cell" Text="Add an alert when a phase ends" />
+                                <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding AlertAtEnd}"
+                                              ToolTip.Tip="Shows under the bell in the top bar, on this computer only" />
+                            </Grid>
+                        </Border>
+                        <Border Classes="table-row">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <TextBlock Classes="table-cell" Text="Say it aloud when a phase ends" />
+                                <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding SpeakAtEnd}"
+                                              ToolTip.Tip="Heard even while Joktan is behind other windows" />
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

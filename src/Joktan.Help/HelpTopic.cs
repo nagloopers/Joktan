@@ -25,6 +25,7 @@ public sealed record HelpTopic(string Id, string Title, string? Parent = null)
         new("topic-dashboards", "MQTT Dashboards"),
         new("notes", "Notes"),
         new("passwords", "Passwords"),
+        new("pomodoro", "Pomodoro"),
         new("mqtt", "MQTT"),
         new("mqtt-clients", "Clients and brokers", "MQTT"),
         new("mqtt-tls", "TLS and mutual TLS", "MQTT"),

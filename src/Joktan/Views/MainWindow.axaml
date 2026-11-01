@@ -160,6 +160,15 @@
                     </Grid>
 
                     <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4">
+                        <Button Name="PomodoroButton" Classes="small" VerticalAlignment="Center"
+                                IsVisible="{Binding Pomodoro.IsPartway}"
+                                ToolTip.Tip="{Binding Pomodoro.TopBarTip}"
+                                Command="{Binding OpenPomodoroCommand}">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <PathIcon Data="{x:Static core:Icons.Timer}" Width="14" Height="14" />
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Pomodoro.RemainingText}" />
+                            </StackPanel>
+                        </Button>
                         <Button Name="AgentButton" Classes="icon-button" VerticalAlignment="Center"
                                 ToolTip.Tip="Agent" Command="{Binding Agent.ToggleCommand}">
                             <PathIcon Data="{x:Static core:Icons.Agent}" />

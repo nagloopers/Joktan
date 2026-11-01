@@ -10,6 +10,7 @@ using Joktan.Dashboard.ViewModels;
 using Joktan.Mqtt.ViewModels;
 using Joktan.Notes.ViewModels;
 using Joktan.Passwords.ViewModels;
+using Joktan.Pomodoro.ViewModels;
 using Joktan.Settings.Themes;
 using Joktan.Settings.ViewModels;
 using Joktan.TopicDashboards.ViewModels;
@@ -26,6 +27,7 @@ public sealed class AgentContext
     public required DashboardViewModel Overview { get; init; }
     public required NotesViewModel Notes { get; init; }
     public required PasswordsViewModel Passwords { get; init; }
+    public required PomodoroViewModel Pomodoro { get; init; }
     public required MqttViewModel Mqtt { get; init; }
     public required InboxViewModel Inbox { get; init; }
     public required MessagingViewModel Messaging { get; init; }

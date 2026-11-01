@@ -45,6 +45,7 @@ Plain text works too, as an Info alert.
   server can read them too. Use a server with access rules and TLS for anything sensitive.
 - **A name is not proof of who someone is.** Anyone who can publish on the server can use any name.
 - **Nothing is delivered later.** Only what arrives while you are connected is received.
+- [Pomodoro](help:pomodoro) can add alerts of its own when a phase ends. They stay on this computer.
 - The latest 200 messages and 200 alerts are kept. **Clear** empties a list on this computer only.
 - The [search box](help:search) in the top bar finds what is kept.
 

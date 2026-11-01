@@ -15,6 +15,7 @@ under shared parent folders that follow the menu, such as `dev-tools/`. `dev-too
 | Alerts and messages                     | [alerts-and-messages/spec.md](alerts-and-messages/spec.md)                                     | Implemented                    |
 | Notes                                   | [notes/spec.md](notes/spec.md)                                                                 | Implemented                    |
 | Passwords                               | [passwords/spec.md](passwords/spec.md)                                                         | Implemented                    |
+| Pomodoro                                | [pomodoro/spec.md](pomodoro/spec.md)                                                           | Implemented                    |
 | Help                                    | [help/spec.md](help/spec.md)                                                                   | Implemented                    |
 | Search                                  | [search/spec.md](search/spec.md)                                                               | Implemented                    |
 | Agent panel and MCP server              | [agent/spec.md](agent/spec.md)                                                                 | Implemented                    |
