@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -92,7 +93,7 @@ public class ContainersPageTests : FakeEngineTest
 
         var a = Folder.Write("a/compose.yml", "services:\n");
         var b = Folder.Write("b/compose.yml", "services:\n");
-        page.PickComposeFiles = () => Task.FromResult<System.Collections.Generic.IReadOnlyList<string>>([a, b]);
+        page.PickComposeFiles = () => Task.FromResult<IReadOnlyList<string>>([a, b]);
         await page.BrowseCommand.ExecuteAsync(null);
 
         Assert.Equal(3, page.Projects.Count);
@@ -283,6 +284,7 @@ public class ContainersPageTests : FakeEngineTest
     {
         var page = Page();
         var unhandled = false;
+        var notifications = new List<string?>();
         DispatcherUnhandledExceptionEventHandler handler = (_, e) =>
         {
             unhandled = true;
@@ -293,10 +295,9 @@ public class ContainersPageTests : FakeEngineTest
         {
             page.Activate();
             await Headless.Until(() => page.Summary == "1 of 2 running");
-            // The event argument selects the one notification that should fail.
-            // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
             page.PropertyChanged += (_, e) =>
             {
+                notifications.Add(e.PropertyName);
                 if (e.PropertyName == nameof(page.Summary))
                     throw new Exception("refresh failed");
             };
@@ -304,6 +305,7 @@ public class ContainersPageTests : FakeEngineTest
 
             await Headless.Until(() => unhandled || page.Error is not null, timeoutMs: 15000);
             Assert.False(unhandled);
+            Assert.Contains(nameof(page.Summary), notifications);
             Assert.Contains("refresh failed", page.Error);
         }
         finally
