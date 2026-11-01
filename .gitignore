@@ -489,3 +489,4 @@ containers/certs/*
 
 # The speech model, fetched at build time
 .models/
+/qodana.yaml

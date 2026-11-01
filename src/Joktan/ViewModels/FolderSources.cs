@@ -35,7 +35,7 @@ internal sealed class FolderSources(
     private static readonly string[] NotAppSettings =
     [
         DataFolder.LocationFileName, "notes-location.json", "api-location.json", "dashboards-location.json", "passwords-settings.json", "backup.json",
-        "certificates.json", "passwords.json", "passwords.vault", "dashboards.json", "notes", "api", "certificates", "mqtt-certificates",
+        "certificates.json", "passwords.json", "passwords.vault", "dashboards.json", "notes", "api", "certificates", "mqtt-certificates"
     ];
 
     public IReadOnlyList<FolderSource> All()
@@ -50,7 +50,7 @@ internal sealed class FolderSources(
                 CurrentPath = () => notes.Folder,
                 DefaultPath = notes.DefaultFolder,
                 Change = ChangeNotes,
-                Item = () => new BackupItem("notes", Strings.FolderSources_Notes, [new BackupRoot("folder", notes.Folder)]),
+                Item = () => new BackupItem("notes", Strings.FolderSources_Notes, [new BackupRoot("folder", notes.Folder)])
             },
             new()
             {
@@ -59,7 +59,7 @@ internal sealed class FolderSources(
                 CurrentPath = () => dashboards.Folder,
                 DefaultPath = dashboards.DefaultFolder,
                 Change = ChangeDashboards,
-                Item = () => new BackupItem("dashboards", Strings.FolderSources_MQTTDashboards, [new BackupRoot("file", Path.Combine(dashboards.Folder, "dashboards.json"), IsFile: true)]),
+                Item = () => new BackupItem("dashboards", Strings.FolderSources_MQTTDashboards, [new BackupRoot("file", Path.Combine(dashboards.Folder, "dashboards.json"), IsFile: true)])
             },
             new()
             {
@@ -68,7 +68,7 @@ internal sealed class FolderSources(
                 CurrentPath = () => api.Folder,
                 DefaultPath = api.DefaultFolder,
                 Change = ChangeApi,
-                Item = () => new BackupItem("api", Strings.FolderSources_APIRequests, [new BackupRoot("folder", api.Folder)]),
+                Item = () => new BackupItem("api", Strings.FolderSources_APIRequests, [new BackupRoot("folder", api.Folder)])
             },
             new()
             {
@@ -78,7 +78,7 @@ internal sealed class FolderSources(
                 CurrentPath = () => certificates.Folder,
                 IncludedByDefault = false,
                 Warning = PrivateKeysWarning,
-                Item = CertificatesItem,
+                Item = CertificatesItem
             },
             new()
             {
@@ -90,7 +90,7 @@ internal sealed class FolderSources(
                 Change = ChangeClientCertificates,
                 IncludedByDefault = false,
                 Warning = PrivateKeysWarning,
-                Item = () => new BackupItem("mqtt-certificates", Strings.FolderSources_MQTTClientCertificates, [new BackupRoot("folder", certificates.ClientFolder)]),
+                Item = () => new BackupItem("mqtt-certificates", Strings.FolderSources_MQTTClientCertificates, [new BackupRoot("folder", certificates.ClientFolder)])
             },
             new()
             {
@@ -102,8 +102,8 @@ internal sealed class FolderSources(
                 CurrentPath = () => passwords.StorageLocation,
                 OpenPage = openPasswords,
                 OpenPageText = Strings.FolderSources_OpenPasswords,
-                Item = () => new BackupItem("passwords", Strings.FolderSources_Passwords, [new BackupRoot("file", passwords.StorageLocation, IsFile: true)]),
-            },
+                Item = () => new BackupItem("passwords", Strings.FolderSources_Passwords, [new BackupRoot("file", passwords.StorageLocation, IsFile: true)])
+            }
         };
 
         foreach (var client in mqtt.Clients)
@@ -120,7 +120,7 @@ internal sealed class FolderSources(
                 Change = path => ChangeMessages(client, path),
                 Item = () => string.IsNullOrEmpty(client.FolderPath)
                     ? null
-                    : new BackupItem(id, string.Format(Strings.FolderSources_MQTTMessages, client.Name), [new BackupRoot("folder", client.FolderPath)]),
+                    : new BackupItem(id, string.Format(Strings.FolderSources_MQTTMessages, client.Name), [new BackupRoot("folder", client.FolderPath)])
             });
         }
 
@@ -133,26 +133,6 @@ internal sealed class FolderSources(
     public void Watch(Action changed, Action<string, string> renamed)
     {
         var names = new Dictionary<MqttClientViewModel, string>();
-
-        void Follow(MqttClientViewModel client)
-        {
-            names[client] = client.Name;
-            client.PropertyChanged += OnClientChanged;
-        }
-
-        void OnClientChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            if (sender is not MqttClientViewModel client)
-                return;
-
-            if (e.PropertyName == nameof(MqttClientViewModel.FolderPath))
-                changed();
-            else if (e.PropertyName == nameof(MqttClientViewModel.Name) && names.GetValueOrDefault(client) is { } old && old != client.Name)
-            {
-                names[client] = client.Name;
-                renamed(MessagesId(old), MessagesId(client.Name));
-            }
-        }
 
         foreach (var client in mqtt.Clients)
             Follow(client);
@@ -170,6 +150,31 @@ internal sealed class FolderSources(
 
             changed();
         };
+
+        return;
+
+        void Follow(MqttClientViewModel client)
+        {
+            names[client] = client.Name;
+            client.PropertyChanged += OnClientChanged;
+        }
+
+        void OnClientChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (sender is not MqttClientViewModel client)
+                return;
+
+            switch (e.PropertyName)
+            {
+                case nameof(MqttClientViewModel.FolderPath):
+                    changed();
+                    break;
+                case nameof(MqttClientViewModel.Name) when names.GetValueOrDefault(client) is { } old && old != client.Name:
+                    names[client] = client.Name;
+                    renamed(MessagesId(old), MessagesId(client.Name));
+                    break;
+            }
+        }
     }
 
     private FolderSource SettingsSource()
@@ -184,7 +189,7 @@ internal sealed class FolderSources(
                 Name = name,
                 Hint = string.Format(Strings.FolderSources_MQTTClientsTheMenuThemesAnd, DataFolder.Variable),
                 CurrentPath = () => DataFolder.Path,
-                Item = SettingsItem,
+                Item = SettingsItem
             };
         }
 
@@ -200,7 +205,7 @@ internal sealed class FolderSources(
                 ? string.Format(Strings.FolderSources_CouldNotBeFoundSoJoktan, missing)
                 : null,
             Change = path => DataFolderMove.ApplyAsync(path, DataFolder.Path, DataFolder.DefaultPath, flush, restart),
-            Item = SettingsItem,
+            Item = SettingsItem
         };
     }
 
@@ -223,11 +228,12 @@ internal sealed class FolderSources(
         var roots = new List<BackupRoot>
         {
             new("folder", certificates.Folder),
-            new("list", Path.Combine(DataFolder.Path, "certificates.json"), IsFile: true),
+            new("list", Path.Combine(DataFolder.Path, "certificates.json"), IsFile: true)
         };
         var inside = certificates.Folder.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
-        foreach (var entry in certificates.Entries.Where(e => e.Location is { Length: > 0 } location && !location.StartsWith(inside, StringComparison.Ordinal)))
-            roots.Add(new BackupRoot($"certificate-{entry.Id}", entry.Location!));
+        roots.AddRange(certificates.Entries
+            .Where(e => e.Location is { Length: > 0 } location && !location.StartsWith(inside, StringComparison.Ordinal))
+            .Select(entry => new BackupRoot($"certificate-{entry.Id}", entry.Location!)));
         return new BackupItem("certificates", Strings.FolderSources_Certificates, roots);
     }
 
@@ -242,13 +248,11 @@ internal sealed class FolderSources(
     {
         dashboards.FolderText = path;
         await dashboards.ApplyFolderCommand.ExecuteAsync(null);
-        if (dashboards.CanStartEmpty)
-        {
-            dashboards.IsChoosingFolder = true;
-            return new FolderChange(string.Format(Strings.FolderSources_ThatButtonIsUnderFolderOn, dashboards.FolderMessage));
-        }
+        if (!dashboards.CanStartEmpty)
+            return new FolderChange(dashboards.FolderMessage, dashboards.Message);
 
-        return new FolderChange(dashboards.FolderMessage, dashboards.Message);
+        dashboards.IsChoosingFolder = true;
+        return new FolderChange(string.Format(Strings.FolderSources_ThatButtonIsUnderFolderOn, dashboards.FolderMessage));
     }
 
     private Task<FolderChange> ChangeApi(string path)
