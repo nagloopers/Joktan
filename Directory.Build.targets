@@ -8,4 +8,12 @@
                       StronglyTypedFileName="$(IntermediateOutputPath)Strings.g.cs"
                       PublicClass="true" />
   </ItemGroup>
+  <ItemGroup Condition="'$(DesignTimeBuild)' == 'true' And Exists('$(MSBuildProjectDirectory)/Resources/Strings.resx') And Exists('$(IntermediateOutputPath)Strings.g.cs')">
+    <Compile Include="$(IntermediateOutputPath)Strings.g.cs" />
+  </ItemGroup>
+  <Target Name="RemoveDesignTimeStringsBeforeResGen" BeforeTargets="CoreResGen" Condition="'$(DesignTimeBuild)' == 'true'">
+    <ItemGroup>
+      <Compile Remove="$(IntermediateOutputPath)Strings.g.cs" />
+    </ItemGroup>
+  </Target>
 </Project>
