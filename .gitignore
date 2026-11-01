@@ -486,3 +486,6 @@ $RECYCLE.BIN/
 # Certificates for the broker and copied out of it (containers/README.md), except the README
 containers/certs/*
 !containers/certs/README.md
+
+# The speech model, fetched at build time
+.models/

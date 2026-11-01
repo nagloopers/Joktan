@@ -35,6 +35,10 @@ public static class AgentProgram
             .Concat(ExtraFolders())
             .Distinct();
 
+    /// <summary>The whole path of a program found by name in the usual folders, or null.</summary>
+    public static string? FindOnPath(string name)
+        => SearchPath().Select(folder => Path.Combine(folder, name)).FirstOrDefault(File.Exists);
+
     /// <summary>The whole path of a client's program, or null when it is not there.</summary>
     public static string? Find(AgentClient client, AgentClientProfile profile)
     {

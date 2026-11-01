@@ -103,25 +103,36 @@ jobs:
         shell: bash
         run: >
           dotnet publish src/Joktan/Joktan.csproj -c Release -r ${{ matrix.rid }} --self-contained
-          -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
           -p:DebugType=embedded
           -p:Version=${VERSION#v}
           -o publish/${{ matrix.rid }}
 
-      - name: Keep only the exe
+      - name: Leave out debug symbols
         shell: bash
-        run: |
-          # SkiaSharp and HarfBuzz bring native .pdb files that publishing copies next to the exe.
-          rm -f publish/${{ matrix.rid }}/*.pdb
-          extra=$(ls publish/${{ matrix.rid }} | grep -vx Joktan.exe || true)
-          if [ -n "$extra" ]; then
-            echo "::error::Files were left outside Joktan.exe:" $extra
-            exit 1
-          fi
+        # SkiaSharp and HarfBuzz bring native .pdb files that publishing copies next to the exe.
+        run: rm -f publish/${{ matrix.rid }}/*.pdb
 
-      - name: Zip the exe with the README
+      # Whisper and OpenAL need the Visual C++ runtime, which a clean Windows may not have, and users install nothing.
+      # Microsoft allows these files to be deployed beside an app.
+      - name: Put the Visual C++ runtime beside the app
         shell: pwsh
-        run: Compress-Archive -Path publish/${{ matrix.rid }}/Joktan.exe, README.md -DestinationPath Joktan-${{ matrix.rid }}.zip
+        run: |
+          $arch = if ('${{ matrix.rid }}' -like '*arm64') { 'arm64' } else { 'x64' }
+          $vs = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -property installationPath
+          $redist = Get-ChildItem "$vs\VC\Redist\MSVC" -Directory | Where-Object { Test-Path "$($_.FullName)\$arch" } | Sort-Object Name -Descending | Select-Object -First 1
+          $wanted = 'msvcp140.dll', 'vcruntime140.dll', 'vcruntime140_1.dll', 'vcomp140.dll'
+          foreach ($name in $wanted) {
+            $file = Get-ChildItem "$($redist.FullName)\$arch" -Recurse -Filter $name | Where-Object { $_.FullName -notmatch 'onecore|debug' } | Select-Object -First 1
+            if (-not $file) { throw "$name was not found under $($redist.FullName)\$arch" }
+            Copy-Item $file.FullName publish/${{ matrix.rid }}/
+          }
+
+      # A folder and not a single exe: Whisper's native libraries and the speech model have to sit beside the app.
+      - name: Zip the app with the README
+        shell: pwsh
+        run: |
+          Copy-Item README.md publish/${{ matrix.rid }}/
+          Compress-Archive -Path publish/${{ matrix.rid }} -DestinationPath Joktan-${{ matrix.rid }}.zip
 
       - uses: actions/upload-artifact@v7
         with:
@@ -170,6 +181,7 @@ jobs:
             <key>CFBundleVersion</key><string>${{ github.run_number }}</string>
             <key>CFBundleShortVersionString</key><string>${VERSION#v}</string>
             <key>LSMinimumSystemVersion</key><string>12.0</string>
+            <key>NSMicrophoneUsageDescription</key><string>Joktan listens while you talk to the agent, and turns what you say into text on this computer.</string>
             <key>NSHighResolutionCapable</key><true/>
           </dict>
           </plist>
@@ -204,25 +216,18 @@ jobs:
       - name: Publish
         run: >
           dotnet publish src/Joktan/Joktan.csproj -c Release -r ${{ matrix.rid }} --self-contained
-          -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
           -p:DebugType=embedded
           -p:Version=${VERSION#v}
           -o publish/${{ matrix.rid }}
 
-      - name: Keep only the executable
-        run: |
-          # SkiaSharp and HarfBuzz can bring native debug files that publishing copies next to it.
-          rm -f publish/${{ matrix.rid }}/*.pdb publish/${{ matrix.rid }}/*.dbg
-          extra=$(ls publish/${{ matrix.rid }} | grep -vx Joktan || true)
-          if [ -n "$extra" ]; then
-            echo "::error::Files were left outside Joktan:" $extra
-            exit 1
-          fi
+      - name: Leave out debug symbols
+        run: rm -f publish/${{ matrix.rid }}/*.pdb publish/${{ matrix.rid }}/*.dbg
 
-      - name: Pack the executable with the README
+      - name: Pack the app with the README
         run: |
           chmod +x publish/${{ matrix.rid }}/Joktan
-          tar -czf Joktan-${{ matrix.rid }}.tar.gz -C publish/${{ matrix.rid }} Joktan -C "$PWD" README.md
+          cp README.md publish/${{ matrix.rid }}/
+          tar -czf Joktan-${{ matrix.rid }}.tar.gz -C publish ${{ matrix.rid }}
 
       - uses: actions/upload-artifact@v7
         with:

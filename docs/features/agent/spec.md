@@ -12,6 +12,18 @@ An AI agent works in the app through the app's own MCP server, and the user talk
 - The conversation lists messages in Markdown, tool calls with their state, approval questions and problems. It is kept in memory only, since it can hold a revealed password.
 - Enter sends and Shift+Enter makes a new line. Stop ends the turn by killing the client's process tree. A bin button clears the chat: it stops any running turn, shows nothing more from it, and forgets the session and what was allowed.
 
+## Speech
+
+- Replies are read aloud when switched on, in the panel's header or on Settings / Agent, with a voice and a speed from 50% to 200%. It is off to begin with.
+- There are no new dependencies. Reading goes through `say`, PowerShell's System.Speech, or `espeak-ng`, `espeak` or `spd-say`, with the text on standard input.
+- A reply is read when it is whole: at the next tool call, approval or problem, or the end of the turn. Markdown is removed and fenced code is left out. Approvals and problems are announced, not read out.
+- Reading is in order, one at a time. Sending, Stop, clearing the chat and switching off all stop it.
+- Voice input is built in, with nothing to install, on macOS and Windows. A microphone button, shown while the Voice input switch is on (off to begin with, like reading aloud), is held to record, for at most two minutes. OpenAL Soft (LGPL, its native library shipped unchanged) records, and Whisper.net (MIT) transcribes in English on this computer with `ggml-base.en.bin`, in `models/` beside the app.
+- Packages are folders, not single files, since Whisper's native libraries cannot load from inside one. The Windows package also carries the Visual C++ runtime that they need, as a clean Windows may not have it.
+- The model is fetched and its hash checked when the app is built, into `.models/` in the repository, which git ignores. A publish without it fails. The app has no download code, and no sound leaves the computer.
+- Letting go sends what was said, added to anything in the message box, without a further press, or at the end of a running turn. A trailing "send" is dropped. All that was said being "stop" or "clear chat" does that instead. Approvals cannot be given by voice. Typed words are never read as commands. Reading aloud stops while recording.
+
+
 ## Clients
 
 A client is a command-line agent, run once per turn. Every client runs in `agent-workspace` in the data folder, with its standard input closed, so that it never waits for a person, and with a PATH that includes the usual install folders, since an app started from the desktop gets a short one.

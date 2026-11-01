@@ -62,6 +62,48 @@
 
                 <Border Classes="card">
                     <StackPanel Spacing="10">
+                        <TextBlock Classes="card-title" Text="Speech" />
+                        <TextBlock Classes="card-subtitle" TextWrapping="Wrap"
+                                   Text="Everything here happens on this computer. Replies are read by its own speech, and what you say is turned into text by a speech model that ships with the app. Your words only leave once you send them to the agent, like anything you type." />
+
+                        <Border Classes="table-row">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <TextBlock Classes="table-cell" Text="Read replies aloud" />
+                                <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding Agent.IsReadingAloud}" />
+                            </Grid>
+                        </Border>
+                        <TextBlock Classes="error" TextWrapping="Wrap" Text="{Binding SpeechProblem}"
+                                   IsVisible="{Binding SpeechProblem, Converter={x:Static ObjectConverters.IsNotNull}}" />
+
+                        <Border Classes="table-row">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <StackPanel>
+                                    <TextBlock Classes="table-cell" Text="Voice input" />
+                                    <TextBlock Classes="info-label" TextWrapping="Wrap"
+                                               Text="Shows a microphone button in the chat. Hold it, talk, and let go: your message is sent straight away. Say only &quot;stop&quot; to stop the agent, or only &quot;clear chat&quot; to clear the chat. Approvals are still clicked." />
+                                </StackPanel>
+                                <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding VoiceInput}" />
+                            </Grid>
+                        </Border>
+                        <TextBlock Classes="error" TextWrapping="Wrap" Text="{Binding VoiceProblem}"
+                                   IsVisible="{Binding VoiceProblem, Converter={x:Static ObjectConverters.IsNotNull}}" />
+
+                        <TextBlock Classes="field-label" Text="Voice" />
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <ComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding Voices}" SelectedItem="{Binding SelectedVoice}" />
+                            <Button Grid.Column="1" Classes="small" Content="Try it" Command="{Binding TrySpeechCommand}" />
+                        </Grid>
+
+                        <TextBlock Classes="field-label" Text="Speed" />
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                            <Slider Minimum="50" Maximum="200" SmallChange="10" LargeChange="10" Value="{Binding SpeechSpeed}" />
+                            <TextBlock Grid.Column="1" Classes="info-label" VerticalAlignment="Center" Text="{Binding SpeechSpeedText}" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Classes="card">
+                    <StackPanel Spacing="10">
                         <TextBlock Classes="card-title" Text="Clients outside the app" />
                         <TextBlock Classes="card-subtitle" Text="Let another MCP client on this computer, such as an IDE or a CLI you started yourself, use the app's tools. It connects while Joktan is open. Its risky calls still wait for your approval in the agent panel." />
 

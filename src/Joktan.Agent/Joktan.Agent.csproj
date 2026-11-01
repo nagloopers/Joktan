@@ -2,6 +2,9 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" />
     <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Silk.NET.OpenAL.Soft.Native" />
+    <PackageReference Include="Whisper.net" />
+    <PackageReference Include="Whisper.net.Runtime" />
   </ItemGroup>
 
   <ItemGroup>

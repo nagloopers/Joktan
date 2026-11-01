@@ -15,7 +15,7 @@ The project is at an early stage. So far it has:
   broker, a page for making the certificates they use for TLS, a REST and gRPC client, and a page
   for running compose files with Docker or Podman;
 - an agent panel that runs Claude Code, OpenCode, GitHub Copilot CLI or a command of your own, docked or in its own
-  window, and an MCP server in the app that lets the agent do what the pages do, asking before anything risky;
+  window, that you can talk to, with speech turned into text on your computer, and an MCP server in the app that lets the agent do what the pages do, asking before anything risky;
 - built-in help on using and configuring each of these: press the question mark beside the search box, or F1;
 - settings for which features the menu shows and in what order, and themes that hold every colour,
   font and text size, with Light, Dark and Green Dark built in.
@@ -91,8 +91,8 @@ Releases are published from the fork, [Caracal-IT/Joktan](https://github.com/Car
 original repository refuses to run the workflow. Sync the fork's `main`, open **Release** on the fork's
 Actions tab and press **Run workflow**, or run `gh workflow run release.yml --repo Caracal-IT/Joktan`. If
 the tests pass on Windows, macOS and Linux, the commit's version is published as a release of the fork with the
-builds attached: for Windows, a zip of the single `Joktan.exe` and this README; for macOS, a zipped `.app`; for Linux, a `.tar.gz` of the single `Joktan`
-executable and this README, which needs fontconfig (`libfontconfig1` on Debian and Ubuntu). A version can only be
+builds attached: for Windows, a zip of a folder holding `Joktan.exe`, the speech model and this README, which needs no installing; for macOS, a zipped `.app`; for Linux, a `.tar.gz` of a folder holding the `Joktan`
+executable, the speech model and this README, which needs fontconfig (`libfontconfig1` on Debian and Ubuntu). A version can only be
 released once, and a commit with no tag of its own gets the next free version. There are no secrets to set up, but Actions must be turned on in the fork, and the
 organisation must let workflows have write access.
 

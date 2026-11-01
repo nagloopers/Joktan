@@ -15,6 +15,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Agent.Clients;
 using Joktan.Agent.Mcp;
+using Joktan.Agent.Speech;
 using Joktan.Core;
 using Joktan.Core.ViewModels;
 
@@ -39,6 +40,13 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
     private AgentMessageViewModel? _replying;
     private CancellationTokenSource? _cancel;
     private Output? _output;
+    private readonly SpeechOutput _speech = new();
+    private readonly SpeechToText _speechToText = new();
+    private IMicrophone? _microphone;
+    private bool _sendAfterTurn;
+
+    // The loudest sample below which a recording counts as room noise, on a scale of 0 to 1.
+    private const float QuietestSpeech = 0.02f;
 
     public AgentViewModel(AgentSettings settings, Func<IReadOnlyList<McpTool>> tools)
     {
@@ -47,6 +55,8 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
         SelectedClient = AgentClient.Of(settings.Client);
         IsOpen = settings.PanelOpen;
         IsFloating = settings.PanelFloating;
+        IsReadingAloud = settings.ReadAloud;
+        _speech.SpeakingChanged += speaking => Dispatcher.UIThread.Post(() => IsSpeaking = speaking);
         Items.CollectionChanged += (_, _) => OnPropertyChanged(nameof(IsEmpty));
     }
 
@@ -87,6 +97,51 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
     [NotifyPropertyChangedFor(nameof(IsInWindow))]
     public partial bool IsFloating { get; set; }
 
+    /// <summary>Whether replies are read aloud.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ReadAloudTip))]
+    public partial bool IsReadingAloud { get; set; }
+
+    /// <summary>Whether something is being read now.</summary>
+    [ObservableProperty]
+    public partial bool IsSpeaking { get; private set; }
+
+    /// <summary>Whether the microphone button shows.</summary>
+    public bool CanTalk => Settings.VoiceInput && SpeechToText.IsAvailable;
+
+    /// <summary>Whether the microphone is on.</summary>
+    [ObservableProperty]
+    public partial bool IsListening { get; private set; }
+
+    /// <summary>Whether what was said is being turned into text.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanPressTalk))]
+    public partial bool IsTranscribing { get; private set; }
+
+    public bool CanPressTalk => !IsTranscribing;
+
+    // In the box and not a tooltip, as an open tooltip can take the press meant for the button below it.
+    public string DraftHint => CanTalk ? "Ask the agent, or hold the microphone and talk" : "Ask the agent… (Shift+Enter for a new line)";
+
+    /// <summary>What is happening with the microphone, or what went wrong; gone once anything is typed.</summary>
+    [ObservableProperty]
+    public partial string? TalkMessage { get; private set; }
+
+    /// <summary>Asks the view to put the cursor in the message box, after words have arrived there.</summary>
+    public event Action? DraftFocusRequested;
+
+    /// <summary>Takes in a change of the voice input switch.</summary>
+    public void VoiceInputChanged()
+    {
+        if (!Settings.VoiceInput && IsListening)
+            CancelListening();
+        TalkMessage = null;
+        OnPropertyChanged(nameof(CanTalk));
+        OnPropertyChanged(nameof(DraftHint));
+    }
+
+    public string ReadAloudTip => IsReadingAloud ? "Stop reading replies aloud" : "Read replies aloud";
+
     public bool IsDocked => IsOpen && !IsFloating;
 
     public bool IsInWindow => IsOpen && IsFloating;
@@ -109,6 +164,14 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
 
     partial void OnIsOpenChanged(bool value) => SaveLayout();
 
+    partial void OnIsReadingAloudChanged(bool value)
+    {
+        Settings.ReadAloud = value;
+        Settings.Save();
+        if (!value)
+            _speech.Stop();
+    }
+
     partial void OnIsFloatingChanged(bool value) => SaveLayout();
 
     // A session belongs to one client, so another one starts afresh, told what was said so far.
@@ -124,6 +187,154 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
         Settings.PanelOpen = IsOpen;
         Settings.PanelFloating = IsFloating;
         Settings.Save();
+    }
+
+    /// <summary>Starts listening, for as long as the microphone button is held.</summary>
+    public void StartListening()
+    {
+        // Otherwise the microphone would hear the replies being read.
+        _speech.Stop();
+        TalkMessage = null;
+        var microphone = Microphone.Create();
+        try
+        {
+            microphone.Start();
+        }
+        catch (InvalidOperationException e)
+        {
+            microphone.Dispose();
+            TalkMessage = $"{e.Message} Check that one is connected, and that this app may use it in your system's privacy settings.";
+            return;
+        }
+
+        microphone.LimitReached += () => Dispatcher.UIThread.Post(() => _ = FinishListeningAsync());
+        _microphone = microphone;
+        IsListening = true;
+        TalkMessage = "Listening. Let go to send.";
+        _ = _speechToText.LoadAsync();
+    }
+
+    /// <summary>Turns what was said into text and sends it, when the microphone button is let go.</summary>
+    public async Task FinishListeningAsync()
+    {
+        if (_microphone is not { } microphone)
+            return;
+
+        _microphone = null;
+        IsListening = false;
+        IsTranscribing = true;
+        TalkMessage = "Working out what you said…";
+        try
+        {
+            var samples = await microphone.StopAsync();
+            var peak = samples.Length == 0 ? 0 : samples.Max(Math.Abs);
+            if (peak == 0)
+            {
+                TalkMessage = "No sound reached the app. Check that this app may use the microphone in your system's privacy settings.";
+                return;
+            }
+
+            // Whisper makes up words from room noise, and a made-up "send" would act on them.
+            if (peak < QuietestSpeech)
+            {
+                TalkMessage = "That was too quiet to be speech. Try again, a little closer to the microphone.";
+                return;
+            }
+
+            var text = await _speechToText.TranscribeAsync(samples);
+            TalkMessage = null;
+            if (text.Length == 0)
+                TalkMessage = "No words were heard. Try again, a little closer to the microphone.";
+            else
+                TakeSpeech(text);
+        }
+        catch (Exception e) when (e is IOException or InvalidOperationException or UnauthorizedAccessException or Whisper.net.Wave.CorruptedWaveException or DllNotFoundException)
+        {
+            TalkMessage = $"What you said could not be turned into text: {e.Message}";
+        }
+        finally
+        {
+            microphone.Dispose();
+            IsTranscribing = false;
+        }
+    }
+
+    private void TakeSpeech(string text)
+    {
+        var (kind, message) = VoiceCommand.Read(text);
+        switch (kind)
+        {
+            case VoiceCommandKind.Stop:
+                Stop();
+                return;
+            case VoiceCommandKind.ClearChat:
+                Draft = "";
+                Clear();
+                return;
+        }
+
+        Draft = Draft.Trim().Length > 0 ? $"{Draft.TrimEnd()} {message}" : message;
+        DraftFocusRequested?.Invoke();
+
+        if (IsBusy)
+        {
+            _sendAfterTurn = true;
+            TalkMessage = "The agent is still working. This goes when it has finished.";
+        }
+        else if (SendCommand.CanExecute(null))
+        {
+            SendCommand.Execute(null);
+        }
+    }
+
+    // After the turn has wholly ended, as the send command counts as running until then.
+    partial void OnIsBusyChanged(bool value)
+    {
+        if (value || !_sendAfterTurn)
+            return;
+
+        _sendAfterTurn = false;
+        Dispatcher.UIThread.Post(() =>
+        {
+            TalkMessage = null;
+            if (SendCommand.CanExecute(null))
+                SendCommand.Execute(null);
+        }, DispatcherPriority.Background);
+    }
+
+    private void CancelListening()
+    {
+        _microphone?.Dispose();
+        _microphone = null;
+        IsListening = false;
+    }
+
+    [RelayCommand]
+    private void ToggleReadAloud() => IsReadingAloud = !IsReadingAloud;
+
+    /// <summary>Stops what is being read. Later replies are still read.</summary>
+    [RelayCommand]
+    private void StopSpeaking() => _speech.Stop();
+
+    /// <summary>Reads a sample in the chosen voice, for the settings page.</summary>
+    public void TrySpeech()
+    {
+        _speech.Stop();
+        _speech.Say("This is how replies will sound.", Settings.SpeechVoice, Settings.SpeechSpeed);
+    }
+
+    private void Speak(string text)
+    {
+        if (IsReadingAloud)
+            _speech.Say(text, Settings.SpeechVoice, Settings.SpeechSpeed);
+    }
+
+    // A reply is read once it is whole, since Markdown cannot be read well in pieces.
+    private void FinishReply()
+    {
+        if (_replying is { } reply)
+            Speak(SpeechOutput.SpokenText(reply.Text));
+        _replying = null;
     }
 
     [RelayCommand]
@@ -145,6 +356,7 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
         if (_output is not null)
             _output.IsAbandoned = true;
         Stop();
+        _speech.Stop();
         Items.Clear();
         _allowed.Clear();
         _sessionId = null;
@@ -155,6 +367,9 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
     private void Stop()
     {
         _cancel?.Cancel();
+        _speech.Stop();
+        _replying = null;
+        _sendAfterTurn = false;
         foreach (var approval in Items.OfType<ApprovalViewModel>())
             approval.Withdraw("Stopped");
     }
@@ -167,6 +382,7 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
         var text = Draft.Trim();
         var earlier = Transcript();
         Draft = "";
+        _speech.Stop();
         Add(new UserMessageViewModel(text));
         _replying = null;
 
@@ -214,6 +430,7 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
         }
         finally
         {
+            FinishReply();
             _cancel = null;
             _output = null;
             IsBusy = false;
@@ -232,6 +449,12 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
 
     private void Add(ViewModelBase item)
     {
+        if (item is AgentProblemViewModel)
+        {
+            FinishReply();
+            Speak("Something went wrong. See the panel.");
+        }
+
         Items.Add(item);
         ContentGrew?.Invoke();
     }
@@ -384,8 +607,9 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
             return true;
 
         var approval = new ApprovalViewModel(tool, Pretty(arguments), caller);
+        FinishReply();
+        Speak("The agent is asking for your approval.");
         Add(approval);
-        _replying = null;
         IsOpen = true;
         AttentionRequested?.Invoke();
 
@@ -414,8 +638,8 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
     public object? ToolStarted(McpTool tool, ToolCaller caller)
     {
         var row = new ToolCallViewModel(tool, caller);
+        FinishReply();
         Add(row);
-        _replying = null;
         return row;
     }
 
@@ -432,8 +656,12 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
     /// <summary>Stops the running turn and the server. Called when the app exits.</summary>
     public void Dispose()
     {
+        CancelListening();
+        _speechToText.Dispose();
         _cancel?.Cancel();
         _server?.Dispose();
+        _speech.Dispose();
+
         GC.SuppressFinalize(this);
     }
 }

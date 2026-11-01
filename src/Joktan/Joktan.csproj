@@ -31,4 +31,26 @@
     <ProjectReference Include="..\Joktan.TopicDashboards\Joktan.TopicDashboards.csproj" />
     <ProjectReference Include="..\Joktan.TopicExplorer\Joktan.TopicExplorer.csproj" />
   </ItemGroup>
+
+  <!-- The speech model ships beside the app. It is fetched here, at build time, and the app itself never downloads anything. -->
+  <PropertyGroup>
+    <SpeechModelFolder>$(MSBuildThisFileDirectory)..\..\.models\</SpeechModelFolder>
+    <SpeechModelName>ggml-base.en.bin</SpeechModelName>
+    <SpeechModelFile>$(SpeechModelFolder)$(SpeechModelName)</SpeechModelFile>
+    <SpeechModelHash>A03779C86DF3323075F5E796CB2CE5029F00EC8869EEE3FDFB897AFE36C6D002</SpeechModelHash>
+  </PropertyGroup>
+
+  <Target Name="GetSpeechModel" BeforeTargets="Build" Condition="'$(DesignTimeBuild)' != 'true' And !Exists('$(SpeechModelFile)')">
+    <DownloadFile SourceUrl="https://huggingface.co/ggerganov/whisper.cpp/resolve/main/$(SpeechModelName)" DestinationFolder="$(SpeechModelFolder)" DestinationFileName="$(SpeechModelName)" ContinueOnError="WarnAndContinue" />
+    <VerifyFileHash Condition="Exists('$(SpeechModelFile)')" File="$(SpeechModelFile)" Hash="$(SpeechModelHash)" Algorithm="SHA256" />
+  </Target>
+
+  <Target Name="CopySpeechModel" AfterTargets="Build" Condition="Exists('$(SpeechModelFile)')">
+    <Copy SourceFiles="$(SpeechModelFile)" DestinationFolder="$(OutDir)models\" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="PublishSpeechModel" AfterTargets="Publish">
+    <Error Condition="!Exists('$(SpeechModelFile)')" Text="The speech model is missing, so voice input would not work in this package." />
+    <Copy SourceFiles="$(SpeechModelFile)" DestinationFolder="$(PublishDir)models\" SkipUnchangedFiles="true" />
+  </Target>
 </Project>

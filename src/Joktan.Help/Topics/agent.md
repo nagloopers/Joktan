@@ -18,12 +18,22 @@ panel, and the icon brings it back.
 
 ## Talking to the agent
 
-Type in the box and press **Enter**, or **Shift+Enter** for a new line. Each tool the agent uses is listed as it runs: a
-blue dot while it runs, green when it worked and red when it did not. Hold the pointer over one to see what it does.
+Speech is off to begin with. Switch on **Voice input** on the Settings / Agent page, and a microphone appears beside the message box.
+Hold it and talk, then let go. Your words are sent to the agent straight away, so there is nothing to press. If the agent is still working, they
+wait in the box and go when it has finished. The first time, your system asks whether the app may use the microphone. There is nothing to install.
 
-**Stop** ends the turn. The bin icon in the panel's header clears the chat and starts again: a turn still running stops,
-the agent forgets the conversation, and anything you allowed for it is asked about again. Conversations are not kept when
-Joktan closes, though the client may keep its own record of them.
+What you say is turned into text on this computer, by a speech model that ships with Joktan. No sound leaves your computer, and the
+app downloads nothing. Your words only leave once you send them, when they go to the client's AI provider like anything you type.
+
+Anything you say is a request like any other, such as "make a note of today's alerts". Two things do something else:
+
+| Say | What happens |
+|---|---|
+| Only "stop" | Stops the agent and anything being read |
+| Only "clear chat" | Clears the chat |
+
+As messages go without being checked, a misheard word can reach the agent, which may act on it if it is an ordinary edit. Approval questions are always answered by clicking, so a misheard word cannot allow anything risky. A recording stops by itself after two
+minutes. It understands English.
 
 ## What it asks you first
 

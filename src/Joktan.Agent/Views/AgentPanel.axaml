@@ -11,6 +11,9 @@
             <Setter Property="Width" Value="16" />
             <Setter Property="Height" Value="16" />
         </Style>
+        <Style Selector="PathIcon.listening">
+            <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
+        </Style>
         <Style Selector="Border.user-message">
             <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
             <Setter Property="CornerRadius" Value="8" />
@@ -46,6 +49,16 @@
                                ToolTip.Tip="Which command-line agent answers. Change it on the Settings / Agent page."
                                Text="{Binding SelectedClient.DisplayName}" />
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="2">
+                        <Button Classes="icon-button" ToolTip.Tip="Stop reading this aloud"
+                                IsVisible="{Binding IsSpeaking}" Command="{Binding StopSpeakingCommand}">
+                            <PathIcon Data="{x:Static core:Icons.Stop}" />
+                        </Button>
+                        <Button Classes="icon-button" ToolTip.Tip="{Binding ReadAloudTip}" Command="{Binding ToggleReadAloudCommand}">
+                            <Panel>
+                                <PathIcon Data="{x:Static core:Icons.Speaker}" IsVisible="{Binding IsReadingAloud}" />
+                                <PathIcon Data="{x:Static core:Icons.SpeakerOff}" IsVisible="{Binding !IsReadingAloud}" />
+                            </Panel>
+                        </Button>
                         <Button Name="ClearButton" Classes="icon-button" ToolTip.Tip="Clear the chat and start again"
                                 IsEnabled="{Binding !IsEmpty}" Command="{Binding ClearCommand}">
                             <PathIcon Data="{x:Static core:Icons.Trash}" />
@@ -70,18 +83,27 @@
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="0,1,0,0"
                     Padding="10">
-                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                <StackPanel Spacing="6">
+                <TextBlock Classes="info-label" TextWrapping="Wrap" Text="{Binding TalkMessage}"
+                           IsVisible="{Binding TalkMessage, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
                     <TextBox Name="DraftBox"
                              Text="{Binding Draft}"
-                             PlaceholderText="Ask the agent… (Shift+Enter for a new line)"
+                             PlaceholderText="{Binding DraftHint}"
                              AcceptsReturn="True"
                              TextWrapping="Wrap"
                              MaxHeight="160" />
-                    <Button Grid.Column="1" VerticalAlignment="Bottom" Classes="small" Content="Send"
+                    <Button Name="TalkButton" Grid.Column="1" VerticalAlignment="Bottom" Classes="icon-button"
+                            Focusable="False"
+                            IsVisible="{Binding CanTalk}" IsEnabled="{Binding CanPressTalk}">
+                        <PathIcon Classes.listening="{Binding IsListening}" Data="{x:Static core:Icons.Microphone}" />
+                    </Button>
+                    <Button Grid.Column="2" VerticalAlignment="Bottom" Classes="small" Content="Send"
                             IsVisible="{Binding IsIdle}" Command="{Binding SendCommand}" />
-                    <Button Grid.Column="1" VerticalAlignment="Bottom" Classes="small" Content="Stop"
+                    <Button Grid.Column="2" VerticalAlignment="Bottom" Classes="small" Content="Stop"
                             IsVisible="{Binding IsBusy}" Command="{Binding StopCommand}" />
                 </Grid>
+                </StackPanel>
             </Border>
 
             <Panel>

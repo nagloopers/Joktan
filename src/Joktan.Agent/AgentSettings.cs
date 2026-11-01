@@ -45,6 +45,18 @@ public sealed class AgentSettings
     /// <summary>Whether the agent may also use the client's own tools, such as its shell and file tools, which Joktan cannot ask about.</summary>
     public bool AllowClientTools { get; set; }
 
+    /// <summary>Whether the agent's replies are read aloud.</summary>
+    public bool ReadAloud { get; set; }
+
+    /// <summary>The voice to read in; empty leaves it to the system.</summary>
+    public string SpeechVoice { get; set; } = "";
+
+    /// <summary>How fast to read, as a percentage of the usual speed.</summary>
+    public int SpeechSpeed { get; set; } = 100;
+
+    /// <summary>Whether the chat has the microphone button.</summary>
+    public bool VoiceInput { get; set; }
+
     /// <summary>Whether clients from outside the app may connect.</summary>
     public bool OutsideEnabled { get; set; }
 

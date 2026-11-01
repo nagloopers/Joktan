@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Agent.Clients;
+using Joktan.Agent.Speech;
 using Joktan.Core;
 using Joktan.Core.ViewModels;
 
@@ -14,7 +15,10 @@ namespace Joktan.Agent.ViewModels;
 public partial class AgentSettingsViewModel : PageViewModel
 {
     private readonly AgentSettings _settings;
+    private const string SystemVoice = "System default";
+
     private bool _loading;
+    private bool _isShown;
 
     public AgentSettingsViewModel(AgentViewModel agent) : base("Agent", "Settings / Agent")
     {
@@ -29,6 +33,56 @@ public partial class AgentSettingsViewModel : PageViewModel
     }
 
     public AgentViewModel Agent { get; }
+
+    [ObservableProperty]
+    public partial IReadOnlyList<string> Voices { get; private set; } = [SystemVoice];
+
+    /// <summary>Says what is missing when this computer has nothing to read with.</summary>
+    [ObservableProperty]
+    public partial string? SpeechProblem { get; private set; }
+
+    public bool VoiceInput
+    {
+        get => _settings.VoiceInput;
+        set
+        {
+            _settings.VoiceInput = value;
+            _settings.Save();
+            Agent.VoiceInputChanged();
+            OnPropertyChanged();
+        }
+    }
+
+    /// <summary>Says so if this build came without the speech model.</summary>
+    public string? VoiceProblem => SpeechToText.IsAvailable ? null : "This copy of Joktan came without its speech model, so the microphone button is not shown.";
+
+    public string SelectedVoice
+    {
+        get => _settings.SpeechVoice.Length > 0 ? _settings.SpeechVoice : SystemVoice;
+        set
+        {
+            // A list being replaced clears its selection, which is no choice of the user's.
+            if (value is null)
+                return;
+            _settings.SpeechVoice = value == SystemVoice ? "" : value;
+            _settings.Save();
+            OnPropertyChanged();
+        }
+    }
+
+    public double SpeechSpeed
+    {
+        get => _settings.SpeechSpeed;
+        set
+        {
+            _settings.SpeechSpeed = (int)Math.Round(value / 10) * 10;
+            _settings.Save();
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(SpeechSpeedText));
+        }
+    }
+
+    public string SpeechSpeedText => $"{_settings.SpeechSpeed}%";
 
     /// <summary>Puts text on the clipboard. Set by the view.</summary>
     public Func<string, Task>? CopyText { get; set; }
@@ -150,8 +204,28 @@ public partial class AgentSettingsViewModel : PageViewModel
         OnPropertyChanged(nameof(IsCustom));
         OnPropertyChanged(nameof(ModelHint));
         OnPropertyChanged(nameof(PathHint));
-        _ = CheckAsync();
+        if (_isShown)
+            _ = CheckAsync();
     }
+
+    /// <summary>Looks for the programs when the page is first shown, so that starting the app runs none of them.</summary>
+    public async Task ShownAsync()
+    {
+        if (_isShown)
+            return;
+        _isShown = true;
+        _ = CheckAsync();
+
+        SpeechProblem = SpeechOutput.FindProgram() is null
+            ? "Nothing on this computer can read aloud. On Linux, install espeak-ng or speech-dispatcher."
+            : null;
+        var voices = await SpeechOutput.VoicesAsync();
+        Voices = [SystemVoice, .. voices];
+        OnPropertyChanged(nameof(SelectedVoice));
+    }
+
+    [RelayCommand]
+    private void TrySpeech() => Agent.TrySpeech();
 
     /// <summary>Looks for the chosen client, and asks it its version.</summary>
     [RelayCommand]
