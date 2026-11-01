@@ -50,6 +50,16 @@
     <Copy SourceFiles="$(SpeechModelFile)" DestinationFolder="$(OutDir)models\" SkipUnchangedFiles="true" />
   </Target>
 
+  <!-- A single exe on Windows, with what voice input needs in one folder beside it. Whisper looks for its libraries in that folder and cannot load them from inside the exe. Other platforms' copies are left out. -->
+  <Target Name="KeepVoiceLibrariesOutOfTheExe" AfterTargets="ComputeResolvedFilesToPublishList" Condition="'$(PublishSingleFile)' == 'true' And $(RuntimeIdentifier.StartsWith('win-'))">
+    <ItemGroup>
+      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" Condition="'%(Filename)%(Extension)' == 'ggml-metal.metal'" />
+      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" Condition="$([System.String]::Copy('%(RelativePath)').Replace('\','/').StartsWith('runtimes/')) And !$([System.String]::Copy('%(RelativePath)').Replace('\','/').StartsWith('runtimes/$(RuntimeIdentifier)/'))" />
+      <ResolvedFileToPublish Update="@(ResolvedFileToPublish)" Condition="$([System.String]::Copy('%(RelativePath)').Replace('\','/').StartsWith('runtimes/$(RuntimeIdentifier)/'))" ExcludeFromSingleFile="true" />
+      <ResolvedFileToPublish Update="@(ResolvedFileToPublish)" Condition="'%(Filename)%(Extension)' == 'soft_oal.dll'" RelativePath="runtimes/$(RuntimeIdentifier)/soft_oal.dll" ExcludeFromSingleFile="true" />
+    </ItemGroup>
+  </Target>
+
   <Target Name="PublishSpeechModel" AfterTargets="Publish">
     <Error Condition="!Exists('$(SpeechModelFile)')" Text="The speech model is missing, so voice input would not work in this package." />
     <Copy SourceFiles="$(SpeechModelFile)" DestinationFolder="$(PublishDir)models\" SkipUnchangedFiles="true" />

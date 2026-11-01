@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -46,7 +47,12 @@ public sealed class Microphone : IMicrophone
     {
         if (name != Library)
             return 0;
-        return NativeLibrary.TryLoad(OperatingSystem.IsWindows() ? "soft_oal" : "libopenal", assembly, path, out var handle) ? handle : 0;
+
+        // A Windows package keeps it with Whisper's libraries, in a folder beside the exe.
+        var packaged = Path.Combine(AppContext.BaseDirectory, "runtimes", RuntimeInformation.RuntimeIdentifier, "soft_oal.dll");
+        if (OperatingSystem.IsWindows() && NativeLibrary.TryLoad(packaged, out var handle))
+            return handle;
+        return NativeLibrary.TryLoad(OperatingSystem.IsWindows() ? "soft_oal" : "libopenal", assembly, path, out handle) ? handle : 0;
     }
 
     public void Start()

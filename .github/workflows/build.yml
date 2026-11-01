@@ -1,5 +1,5 @@
 # Builds and tests Joktan, reports code coverage, and packages it for Windows, macOS and Linux.
-# Windows builds are zipped as a single .exe and the README; macOS builds are zipped, unsigned .app bundles;
+# Windows builds are zipped as a single .exe, the speech model and voice libraries beside it, and the README; macOS builds are zipped, unsigned .app bundles;
 # Linux builds are a .tar.gz of a single executable and the README, since a tar keeps the executable's permission.
 # It only runs when started by hand, from the Actions tab or with `gh workflow run build.yml`.
 # The builds take their version from the commit's tag, which the Tag workflow makes.
@@ -103,6 +103,7 @@ jobs:
         shell: bash
         run: >
           dotnet publish src/Joktan/Joktan.csproj -c Release -r ${{ matrix.rid }} --self-contained
+          -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
           -p:DebugType=embedded
           -p:Version=${VERSION#v}
           -o publish/${{ matrix.rid }}
@@ -113,8 +114,9 @@ jobs:
         run: rm -f publish/${{ matrix.rid }}/*.pdb
 
       # Whisper and OpenAL need the Visual C++ runtime, which a clean Windows may not have, and users install nothing.
-      # Microsoft allows these files to be deployed beside an app.
-      - name: Put the Visual C++ runtime beside the app
+      # Microsoft allows these files to be deployed beside an app. They go beside the libraries that need them,
+      # as a library loaded by its whole path looks in its own folder and not the exe's.
+      - name: Put the Visual C++ runtime with the voice libraries
         shell: pwsh
         run: |
           $arch = if ('${{ matrix.rid }}' -like '*arm64') { 'arm64' } else { 'x64' }
@@ -124,10 +126,20 @@ jobs:
           foreach ($name in $wanted) {
             $file = Get-ChildItem "$($redist.FullName)\$arch" -Recurse -Filter $name | Where-Object { $_.FullName -notmatch 'onecore|debug' } | Select-Object -First 1
             if (-not $file) { throw "$name was not found under $($redist.FullName)\$arch" }
-            Copy-Item $file.FullName publish/${{ matrix.rid }}/
+            Copy-Item $file.FullName publish/${{ matrix.rid }}/runtimes/${{ matrix.rid }}/
           }
 
-      # A folder and not a single exe: Whisper's native libraries and the speech model have to sit beside the app.
+      - name: Keep only the exe and what voice input needs
+        shell: bash
+        run: |
+          extra=$(ls publish/${{ matrix.rid }} | grep -vxE 'Joktan.exe|models|runtimes' || true)
+          extra="$extra $(ls publish/${{ matrix.rid }}/runtimes | grep -vx ${{ matrix.rid }} || true)"
+          if [ -n "${extra// /}" ]; then
+            echo "::error::Files were left outside Joktan.exe:" $extra
+            exit 1
+          fi
+
+      # The exe cannot hold Whisper's native libraries or the speech model, so those go with it in the zip.
       - name: Zip the app with the README
         shell: pwsh
         run: |

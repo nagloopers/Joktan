@@ -92,7 +92,7 @@ Releases are published from the fork, [Caracal-IT/Joktan](https://github.com/Car
 original repository refuses to run the workflow. Sync the fork's `main`, open **Release** on the fork's
 Actions tab and press **Run workflow**, or run `gh workflow run release.yml --repo Caracal-IT/Joktan`. If
 the tests pass on Windows, macOS and Linux, the commit's version is published as a release of the fork with the
-builds attached: for Windows, a zip of a folder holding `Joktan.exe`, the speech model and this README, which needs no installing; for macOS, a zipped `.app`; for Linux, a `.tar.gz` of a folder holding the `Joktan`
+builds attached: for Windows, a zip of a folder holding a single `Joktan.exe`, the speech model and libraries that voice input needs, and this README, which needs no installing; for macOS, a zipped `.app`; for Linux, a `.tar.gz` of a folder holding the `Joktan`
 executable, the speech model and this README, which needs fontconfig (`libfontconfig1` on Debian and Ubuntu). A version can only be
 released once, and a commit with no tag of its own gets the next free version. There are no secrets to set up, but Actions must be turned on in the fork, and the
 organisation must let workflows have write access.
