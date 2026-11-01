@@ -47,7 +47,7 @@ A client is a command-line agent, run once per turn. Every client runs in `agent
 - Configuration files hold the token, so they go in a new private temporary folder, are readable by the user only, and are removed after the turn.
 - A client that gave no session is told the transcript instead. The same goes after changing client mid-conversation.
 - The client's own tools are off unless switched on. Claude Code gets `--tools ""`, OpenCode denies all but `joktan_*`, and Copilot is only granted `joktan`.
-- Copilot's flags come from GitHub's documentation, but its JSON event names are undocumented and have not been run against the real client. Any line that is not JSON is shown as text.
+- Copilot's flags come from GitHub's documentation. Its JSON event names are undocumented, and were checked against version 1.0.105 of the real client. Any line that is not JSON is shown as text.
 - On Windows only an `.exe` is run, because a `.cmd` goes through cmd.exe, whose quoting a prompt could break out of.
 
 ## MCP server

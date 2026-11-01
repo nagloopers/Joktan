@@ -72,7 +72,8 @@ public abstract class AgentClient
         var options = new FileStreamOptions { Mode = FileMode.Create, Access = FileAccess.Write };
         if (!OperatingSystem.IsWindows())
             options.UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite;
-        using var writer = new StreamWriter(path, Encoding.UTF8, options);
+        // No byte order mark: Copilot's JSON parser rejects one as invalid.
+        using var writer = new StreamWriter(path, new UTF8Encoding(false), options);
         writer.Write(content.ToJsonString(JsonFormats.Compact));
         return path;
     }
