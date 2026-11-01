@@ -551,12 +551,13 @@ public class MqttClientViewModelTests : DataFolderTest
         await using var broker = await TestBroker.StartAsync();
         var vm = Client(On(broker));
         await vm.ConnectCommand.ExecuteAsync(null);
-        await Headless.Until(() => vm.IsConnected);
+        // The state changes at once and the view model hears of it later, so wait for what it does about it.
+        await Headless.Until(() => vm.IsRunning);
 
         await broker.DropClientsAsync();
-        await Headless.Until(() => vm.IsPending);
+        await Headless.Until(() => vm.Entries.Any(e => e.Event == "Reconnecting"));
 
-        Assert.Contains(vm.Entries, e => e.Event == "Reconnecting");
+        Assert.True(vm.IsPending);
         Assert.Equal("Disconnect", vm.DisconnectText);
         Assert.True(vm.IsRunning);
         await vm.DisconnectCommand.ExecuteAsync(null);
