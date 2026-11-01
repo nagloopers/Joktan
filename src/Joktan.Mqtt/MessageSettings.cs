@@ -347,7 +347,7 @@ public sealed record MessageSettings
     /// <summary>Returns what is wrong with an array rule's numbers, or null.</summary>
     public static string? CheckArray(ArrayRule rule)
         => rule.Min < 0 ? Strings.MessageSettings_TheNumberOfItemsMustNot
-            : rule.Max > ArrayRule.Limit ? string.Format(System.Globalization.CultureInfo.InvariantCulture, Strings.MessageSettings_TheNumberOfItemsMustNotBe, ArrayRule.Limit)
+            : rule.Max > ArrayRule.Limit ? string.Format(CultureInfo.InvariantCulture, Strings.MessageSettings_TheNumberOfItemsMustNotBe, ArrayRule.Limit)
             : rule.Min > rule.Max ? Strings.MessageSettings_MinMustNotBeGreaterThan
             : null;
 

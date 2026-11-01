@@ -123,7 +123,8 @@ public sealed partial class SpeechOutput : IDisposable
         };
         AddArguments(start, program, voice, speed);
 
-        using var process = new Process { StartInfo = start };
+        using var process = new Process();
+        process.StartInfo = start;
         process.Start();
         process.OutputDataReceived += (_, _) => { };
         process.ErrorDataReceived += (_, _) => { };

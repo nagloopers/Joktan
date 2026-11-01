@@ -4,7 +4,7 @@ using Joktan.TopicDashboards.Resources;
 namespace Joktan.TopicDashboards.ViewModels;
 
 /// <summary>One line, bar or tile a graph draws, with its readings.</summary>
-public partial class GraphSeriesViewModel : ViewModelBase
+public class GraphSeriesViewModel : ViewModelBase
 {
     private readonly GraphCardViewModel _card;
 

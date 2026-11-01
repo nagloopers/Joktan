@@ -86,7 +86,7 @@ public class MqttViewModelTests : DataFolderTest
         Assert.Single(vm.Clients);
         Assert.Equal("client 3", editor!.Name);
 
-        vm.EditClientSettings = e => Task.FromResult(true);
+        vm.EditClientSettings = _ => Task.FromResult(true);
         await vm.AddClientCommand.ExecuteAsync(null);
 
         Assert.Equal(2, vm.Clients.Count);

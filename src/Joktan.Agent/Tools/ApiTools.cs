@@ -189,7 +189,7 @@ public static class ApiTools
 
     private static void Replace(ApiPairList list, ToolArgs args, string name)
     {
-        if (args.Raw.TryGetProperty(name, out _) is false)
+        if (!args.Raw.TryGetProperty(name, out _))
             return;
         list.Clear();
         foreach (var (key, value) in args.Map(name))

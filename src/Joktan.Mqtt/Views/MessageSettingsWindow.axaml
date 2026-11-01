@@ -114,20 +114,20 @@
                                                                  FilterMode="Contains"
                                                                  MinimumPrefixLength="0" />
                                             </StackPanel>
-                                            <StackPanel Grid.Column="1">
+                                            <StackPanel Grid.Row="0" Grid.Column="1">
                                                 <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_NewValue}" />
                                                 <ComboBox SelectedIndex="{Binding TypeIndex}"
                                                           ItemsSource="{x:Static vm:FieldRuleViewModel.TypeNames}"
                                                           HorizontalAlignment="Stretch" />
                                             </StackPanel>
-                                            <Button Grid.Column="2"
+                                            <Button Grid.Row="0" Grid.Column="2"
                                                     Classes="small"
                                                     Content="{x:Static res:Strings.MessageSettingsWindow_Remove}"
                                                     VerticalAlignment="Bottom"
                                                     Command="{Binding #Root.((vm:MessageSettingsViewModel)DataContext).RemoveFieldCommand}"
                                                     CommandParameter="{Binding}" />
 
-                                            <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="12">
+                                            <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="12">
                                                 <StackPanel IsVisible="{Binding ShowCounter}">
                                                     <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Start}" />
                                                     <TextBox Text="{Binding Start}" Width="110" />
@@ -322,20 +322,20 @@
                                                                  FilterMode="Contains"
                                                                  MinimumPrefixLength="0" />
                                             </StackPanel>
-                                            <StackPanel Grid.Column="1">
+                                            <StackPanel Grid.Row="0" Grid.Column="1">
                                                 <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_NewValue}" />
                                                 <ComboBox SelectedIndex="{Binding TypeIndex}"
                                                           ItemsSource="{x:Static vm:FieldRuleViewModel.TypeNames}"
                                                           HorizontalAlignment="Stretch" />
                                             </StackPanel>
-                                            <Button Grid.Column="2"
+                                            <Button Grid.Row="0" Grid.Column="2"
                                                     Classes="small"
                                                     Content="{x:Static res:Strings.MessageSettingsWindow_Remove}"
                                                     VerticalAlignment="Bottom"
                                                     Command="{Binding #Root.((vm:MessageSettingsViewModel)DataContext).RemoveFieldCommand}"
                                                     CommandParameter="{Binding}" />
 
-                                            <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="12">
+                                            <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="12">
                                                 <StackPanel IsVisible="{Binding ShowCounter}">
                                                     <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Start}" />
                                                     <TextBox Text="{Binding Start}" Width="110" />

@@ -352,7 +352,7 @@ public partial class BackupViewModel : PageViewModel
 
     partial void OnKeepLastChanged(int value)
     {
-        if (_settings is null || value == _settings.KeepLast)
+        if (value == _settings.KeepLast)
             return;
 
         _settings.KeepLast = Math.Clamp(value, 1, BackupSettings.MaxKeep);

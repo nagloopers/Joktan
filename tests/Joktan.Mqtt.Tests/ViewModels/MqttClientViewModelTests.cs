@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Media;
+using Joktan.Core;
 using Joktan.Mqtt.ViewModels;
 using Joktan.Tests.TestSupport;
 using Xunit;
@@ -187,7 +188,7 @@ public class MqttClientViewModelTests : DataFolderTest
         await vm.ConnectCommand.ExecuteAsync(null);
         await Headless.Until(() => vm.IsConnected);
 
-        var account = Joktan.Core.CredentialStore.AccountFor("me", "127.0.0.1", broker.Port.ToString());
+        var account = CredentialStore.AccountFor("me", "127.0.0.1", broker.Port.ToString());
         Assert.Equal("secret", _credentials.Saved[account]);
 
         await vm.DisconnectCommand.ExecuteAsync(null);

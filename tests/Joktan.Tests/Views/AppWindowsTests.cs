@@ -9,6 +9,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Headless;
 using Avalonia.Input;
 using Joktan.Containers;
+using Joktan.Core.Controls;
 using Joktan.Core;
 using Joktan.Core.ViewModels;
 using Joktan.Dashboard.Telemetry;
@@ -47,7 +48,7 @@ public class AppWindowsTests : DataFolderTest, IDisposable
         messages.Flyout!.ShowAt(messages);
         Headless.Settle();
         Assert.True(main.Inbox.IsMessagesOpen);
-        Assert.Same(main.Inbox, ((Avalonia.Controls.Control)((Flyout)messages.Flyout).Content!).DataContext);
+        Assert.Same(main.Inbox, ((Control)((Flyout)messages.Flyout).Content!).DataContext);
         messages.Flyout.Hide();
         Headless.Settle();
         Assert.False(main.Inbox.IsMessagesOpen);
@@ -333,7 +334,7 @@ public class AppWindowsTests : DataFolderTest, IDisposable
         Headless.Settle();
 
         var button = window.FindControl<Button>("MessagesButton")!;
-        var panel = (Avalonia.Controls.Control)((Flyout)button.Flyout!).Content!;
+        var panel = (Control)((Flyout)button.Flyout!).Content!;
         Assert.True(main.Inbox.IsMessagesOpen);
         Assert.True(main.Inbox.Messages[30].IsFound);
         var scroller = panel.FindControl<ScrollViewer>("Scroller")!;
@@ -372,7 +373,7 @@ public class AppWindowsTests : DataFolderTest, IDisposable
         Headless.Settle();
         Assert.True(popup.IsOpen);
 
-        var list = (TopLevel)TopLevel.GetTopLevel(popup.Child!)!;
+        var list = TopLevel.GetTopLevel(popup.Child!)!;
         list.CaptureRenderedFrame();
         Headless.Settle();
         var item = Headless.Find<ListBoxItem>(list, i => i.DataContext is SearchHit { Area: "Notes" });
@@ -436,12 +437,12 @@ public class AppWindowsTests : DataFolderTest, IDisposable
 
         main.Search.Text = "Shortcut";
         Headless.Settle();
-        var root = (TopLevel)TopLevel.GetTopLevel(popup.Child!)!;
+        var root = TopLevel.GetTopLevel(popup.Child!)!;
         root.CaptureRenderedFrame();
         Headless.Settle();
 
         var marked = Headless.All<TextBlock>(root).SelectMany(t => t.Inlines?.OfType<Avalonia.Controls.Documents.Run>() ?? [])
-            .Where(r => r.Classes.Contains(Joktan.Core.Controls.TextHighlight.MatchClass)).Select(r => r.Text).ToList();
+            .Where(r => r.Classes.Contains(TextHighlight.MatchClass)).Select(r => r.Text).ToList();
         Assert.Contains("Shortcut", marked);
         Assert.True(clear.IsVisible);
 

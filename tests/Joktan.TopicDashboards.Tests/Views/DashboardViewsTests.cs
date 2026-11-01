@@ -288,7 +288,7 @@ public class DashboardViewsTests : DashboardTest
     [Fact]
     public Task A_graph_card_shows_a_status_and_a_legend() => Headless.Run(() =>
     {
-        var profile = Graph("g");
+        var profile = Graph();
         profile.Values.Add(new GraphValue { Topic = "t/a", Path = "other", Color = 1 });
         var card = new GraphCardViewModel(profile, new GraphData()) { Status = "Waiting" };
         var window = Headless.Show(new GraphCardView(), card);

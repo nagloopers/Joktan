@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
-using Joktan.Mqtt.Controls;
 using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt;
@@ -10,7 +9,7 @@ namespace Joktan.Mqtt;
 /// <summary>
 /// One MQTT client the user has set up: the broker it connects to and how, and what its tab on the
 /// MQTT page and in the topic explorer remembers. Passwords are not part of it; see
-/// <see cref="CredentialStore"/>.
+/// <see cref="Joktan.Core.CredentialStore"/>.
 /// </summary>
 public sealed class ClientProfile
 {

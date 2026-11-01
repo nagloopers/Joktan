@@ -4,7 +4,6 @@ using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Joktan.Core;
 using Joktan.Core.ViewModels;
-using Markdig;
 
 namespace Joktan.Help.ViewModels;
 

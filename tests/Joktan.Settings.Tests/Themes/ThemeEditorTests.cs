@@ -336,8 +336,8 @@ public class ThemeEditorTests : DataFolderTest
         editor.Apply();
         editor.SetColor("AgentPromptBrush", "#123456");
 
-        Assert.True(Avalonia.Application.Current!.TryGetResource("AgentPromptBrush", null, out var brush));
-        Assert.Equal(Avalonia.Media.Color.Parse("#123456"), ((Avalonia.Media.ISolidColorBrush)brush!).Color);
+        Assert.True(Application.Current!.TryGetResource("AgentPromptBrush", null, out var brush));
+        Assert.Equal(Color.Parse("#123456"), ((ISolidColorBrush)brush!).Color);
     });
 
     [Fact]
@@ -353,7 +353,7 @@ public class ThemeEditorTests : DataFolderTest
         editor.SetColor("SearchMatchBrush", "#123456");
 
         Assert.Equal("#123456", editor.Draft.Colors["SearchMatchBrush"]);
-        Assert.True(Avalonia.Application.Current!.TryGetResource("SearchMatchBrush", null, out var brush));
-        Assert.Equal(Avalonia.Media.Color.Parse("#123456"), ((Avalonia.Media.ISolidColorBrush)brush!).Color);
+        Assert.True(Application.Current!.TryGetResource("SearchMatchBrush", null, out var brush));
+        Assert.Equal(Color.Parse("#123456"), ((ISolidColorBrush)brush!).Color);
     });
 }

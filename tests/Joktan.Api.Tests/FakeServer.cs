@@ -69,11 +69,11 @@ public sealed class FakeServer : IAsyncDisposable
 
     public string RestAddress { get; private set; } = "";
 
-    public string? LastAuthorization { get; private set; }
-
     public string? LastMetadata { get; private set; }
 
     public string LastRestBody { get; private set; } = "";
+
+    public string? LastRestCookie { get; private set; }
 
     public MethodDescriptor Method(string name) => Schema.FindMethod("demo.Greeter", name)!;
 
@@ -114,7 +114,9 @@ public sealed class FakeServer : IAsyncDisposable
         {
             using var reader = new StreamReader(context.Request.Body);
             LastRestBody = await reader.ReadToEndAsync();
-            LastAuthorization = context.Request.Headers.Authorization;
+            LastRestCookie = context.Request.Headers.Cookie;
+            if (path == "/cookie")
+                context.Response.Headers.SetCookie = "session=abc";
             context.Response.StatusCode = path == "/missing" ? 404 : 200;
             context.Response.ContentType = "application/json";
             await context.Response.WriteAsync(path == "/hang"

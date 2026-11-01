@@ -59,7 +59,7 @@ public sealed class GraphReader
                 continue;
 
             var fromTopic = pattern.KeyValues(message.Topic);
-            var rows = RowsOf(message, pattern, path, fromTopic);
+            var rows = RowsOf(message, path, fromTopic);
             if (rows.Count == 0)
             {
                 problem ??= string.Format(Strings.GraphReader_NothingAt, (value.Path.Length > 0 ? value.Path : Strings.GraphReader_TheWholePayload));
@@ -87,7 +87,7 @@ public sealed class GraphReader
         return new GraphRead(readings, readings.Count > 0 || seen.Count > 0 ? null : message.NumbersProblem ?? problem, seen);
     }
 
-    private static IReadOnlyList<PathRow> RowsOf(ReceivedMessage message, TopicPattern pattern, PayloadPath path, Dictionary<string, string> fromTopic)
+    private static IReadOnlyList<PathRow> RowsOf(ReceivedMessage message, PayloadPath path, Dictionary<string, string> fromTopic)
     {
         if (path.IsPlain)
         {

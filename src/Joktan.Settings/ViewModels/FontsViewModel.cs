@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Joktan.Core.ViewModels;

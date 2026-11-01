@@ -1,4 +1,3 @@
-using System;
 using Joktan.Settings.ViewModels;
 using Joktan.Tests.TestSupport;
 using Xunit;

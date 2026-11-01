@@ -314,7 +314,7 @@ public class CertificateStoreTests : IDisposable
     [Fact]
     public void Offers_a_name_not_yet_taken()
     {
-        Root("root");
+        Root();
         Root("root (2)");
 
         Assert.Equal("free", _store.UnusedName(" free "));

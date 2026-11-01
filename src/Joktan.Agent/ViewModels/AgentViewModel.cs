@@ -439,7 +439,7 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
             else if (!output.HadProblem && !output.HadText && !cancel.IsCancellationRequested)
                 Add(new AgentProblemViewModel(string.Format(Strings.Agent_FinishedWithoutSayingAnything, client.DisplayName)));
         }
-        catch (Exception e) when (e is IOException or UnauthorizedAccessException or System.ComponentModel.Win32Exception or InvalidOperationException or HttpListenerException or SocketException)
+        catch (Exception e) when (e is IOException or UnauthorizedAccessException or Win32Exception or InvalidOperationException or HttpListenerException or SocketException)
         {
             Add(new AgentProblemViewModel(string.Format(Strings.Agent_CouldNotBeStarted, client.DisplayName, e.Message)));
         }
@@ -650,7 +650,7 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
         }
     }
 
-    public object? ToolStarted(McpTool tool, ToolCaller caller)
+    public object ToolStarted(McpTool tool, ToolCaller caller)
     {
         var row = new ToolCallViewModel(tool, caller);
         FinishReply();

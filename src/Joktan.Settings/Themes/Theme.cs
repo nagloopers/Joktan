@@ -36,9 +36,13 @@ public sealed class Theme
     /// <summary>Whether the two look the same, whatever they are called.</summary>
     public bool LooksLike(Theme other)
         => IsDark == other.IsDark
-           && Colors.Count == other.Colors.Count && !Colors.Except(other.Colors).Any()
-           && Fonts.Count == other.Fonts.Count && !Fonts.Except(other.Fonts).Any()
-           && TextSizes.Count == other.TextSizes.Count && !TextSizes.Except(other.TextSizes).Any();
+           && Same(Colors, other.Colors)
+           && Same(Fonts, other.Fonts)
+           && Same(TextSizes, other.TextSizes);
+
+    private static bool Same<T>(Dictionary<string, T> one, Dictionary<string, T> other)
+        => one.Count == other.Count
+           && one.All(e => other.TryGetValue(e.Key, out var value) && EqualityComparer<T>.Default.Equals(e.Value, value));
 
     /// <summary>
     /// A copy holding exactly the tokens the app has. A token missing or unusable here, as in a

@@ -145,12 +145,13 @@ public sealed partial class ComposeTool
     /// <summary>Runs a compose command and returns what it wrote to standard output; throws if it fails.</summary>
     public async Task<string> ReadAsync(IEnumerable<string> arguments, CancellationToken cancel = default)
     {
+        var command = arguments.ToList();
         var output = new List<string>();
         var errors = new List<string>();
-        var exitCode = await RunAsync(Executable, ["compose", "-f", ComposeFile, .. arguments], output.Add, cancel, errors.Add);
+        var exitCode = await RunAsync(Executable, ["compose", "-f", ComposeFile, .. command], output.Add, cancel, errors.Add);
         if (exitCode != 0)
         {
-            var message = errors.LastOrDefault(e => e.Length > 0) ?? string.Format(Strings.ComposeTool_FailedWithExitCode, CommandLine(arguments), exitCode);
+            var message = errors.LastOrDefault(e => e.Length > 0) ?? string.Format(Strings.ComposeTool_FailedWithExitCode, CommandLine(command), exitCode);
             throw new InvalidOperationException(message);
         }
 
@@ -194,7 +195,8 @@ public sealed partial class ComposeTool
 
     private static async Task<int> Run(ProcessStartInfo start, Action<string> output, Action<string> errors, CancellationToken cancel)
     {
-        using var process = new Process { StartInfo = start };
+        using var process = new Process();
+        process.StartInfo = start;
         var outputDone = new TaskCompletionSource();
         var errorsDone = new TaskCompletionSource();
         process.OutputDataReceived += (_, e) =>

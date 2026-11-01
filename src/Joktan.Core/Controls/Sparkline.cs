@@ -97,7 +97,7 @@ public class Sparkline : Control
         var area = new StreamGeometry();
         using (var g = area.Open())
         {
-            g.BeginFigure(new Point(At(0).X, height), true);
+            g.BeginFigure(new Point(At(0).X, height));
             for (var i = 0; i < count; i++)
                 g.LineTo(At(i));
             g.LineTo(new Point(width, height));

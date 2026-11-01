@@ -32,8 +32,6 @@ public partial class TopicDashboardsViewModel : PageViewModel
     private readonly Dictionary<GraphProfile, GraphSource> _sources = [];
     private readonly Dictionary<(string Client, string Topic), List<GraphSource>> _routes = [];
     private int _seriesCount;
-    private readonly DispatcherTimer _flushTimer;
-    private readonly DispatcherTimer _tickTimer;
     private DashboardStore _store;
 
     public TopicDashboardsViewModel(MqttViewModel mqtt, DashboardStore? store = null)
@@ -47,10 +45,10 @@ public partial class TopicDashboardsViewModel : PageViewModel
             AddFeed(client);
         mqtt.Clients.CollectionChanged += OnClientsChanged;
 
-        _flushTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(150), DispatcherPriority.Background, OnFlushTick);
-        _tickTimer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Background, OnTick);
-        _flushTimer.Start();
-        _tickTimer.Start();
+        var flushTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(150), DispatcherPriority.Background, OnFlushTick);
+        var tickTimer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Background, OnTick);
+        flushTimer.Start();
+        tickTimer.Start();
 
         GraphsChanged(save: false);
     }

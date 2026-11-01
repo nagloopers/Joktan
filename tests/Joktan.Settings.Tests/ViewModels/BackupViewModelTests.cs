@@ -698,7 +698,7 @@ public class BackupViewModelTests : DataFolderTest
     [Fact]
     public Task A_problem_found_at_start_up_shows_and_applying_goes_ahead_even_with_the_folder_in_use() => Headless.Run(async () =>
     {
-        var changed = new System.Collections.Generic.List<string>();
+        var changed = new List<string>();
         var folder = Data.At("in-use");
         var source = new FolderSource
         {

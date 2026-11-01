@@ -53,7 +53,7 @@ public partial class ComposeProjectViewModel : ViewModelBase
     {
         File = file;
         _page = page;
-        Name = System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(file)) ?? file;
+        Name = Path.GetFileName(Path.GetDirectoryName(file)) ?? file;
     }
 
     public string File { get; }

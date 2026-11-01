@@ -157,7 +157,7 @@ public static class MqttTools
                     if (args.Whole("qos") is { } qos) editor.QosIndex = qos;
                     if (args.Flag("retain") is { } retain) editor.Retain = retain;
                     if (args.Flag("gzip") is { } gzip) editor.Gzip = gzip;
-                    if (args.OptText("schedule") is { } schedule) editor.ScheduleTypeIndex = (int)Enum.Parse<Joktan.Mqtt.ScheduleType>(schedule);
+                    if (args.OptText("schedule") is { } schedule) editor.ScheduleTypeIndex = (int)Enum.Parse<ScheduleType>(schedule);
                     if (args.OptText("once_at") is { } onceAt) editor.OnceAt = onceAt;
                     if (args.OptText("every") is { } every) editor.Every = every;
                     if (args.OptText("unit") is { } unit) editor.UnitIndex = Array.IndexOf(new[] { "Seconds", "Minutes", "Hours", "Days" }, unit);

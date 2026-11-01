@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Joktan.Mqtt;
 using Joktan.Mqtt.Tests;
-using Joktan.TopicDashboards.ViewModels;
 using Joktan.TopicExplorer.ViewModels;
 using Joktan.Tests.TestSupport;
 using Xunit;

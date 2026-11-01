@@ -439,4 +439,27 @@ public class RestSenderSendTests
 
         Assert.Equal("No answer within 1 seconds", response.Status);
     }
+
+    [Fact]
+    public async Task A_cookie_from_one_request_does_not_go_out_with_the_next()
+    {
+        await using var server = await FakeServer.StartAsync();
+
+        await RestSender.SendAsync(new ApiRequest { Url = server.RestAddress + "/cookie" }, ApiVariables.None, Cancel);
+        var response = await RestSender.SendAsync(new ApiRequest { Url = server.RestAddress + "/next" }, ApiVariables.None, Cancel);
+
+        Assert.True(response.IsSuccess);
+        Assert.Null(server.LastRestCookie);
+    }
+
+    [Fact]
+    public async Task A_cookie_header_the_user_wrote_is_sent()
+    {
+        await using var server = await FakeServer.StartAsync();
+        var request = new ApiRequest { Url = server.RestAddress + "/next", Headers = [new ApiPair { Name = "Cookie", Value = "a=b" }] };
+
+        await RestSender.SendAsync(request, ApiVariables.None, Cancel);
+
+        Assert.Equal("a=b", server.LastRestCookie);
+    }
 }

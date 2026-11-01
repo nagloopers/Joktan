@@ -36,11 +36,11 @@
                                 <TextBlock Classes="field-label" Text="{x:Static res:Strings.CertificateDefaultsView_RootCACommonName}" />
                                 <TextBox Text="{Binding RootCommonName}" />
                             </StackPanel>
-                            <StackPanel Grid.Column="1">
+                            <StackPanel Grid.Row="0" Grid.Column="1">
                                 <TextBlock Classes="field-label" Text="{x:Static res:Strings.CertificateDefaultsView_IntermediateCACommonName}" />
                                 <TextBox Text="{Binding IntermediateCommonName}" />
                             </StackPanel>
-                            <StackPanel Grid.Row="1">
+                            <StackPanel Grid.Column="0" Grid.Row="1">
                                 <TextBlock Classes="field-label" Text="{x:Static res:Strings.CertificateDefaultsView_ServerCommonName}" />
                                 <TextBox Text="{Binding ServerCommonName}" />
                             </StackPanel>
@@ -48,7 +48,7 @@
                                 <TextBlock Classes="field-label" Text="{x:Static res:Strings.CertificateDefaultsView_ClientCommonName}" />
                                 <TextBox Text="{Binding ClientCommonName}" />
                             </StackPanel>
-                            <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
+                            <StackPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">
                                 <TextBlock Classes="field-label" Text="{x:Static res:Strings.CertificateDefaultsView_ServerHostNamesAndIPAddresses}" />
                                 <TextBox Text="{Binding ServerAlternativeNames}" PlaceholderText="localhost, 127.0.0.1, ::1" />
                             </StackPanel>
@@ -59,11 +59,11 @@
                                 <TextBlock Classes="field-label" Text="{x:Static res:Strings.CertificateDefaultsView_OrganisationO}" />
                                 <TextBox Text="{Binding Organization}" />
                             </StackPanel>
-                            <StackPanel Grid.Column="1">
+                            <StackPanel Grid.Row="0" Grid.Column="1">
                                 <TextBlock Classes="field-label" Text="{x:Static res:Strings.CertificateDefaultsView_OrganisationalUnitOU}" />
                                 <TextBox Text="{Binding OrganizationalUnit}" />
                             </StackPanel>
-                            <StackPanel Grid.Row="1">
+                            <StackPanel Grid.Column="0" Grid.Row="1">
                                 <TextBlock Classes="field-label" Text="{x:Static res:Strings.CertificateDefaultsView_LocalityL}" />
                                 <TextBox Text="{Binding Locality}" />
                             </StackPanel>

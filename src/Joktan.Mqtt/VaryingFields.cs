@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
-using Joktan.Certificates;
 using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt;

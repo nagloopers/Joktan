@@ -121,7 +121,7 @@ public class GraphViewTests
         Assert.Equal(0, ColorPixels(window, view));
         window.Close();
 
-        (window, view) = Show(Card(GraphKind.Value, 1, null, 1, 2), 300, 80);
+        (window, _) = Show(Card(GraphKind.Value, 1, null, 1, 2), 300, 80);
         window.Close();
     });
 

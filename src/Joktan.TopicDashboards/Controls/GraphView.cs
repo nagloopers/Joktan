@@ -183,7 +183,7 @@ public class GraphView : Control
                         var area = new StreamGeometry();
                         using (var g = area.Open())
                         {
-                            g.BeginFigure(new Point(X(samples[0].Time), baseline), true);
+                            g.BeginFigure(new Point(X(samples[0].Time), baseline));
                             foreach (var sample in samples)
                                 g.LineTo(new Point(X(sample.Time), Y(sample.Value)));
                             g.LineTo(new Point(X(samples[^1].Time), baseline));
@@ -247,7 +247,7 @@ public class GraphView : Control
         if (shownTime is not { } time)
             return;
 
-        context.DrawLine(new Pen(MutedBrush, 1), new Point(nearestX, plot.Top), new Point(nearestX, plot.Bottom));
+        context.DrawLine(new Pen(MutedBrush), new Point(nearestX, plot.Top), new Point(nearestX, plot.Bottom));
         DrawTooltip(context, pointer, time.ToString("HH:mm:ss"), rows);
     }
 
@@ -308,7 +308,7 @@ public class GraphView : Control
                 DrawText(context, bars[i].Label, center, plot.Bottom + 3, MutedBrush, AxisFontSize, TextAlignment.Center, slot - 4);
         }
 
-        context.DrawLine(new Pen(GridBrush, 1), new Point(plot.X, baseline), new Point(plot.Right, baseline));
+        context.DrawLine(new Pen(GridBrush), new Point(plot.X, baseline), new Point(plot.Right, baseline));
 
         if (card.Series.Count == 1)
         {
@@ -333,7 +333,7 @@ public class GraphView : Control
         using var g = geometry.Open();
         if (upward)
         {
-            g.BeginFigure(bar.BottomLeft, true);
+            g.BeginFigure(bar.BottomLeft);
             g.LineTo(new Point(bar.Left, bar.Top + radius));
             g.ArcTo(new Point(bar.Left + radius, bar.Top), corner, 0, false, SweepDirection.Clockwise);
             g.LineTo(new Point(bar.Right - radius, bar.Top));
@@ -342,7 +342,7 @@ public class GraphView : Control
         }
         else
         {
-            g.BeginFigure(bar.TopLeft, true);
+            g.BeginFigure(bar.TopLeft);
             g.LineTo(new Point(bar.Left, bar.Bottom - radius));
             g.ArcTo(new Point(bar.Left + radius, bar.Bottom), corner, 0, false, SweepDirection.CounterClockwise);
             g.LineTo(new Point(bar.Right - radius, bar.Bottom));
@@ -364,7 +364,10 @@ public class GraphView : Control
         var width = Bounds.Width / columns;
         var height = Bounds.Height / rows;
         for (var i = 0; i < count; i++)
-            draw(context, card, card.Series[i], new Rect(i % columns * width, i / columns * height, width, height).Deflate(4));
+        {
+            var row = i / columns;
+            draw(context, card, card.Series[i], new Rect(i % columns * width, row * height, width, height).Deflate(4));
+        }
     }
 
     private void DrawGauge(DrawingContext context, GraphCardViewModel card, GraphSeriesViewModel series, Rect tile)
@@ -456,7 +459,7 @@ public class GraphView : Control
             var area = new StreamGeometry();
             using (var g = area.Open())
             {
-                g.BeginFigure(new Point(X(samples[0].Time), trend.Bottom), true);
+                g.BeginFigure(new Point(X(samples[0].Time), trend.Bottom));
                 foreach (var sample in samples)
                     g.LineTo(new Point(X(sample.Time), Y(sample.Value)));
                 g.LineTo(new Point(X(samples[^1].Time), trend.Bottom));
@@ -545,7 +548,7 @@ public class GraphView : Control
 
     private void DrawValueAxis(DrawingContext context, GraphCardViewModel card, Rect plot, double bottom, double top)
     {
-        var pen = new Pen(GridBrush, 1);
+        var pen = new Pen(GridBrush);
         var rows = Math.Clamp((int)(plot.Height / 36), 1, 6);
         var step = NiceStep((top - bottom) / rows);
         var first = Math.Ceiling(bottom / step) * step;
@@ -589,7 +592,7 @@ public class GraphView : Control
         var y = Math.Clamp(pointer.Y - height / 2, 0, Math.Max(0, Bounds.Height - height));
         var box = new Rect(Math.Max(0, x), y, width, height);
 
-        context.DrawRectangle(SurfaceBrush, new Pen(GridBrush, 1), box, 4, 4);
+        context.DrawRectangle(SurfaceBrush, new Pen(GridBrush), box, 4, 4);
         context.DrawText(heading, new Point(box.X + padding, box.Y + padding));
         for (var i = 0; i < lines.Count; i++)
         {

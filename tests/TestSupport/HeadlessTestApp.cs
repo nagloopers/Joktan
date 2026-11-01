@@ -14,7 +14,6 @@ using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
-using Joktan.Tests.TestSupport;
 
 // Each test's application takes over Avalonia's dispatcher, so nothing else may touch it meanwhile.
 [assembly: Xunit.v3.Parallelization(Mode = Xunit.Sdk.ParallelMode.None)]

@@ -15,6 +15,6 @@ public sealed class YesNoConverter : IValueConverter
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         => value is true ? Strings.YesNoConverter_Yes : Strings.YesNoConverter_No;
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => throw new NotSupportedException();
 }

@@ -9,7 +9,6 @@ using CommunityToolkit.Mvvm.Input;
 using Joktan.Certificates;
 using Joktan.Certificates.ViewModels;
 using Joktan.Core.ViewModels;
-using Joktan.Mqtt.Controls;
 using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt.ViewModels;

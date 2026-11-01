@@ -41,7 +41,7 @@ public sealed class TestBroker : IAsyncDisposable
                 args.Response.ReasonCode = MqttSubscribeReasonCode.NotAuthorized;
             return Task.CompletedTask;
         };
-        server.InterceptingInboundPacketAsync += args => Task.CompletedTask;
+        server.InterceptingInboundPacketAsync += _ => Task.CompletedTask;
     }
 
     public int Port { get; }

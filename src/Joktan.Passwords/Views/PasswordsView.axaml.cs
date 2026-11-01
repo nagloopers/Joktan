@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
@@ -50,18 +49,20 @@ public partial class PasswordsView : UserControl
             return;
 
         await clipboard.SetTextAsync(text);
-        DispatcherTimer.RunOnce(async () =>
+        DispatcherTimer.RunOnce(() => _ = ClearClipboardAsync(clipboard, text), ClipboardLifetime);
+    }
+
+    private static async Task ClearClipboardAsync(IClipboard clipboard, string text)
+    {
+        try
         {
-            try
-            {
-                if (await clipboard.TryGetTextAsync() == text)
-                    await clipboard.ClearAsync();
-            }
-            catch (Exception)
-            {
-                // The clipboard may be busy with another app; there is nothing more to do.
-            }
-        }, ClipboardLifetime);
+            if (await clipboard.TryGetTextAsync() == text)
+                await clipboard.ClearAsync();
+        }
+        catch (Exception)
+        {
+            // The clipboard may be busy with another app; there is nothing more to do.
+        }
     }
 
     private async Task OpenUriAsync(Uri uri)

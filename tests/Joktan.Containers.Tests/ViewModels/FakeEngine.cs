@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Runtime.Versioning;
 using Joktan.Containers.ViewModels;
 using Joktan.Tests.TestSupport;

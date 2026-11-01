@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Joktan.Agent.Mcp;
 using Joktan.Settings.Themes;
 using Joktan.Settings.ViewModels;
@@ -57,7 +56,7 @@ public static class SettingsTools
     [
         Read("themes_list", "List the themes, and which is in use. A theme can be changed through themes_set and kept with themes_save.", [], _ => new
         {
-            themes.Current, HasUnsavedChanges = themes.IsDirty, CanOverwriteCurrent = themes.CanOverwrite, FollowSystem = ThemeEditor.FollowSystem,
+            themes.Current, HasUnsavedChanges = themes.IsDirty, CanOverwriteCurrent = themes.CanOverwrite, ThemeEditor.FollowSystem,
             Themes = themes.Themes.Select(t => t.Name).ToList(),
         }),
         Read("themes_tokens", "Read the current theme's colours, fonts and text sizes, by key.", [], _ => new

@@ -52,7 +52,7 @@ public class TopicNodeViewModelTests
     public void Receiving_records_the_message_newest_first()
     {
         var node = Node();
-        var first = Message("1");
+        var first = Message();
         var second = Message("2", retain: true);
 
         node.Receive(first);

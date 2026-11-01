@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Joktan.Certificates.ViewModels;
 using Joktan.Core.ViewModels;
 using Joktan.Mqtt.Resources;
 
@@ -221,16 +220,16 @@ public partial class FieldRuleViewModel : ViewModelBase
             throw new FormatException(string.Format(Strings.FieldRule_Field, path, problem.Replace("\"", "")));
         return rule;
 
-        FieldRule FixedRule(FieldRule rule)
+        FieldRule FixedRule(FieldRule start)
         {
             switch (Kind)
             {
                 case ValueKind.Text:
-                    return rule with { Value = JsonValue.Create(FixedText) };
+                    return start with { Value = JsonValue.Create(FixedText) };
 
                 case ValueKind.Number:
                     var text = FixedText.Trim();
-                    return rule with
+                    return start with
                     {
                         Value = long.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out var whole)
                             ? JsonValue.Create(whole)
@@ -238,12 +237,12 @@ public partial class FieldRuleViewModel : ViewModelBase
                     };
 
                 case ValueKind.Boolean:
-                    return rule with { Value = JsonValue.Create(FixedBool) };
+                    return start with { Value = JsonValue.Create(FixedBool) };
 
                 case ValueKind.Json:
                     try
                     {
-                        return rule with { Value = JsonNode.Parse(FixedText, documentOptions: new JsonDocumentOptions { AllowDuplicateProperties = false }) };
+                        return start with { Value = JsonNode.Parse(FixedText, documentOptions: new JsonDocumentOptions { AllowDuplicateProperties = false }) };
                     }
                     catch (JsonException)
                     {
@@ -255,10 +254,10 @@ public partial class FieldRuleViewModel : ViewModelBase
                     if (values.Length == 0)
                         throw new FormatException(string.Format(Strings.FieldRule_FieldListAtLeastOneAllowed, path));
                     var picked = values.FirstOrDefault(v => Display(v) == Choice, values[0]);
-                    return rule with { Values = values, Value = picked?.DeepClone() };
+                    return start with { Values = values, Value = picked?.DeepClone() };
 
                 default:
-                    return rule with { Value = null };
+                    return start with { Value = null };
             }
         }
 

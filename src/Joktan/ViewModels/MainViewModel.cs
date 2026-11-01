@@ -47,7 +47,6 @@ public partial class MainViewModel : ViewModelBase
     private readonly PasswordsViewModel _passwords;
     private readonly ApiClientViewModel _apiClient = new();
     private readonly TopicDashboardsViewModel _topicDashboards;
-    private readonly BackupViewModel _backup;
     private readonly SpeechOutput _speech = new();
     private readonly NavItemViewModel _pomodoroItem;
     private NavItemViewModel? _selectedItem;
@@ -78,16 +77,16 @@ public partial class MainViewModel : ViewModelBase
 
         var passwordsItem = new NavItemViewModel("Passwords", Strings.Main_Passwords, Icons.Key) { Page = _passwords, HelpTopic = "passwords" };
         var folders = new FolderSources(_notes, _topicDashboards, _apiClient, certificates, _passwords, mqtt, () => NavigateCommand.Execute(passwordsItem), FlushAsync, () => RestartRequested?.Invoke());
-        _backup = new BackupViewModel(folders.All, BackupSettings.Load(), FlushAsync, () => RestartRequested?.Invoke(),
+        var backup = new BackupViewModel(folders.All, BackupSettings.Load(), FlushAsync, () => RestartRequested?.Invoke(),
             Assembly.GetEntryAssembly()?.GetName().Version?.ToString(3) ?? "");
-        folders.Watch(_backup.Refresh, _backup.Renamed);
+        folders.Watch(backup.Refresh, backup.Renamed);
 
         themes ??= ThemeEditor.Load();
         var themeBar = new ThemeBarViewModel(themes);
         var alertsAndMessages = new NavItemViewModel("Alerts and Messages", Strings.Main_AlertsAndMessages) { Page = new MessagingViewModel(mqtt, Inbox), HelpTopic = "alerts-and-messages" };
         Inbox.OpenSettings = () => NavigateCommand.Execute(alertsAndMessages);
         var menuSettings = new NavItemViewModel("Menu", Strings.Main_Menu) { HelpTopic = "settings-and-data", CanHide = false };
-        var foldersItem = new NavItemViewModel("Folders and Backup", Strings.Main_FoldersAndBackup) { Page = _backup, HelpTopic = "folders-and-backup" };
+        var foldersItem = new NavItemViewModel("Folders and Backup", Strings.Main_FoldersAndBackup) { Page = backup, HelpTopic = "folders-and-backup" };
         var notesItem = new NavItemViewModel("Notes", Strings.Main_Notes, Icons.Notes) { Page = _notes, HelpTopic = "notes" };
         _notes.OpenPage = () => NavigateCommand.Execute(notesItem);
 
@@ -143,7 +142,7 @@ public partial class MainViewModel : ViewModelBase
             SearchSettings = searchPage,
             MenuSettings = (MenuSettingsViewModel)menuSettings.Page!,
             Themes = themes,
-            Backup = _backup,
+            Backup = backup,
             Search = words => _notes.Search(words).Concat(Help.Search(words)).Concat(Inbox.SearchMessages(words)).Concat(Inbox.SearchAlerts(words)),
         }));
 

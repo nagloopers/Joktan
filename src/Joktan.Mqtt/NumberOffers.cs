@@ -134,7 +134,7 @@ public static class NumberOffers
                 break;
 
             case JsonValueKind.Number when element.TryGetDouble(out var number) && double.IsFinite(number):
-                var looksLikeTime = TimeLike.Contains(name) || (Math.Abs(number) >= LooksLikeEpoch && number == Math.Floor(number));
+                var looksLikeTime = TimeLike.Contains(name) || (Math.Abs(number) >= LooksLikeEpoch && double.IsInteger(number));
                 Add(each, number, null, looksLikeTime, units, offers);
                 if (one != each)
                     Add(one, number, position.HasKey ? position.Text.TrimStart('.') : null, looksLikeTime, units, offers);

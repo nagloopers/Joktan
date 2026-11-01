@@ -322,7 +322,7 @@ public class ComposeProjectViewModelTests : FakeEngineTest
     public Task A_shell_opens_only_in_a_running_container() => Headless.Run(async () =>
     {
         var started = new List<(string Program, string[] Arguments)>();
-        Terminal.Start = (program, arguments) => started.Add((program, arguments.ToArray()));
+        Terminal.Start = (p, a) => started.Add((p, a.ToArray()));
         var project = await Read(Page());
 
         await project.OpenShellCommand.ExecuteAsync("web");

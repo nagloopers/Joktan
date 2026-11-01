@@ -24,10 +24,10 @@ public static class DashboardTools
     [
         Read("dashboards_list", "List the MQTT dashboards and their graphs.", [], _ => page.Dashboards.Select(d => new
         {
-            d.Name, Tab = d.DisplayName, d.Columns, RowHeight = d.RowHeight, Selected = d == page.SelectedDashboard,
+            d.Name, Tab = d.DisplayName, d.Columns, d.RowHeight, Selected = d == page.SelectedDashboard,
             Graphs = d.Graphs.Select(g => new
             {
-                g.Name, g.Source, Kind = g.Profile.Kind.ToString(), Client = g.Profile.Client, g.Profile.Unit, g.Profile.SpanMinutes,
+                g.Name, g.Source, Kind = g.Profile.Kind.ToString(), g.Profile.Client, g.Profile.Unit, g.Profile.SpanMinutes,
                 Values = g.Profile.Values.Select(v => new { v.Topic, v.Path, v.Label }).ToList(),
                 Latest = g.HeadlineValue, g.Status,
             }).ToList(),

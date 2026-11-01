@@ -48,7 +48,6 @@ public partial class GraphEditorViewModel : ViewModelBase
     private readonly Dictionary<string, List<string>> _offered = new(StringComparer.Ordinal);
     private readonly Dictionary<string, HashSet<string>> _fieldValues = new(StringComparer.Ordinal);
     private readonly Dictionary<string, int> _fieldMessages = new(StringComparer.Ordinal);
-    private readonly Dictionary<string, string> _originalLevels = new(StringComparer.Ordinal);
 
     // What the topic explorer started this editor with, if it did.
     private readonly MqttClientViewModel? _seedClient;
@@ -76,7 +75,7 @@ public partial class GraphEditorViewModel : ViewModelBase
     private DateTime _heardSince = DateTime.Now;
     private int _perSecond;
 
-    private GraphEditorViewModel(TopicDashboardsViewModel page, DashboardTabViewModel? dashboard, bool _)
+    private GraphEditorViewModel(DashboardTabViewModel? dashboard, TopicDashboardsViewModel page)
     {
         _page = page;
         Clients = page.Mqtt.Clients;
@@ -93,7 +92,7 @@ public partial class GraphEditorViewModel : ViewModelBase
 
     /// <summary>A new graph, starting from nothing.</summary>
     public GraphEditorViewModel(TopicDashboardsViewModel page, DashboardTabViewModel dashboard)
-        : this(page, dashboard, false)
+        : this(dashboard, page)
     {
         Load(null);
     }
@@ -102,7 +101,7 @@ public partial class GraphEditorViewModel : ViewModelBase
     /// <param name="history">The messages already received on it, oldest first.</param>
     public GraphEditorViewModel(TopicDashboardsViewModel page, MqttClientViewModel client, string topic,
         IEnumerable<ReceivedMessage> history, IEnumerable<string> paths)
-        : this(page, null, false)
+        : this(null, page)
     {
         _seedClient = client;
         _seedTopic = topic;
@@ -114,7 +113,7 @@ public partial class GraphEditorViewModel : ViewModelBase
 
     /// <summary>A graph already on a dashboard.</summary>
     public GraphEditorViewModel(TopicDashboardsViewModel page, DashboardTabViewModel dashboard, GraphCardViewModel card)
-        : this(page, dashboard, false)
+        : this(dashboard, page)
     {
         Load(card);
     }

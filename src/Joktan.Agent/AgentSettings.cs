@@ -96,7 +96,7 @@ public sealed class AgentSettings
 
     public double WindowHeight { get; set; } = 720;
 
-    private static string FilePath => System.IO.Path.Combine(DataFolder.Path, "agent.json");
+    private static string FilePath => Path.Combine(DataFolder.Path, "agent.json");
 
     public AgentClientProfile ProfileOf(AgentClientKind kind)
     {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Joktan.Core;
 using Joktan.Passwords.ViewModels;
 using Joktan.Tests.TestSupport;
 using Xunit;

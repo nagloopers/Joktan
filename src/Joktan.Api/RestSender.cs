@@ -70,18 +70,22 @@ public static class RestSender
     // Bodies bigger than this are cut short in the response view.
     private const int MaxShownBody = 2 * 1024 * 1024;
 
+    // Kept for as long as the app runs, so that connections are reused. There are two so that a
+    // connection made without checking the certificate never carries a request that wants it checked.
+    private static readonly HttpClient CheckingClient = NewClient(false);
+    private static readonly HttpClient TrustingClient = NewClient(true);
+
     public static async Task<ApiResponse> SendAsync(ApiRequest request, ApiVariables variables, CancellationToken cancel)
     {
         var stopwatch = Stopwatch.StartNew();
         try
         {
             using var message = Build(request, variables);
-            using var handler = new SocketsHttpHandler { AutomaticDecompression = System.Net.DecompressionMethods.All };
-            if (request.AcceptAnyCertificate)
-                handler.SslOptions.RemoteCertificateValidationCallback = (_, _, _, _) => true;
-            using var client = new HttpClient(handler) { Timeout = TimeSpan.FromSeconds(Math.Max(1, request.TimeoutSeconds)) };
+            using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancel);
+            timeout.CancelAfter(TimeSpan.FromSeconds(Math.Max(1, request.TimeoutSeconds)));
+            var client = request.AcceptAnyCertificate ? TrustingClient : CheckingClient;
 
-            using var response = await client.SendAsync(message, HttpCompletionOption.ResponseHeadersRead, cancel);
+            using var response = await client.SendAsync(message, HttpCompletionOption.ResponseHeadersRead, timeout.Token);
             var bytes = await response.Content.ReadAsByteArrayAsync(cancel);
             stopwatch.Stop();
 
@@ -105,7 +109,7 @@ public static class RestSender
         {
             return Failed(Strings.RestSender_Cancelled, stopwatch.Elapsed);
         }
-        catch (TaskCanceledException)
+        catch (OperationCanceledException)
         {
             return Failed(string.Format(Strings.RestSender_NoAnswerWithinSeconds, request.TimeoutSeconds), stopwatch.Elapsed);
         }
@@ -113,6 +117,21 @@ public static class RestSender
         {
             return Failed(Message(e), stopwatch.Elapsed);
         }
+    }
+
+    private static HttpClient NewClient(bool acceptAnyCertificate)
+    {
+        // Without cookies, since what one request is given must not go out with the next. Connections
+        // are renewed now and then to notice an address that has moved. Each request has its own timeout.
+        var handler = new SocketsHttpHandler
+        {
+            AutomaticDecompression = System.Net.DecompressionMethods.All,
+            UseCookies = false,
+            PooledConnectionLifetime = TimeSpan.FromMinutes(2),
+        };
+        if (acceptAnyCertificate)
+            handler.SslOptions.RemoteCertificateValidationCallback = (_, _, _, _) => true;
+        return new HttpClient(handler) { Timeout = Timeout.InfiniteTimeSpan };
     }
 
     /// <summary>The request as it is sent, with variables filled in.</summary>

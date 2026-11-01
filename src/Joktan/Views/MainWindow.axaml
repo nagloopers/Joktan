@@ -226,7 +226,7 @@
         </DockPanel>
 
         <!-- Outside the top bar, whose handler would otherwise take presses in the results for moving the window -->
-        <Popup Name="SearchResults"
+        <Popup Grid.Column="0" Name="SearchResults"
                PlacementTarget="{Binding #SearchBox}"
                Placement="BottomEdgeAlignedLeft"
                IsLightDismissEnabled="True"

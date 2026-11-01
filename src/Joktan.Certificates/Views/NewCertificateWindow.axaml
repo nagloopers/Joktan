@@ -94,11 +94,11 @@
                                 <TextBlock Classes="field-label" Text="{x:Static res:Strings.NewCertificateWindow_OrganisationO}" />
                                 <TextBox Text="{Binding Organization}" />
                             </StackPanel>
-                            <StackPanel Grid.Column="1">
+                            <StackPanel Grid.Row="0" Grid.Column="1">
                                 <TextBlock Classes="field-label" Text="{x:Static res:Strings.NewCertificateWindow_OrganisationalUnitOU}" />
                                 <TextBox Text="{Binding OrganizationalUnit}" />
                             </StackPanel>
-                            <StackPanel Grid.Row="1">
+                            <StackPanel Grid.Column="0" Grid.Row="1">
                                 <TextBlock Classes="field-label" Text="{x:Static res:Strings.NewCertificateWindow_LocalityL}" />
                                 <TextBox Text="{Binding Locality}" />
                             </StackPanel>
@@ -112,7 +112,7 @@
                                     <TextBox Text="{Binding Country}" MaxLength="2" PlaceholderText="ZA" />
                                 </StackPanel>
                             </Grid>
-                            <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
+                            <StackPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">
                                 <TextBlock Classes="field-label" Text="{x:Static res:Strings.NewCertificateWindow_EmailAddressOptional}" />
                                 <TextBox Text="{Binding Email}" />
                             </StackPanel>

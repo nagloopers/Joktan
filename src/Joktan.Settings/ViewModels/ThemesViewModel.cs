@@ -1,7 +1,5 @@
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Core.ViewModels;
@@ -11,7 +9,7 @@ using Joktan.Settings.Themes;
 namespace Joktan.Settings.ViewModels;
 
 /// <summary>Chooses the theme in use, and removes saved ones.</summary>
-public partial class ThemesViewModel : PageViewModel
+public class ThemesViewModel : PageViewModel
 {
     private readonly ThemeEditor _editor;
 

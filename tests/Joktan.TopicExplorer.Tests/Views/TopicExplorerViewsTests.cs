@@ -10,7 +10,6 @@ using Avalonia.Input.Platform;
 using Joktan.Mqtt.Tests;
 using Joktan.TopicDashboards.Views;
 using Joktan.TopicExplorer.Tests.ViewModels;
-using Joktan.TopicExplorer.ViewModels;
 using Joktan.TopicExplorer.Views;
 using Joktan.Tests.TestSupport;
 using Xunit;

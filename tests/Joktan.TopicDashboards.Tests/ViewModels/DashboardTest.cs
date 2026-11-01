@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Joktan.Mqtt;
-using Joktan.Mqtt.Tests;
 using Joktan.Mqtt.ViewModels;
 using Joktan.TopicDashboards.ViewModels;
 using Joktan.Tests.TestSupport;

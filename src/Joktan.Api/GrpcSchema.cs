@@ -61,7 +61,7 @@ public sealed class GrpcSchema(IReadOnlyList<ServiceDescriptor> services, TypeRe
         // The parsed set is written out in protobuf form and read back as Google.Protobuf descriptors.
         using var stream = new MemoryStream();
         set.Serialize(ProtoBuf.Meta.RuntimeTypeModel.Default, stream, includeImports: true);
-        var parsed = Google.Protobuf.Reflection.FileDescriptorSet.Parser.ParseFrom(stream.ToArray());
+        var parsed = FileDescriptorSet.Parser.ParseFrom(stream.ToArray());
         return Build(parsed.File.Select(f => f.ToByteString()));
     }
 

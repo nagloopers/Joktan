@@ -93,7 +93,8 @@ public static class AgentProgram
         foreach (var (name, value) in launch.Environment)
             start.Environment[name] = value;
 
-        using var process = new Process { StartInfo = start };
+        using var process = new Process();
+        process.StartInfo = start;
         process.Start();
 
         var errors = new Queue<string>();
@@ -137,9 +138,9 @@ public static class AgentProgram
             Kill(process);
             // Observe both cleanup operations without replacing the original failure.
             try { await process.WaitForExitAsync(CancellationToken.None); }
-            catch (Exception) { }
+            catch (Exception) { /* The original failure is thrown below. */ }
             try { await reading; }
-            catch (Exception) { }
+            catch (Exception) { /* The original failure is thrown below. */ }
             throw;
         }
         if (cancel.IsCancellationRequested || process.ExitCode == 0)

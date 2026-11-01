@@ -199,7 +199,7 @@ public partial class TopicNodeViewModel : ViewModelBase
         // Values and arrays before single items, whichever message named them first.
         order = order.OrderBy(JsonNumbers.IsOneItem).ToList();
 
-        UpdateChoices(order, series);
+        UpdateChoices(order);
 
         var changing = new List<(string Path, List<double> Values)>();
         foreach (var path in order)
@@ -259,7 +259,7 @@ public partial class TopicNodeViewModel : ViewModelBase
         ChosenChanged?.Invoke(this);
     }
 
-    private void UpdateChoices(List<string> order, Dictionary<string, List<double>> series)
+    private void UpdateChoices(List<string> order)
     {
         if (Choices.Select(c => c.Path).SequenceEqual(order))
             return;

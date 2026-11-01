@@ -247,7 +247,7 @@ public class CertificateMakerTests
 
         Assert.Equal("1.2.840.113549.1.1.12", issuer.SignatureAlgorithm.Value);
 
-        using var withKey = System.Security.Cryptography.X509Certificates.X509Certificate2.CreateFromPem(issuer.ExportCertificatePem(), key);
+        using var withKey = X509Certificate2.CreateFromPem(issuer.ExportCertificatePem(), key);
         var (client, _) = CertificateMaker.Make(new CertificateSpec
         {
             Kind = CertificateKind.Client,
@@ -263,10 +263,10 @@ public class CertificateMakerTests
     [Fact]
     public void A_certificate_starts_no_earlier_than_its_ca()
     {
-        using var key = System.Security.Cryptography.ECDsa.Create(System.Security.Cryptography.ECCurve.NamedCurves.nistP256);
-        var request = new System.Security.Cryptography.X509Certificates.CertificateRequest("CN=later", key, System.Security.Cryptography.HashAlgorithmName.SHA256);
-        request.CertificateExtensions.Add(new System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension(true, false, 0, true));
-        request.CertificateExtensions.Add(new System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierExtension(request.PublicKey, false));
+        using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
+        var request = new CertificateRequest("CN=later", key, HashAlgorithmName.SHA256);
+        request.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, true));
+        request.CertificateExtensions.Add(new X509SubjectKeyIdentifierExtension(request.PublicKey, false));
         using var ca = request.CreateSelfSigned(DateTimeOffset.UtcNow.AddHours(5), DateTimeOffset.UtcNow.AddDays(5));
 
         var (made, _) = CertificateMaker.Make(new CertificateSpec

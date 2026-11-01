@@ -185,7 +185,7 @@ public class PayloadPathTests
     private static System.Collections.Generic.IReadOnlyList<double> Numbers(string path, string json)
     {
         var parsed = PayloadPath.Parse(path);
-        using var document = System.Text.Json.JsonDocument.Parse(json);
+        using var document = JsonDocument.Parse(json);
         return parsed.Read(document.RootElement, _ => null).SelectMany(r => r.Values).ToList();
     }
 

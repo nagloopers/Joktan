@@ -158,7 +158,7 @@ public partial class ContainersViewModel : PageViewModel
 
     partial void OnSelectedEngineChanged(ContainerEngine value)
     {
-        if (_settings is null || _settings.Engine == value)
+        if (_settings.Engine == value)
             return;
 
         _settings.Engine = value;

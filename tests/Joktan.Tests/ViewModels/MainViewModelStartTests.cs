@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Avalonia.Controls;
+using Joktan.Certificates;
 using Joktan.Containers;
+using Joktan.Core;
 using Joktan.Core.ViewModels;
 using Joktan.Dashboard.Telemetry;
 using Joktan.Help;
 using Joktan.Mqtt;
 using Joktan.Mqtt.ViewModels;
+using Joktan.Settings;
 using Joktan.Settings.ViewModels;
 using Joktan.Tests.TestSupport;
+using Joktan.TopicDashboards;
 using Joktan.ViewModels;
 using Xunit;
 
@@ -128,19 +131,19 @@ public class MainViewModelStartTests : DataFolderTest, IDisposable
     [Fact]
     public Task A_layout_saved_under_the_old_group_name_still_applies_to_brokers() => Headless.Run(() =>
     {
-        var layout = new Joktan.Settings.MenuLayout
+        var layout = new MenuLayout
         {
             Entries =
             [
-                new Joktan.Settings.MenuLayoutEntry
+                new MenuLayoutEntry
                 {
                     Title = "Dev Tools",
                     Children =
                     [
-                        new Joktan.Settings.MenuLayoutEntry
+                        new MenuLayoutEntry
                         {
                             Title = "Connectivity",
-                            Children = [new Joktan.Settings.MenuLayoutEntry { Title = "Topic Explorer", Shown = false }],
+                            Children = [new MenuLayoutEntry { Title = "Topic Explorer", Shown = false }],
                         },
                     ],
                 },
@@ -156,14 +159,14 @@ public class MainViewModelStartTests : DataFolderTest, IDisposable
     [Fact]
     public Task A_layout_saved_under_the_old_name_still_applies_to_mqtt_dashboards() => Headless.Run(() =>
     {
-        var layout = new Joktan.Settings.MenuLayout
+        var layout = new MenuLayout
         {
             Entries =
             [
-                new Joktan.Settings.MenuLayoutEntry
+                new MenuLayoutEntry
                 {
                     Title = "Dashboard",
-                    Children = [new Joktan.Settings.MenuLayoutEntry { Title = "Topic Dashboards", Shown = false }],
+                    Children = [new MenuLayoutEntry { Title = "Topic Dashboards", Shown = false }],
                 },
             ],
         };
@@ -178,7 +181,7 @@ public class MainViewModelStartTests : DataFolderTest, IDisposable
     [Fact]
     public Task A_hidden_first_entry_is_passed_over() => Headless.Run(() =>
     {
-        var layout = new Joktan.Settings.MenuLayout { Entries = [new Joktan.Settings.MenuLayoutEntry { Title = "Dashboard", Shown = false }] };
+        var layout = new MenuLayout { Entries = [new MenuLayoutEntry { Title = "Dashboard", Shown = false }] };
         new ComposeSettings { ComposeFiles = [] }.Save();
 
         var main = new MainViewModel(_monitor, menuLayout: layout);
@@ -201,7 +204,7 @@ public class MainViewModelStartTests : DataFolderTest, IDisposable
     public Task Saving_writes_what_each_feature_holds() => Headless.Run(() =>
     {
         var main = New();
-        var mqtt = (Joktan.Mqtt.ViewModels.MqttViewModel)Item(main, "MQTT").Page!;
+        var mqtt = (MqttViewModel)Item(main, "MQTT").Page!;
         mqtt.Clients[0].ManualTopic = "typed";
 
         main.SaveState();
@@ -300,7 +303,7 @@ public class MainViewModelStartTests : DataFolderTest, IDisposable
     {
         var main = New();
         var backup = Backup(main);
-        var client = ((Joktan.Mqtt.ViewModels.MqttViewModel)Item(main, "MQTT").Page!).Clients[0];
+        var client = ((MqttViewModel)Item(main, "MQTT").Page!).Clients[0];
         var id = backup.MessageRows[0].Source.Id;
         Assert.Null(backup.MessageRows[0].Source.Item!());
 
@@ -321,10 +324,10 @@ public class MainViewModelStartTests : DataFolderTest, IDisposable
     [Fact]
     public Task Certificates_copied_to_a_new_folder_and_those_kept_elsewhere_are_backed_up() => Headless.Run(async () =>
     {
-        var store = Joktan.Certificates.CertificateStore.Load();
-        store.Create(new Joktan.Certificates.CertificateSpec
+        var store = CertificateStore.Load();
+        store.Create(new CertificateSpec
         {
-            Kind = Joktan.Certificates.CertificateKind.RootAuthority,
+            Kind = CertificateKind.RootAuthority,
             Name = "elsewhere",
             CommonName = "elsewhere",
             NotAfter = DateTimeOffset.UtcNow.AddYears(1),
@@ -350,7 +353,7 @@ public class MainViewModelStartTests : DataFolderTest, IDisposable
     {
         var main = New();
         var backup = Backup(main);
-        var mqtt = (Joktan.Mqtt.ViewModels.MqttViewModel)Item(main, "MQTT").Page!;
+        var mqtt = (MqttViewModel)Item(main, "MQTT").Page!;
         var client = mqtt.Clients[0];
         Assert.Equal(client.Name, backup.MessageRows[0].Name);
 
@@ -377,7 +380,7 @@ public class MainViewModelStartTests : DataFolderTest, IDisposable
     public Task Dashboards_that_have_gone_point_to_where_they_can_be_started_again() => Headless.Run(async () =>
     {
         var folder = Data.At("gone");
-        Joktan.TopicDashboards.DashboardStore.SaveChosenFolder(folder);
+        DashboardStore.SaveChosenFolder(folder);
         var main = New();
         var dashboards = (Joktan.TopicDashboards.ViewModels.TopicDashboardsViewModel)main.MenuItems[0].Children[1].Page!;
 
@@ -402,8 +405,8 @@ public class MainViewModelStartTests : DataFolderTest, IDisposable
         var row = page.Rows.Single(r => r.Source.Id == "settings");
 
         Assert.False(row.CanChange);
-        Assert.Contains(Joktan.Core.DataFolder.Variable, row.Hint);
+        Assert.Contains(DataFolder.Variable, row.Hint);
         var exclude = row.Source.Item!()!.Roots.Single().Exclude!;
-        Assert.Contains(Path.Combine(Joktan.Core.DataFolder.Path, Joktan.Core.DataFolder.LocationFileName), exclude);
+        Assert.Contains(Path.Combine(DataFolder.Path, DataFolder.LocationFileName), exclude);
     });
 }

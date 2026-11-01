@@ -13,7 +13,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Core;
 using Joktan.Core.ViewModels;
-using Joktan.Mqtt.Controls;
 using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt.ViewModels;

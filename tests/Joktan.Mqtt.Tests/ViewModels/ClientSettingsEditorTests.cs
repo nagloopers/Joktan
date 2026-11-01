@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using Avalonia;
 using Joktan.Certificates;
 using Joktan.Mqtt.ViewModels;
 using Joktan.Tests.TestSupport;

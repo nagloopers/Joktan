@@ -94,14 +94,14 @@ public sealed class VaultStorage(string path) : PasswordStorage
 
     public const int MinimumMasterPasswordLength = 8;
 
-    private const string Format = "joktan-vault";
-    private const int Version = 1;
-    private const string Kdf = "PBKDF2-SHA256";
-    private const int Iterations = 600_000;
+    private const string FileFormat = "joktan-vault";
+    private const int FileVersion = 1;
+    private const string KeyDerivation = "PBKDF2-SHA256";
+    private const int NewFileIterations = 600_000;
 
     private byte[]? _key;
     private byte[] _salt = [];
-    private int _iterations = Iterations;
+    private int _iterations = NewFileIterations;
 
     public static string DefaultPath => System.IO.Path.Combine(DataFolder.Path, FileName);
 
@@ -138,9 +138,9 @@ public sealed class VaultStorage(string path) : PasswordStorage
             throw new PasswordStorageException(Strings.VaultStorage_ThisIsNotAVaultFile, e);
         }
 
-        if (file.Format != Format || file.Kdf != Kdf || file.Iterations <= 0)
+        if (file.Format != FileFormat || file.Kdf != KeyDerivation || file.Iterations <= 0)
             throw new PasswordStorageException(Strings.VaultStorage_ThisIsNotAVaultFileJoktan);
-        if (file.Version > Version)
+        if (file.Version > FileVersion)
             throw new PasswordStorageException(Strings.VaultStorage_TheVaultWasWrittenByA);
 
         byte[] salt, nonce, tag, data;
@@ -231,9 +231,9 @@ public sealed class VaultStorage(string path) : PasswordStorage
 
         var file = new VaultFile
         {
-            Format = Format,
-            Version = Version,
-            Kdf = Kdf,
+            Format = FileFormat,
+            Version = FileVersion,
+            Kdf = KeyDerivation,
             Iterations = _iterations,
             Salt = Convert.ToBase64String(_salt),
             Nonce = Convert.ToBase64String(nonce),
@@ -269,7 +269,7 @@ public sealed class VaultStorage(string path) : PasswordStorage
         if (_key is not null)
             CryptographicOperations.ZeroMemory(_key);
         _salt = RandomNumberGenerator.GetBytes(16);
-        _iterations = Iterations;
+        _iterations = NewFileIterations;
         _key = DeriveKey(masterPassword, _salt, _iterations);
     }
 
@@ -278,7 +278,7 @@ public sealed class VaultStorage(string path) : PasswordStorage
 
     // The settings the key was made with are authenticated along with the data, so they cannot be swapped.
     private static byte[] Header(int iterations, byte[] salt)
-        => Encoding.UTF8.GetBytes($"{Format}/{Version}/{Kdf}/{iterations}/{Convert.ToBase64String(salt)}");
+        => Encoding.UTF8.GetBytes($"{FileFormat}/{FileVersion}/{KeyDerivation}/{iterations}/{Convert.ToBase64String(salt)}");
 
     private sealed class VaultFile
     {

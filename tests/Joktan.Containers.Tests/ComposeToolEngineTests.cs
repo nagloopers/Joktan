@@ -89,7 +89,7 @@ public class ComposeToolEngineTests : FakeEngineTest
     public void Terminal_runs_the_command_through_the_platforms_terminal()
     {
         var started = new List<(string Program, List<string> Arguments)>();
-        Terminal.Start = (program, arguments) => started.Add((program, [.. arguments]));
+        Terminal.Start = (p, a) => started.Add((p, [.. a]));
 
         Terminal.Open("/bin/it's", ["exec", "a b"]);
 
