@@ -60,7 +60,7 @@ public partial class ContainersViewModel : PageViewModel
         SelectedLog = LogChoices.FirstOrDefault();
 
         _flushTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(100), DispatcherPriority.Background, (_, _) => Flush());
-        _statusTimer = new DispatcherTimer(TimeSpan.FromSeconds(5), DispatcherPriority.Background, async (_, _) => await RefreshAllAsync());
+        _statusTimer = new DispatcherTimer(TimeSpan.FromSeconds(5), DispatcherPriority.Background, (_, _) => _ = RefreshFromTimerAsync());
     }
 
     public IReadOnlyList<ContainerEngine> Engines { get; } = Enum.GetValues<ContainerEngine>();
@@ -306,6 +306,18 @@ public partial class ContainersViewModel : PageViewModel
     }
 
     private Task RefreshAllAsync() => Task.WhenAll(Projects.Select(p => p.RefreshStatusAsync()));
+
+    private async Task RefreshFromTimerAsync()
+    {
+        try
+        {
+            await RefreshAllAsync();
+        }
+        catch (Exception e)
+        {
+            Error = string.Format(Strings.ComposeProject_CouldNotReadTheContainers, e.Message);
+        }
+    }
 
     /// <summary>Shows only this service's logs, starting them if they are not shown.</summary>
     public void ShowLogs(ComposeProjectViewModel project, string? service)

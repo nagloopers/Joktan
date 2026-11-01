@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using Joktan.Containers.ViewModels;
 using Joktan.Tests.TestSupport;
 using Xunit;
@@ -278,6 +279,41 @@ public class ContainersPageTests : FakeEngineTest
     });
 
     [Fact]
+    public Task A_timer_refresh_failure_is_reported_without_an_unhandled_exception() => Headless.Run(async () =>
+    {
+        var page = Page();
+        var unhandled = false;
+        DispatcherUnhandledExceptionEventHandler handler = (_, e) =>
+        {
+            unhandled = true;
+            e.Handled = true;
+        };
+        Dispatcher.UIThread.UnhandledException += handler;
+        try
+        {
+            page.Activate();
+            await Headless.Until(() => page.Summary == "1 of 2 running");
+            // The event argument selects the one notification that should fail.
+            // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
+            page.PropertyChanged += (_, e) =>
+            {
+                if (e.PropertyName == nameof(page.Summary))
+                    throw new Exception("refresh failed");
+            };
+            Answer("ps");
+
+            await Headless.Until(() => unhandled || page.Error is not null, timeoutMs: 15000);
+            Assert.False(unhandled);
+            Assert.Contains("refresh failed", page.Error);
+        }
+        finally
+        {
+            page.Shutdown();
+            Dispatcher.UIThread.UnhandledException -= handler;
+        }
+    });
+
+    [Fact]
     public Task An_engine_with_no_command_is_reported_and_found_again_later() => Headless.Run(async () =>
     {
         // Only where the real one is not in a usual folder either.
@@ -505,7 +541,7 @@ public class ContainersPageTests : FakeEngineTest
         var page = Page();
         var project = await Read(page);
         var script = string.Join("\n", Enumerable.Range(0, 1100).Select(i => $"echo line{i}"));
-        File.WriteAllText(Folder.At("bin", "docker"), $"#!/bin/sh\n{script}\n");
+        await File.WriteAllTextAsync(Folder.At("bin", "docker"), $"#!/bin/sh\n{script}\n");
 
         await project.StopCommand.ExecuteAsync(null);
 

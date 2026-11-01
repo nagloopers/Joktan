@@ -124,11 +124,24 @@ public static class AgentProgram
             }
         }, CancellationToken.None);
 
-        while (await process.StandardOutput.ReadLineAsync(CancellationToken.None) is { } text)
-            line(text);
+        try
+        {
+            while (await process.StandardOutput.ReadLineAsync(CancellationToken.None) is { } text)
+                line(text);
 
-        await process.WaitForExitAsync(CancellationToken.None);
-        await reading;
+            await process.WaitForExitAsync(CancellationToken.None);
+            await reading;
+        }
+        catch
+        {
+            Kill(process);
+            // Observe both cleanup operations without replacing the original failure.
+            try { await process.WaitForExitAsync(CancellationToken.None); }
+            catch (Exception) { }
+            try { await reading; }
+            catch (Exception) { }
+            throw;
+        }
         if (cancel.IsCancellationRequested || process.ExitCode == 0)
             return null;
 
