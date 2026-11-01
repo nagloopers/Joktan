@@ -1,6 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Mqtt.Resources"
              xmlns:vm="using:Joktan.Mqtt.ViewModels"
+             xmlns:mqtt="using:Joktan.Mqtt"
              xmlns:views="using:Joktan.Mqtt.Views"
              xmlns:controls="using:Joktan.Core.Controls"
              x:Class="Joktan.Mqtt.Views.InboxAlertsPanel"
@@ -14,30 +16,36 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" Spacing="8" Margin="0,0,0,8">
             <Grid ColumnDefinitions="*,Auto">
-                <TextBlock Classes="card-title" VerticalAlignment="Center" Text="Alerts" />
-                <Button Grid.Column="1" Classes="small" Content="Clear" Command="{Binding ClearAlertsCommand}"
-                        ToolTip.Tip="Clear this list on this computer" />
+                <TextBlock Classes="card-title" VerticalAlignment="Center" Text="{x:Static res:Strings.InboxAlertsPanel_Alerts}" />
+                <Button Grid.Column="1" Classes="small" Content="{x:Static res:Strings.InboxAlertsPanel_Clear}" Command="{Binding ClearAlertsCommand}"
+                        ToolTip.Tip="{x:Static res:Strings.InboxAlertsPanel_ClearThisListOnThisComputer}" />
             </Grid>
             <views:InboxConnectionBar />
-            <ComboBox ItemsSource="{Binding AlertFilters}" SelectedItem="{Binding AlertFilter}" MinWidth="140" ToolTip.Tip="Show only one level" />
+            <ComboBox ItemsSource="{Binding AlertFilters}" SelectedItem="{Binding AlertFilter}" MinWidth="140" ToolTip.Tip="{x:Static res:Strings.InboxAlertsPanel_ShowOnlyOneLevel}" />
         </StackPanel>
 
         <StackPanel DockPanel.Dock="Bottom" Spacing="4" Margin="0,8,0,0">
             <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
-                <ComboBox ItemsSource="{Binding AlertLevels}" SelectedItem="{Binding AlertLevel}" ToolTip.Tip="The level of the alert" />
-                <TextBox Grid.Column="1" Text="{Binding AlertDraft}" MaxLength="{Binding MaxMessageLength}" PlaceholderText="Send an alert to everyone">
+                <ComboBox ItemsSource="{Binding AlertLevels}" SelectedItem="{Binding AlertLevel}" ToolTip.Tip="{x:Static res:Strings.InboxAlertsPanel_TheLevelOfTheAlert}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="mqtt:AlertSeverity">
+                            <TextBlock Text="{Binding Converter={x:Static mqtt:AlertSeverityText.AlertSeverityConverter}}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBox Grid.Column="1" Text="{Binding AlertDraft}" MaxLength="{Binding MaxMessageLength}" PlaceholderText="{x:Static res:Strings.InboxAlertsPanel_SendAnAlertToEveryone}">
                     <TextBox.KeyBindings>
                         <KeyBinding Gesture="Enter" Command="{Binding SendAlertCommand}" />
                     </TextBox.KeyBindings>
                 </TextBox>
-                <Button Grid.Column="2" Classes="accent" Content="Send" Command="{Binding SendAlertCommand}" />
+                <Button Grid.Column="2" Classes="accent" Content="{x:Static res:Strings.InboxAlertsPanel_Send}" Command="{Binding SendAlertCommand}" />
             </Grid>
             <TextBlock Classes="error" TextWrapping="Wrap" Text="{Binding SendError}"
                        IsVisible="{Binding SendError, Converter={x:Static ObjectConverters.IsNotNull}}" />
         </StackPanel>
 
         <Panel>
-            <TextBlock Classes="info-label" HorizontalAlignment="Center" VerticalAlignment="Center" Text="No alerts" IsVisible="{Binding !HasAlerts}" />
+            <TextBlock Classes="info-label" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{x:Static res:Strings.InboxAlertsPanel_NoAlerts}" IsVisible="{Binding !HasAlerts}" />
             <ScrollViewer>
                 <ItemsControl x:Name="AlertList" ItemsSource="{Binding Alerts}">
                     <ItemsControl.ItemTemplate>

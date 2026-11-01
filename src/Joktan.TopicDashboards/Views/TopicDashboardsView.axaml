@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.TopicDashboards.Resources"
              xmlns:vm="using:Joktan.TopicDashboards.ViewModels"
              xmlns:views="using:Joktan.TopicDashboards.Views"
              xmlns:core="using:Joktan.Core"
@@ -19,15 +20,15 @@
                     <TextBlock Classes="page-subtitle" Text="{Binding Subtitle}" />
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                    <Button Content="Folder"
+                    <Button Content="{x:Static res:Strings.TopicDashboardsView_Folder}"
                             Command="{Binding ToggleFolderCommand}"
-                            ToolTip.Tip="Choose where the dashboards are saved" />
+                            ToolTip.Tip="{x:Static res:Strings.TopicDashboardsView_ChooseWhereTheDashboardsAreSaved}" />
                     <Button Content="{Binding EditModeText}"
                             Command="{Binding ToggleEditingCommand}"
-                            ToolTip.Tip="Show or hide the buttons on the tabs that rename, colour and remove dashboards" />
-                    <Button Content="Add"
+                            ToolTip.Tip="{x:Static res:Strings.TopicDashboardsView_ShowOrHideTheButtonsOn}" />
+                    <Button Content="{x:Static res:Strings.TopicDashboardsView_Add}"
                             Command="{Binding AddDashboardCommand}"
-                            ToolTip.Tip="Add another dashboard, on a tab of its own" />
+                            ToolTip.Tip="{x:Static res:Strings.TopicDashboardsView_AddAnotherDashboardOnATab}" />
                 </StackPanel>
             </Grid>
         </Border>
@@ -35,27 +36,27 @@
         <!-- Where the dashboards are saved -->
         <Border DockPanel.Dock="Top" Classes="card" Margin="24,16,24,0" IsVisible="{Binding IsChoosingFolder}">
             <StackPanel Spacing="8">
-                <TextBlock Classes="card-title" Text="Dashboards folder" />
+                <TextBlock Classes="card-title" Text="{x:Static res:Strings.TopicDashboardsView_DashboardsFolder}" />
                 <TextBlock Classes="card-subtitle" Margin="0"
-                           Text="A folder that already holds dashboards is opened as it is. Otherwise the dashboards open now are copied into it, and the originals are left where they are. A shared or synced folder works too." />
+                           Text="{x:Static res:Strings.TopicDashboardsView_AFolderThatAlreadyHoldsDashboards}" />
                 <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                     <TextBox Classes="code" Text="{Binding FolderText}" PlaceholderText="{Binding DefaultFolder}" />
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
-                        <Button Content="Browse" Command="{Binding BrowseFolderCommand}" />
-                        <Button Content="Default" Command="{Binding UseDefaultFolderCommand}"
-                                ToolTip.Tip="Fill in Joktan's own folder" />
-                        <Button Content="Cancel" Command="{Binding ToggleFolderCommand}" />
-                        <Button Classes="accent" Content="Use folder" Command="{Binding ApplyFolderCommand}" />
+                        <Button Content="{x:Static res:Strings.TopicDashboardsView_Browse}" Command="{Binding BrowseFolderCommand}" />
+                        <Button Content="{x:Static res:Strings.TopicDashboardsView_Default}" Command="{Binding UseDefaultFolderCommand}"
+                                ToolTip.Tip="{x:Static res:Strings.TopicDashboardsView_FillInJoktanSOwnFolder}" />
+                        <Button Content="{x:Static res:Strings.TopicDashboardsView_Cancel}" Command="{Binding ToggleFolderCommand}" />
+                        <Button Classes="accent" Content="{x:Static res:Strings.TopicDashboardsView_UseFolder}" Command="{Binding ApplyFolderCommand}" />
                     </StackPanel>
                 </Grid>
                 <TextBlock Classes="error" TextWrapping="Wrap"
                            Text="{Binding FolderMessage}"
                            IsVisible="{Binding FolderMessage, Converter={x:Static ObjectConverters.IsNotNull}}" />
-                <Button Content="Start empty here"
+                <Button Content="{x:Static res:Strings.TopicDashboardsView_StartEmptyHere}"
                         HorizontalAlignment="Left"
                         Command="{Binding StartEmptyHereCommand}"
                         IsVisible="{Binding CanStartEmpty}"
-                        ToolTip.Tip="Make a new, empty dashboards file in this folder. If the real one comes back later, the two can collide" />
+                        ToolTip.Tip="{x:Static res:Strings.TopicDashboardsView_MakeANewEmptyDashboardsFile}" />
             </StackPanel>
         </Border>
 
@@ -90,13 +91,13 @@
                 <DataTemplate x:DataType="vm:DashboardTabViewModel">
                     <Border Classes="tab-header"
                             Background="{Binding TabFillBrush, FallbackValue=Transparent}"
-                            ToolTip.Tip="Double-click to rename. Right-click for more."
+                            ToolTip.Tip="{x:Static res:Strings.TopicDashboardsView_DoubleClickToRenameRightClick}"
                             DoubleTapped="OnTabDoubleTapped">
                         <Border.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Rename" Command="{Binding RenameCommand}" />
-                                <MenuItem Header="Forget this value" Command="{Binding ForgetValueCommand}" IsVisible="{Binding HasTabValue}" />
-                                <MenuItem Header="Remove dashboard" Command="{Binding AskRemoveCommand}" />
+                                <MenuItem Header="{x:Static res:Strings.TopicDashboardsView_Rename}" Command="{Binding RenameCommand}" />
+                                <MenuItem Header="{x:Static res:Strings.TopicDashboardsView_ForgetThisValue}" Command="{Binding ForgetValueCommand}" IsVisible="{Binding HasTabValue}" />
+                                <MenuItem Header="{x:Static res:Strings.TopicDashboardsView_RemoveDashboard}" Command="{Binding AskRemoveCommand}" />
                             </ContextMenu>
                         </Border.ContextMenu>
                         <StackPanel Orientation="Horizontal" Spacing="4">
@@ -108,7 +109,7 @@
                                      VerticalAlignment="Center"
                                      Text="{Binding RenameText}"
                                      IsVisible="{Binding IsRenaming}"
-                                     PlaceholderText="Dashboard name"
+                                     PlaceholderText="{x:Static res:Strings.TopicDashboardsView_DashboardName}"
                                      PropertyChanged="OnRenameBoxPropertyChanged"
                                      KeyDown="OnRenameBoxKeyDown"
                                      LostFocus="OnRenameBoxLostFocus" />
@@ -123,12 +124,12 @@
                                 <Button Classes="icon-button tab-button"
                                         c:TabText.Foreground="{Binding TabForegroundBrush}"
                                         Command="{Binding RenameCommand}"
-                                        ToolTip.Tip="Rename this dashboard">
+                                        ToolTip.Tip="{x:Static res:Strings.TopicDashboardsView_RenameThisDashboard}">
                                     <PathIcon Data="{x:Static core:Icons.Pencil}" />
                                 </Button>
                                 <Button Classes="icon-button tab-button"
                                         c:TabText.Foreground="{Binding TabForegroundBrush}"
-                                        ToolTip.Tip="Change the colour of this tab">
+                                        ToolTip.Tip="{x:Static res:Strings.TopicDashboardsView_ChangeTheColourOfThisTab}">
                                     <PathIcon Data="{x:Static core:Icons.Palette}" />
                                     <Button.Flyout>
                                         <Flyout Placement="BottomEdgeAlignedLeft">
@@ -150,9 +151,9 @@
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
-                                                <Button Classes="small" Content="Default"
+                                                <Button Classes="small" Content="{x:Static res:Strings.TopicDashboardsView_Default}"
                                                         Command="{Binding PickTabColorCommand}" CommandParameter=""
-                                                        ToolTip.Tip="Use the theme's colour" />
+                                                        ToolTip.Tip="{x:Static res:Strings.TopicDashboardsView_UseTheThemeSColour}" />
                                             </StackPanel>
                                         </Flyout>
                                     </Button.Flyout>
@@ -160,7 +161,7 @@
                                 <Button Classes="icon-button tab-button"
                                         c:TabText.Foreground="{Binding TabForegroundBrush}"
                                         Command="{Binding AskRemoveCommand}"
-                                        ToolTip.Tip="Remove this dashboard">
+                                        ToolTip.Tip="{x:Static res:Strings.TopicDashboardsView_RemoveThisDashboard}">
                                     <PathIcon Data="{x:Static core:Icons.WindowClose}" />
                                 </Button>
                             </StackPanel>

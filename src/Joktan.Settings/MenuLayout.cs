@@ -50,7 +50,7 @@ public sealed class MenuLayout
     public void ApplyTo(ObservableCollection<NavItemViewModel> menu) => Apply(menu, Entries);
 
     private static List<MenuLayoutEntry> Read(IEnumerable<NavItemViewModel> items) =>
-        items.Select(item => new MenuLayoutEntry { Title = item.Title, Shown = item.IsShown, Children = Read(item.Children) }).ToList();
+        items.Select(item => new MenuLayoutEntry { Title = item.Id, Shown = item.IsShown, Children = Read(item.Children) }).ToList();
 
     private static void Apply(ObservableCollection<NavItemViewModel> items, List<MenuLayoutEntry>? saved)
     {
@@ -61,7 +61,7 @@ public sealed class MenuLayout
         var ordered = new List<NavItemViewModel>();
         foreach (var entry in saved)
         {
-            if (defaults.Find(item => item.Title == entry.Title || item.FormerTitle == entry.Title) is not { } item || ordered.Contains(item))
+            if (defaults.Find(item => item.Id == entry.Title || item.FormerTitle == entry.Title) is not { } item || ordered.Contains(item))
                 continue;
 
             ordered.Add(item);

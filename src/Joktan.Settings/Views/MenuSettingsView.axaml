@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Settings.Resources"
              xmlns:vm="using:Joktan.Settings.ViewModels"
              xmlns:core="using:Joktan.Core.ViewModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -17,12 +18,12 @@
                         <TextBlock Classes="table-cell" Text="{Binding Title}" />
                         <Button Grid.Column="1"
                                 Classes="small"
-                                Content="Up"
+                                Content="{x:Static res:Strings.MenuSettingsView_Up}"
                                 Command="{Binding $parent[UserControl].((vm:MenuSettingsViewModel)DataContext).MoveUpCommand}"
                                 CommandParameter="{Binding}" />
                         <Button Grid.Column="2"
                                 Classes="small"
-                                Content="Down"
+                                Content="{x:Static res:Strings.MenuSettingsView_Down}"
                                 Command="{Binding $parent[UserControl].((vm:MenuSettingsViewModel)DataContext).MoveDownCommand}"
                                 CommandParameter="{Binding}" />
                         <ToggleSwitch Grid.Column="3"
@@ -53,9 +54,9 @@
         <ScrollViewer>
             <Border Classes="card" Margin="24" VerticalAlignment="Top">
                 <StackPanel>
-                    <TextBlock Classes="card-title" Text="Menu" />
+                    <TextBlock Classes="card-title" Text="{x:Static res:Strings.MenuSettingsView_Menu}" />
                     <TextBlock Classes="card-subtitle"
-                               Text="Choose what the menu shows and put it in the order you want. Hiding a feature only takes it off the menu: what it has running keeps running, and its data is kept. Settings and this page always stay." />
+                               Text="{x:Static res:Strings.MenuSettingsView_ChooseWhatTheMenuShowsAnd}" />
                     <ItemsControl ItemsSource="{Binding MenuItems}" />
                 </StackPanel>
             </Border>

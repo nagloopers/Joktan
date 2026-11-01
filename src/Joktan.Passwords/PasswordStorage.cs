@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using Joktan.Core;
+using Joktan.Passwords.Resources;
 
 namespace Joktan.Passwords;
 
@@ -126,21 +127,21 @@ public sealed class VaultStorage(string path) : PasswordStorage
         try
         {
             file = JsonSerializer.Deserialize<VaultFile>(File.ReadAllText(Path))
-                   ?? throw new PasswordStorageException("The vault file is empty.");
+                   ?? throw new PasswordStorageException(Strings.VaultStorage_TheVaultFileIsEmpty);
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
-            throw new PasswordStorageException($"The vault file cannot be read: {e.Message}", e);
+            throw new PasswordStorageException(string.Format(Strings.VaultStorage_TheVaultFileCannotBeRead, e.Message), e);
         }
         catch (JsonException e)
         {
-            throw new PasswordStorageException("This is not a vault file, or it is damaged.", e);
+            throw new PasswordStorageException(Strings.VaultStorage_ThisIsNotAVaultFile, e);
         }
 
         if (file.Format != Format || file.Kdf != Kdf || file.Iterations <= 0)
-            throw new PasswordStorageException("This is not a vault file Joktan can read.");
+            throw new PasswordStorageException(Strings.VaultStorage_ThisIsNotAVaultFileJoktan);
         if (file.Version > Version)
-            throw new PasswordStorageException("The vault was written by a newer version of Joktan.");
+            throw new PasswordStorageException(Strings.VaultStorage_TheVaultWasWrittenByA);
 
         byte[] salt, nonce, tag, data;
         try
@@ -150,7 +151,7 @@ public sealed class VaultStorage(string path) : PasswordStorage
         }
         catch (FormatException e)
         {
-            throw new PasswordStorageException("The vault file is damaged.", e);
+            throw new PasswordStorageException(Strings.VaultStorage_TheVaultFileIsDamaged, e);
         }
 
         var key = DeriveKey(masterPassword ?? "", salt, file.Iterations);
@@ -169,7 +170,7 @@ public sealed class VaultStorage(string path) : PasswordStorage
         catch (Exception e) when (e is ArgumentException or CryptographicException)
         {
             CryptographicOperations.ZeroMemory(key);
-            throw new PasswordStorageException("The vault file is damaged.", e);
+            throw new PasswordStorageException(Strings.VaultStorage_TheVaultFileIsDamaged, e);
         }
 
         try
@@ -179,7 +180,7 @@ public sealed class VaultStorage(string path) : PasswordStorage
         catch (JsonException e)
         {
             CryptographicOperations.ZeroMemory(key);
-            throw new PasswordStorageException("The vault's contents are damaged.", e);
+            throw new PasswordStorageException(Strings.VaultStorage_TheVaultSContentsAreDamaged, e);
         }
         finally
         {
@@ -212,7 +213,7 @@ public sealed class VaultStorage(string path) : PasswordStorage
     public override void Save()
     {
         if (_key is null)
-            throw new InvalidOperationException("The vault is not open.");
+            throw new InvalidOperationException(Strings.VaultStorage_TheVaultIsNotOpen);
 
         var plain = JsonSerializer.SerializeToUtf8Bytes(Root);
         var nonce = RandomNumberGenerator.GetBytes(AesGcm.NonceByteSizes.MaxSize);
@@ -245,7 +246,7 @@ public sealed class VaultStorage(string path) : PasswordStorage
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
-            throw new PasswordStorageException($"The vault could not be written to {Path}: {e.Message}", e);
+            throw new PasswordStorageException(string.Format(Strings.VaultStorage_TheVaultCouldNotBeWritten, Path, e.Message), e);
         }
     }
 
@@ -313,7 +314,7 @@ public sealed class KeychainStorage(CredentialStore credentials, string? indexPa
     public override void Create(string? masterPassword)
     {
         if (!IsAvailable)
-            throw new PasswordStorageException("This computer has no system keychain Joktan can use.");
+            throw new PasswordStorageException(Strings.KeychainStorage_ThisComputerHasNoSystemKeychain);
         Root = new PasswordFolder();
         IsOpen = true;
         Save();
@@ -327,11 +328,11 @@ public sealed class KeychainStorage(CredentialStore credentials, string? indexPa
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
-            throw new PasswordStorageException($"The list of entries cannot be read: {e.Message}", e);
+            throw new PasswordStorageException(string.Format(Strings.KeychainStorage_TheListOfEntriesCannotBe, e.Message), e);
         }
         catch (JsonException e)
         {
-            throw new PasswordStorageException("The list of entries is damaged.", e);
+            throw new PasswordStorageException(Strings.KeychainStorage_TheListOfEntriesIsDamaged, e);
         }
 
         IsOpen = true;
@@ -343,7 +344,7 @@ public sealed class KeychainStorage(CredentialStore credentials, string? indexPa
     public override void WritePassword(PasswordEntry entry, string password)
     {
         if (!credentials.Write(entry.Id, password))
-            throw new PasswordStorageException("The password could not be saved in the system keychain.");
+            throw new PasswordStorageException(Strings.KeychainStorage_ThePasswordCouldNotBeSaved);
     }
 
     public override void DeletePasswords(IEnumerable<PasswordEntry> entries)
@@ -364,7 +365,7 @@ public sealed class KeychainStorage(CredentialStore credentials, string? indexPa
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
-            throw new PasswordStorageException($"The list of entries could not be written: {e.Message}", e);
+            throw new PasswordStorageException(string.Format(Strings.KeychainStorage_TheListOfEntriesCouldNot, e.Message), e);
         }
     }
 

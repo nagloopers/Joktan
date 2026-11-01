@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Joktan.Core;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt;
 
@@ -57,10 +58,10 @@ public sealed class ReceivedMessage
         get
         {
             if (_looksZipped && !IsGzipped)
-                return "it looks like gzip, but could not be unzipped";
+                return Strings.ReceivedMessage_ItLooksLikeGzipButCould;
             if (Payload.Length > JsonNumbers.MaxPayloadBytes)
-                return $"{(IsGzipped ? "it unzipped to" : "it is")} {Payload.Length / 1024:N0} KB, over the {JsonNumbers.MaxPayloadBytes / 1024:N0} KB limit";
-            return Number is null && Json is null ? "it is not a number or JSON" : null;
+                return string.Format(Strings.ReceivedMessage_KBOverTheKBLimit, (IsGzipped ? Strings.ReceivedMessage_ItUnzippedTo : Strings.ReceivedMessage_ItIs), Payload.Length / 1024, JsonNumbers.MaxPayloadBytes / 1024);
+            return Number is null && Json is null ? Strings.ReceivedMessage_ItIsNotANumberOr : null;
         }
     }
 
@@ -80,8 +81,8 @@ public sealed class ReceivedMessage
     public string TimeText => Time.ToString("HH:mm:ss.fff");
 
     public string SizeText => IsGzipped
-        ? $"{ReceivedSize:N0} bytes ({Payload.Length:N0} unzipped)"
-        : $"{Payload.Length:N0} bytes";
+        ? string.Format(Strings.ReceivedMessage_BytesUnzipped, ReceivedSize, Payload.Length)
+        : string.Format(Strings.ReceivedMessage_Bytes, Payload.Length);
 
     /// <summary>The payload as text, or a hex dump when it is not valid UTF-8.</summary>
     public string Text => _text ??= Decode();
@@ -95,7 +96,7 @@ public sealed class ReceivedMessage
         get
         {
             if (Payload.Length == 0)
-                return "(empty)";
+                return Strings.ReceivedMessage_Empty;
 
             var line = Text.ReplaceLineEndings(" ").Trim();
             return line.Length > PreviewLength ? line[..PreviewLength] + "…" : line;
@@ -146,7 +147,7 @@ public sealed class ReceivedMessage
             var spaced = new StringBuilder(hex.Length * 3 / 2);
             for (var i = 0; i < hex.Length; i += 2)
                 spaced.Append(hex, i, 2).Append(' ');
-            return $"(binary, {Payload.Length:N0} bytes) {spaced.ToString().TrimEnd()}"
+            return string.Format(Strings.ReceivedMessage_BinaryBytes, Payload.Length, spaced.ToString().TrimEnd())
                    + (Payload.Length > HexBytesShown ? " …" : "");
         }
     }

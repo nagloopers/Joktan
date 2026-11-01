@@ -14,6 +14,7 @@ using CommunityToolkit.Mvvm.Input;
 using Joktan.Core;
 using Joktan.Core.ViewModels;
 using Joktan.Mqtt.Controls;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt.ViewModels;
 
@@ -52,7 +53,7 @@ public partial class MqttClientViewModel : ViewModelBase, IDisposable
 
         _publisher = new FolderPublisher(Connection, Log);
         _writer = new SettingsWriter((path, e) => Dispatcher.UIThread.Post(() =>
-            Log(new ActivityEntry(DateTime.Now, "Failed", "", Path.GetFileName(path), $"Settings not saved: {e.Message}"))));
+            Log(new ActivityEntry(DateTime.Now, ActivityEntry.FailedEvent, "", Path.GetFileName(path), string.Format(Strings.MqttClient_SettingsNotSaved, e.Message)))));
         _runTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(250), DispatcherPriority.Background, OnRunTick);
         _saveTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(500), DispatcherPriority.Background, OnSaveTick);
         _rescanTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(300), DispatcherPriority.Background, OnRescanTick);
@@ -131,17 +132,17 @@ public partial class MqttClientViewModel : ViewModelBase, IDisposable
 
     public string ClientId => Profile.ClientId;
 
-    public string Login => Profile.Username.Trim() is { Length: > 0 } username ? username : "Anonymous";
+    public string Login => Profile.Username.Trim() is { Length: > 0 } username ? username : Strings.MqttClient_Anonymous;
 
-    public string Security => !Profile.UseTls ? "No TLS"
-        : Profile.UsesClientCertificate ? "Mutual TLS"
+    public string Security => !Profile.UseTls ? Strings.MqttClient_NoTLS
+        : Profile.UsesClientCertificate ? Strings.MqttClient_MutualTLS
         : "TLS";
 
-    public string SecurityDetail => !Profile.UseTls ? "Not encrypted"
-        : (Profile.UsesClientCertificate ? $"Client certificate {Path.GetFileName(Profile.ClientCertificate.Trim())}. " : "")
-          + (Profile.AcceptAnyServerCertificate ? "The broker's certificate is not checked."
-              : Profile.CaCertificate.Trim().Length > 0 ? $"The broker's certificate must be signed by {Path.GetFileName(Profile.CaCertificate.Trim())}."
-              : "The broker's certificate must be trusted by this computer.");
+    public string SecurityDetail => !Profile.UseTls ? Strings.MqttClient_NotEncrypted
+        : (Profile.UsesClientCertificate ? string.Format(Strings.MqttClient_ClientCertificate, Path.GetFileName(Profile.ClientCertificate.Trim())) : "")
+          + (Profile.AcceptAnyServerCertificate ? Strings.MqttClient_TheBrokerSCertificateIsNot
+              : Profile.CaCertificate.Trim().Length > 0 ? string.Format(Strings.MqttClient_TheBrokerSCertificateMustBe, Path.GetFileName(Profile.CaCertificate.Trim()))
+              : Strings.MqttClient_TheBrokerSCertificateMustBeTrusted);
 
     /// <summary>Whether this client may be removed; the last one may not. Set by the MQTT page.</summary>
     [ObservableProperty]
@@ -151,7 +152,7 @@ public partial class MqttClientViewModel : ViewModelBase, IDisposable
     public ConnectionState State => Connection.State;
 
     /// <summary>The state in a word; a failure's reason is shown on a line of its own.</summary>
-    public string StateText => State.ToString();
+    public string StateText => State.Text();
 
     public string? FailureReason => IsFailed ? Connection.FailureReason : null;
 
@@ -166,7 +167,7 @@ public partial class MqttClientViewModel : ViewModelBase, IDisposable
 
     public bool ShowDisconnect => !CanEdit;
 
-    public string DisconnectText => State == ConnectionState.Connecting ? "Cancel" : "Disconnect";
+    public string DisconnectText => State == ConnectionState.Connecting ? Strings.MqttClient_Cancel : Strings.MqttClient_Disconnect;
 
     private int? ParsedPort => ClientSettingsViewModel.ParsePort(Profile.Port);
 
@@ -220,7 +221,7 @@ public partial class MqttClientViewModel : ViewModelBase, IDisposable
     /// <summary>The group names in use, offered when a message is edited.</summary>
     public IReadOnlyList<string> GroupNames { get; private set; } = [];
 
-    public string FolderText => string.IsNullOrEmpty(FolderPath) ? "No folder chosen" : FolderPath;
+    public string FolderText => string.IsNullOrEmpty(FolderPath) ? Strings.MqttClient_NoFolderChosen : FolderPath;
 
     // Activity
 
@@ -378,12 +379,12 @@ public partial class MqttClientViewModel : ViewModelBase, IDisposable
         if (ok)
         {
             MqttMetrics.RecordSent(manual: true);
-            Log(new ActivityEntry(now, "Sent", ManualTopic, "Manual", ActivityEntry.SizeDetail(body.Length, payload.Length, ManualGzip), ManualBody));
+            Log(new ActivityEntry(now, Strings.MqttClient_Sent, ManualTopic, Strings.MqttClient_Manual, ActivityEntry.SizeDetail(body.Length, payload.Length, ManualGzip), ManualBody));
         }
         else
         {
             MqttMetrics.RecordFailed();
-            Log(new ActivityEntry(now, "Failed", ManualTopic, "Manual", error ?? "Unknown error"));
+            Log(new ActivityEntry(now, ActivityEntry.FailedEvent, ManualTopic, Strings.MqttClient_Manual, error ?? Strings.MqttClient_UnknownError));
         }
     }
 
@@ -603,10 +604,10 @@ public partial class MqttClientViewModel : ViewModelBase, IDisposable
         var invalid = Rows.Count(r => r.IsInvalid);
         var on = Rows.Count(r => r.IsOn);
         FolderSummary = string.IsNullOrEmpty(FolderPath) ? ""
-            : IsReadingFolder && Rows.Count == 0 ? "Reading the folder…"
+            : IsReadingFolder && Rows.Count == 0 ? Strings.MqttClient_ReadingTheFolder
             : FolderError is not null ? ""
-            : Rows.Count == 0 ? "No .json files found in this folder."
-            : $"{Rows.Count} messages, {on} switched on" + (invalid == 0 ? "" : $", {invalid} invalid");
+            : Rows.Count == 0 ? Strings.MqttClient_NoJsonFilesFoundInThis
+            : string.Format(Strings.MqttClient_MessagesSwitchedOn, Rows.Count, on) + (invalid == 0 ? "" : string.Format(Strings.MqttClient_Invalid, invalid));
         UpdateCommands();
     }
 
@@ -690,16 +691,16 @@ public partial class MqttClientViewModel : ViewModelBase, IDisposable
             switch (state)
             {
                 case ConnectionState.Connected:
-                    Log(new ActivityEntry(now, "Connected", Detail: $"{Address} ({Security})"));
+                    Log(new ActivityEntry(now, Strings.MqttClient_Connected, Detail: $"{Address} ({Security})"));
                     break;
                 case ConnectionState.Reconnecting:
-                    Log(new ActivityEntry(now, "Reconnecting", Detail: "The connection was lost"));
+                    Log(new ActivityEntry(now, Strings.MqttClient_Reconnecting, Detail: Strings.MqttClient_TheConnectionWasLost));
                     break;
                 case ConnectionState.Disconnected:
-                    Log(new ActivityEntry(now, "Disconnected"));
+                    Log(new ActivityEntry(now, Strings.MqttClient_Disconnected));
                     break;
                 case ConnectionState.Failed:
-                    Log(new ActivityEntry(now, "Failed", Detail: Connection.FailureReason ?? ""));
+                    Log(new ActivityEntry(now, ActivityEntry.FailedEvent, Detail: Connection.FailureReason ?? ""));
                     break;
             }
         }

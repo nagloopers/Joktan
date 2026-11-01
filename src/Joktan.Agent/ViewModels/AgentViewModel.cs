@@ -15,6 +15,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Agent.Clients;
 using Joktan.Agent.Mcp;
+using Joktan.Agent.Resources;
 using Joktan.Agent.Speech;
 using Joktan.Core;
 using Joktan.Core.ViewModels;
@@ -127,7 +128,7 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
     public bool CanPressTalk => !IsTranscribing;
 
     // In the box and not a tooltip, as an open tooltip can take the press meant for the button below it.
-    public string DraftHint => CanTalk ? "Ask the agent, or hold the microphone and talk" : "Ask the agent… (Shift+Enter for a new line)";
+    public string DraftHint => CanTalk ? Strings.Agent_AskTheAgentOrHoldThe : Strings.Agent_AskTheAgentShiftEnterFor;
 
     /// <summary>What is happening with the microphone, or what went wrong; gone once anything is typed.</summary>
     [ObservableProperty]
@@ -146,7 +147,7 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
         OnPropertyChanged(nameof(DraftHint));
     }
 
-    public string ReadAloudTip => IsReadingAloud ? "Stop reading replies aloud" : "Read replies aloud";
+    public string ReadAloudTip => IsReadingAloud ? Strings.Agent_StopReadingRepliesAloud : Strings.Agent_ReadRepliesAloud;
 
     public bool IsDocked => IsOpen && !IsFloating;
 
@@ -209,14 +210,14 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
         catch (InvalidOperationException e)
         {
             microphone.Dispose();
-            TalkMessage = $"{e.Message} Check that one is connected, and that this app may use it in your system's privacy settings.";
+            TalkMessage = string.Format(Strings.Agent_CheckThatOneIsConnectedAnd, e.Message);
             return;
         }
 
         microphone.LimitReached += () => Dispatcher.UIThread.Post(() => _ = FinishListeningAsync());
         _microphone = microphone;
         IsListening = true;
-        TalkMessage = "Listening. Let go to send.";
+        TalkMessage = Strings.Agent_ListeningLetGoToSend;
         _ = _speechToText.LoadAsync();
     }
 
@@ -229,34 +230,34 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
         _microphone = null;
         IsListening = false;
         IsTranscribing = true;
-        TalkMessage = "Working out what you said…";
+        TalkMessage = Strings.Agent_WorkingOutWhatYouSaid;
         try
         {
             var samples = await microphone.StopAsync();
             var peak = samples.Length == 0 ? 0 : samples.Max(Math.Abs);
             if (peak == 0)
             {
-                TalkMessage = "No sound reached the app. Check that this app may use the microphone in your system's privacy settings.";
+                TalkMessage = Strings.Agent_NoSoundReachedTheAppCheck;
                 return;
             }
 
             // Whisper makes up words from room noise, and a made-up "send" would act on them.
             if (peak < QuietestSpeech)
             {
-                TalkMessage = "That was too quiet to be speech. Try again, a little closer to the microphone.";
+                TalkMessage = Strings.Agent_ThatWasTooQuietToBe;
                 return;
             }
 
             var text = await _speechToText.TranscribeAsync(samples);
             TalkMessage = null;
             if (text.Length == 0)
-                TalkMessage = "No words were heard. Try again, a little closer to the microphone.";
+                TalkMessage = Strings.Agent_NoWordsWereHeardTryAgain;
             else
                 TakeSpeech(text);
         }
         catch (Exception e) when (e is IOException or InvalidOperationException or UnauthorizedAccessException or Whisper.net.Wave.CorruptedWaveException or DllNotFoundException)
         {
-            TalkMessage = $"What you said could not be turned into text: {e.Message}";
+            TalkMessage = string.Format(Strings.Agent_WhatYouSaidCouldNotBe, e.Message);
         }
         finally
         {
@@ -285,7 +286,7 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
         if (IsBusy)
         {
             _sendAfterTurn = true;
-            TalkMessage = "The agent is still working. This goes when it has finished.";
+            TalkMessage = Strings.Agent_TheAgentIsStillWorkingThis;
         }
         else if (SendCommand.CanExecute(null))
         {
@@ -326,7 +327,7 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
     public void TrySpeech()
     {
         _speech.Stop();
-        _speech.Say("This is how replies will sound.", Settings.SpeechVoice, Settings.SpeechSpeed);
+        _speech.Say(Strings.Agent_ThisIsHowRepliesWillSound, Settings.SpeechVoice, Settings.SpeechSpeed);
     }
 
     private void Speak(string text)
@@ -377,7 +378,7 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
         _replying = null;
         _sendAfterTurn = false;
         foreach (var approval in Items.OfType<ApprovalViewModel>())
-            approval.Withdraw("Stopped");
+            approval.Withdraw(Strings.Agent_Stopped);
     }
 
     // Into the box and not sent, so it can be finished off first, as the agent acts on what it is told.
@@ -404,7 +405,7 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
         var profile = Settings.ProfileOf(client.Kind);
         if (AgentProgram.Find(client, profile) is not { } program)
         {
-            Add(new AgentProblemViewModel($"{client.DisplayName} was not found. {client.InstallHint} You can give its path on the Settings / Agent page."));
+            Add(new AgentProblemViewModel(string.Format(Strings.Agent_WasNotFoundYouCanGive, client.DisplayName, client.InstallHint)));
             return;
         }
 
@@ -434,13 +435,13 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
             if (output.IsAbandoned)
                 return;
             if (problem is not null && !output.HadProblem)
-                Add(new AgentProblemViewModel($"{client.DisplayName} failed: {problem}"));
+                Add(new AgentProblemViewModel(string.Format(Strings.Agent_Failed, client.DisplayName, problem)));
             else if (!output.HadProblem && !output.HadText && !cancel.IsCancellationRequested)
-                Add(new AgentProblemViewModel($"{client.DisplayName} finished without saying anything."));
+                Add(new AgentProblemViewModel(string.Format(Strings.Agent_FinishedWithoutSayingAnything, client.DisplayName)));
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or System.ComponentModel.Win32Exception or InvalidOperationException or HttpListenerException or SocketException)
         {
-            Add(new AgentProblemViewModel($"{client.DisplayName} could not be started: {e.Message}"));
+            Add(new AgentProblemViewModel(string.Format(Strings.Agent_CouldNotBeStarted, client.DisplayName, e.Message)));
         }
         finally
         {
@@ -449,7 +450,7 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
             _output = null;
             IsBusy = false;
             foreach (var approval in Items.OfType<ApprovalViewModel>())
-                approval.Withdraw("The turn ended");
+                approval.Withdraw(Strings.Agent_TheTurnEnded);
             try
             {
                 folder?.Delete(recursive: true);
@@ -466,7 +467,7 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
         if (item is AgentProblemViewModel)
         {
             FinishReply();
-            Speak("Something went wrong. See the panel.");
+            Speak(Strings.Agent_SomethingWentWrongSeeThePanel);
         }
 
         Items.Add(item);
@@ -574,7 +575,7 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
             {
                 if (IsBusy)
                 {
-                    ServerProblem = "Wait for the agent to finish its turn, then switch this on again.";
+                    ServerProblem = Strings.Agent_WaitForTheAgentToFinish;
                     return;
                 }
 
@@ -586,7 +587,7 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
         }
         catch (Exception e) when (e is HttpListenerException or SocketException or InvalidOperationException or IOException)
         {
-            ServerProblem = $"Could not listen on port {Settings.OutsidePort}: {e.Message}";
+            ServerProblem = string.Format(Strings.Agent_CouldNotListenOnPort, Settings.OutsidePort, e.Message);
         }
     }
 
@@ -622,13 +623,13 @@ public partial class AgentViewModel : ViewModelBase, IApprovalGate, IToolObserve
 
         var approval = new ApprovalViewModel(tool, Pretty(arguments), caller);
         FinishReply();
-        Speak("The agent is asking for your approval.");
+        Speak(Strings.Agent_TheAgentIsAskingForYour);
         Add(approval);
         IsOpen = true;
         AttentionRequested?.Invoke();
 
         using var timeout = new CancellationTokenSource(ApprovalTimeout);
-        await using var withdraw = timeout.Token.Register(() => Dispatcher.UIThread.Post(() => approval.Withdraw("Nobody answered in time")));
+        await using var withdraw = timeout.Token.Register(() => Dispatcher.UIThread.Post(() => approval.Withdraw(Strings.Agent_NobodyAnsweredInTime)));
         var allowed = await approval.Answer;
         if (allowed && approval.Remembered)
             _allowed.Add((caller, tool.Name));

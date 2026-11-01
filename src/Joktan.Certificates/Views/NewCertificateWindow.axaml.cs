@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
+using Joktan.Certificates.Resources;
 using Joktan.Certificates.ViewModels;
 
 namespace Joktan.Certificates.Views;
@@ -27,7 +28,7 @@ public partial class NewCertificateWindow : Window
     {
         var folders = await StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
         {
-            Title = "Choose the folder to make the certificate in",
+            Title = Strings.NewCertificateWindow_ChooseTheFolderToMakeThe,
             AllowMultiple = false,
         });
         return folders.Count > 0 ? folders[0].TryGetLocalPath() : null;

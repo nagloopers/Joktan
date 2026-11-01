@@ -2,13 +2,14 @@ using System;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
+using Joktan.Mqtt.Resources;
 using Joktan.Mqtt.ViewModels;
 
 namespace Joktan.Mqtt.Views;
 
 public partial class MessagingView : UserControl
 {
-    private static readonly FilePickerFileType Pictures = new("Pictures")
+    private static readonly FilePickerFileType Pictures = new(Strings.MessagingView_Pictures)
     {
         Patterns = ["*.png", "*.jpg", "*.jpeg", "*.webp", "*.gif", "*.bmp"],
     };
@@ -35,7 +36,7 @@ public partial class MessagingView : UserControl
 
         var files = await top.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
-            Title = "Choose a picture",
+            Title = Strings.MessagingView_ChooseAPicture,
             AllowMultiple = false,
             FileTypeFilter = [Pictures, FilePickerFileTypes.All],
         });

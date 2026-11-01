@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using Joktan.Certificates.Resources;
 
 namespace Joktan.Certificates;
 
@@ -55,13 +56,13 @@ public sealed class CertificateSpec
     {
         name = name.Trim();
         if (name.Length == 0)
-            return "Enter a name for the certificate";
+            return Strings.CertificateSpec_EnterANameForTheCertificate;
         if (name.Length > MaxNameLength)
-            return $"The name must not be longer than {MaxNameLength} characters";
+            return string.Format(Strings.CertificateSpec_TheNameMustNotBeLonger, MaxNameLength);
         if (name.Any(char.IsControl))
-            return "The name must not contain control characters";
+            return Strings.CertificateSpec_TheNameMustNotContainControl;
         if (otherNames.Contains(name, StringComparer.OrdinalIgnoreCase))
-            return $"There is already a certificate called {name}";
+            return string.Format(Strings.CertificateSpec_ThereIsAlreadyACertificateCalled, name);
         return null;
     }
 
@@ -69,25 +70,25 @@ public sealed class CertificateSpec
     public string? CheckSubject()
     {
         if (CommonName.Trim().Length == 0)
-            return "Enter a common name (CN)";
+            return Strings.CertificateSpec_EnterACommonNameCN;
         if (CommonName.Trim().Length > MaxCommonNameLength)
-            return $"The common name must not be longer than {MaxCommonNameLength} characters";
+            return string.Format(Strings.CertificateSpec_TheCommonNameMustNotBe, MaxCommonNameLength);
         return CheckFields(Organization, OrganizationalUnit, Locality, State, Country)
-               ?? (Email.Trim() is { Length: > 0 } email && !IsEmail(email) ? "The email address is not valid" : null);
+               ?? (Email.Trim() is { Length: > 0 } email && !IsEmail(email) ? Strings.CertificateSpec_TheEmailAddressIsNotValid : null);
     }
 
     /// <summary>Returns what is wrong with organisation, unit, locality, state and country, or null.</summary>
     public static string? CheckFields(string organization, string unit, string locality, string state, string country)
     {
-        foreach (var (value, label) in new[] { (organization, "organisation"), (unit, "organisational unit"), (locality, "locality"), (state, "state") })
+        foreach (var (value, label) in new[] { (organization, Strings.CertificateSpec_Organisation), (unit, Strings.CertificateSpec_OrganisationalUnit), (locality, Strings.CertificateSpec_Locality), (state, Strings.CertificateSpec_State) })
         {
             if (value.Trim().Length > MaxFieldLength)
-                return $"The {label} must not be longer than {MaxFieldLength} characters";
+                return string.Format(Strings.CertificateSpec_TheMustNotBeLongerThan, label, MaxFieldLength);
         }
 
         var code = country.Trim();
         if (code.Length > 0 && (code.Length != 2 || !code.All(char.IsAsciiLetter)))
-            return "The country must be a two-letter code, such as ZA, DE or US";
+            return Strings.CertificateSpec_TheCountryMustBeATwo;
         return null;
     }
 
@@ -106,13 +107,13 @@ public sealed class CertificateSpec
             else if (entry.Contains('@'))
             {
                 if (!IsEmail(entry))
-                    return $"{entry} is not a valid email address";
+                    return string.Format(Strings.CertificateSpec_IsNotAValidEmailAddress, entry);
                 names.Add(new AlternativeName(AlternativeNameType.Email, entry));
             }
             else if (IsHostName(entry))
                 names.Add(new AlternativeName(AlternativeNameType.Dns, entry.ToLowerInvariant()));
             else
-                return $"{entry} is not a host name, IP address or email address";
+                return string.Format(Strings.CertificateSpec_IsNotAHostNameIP, entry);
         }
 
         return null;
@@ -158,8 +159,8 @@ public sealed record AlternativeName(AlternativeNameType Type, string Value)
 {
     public override string ToString() => Type switch
     {
-        AlternativeNameType.IpAddress => $"IP {Value}",
-        AlternativeNameType.Email => $"email {Value}",
+        AlternativeNameType.IpAddress => string.Format(Strings.AlternativeName_IP, Value),
+        AlternativeNameType.Email => string.Format(Strings.AlternativeName_Email, Value),
         _ => Value,
     };
 }

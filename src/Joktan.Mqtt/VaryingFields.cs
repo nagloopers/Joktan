@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using Joktan.Certificates;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt;
 
@@ -32,11 +33,11 @@ public static partial class VaryingFields
     {
         var arrays = Locate(body, rule.Path).Select(Value).ToList();
         if (arrays.Count == 0)
-            return $"Array {rule.Path} is not in the body";
+            return string.Format(Strings.VaryingFields_ArrayIsNotInTheBody, rule.Path);
         if (arrays.Any(a => a is not JsonArray))
-            return $"{rule.Path} is not an array";
+            return string.Format(Strings.VaryingFields_IsNotAnArray, rule.Path);
         if (rule.Max > 0 && arrays.Any(a => ((JsonArray)a!).Count == 0))
-            return $"Array {rule.Path} is empty in the file, so it has no item to repeat";
+            return string.Format(Strings.VaryingFields_ArrayIsEmptyInTheFile, rule.Path);
         return null;
     }
 

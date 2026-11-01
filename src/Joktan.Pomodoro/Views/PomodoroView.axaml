@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Pomodoro.Resources"
              xmlns:vm="using:Joktan.Pomodoro.ViewModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -24,10 +25,10 @@
                         <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress}" />
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
                             <Button Name="StartPauseButton" Classes="accent" Content="{Binding StartPauseText}" Command="{Binding StartPauseCommand}" />
-                            <Button Content="Reset" Command="{Binding ResetCommand}"
-                                    ToolTip.Tip="Stop, and go back to the start of this phase" />
-                            <Button Content="Skip" Command="{Binding SkipCommand}"
-                                    ToolTip.Tip="Move on to the next phase without counting this one as finished" />
+                            <Button Content="{x:Static res:Strings.PomodoroView_Reset}" Command="{Binding ResetCommand}"
+                                    ToolTip.Tip="{x:Static res:Strings.PomodoroView_StopAndGoBackToThe}" />
+                            <Button Content="{x:Static res:Strings.PomodoroView_Skip}" Command="{Binding SkipCommand}"
+                                    ToolTip.Tip="{x:Static res:Strings.PomodoroView_MoveOnToTheNextPhase}" />
                         </StackPanel>
                         <TextBlock Classes="info-label" HorizontalAlignment="Center" TextWrapping="Wrap"
                                    Text="{Binding Message}"
@@ -38,53 +39,53 @@
 
                 <Border Classes="card">
                     <StackPanel>
-                        <TextBlock Classes="card-title" Text="Settings" />
+                        <TextBlock Classes="card-title" Text="{x:Static res:Strings.PomodoroView_Settings}" />
                         <TextBlock Classes="card-subtitle"
-                                   Text="A new length applies from the next time a phase begins, and at once to a phase that has not begun." />
+                                   Text="{x:Static res:Strings.PomodoroView_ANewLengthAppliesFromThe}" />
 
                         <Border Classes="table-row">
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                <TextBlock Classes="table-cell" Text="Focus, in minutes" />
+                                <TextBlock Classes="table-cell" Text="{x:Static res:Strings.PomodoroView_FocusInMinutes}" />
                                 <NumericUpDown Grid.Column="1" Value="{Binding FocusMinutes}" Minimum="1" Maximum="180" Increment="5" FormatString="0" Width="120" />
                             </Grid>
                         </Border>
                         <Border Classes="table-row">
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                <TextBlock Classes="table-cell" Text="Short break, in minutes" />
+                                <TextBlock Classes="table-cell" Text="{x:Static res:Strings.PomodoroView_ShortBreakInMinutes}" />
                                 <NumericUpDown Grid.Column="1" Value="{Binding ShortBreakMinutes}" Minimum="1" Maximum="180" Increment="1" FormatString="0" Width="120" />
                             </Grid>
                         </Border>
                         <Border Classes="table-row">
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                <TextBlock Classes="table-cell" Text="Long break, in minutes" />
+                                <TextBlock Classes="table-cell" Text="{x:Static res:Strings.PomodoroView_LongBreakInMinutes}" />
                                 <NumericUpDown Grid.Column="1" Value="{Binding LongBreakMinutes}" Minimum="1" Maximum="180" Increment="5" FormatString="0" Width="120" />
                             </Grid>
                         </Border>
                         <Border Classes="table-row">
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                <TextBlock Classes="table-cell" Text="Focus periods before a long break" />
+                                <TextBlock Classes="table-cell" Text="{x:Static res:Strings.PomodoroView_FocusPeriodsBeforeALongBreak}" />
                                 <NumericUpDown Grid.Column="1" Value="{Binding FocusesBeforeLongBreak}" Minimum="1" Maximum="12" Increment="1" FormatString="0" Width="120" />
                             </Grid>
                         </Border>
                         <Border Classes="table-row">
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                <TextBlock Classes="table-cell" Text="Start the next phase by itself" />
+                                <TextBlock Classes="table-cell" Text="{x:Static res:Strings.PomodoroView_StartTheNextPhaseByItself}" />
                                 <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding AutoStart}"
-                                              ToolTip.Tip="When a phase ends, the next one starts without pressing Start" />
+                                              ToolTip.Tip="{x:Static res:Strings.PomodoroView_WhenAPhaseEndsTheNext}" />
                             </Grid>
                         </Border>
                         <Border Classes="table-row">
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                <TextBlock Classes="table-cell" Text="Add an alert when a phase ends" />
+                                <TextBlock Classes="table-cell" Text="{x:Static res:Strings.PomodoroView_AddAnAlertWhenAPhase}" />
                                 <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding AlertAtEnd}"
-                                              ToolTip.Tip="Shows under the bell in the top bar, on this computer only" />
+                                              ToolTip.Tip="{x:Static res:Strings.PomodoroView_ShowsUnderTheBellInThe}" />
                             </Grid>
                         </Border>
                         <Border Classes="table-row">
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                <TextBlock Classes="table-cell" Text="Say it aloud when a phase ends" />
+                                <TextBlock Classes="table-cell" Text="{x:Static res:Strings.PomodoroView_SayItAloudWhenAPhase}" />
                                 <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding SpeakAtEnd}"
-                                              ToolTip.Tip="Heard even while Joktan is behind other windows" />
+                                              ToolTip.Tip="{x:Static res:Strings.PomodoroView_HeardEvenWhileJoktanIsBehind}" />
                             </Grid>
                         </Border>
                     </StackPanel>

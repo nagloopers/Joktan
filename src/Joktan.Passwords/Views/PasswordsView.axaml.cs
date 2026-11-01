@@ -6,6 +6,7 @@ using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
+using Joktan.Passwords.Resources;
 using Joktan.Passwords.ViewModels;
 
 namespace Joktan.Passwords.Views;
@@ -76,11 +77,11 @@ public partial class PasswordsView : UserControl
 
         var file = await top.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
         {
-            Title = "Choose a vault file, or where to make one",
+            Title = Strings.PasswordsView_ChooseAVaultFileOrWhere,
             SuggestedFileName = VaultStorage.FileName,
             DefaultExtension = "vault",
             ShowOverwritePrompt = false,
-            FileTypeChoices = [new FilePickerFileType("Joktan vault") { Patterns = ["*.vault"] }],
+            FileTypeChoices = [new FilePickerFileType(Strings.PasswordsView_JoktanVault) { Patterns = ["*.vault"] }],
         });
         return file?.TryGetLocalPath();
     }

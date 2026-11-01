@@ -12,6 +12,7 @@ using CommunityToolkit.Mvvm.Input;
 using Joktan.Core.ViewModels;
 using Joktan.Mqtt;
 using Joktan.Mqtt.ViewModels;
+using Joktan.TopicDashboards.Resources;
 
 namespace Joktan.TopicDashboards.ViewModels;
 
@@ -190,33 +191,33 @@ public partial class GraphEditorViewModel : ViewModelBase
     /// <summary>Whether the dashboard can be chosen, which is not so for a graph already on one, unless the choice is which graph.</summary>
     public bool CanChooseDashboard => IsNew || CanChooseTarget;
 
-    public string WindowTitle => IsNew ? "Add graph" : CanChooseTarget ? "Add to graph" : "Edit graph";
+    public string WindowTitle => IsNew ? Strings.GraphEditor_AddGraph : CanChooseTarget ? Strings.GraphEditor_AddToGraph : Strings.GraphEditor_EditGraph;
 
-    public string SaveText => IsNew ? "Add to dashboard" : CanChooseTarget ? "Add to graph" : "Save";
+    public string SaveText => IsNew ? Strings.GraphEditor_AddToDashboard : CanChooseTarget ? Strings.GraphEditor_AddToGraph : Strings.GraphEditor_Save;
 
     public IReadOnlyList<GraphKindChoice> Kinds { get; } =
     [
-        new(GraphKind.Line, "Line", "How values moved over time. Use it to compare numbers on one scale."),
-        new(GraphKind.Area, "Area", "A line filled down to zero, for amounts."),
-        new(GraphKind.Bars, "Bars", "One number: its recent readings. Several numbers: the latest of each, side by side."),
-        new(GraphKind.Gauge, "Gauge", "The latest value on a dial, best with a fixed scale."),
-        new(GraphKind.Value, "Number", "The latest value in large type, with its trend below."),
+        new(GraphKind.Line, Strings.GraphEditor_Line, Strings.GraphEditor_HowValuesMovedOverTimeUse),
+        new(GraphKind.Area, Strings.GraphEditor_Area, Strings.GraphEditor_ALineFilledDownToZero),
+        new(GraphKind.Bars, Strings.GraphEditor_Bars, Strings.GraphEditor_OneNumberItsRecentReadingsSeveral),
+        new(GraphKind.Gauge, Strings.GraphEditor_Gauge, Strings.GraphEditor_TheLatestValueOnADial),
+        new(GraphKind.Value, Strings.GraphEditor_Number, Strings.GraphEditor_TheLatestValueInLargeType),
     ];
 
     public IReadOnlyList<SpanChoice> Spans { get; } =
     [
-        new(1, "1 minute"),
-        new(5, "5 minutes"),
-        new(15, "15 minutes"),
-        new(30, "30 minutes"),
-        new(60, "1 hour"),
-        new(360, "6 hours"),
-        new(1440, "24 hours"),
+        new(1, Strings.GraphEditor_1Minute),
+        new(5, Strings.GraphEditor_5Minutes),
+        new(15, Strings.GraphEditor_15Minutes),
+        new(30, Strings.GraphEditor_30Minutes),
+        new(60, Strings.GraphEditor_1Hour),
+        new(360, Strings.GraphEditor_6Hours),
+        new(1440, Strings.GraphEditor_24Hours),
     ];
 
     public IReadOnlyList<DecimalsChoice> DecimalChoices { get; } =
     [
-        new(-1, "Automatic"),
+        new(-1, Strings.GraphEditor_Automatic),
         new(0, "0"),
         new(1, "1"),
         new(2, "2"),
@@ -446,10 +447,10 @@ public partial class GraphEditorViewModel : ViewModelBase
         var wild = Topics.Any(t => TopicPattern.Parse(t) is { IsExact: false });
         ListenStatus = SelectedClient is not { } client || Topics.Count == 0 ? ""
             : _listenError is { } error ? error
-            : !client.IsConnected ? $"{client.Name} is not connected. Numbers appear below once it is connected and messages arrive."
-            : wild && _perSecond > 0 ? $"Listening. About {_perSecond} {(_perSecond == 1 ? "message" : "messages")} a second match {(Topics.Count == 1 ? Topics[0] : "these topics")}."
-            : Topics.Count == 1 ? $"Listening on {Topics[0]}. Numbers appear below as messages arrive."
-            : $"Listening on {Topics.Count} topics. Numbers appear below as messages arrive.";
+            : !client.IsConnected ? string.Format(Strings.GraphEditor_IsNotConnectedNumbersAppearBelow, client.Name)
+            : wild && _perSecond > 0 ? string.Format(Strings.GraphEditor_ListeningAboutASecondMatch, _perSecond, (_perSecond == 1 ? Strings.GraphEditor_Message : Strings.GraphEditor_Messages), (Topics.Count == 1 ? Topics[0] : Strings.GraphEditor_TheseTopics))
+            : Topics.Count == 1 ? string.Format(Strings.GraphEditor_ListeningOnNumbersAppearBelowAs, Topics[0])
+            : string.Format(Strings.GraphEditor_ListeningOnTopicsNumbersAppearBelow, Topics.Count);
     }
 
     [RelayCommand]
@@ -457,7 +458,7 @@ public partial class GraphEditorViewModel : ViewModelBase
     {
         if (ManualTopic is not { } topic || TopicPattern.Parse(topic) is not { } pattern)
         {
-            Error = "Add a topic first.";
+            Error = Strings.GraphEditor_AddATopicFirst;
             return;
         }
 
@@ -471,7 +472,7 @@ public partial class GraphEditorViewModel : ViewModelBase
         var row = Row(topic, path);
         if (!row.IsChosen && Chosen().Count() >= GraphProfile.MaxValues)
         {
-            Error = $"A graph can draw at most {GraphProfile.MaxValues} numbers.";
+            Error = string.Format(Strings.GraphEditor_AGraphCanDrawAtMost, GraphProfile.MaxValues);
             return;
         }
 
@@ -505,7 +506,7 @@ public partial class GraphEditorViewModel : ViewModelBase
         var name = field[(field.LastIndexOf('.') + 1)..];
         if (LooksUnique(field))
         {
-            Error = $"{field} differs on nearly every message, so it would make a new line each time.";
+            Error = string.Format(Strings.GraphEditor_DiffersOnNearlyEveryMessageSo, field);
             return;
         }
 
@@ -556,7 +557,7 @@ public partial class GraphEditorViewModel : ViewModelBase
         var dashboard = IsNewDashboard ? _page.CreateDashboard(NewDashboardName.Trim()) : SelectedDashboard!;
         var profile = BuildProfile();
         _page.Commit(dashboard, _card, profile, Data);
-        AddedTo = _card is null ? dashboard.DisplayName : $"{profile.Name} on {dashboard.DisplayName}";
+        AddedTo = _card is null ? dashboard.DisplayName : string.Format(Strings.GraphEditor_On, profile.Name, dashboard.DisplayName);
         await StopAsync();
         CloseRequested?.Invoke(true);
     }
@@ -624,7 +625,7 @@ public partial class GraphEditorViewModel : ViewModelBase
             .Where(g => string.Equals(g.Profile.Client, _seedClient?.Name, StringComparison.OrdinalIgnoreCase))
             .DistinctBy(g => g.Profile)
             .Select(g => new GraphTarget(g, g.Profile.Name)) ?? [];
-        Targets = graphs.Prepend(new GraphTarget(null, "A new graph")).ToList();
+        Targets = graphs.Prepend(new GraphTarget(null, Strings.GraphEditor_ANewGraph)).ToList();
         SelectedTarget = Targets[0];
     }
 
@@ -877,7 +878,7 @@ public partial class GraphEditorViewModel : ViewModelBase
         if (row.IsChosen && Chosen().Count() > GraphProfile.MaxValues)
         {
             row.Show(false);
-            Error = $"A graph can draw at most {GraphProfile.MaxValues} numbers.";
+            Error = string.Format(Strings.GraphEditor_AGraphCanDrawAtMost, GraphProfile.MaxValues);
             return;
         }
 
@@ -971,12 +972,12 @@ public partial class GraphEditorViewModel : ViewModelBase
         var suggested = Chosen().Any()
             ? _fieldValues.Where(f => !taken.Contains(f.Key) && f.Value.Count is >= 2 and <= MaxSuggestedValues && !LooksUnique(f.Key)).ToList()
             : [];
-        var texts = suggested.Select(f => $"This number comes with {f.Value.Count} values of {f.Key}.").ToList();
+        var texts = suggested.Select(f => string.Format(Strings.GraphEditor_ThisNumberComesWithValuesOf, f.Value.Count, f.Key)).ToList();
         if (!Suggestions.Select(s => s.Text).SequenceEqual(texts))
         {
             Suggestions.Clear();
             foreach (var field in suggested)
-                Suggestions.Add(new KeySuggestion($"This number comes with {field.Value.Count} values of {field.Key}.", field.Key, AddFieldKey));
+                Suggestions.Add(new KeySuggestion(string.Format(Strings.GraphEditor_ThisNumberComesWithValuesOf, field.Value.Count, field.Key), field.Key, AddFieldKey));
         }
     }
 
@@ -1003,10 +1004,10 @@ public partial class GraphEditorViewModel : ViewModelBase
             : _seen.Count > 0 ? new SeriesKeys(_seen[0])
             : SeriesKeys.None;
         Preview.Apply(profile, Data, cell);
-        Preview.Status = !Chosen().Any() ? "Tick a number below to draw it"
+        Preview.Status = !Chosen().Any() ? Strings.GraphEditor_TickANumberBelowToDraw
             : Preview.HasReadings ? null
-            : _source.Health.Problem is { } problem ? $"Messages are arriving, but {problem}"
-            : "Waiting for a message";
+            : _source.Health.Problem is { } problem ? string.Format(Strings.GraphEditor_MessagesAreArrivingBut, problem)
+            : Strings.GraphEditor_WaitingForAMessage;
         UpdateKeys();
         UpdateLines();
         UpdateOutcome();
@@ -1062,15 +1063,15 @@ public partial class GraphEditorViewModel : ViewModelBase
 
         var parts = new List<string>();
         if (tabs > 1)
-            parts.Add($"{tabs} tabs");
+            parts.Add(string.Format(Strings.GraphEditor_Tabs, tabs));
         if (graphs > 1)
-            parts.Add(tabs > 1 ? $"{graphs} graphs on each" : $"{graphs} graphs");
+            parts.Add(tabs > 1 ? string.Format(Strings.GraphEditor_GraphsOnEach, graphs) : string.Format(Strings.GraphEditor_Graphs, graphs));
         if (lines > 1)
-            parts.Add(tabs > 1 || graphs > 1 ? $"{lines} lines on each graph" : $"{lines} lines");
+            parts.Add(tabs > 1 || graphs > 1 ? string.Format(Strings.GraphEditor_LinesOnEachGraph, lines) : string.Format(Strings.GraphEditor_Lines, lines));
 
-        var outcome = parts.Count > 0 ? $"This makes {string.Join(", ", parts)}." : "";
+        var outcome = parts.Count > 0 ? string.Format(Strings.GraphEditor_ThisMakes, string.Join(", ", parts)) : "";
         if (_source.OverLimit is { } limit)
-            outcome = $"{outcome} Some values are left out, as {limit}.".Trim();
+            outcome = string.Format(Strings.GraphEditor_SomeValuesAreLeftOutAs, outcome, limit).Trim();
         OutcomeText = outcome;
     }
 
@@ -1084,12 +1085,12 @@ public partial class GraphEditorViewModel : ViewModelBase
         if (unitKey is not null && units.Count > 1)
         {
             _keyToSplit = unitKey;
-            UnitHint = $"These numbers have different units ({string.Join(", ", units)}), and a graph has one scale. They would read better on graphs of their own.";
+            UnitHint = string.Format(Strings.GraphEditor_TheseNumbersHaveDifferentUnitsAnd, string.Join(", ", units));
         }
         else if (sizes.Count > 1 && sizes.Max() / sizes.Min() >= 1000 && Keys.FirstOrDefault(k => k.SelectedShow.Show == KeyShow.Line) is { } lineKey)
         {
             _keyToSplit = lineKey;
-            UnitHint = "These numbers are of very different sizes, and a graph has one scale. They would read better on graphs of their own.";
+            UnitHint = Strings.GraphEditor_TheseNumbersAreOfVeryDifferent;
         }
         else
         {
@@ -1141,35 +1142,35 @@ public partial class GraphEditorViewModel : ViewModelBase
     private string? Check()
     {
         if (Name.Trim().Length == 0)
-            return "Enter a name for the graph.";
+            return Strings.GraphEditor_EnterANameForTheGraph;
         if (SelectedClient is null)
-            return "Choose a client.";
+            return Strings.GraphEditor_ChooseAClient;
         if (Topics.Count == 0)
-            return "Add a topic to draw.";
+            return Strings.GraphEditor_AddATopicToDraw;
         if (!Values.Any(r => r.IsChosen))
-            return "Tick at least one number to draw.";
+            return Strings.GraphEditor_TickAtLeastOneNumberTo;
 
         // A graph only keeps the topics it draws, so this one would quietly go.
         if (Topics.FirstOrDefault(t => !Chosen().Any(r => r.Topic == t)) is { } unused)
-            return $"Nothing is ticked on {unused}. Tick a number on it, add one by its path, or remove the topic.";
+            return string.Format(Strings.GraphEditor_NothingIsTickedOnTickA, unused);
         if (UseFixedScale && !(TryParse(MinimumText, out var minimum) & TryParse(MaximumText, out var maximum) && minimum < maximum))
-            return "A fixed scale needs a minimum below its maximum.";
+            return Strings.GraphEditor_AFixedScaleNeedsAMinimum;
         if (CanChooseDashboard && IsNewDashboard && NewDashboardName.Trim().Length == 0)
-            return "Enter a name for the new dashboard.";
+            return Strings.GraphEditor_EnterANameForTheNew;
         if (CanChooseDashboard && !IsNewDashboard && SelectedDashboard is null)
-            return "Choose a dashboard.";
+            return Strings.GraphEditor_ChooseADashboard;
         if (Keys.FirstOrDefault(k => k.IsOnly && k.OnlyValue.Trim().Length == 0) is { } only)
-            return $"Choose the value of {only.Name} to keep.";
+            return string.Format(Strings.GraphEditor_ChooseTheValueOfToKeep, only.Name);
 
         var tabKeys = Keys.Where(k => k.SelectedShow.Show == KeyShow.Tab).ToList();
         if (tabKeys.Count > 1)
-            return "Only one key can be shown as tabs. Show the others as graphs or lines.";
+            return Strings.GraphEditor_OnlyOneKeyCanBeShown;
 
         // A dashboard is shown once per value of one key, so all its graphs must agree on which.
         if (tabKeys.Count == 1 && !IsNewDashboard && SelectedDashboard is { } dashboard
             && dashboard.Profile.Graphs.Where(g => g != _card?.Profile).Select(g => g.TabKey).FirstOrDefault(k => k is not null) is { } other
             && other != tabKeys[0].Name)
-            return $"The tabs of this dashboard come from {other}. Show {tabKeys[0].Name} as graphs or lines, or put this graph on a new dashboard.";
+            return string.Format(Strings.GraphEditor_TheTabsOfThisDashboardCome, other, tabKeys[0].Name);
         return null;
     }
 

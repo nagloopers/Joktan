@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt;
 
@@ -103,19 +104,27 @@ public sealed record MessageSchedule
         switch (Type)
         {
             case ScheduleType.Once:
-                return $"Once at {At:yyyy-MM-dd HH:mm:ss}";
+                return string.Format(Strings.MessageSchedule_OnceAt, At);
 
             case ScheduleType.Interval:
-                var unit = Unit.ToString().ToLowerInvariant();
-                var text = Every == 1 ? $"Every {unit.TrimEnd('s')}" : $"Every {Every} {unit}";
-                return MaxSends is { } max ? $"{text}, {max} times" : text;
+                var unit = (Unit, Every == 1) switch
+                {
+                    (IntervalUnit.Seconds, true) => Strings.MessageSchedule_UnitSecond,
+                    (IntervalUnit.Seconds, false) => Strings.MessageSchedule_UnitSeconds,
+                    (IntervalUnit.Minutes, true) => Strings.MessageSchedule_UnitMinute,
+                    (IntervalUnit.Minutes, false) => Strings.MessageSchedule_UnitMinutes,
+                    (_, true) => Strings.MessageSchedule_UnitHour,
+                    _ => Strings.MessageSchedule_UnitHours,
+                };
+                var text = Every == 1 ? string.Format(Strings.MessageSchedule_Every, unit) : string.Format(Strings.MessageSchedule_Every2, Every, unit);
+                return MaxSends is { } max ? string.Format(Strings.MessageSchedule_Times, text, max) : text;
 
             case ScheduleType.Daily:
                 var times = string.Join(", ", Times.Order().Select(t => t.ToString("HH:mm", CultureInfo.InvariantCulture)));
-                return $"Daily at {times}, {DescribeDays()}";
+                return string.Format(Strings.MessageSchedule_DailyAt, times, DescribeDays());
 
             default:
-                return "Manual";
+                return Strings.MessageSchedule_Manual;
         }
     }
 
@@ -160,9 +169,9 @@ public sealed record MessageSchedule
         var chosen = week.Where(Days.Contains).ToArray();
 
         if (chosen.Length == 7)
-            return "every day";
+            return Strings.MessageSchedule_EveryDay;
         if (chosen.SequenceEqual(week[..5]))
-            return "Mon–Fri";
+            return Strings.MessageSchedule_MonFri;
         return string.Join(", ", chosen.Select(d => d.ToString()[..3]));
     }
 }

@@ -3,13 +3,14 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Core.ViewModels;
+using Joktan.Settings.Resources;
 
 namespace Joktan.Settings.ViewModels;
 
 /// <summary>Chooses which entries the menu shows and in what order, and saves each change as it is made.</summary>
 public partial class MenuSettingsViewModel : PageViewModel
 {
-    public MenuSettingsViewModel(ObservableCollection<NavItemViewModel> menu, MenuLayout layout) : base("Menu", "Settings / Menu")
+    public MenuSettingsViewModel(ObservableCollection<NavItemViewModel> menu, MenuLayout layout) : base(Strings.MenuSettings_Menu, Strings.MenuSettings_SettingsMenu)
     {
         MenuItems = menu;
         layout.ApplyTo(menu);

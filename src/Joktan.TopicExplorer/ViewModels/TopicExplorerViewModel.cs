@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using Joktan.Core.ViewModels;
 using Joktan.Mqtt.ViewModels;
 using Joktan.TopicDashboards.ViewModels;
+using Joktan.TopicExplorer.Resources;
 
 namespace Joktan.TopicExplorer.ViewModels;
 
@@ -22,7 +23,7 @@ public partial class TopicExplorerViewModel : PageViewModel
 
     /// <param name="dashboards">Where a topic's graph goes when it is added to a dashboard.</param>
     public TopicExplorerViewModel(MqttViewModel mqtt, TopicDashboardsViewModel dashboards)
-        : base("Topic Explorer", "Dev Tools / Brokers / Topic Explorer")
+        : base(Strings.TopicExplorer_TopicExplorer, Strings.TopicExplorer_DevToolsBrokersTopicExplorer)
     {
         Mqtt = mqtt;
         _dashboards = dashboards;

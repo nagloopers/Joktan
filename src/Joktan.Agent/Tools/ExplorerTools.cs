@@ -23,7 +23,7 @@ public static class ExplorerTools
                 var tab = Find(explorer, args);
                 if (args.OptText("filters") is { } filters)
                     tab.Filters = filters;
-                if (args.Flag("subscribe")!.Value != (tab.SubscribeText == "Unsubscribe"))
+                if (args.Flag("subscribe")!.Value != tab.IsSubscribedToBox)
                     await tab.ToggleSubscriptionCommand.ExecuteAsync(null);
                 Check(tab.FilterError);
                 return new { tab.SubscribedFilters, tab.Summary };

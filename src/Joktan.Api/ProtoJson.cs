@@ -8,6 +8,7 @@ using System.Text.Json.Nodes;
 using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using Google.Protobuf.WellKnownTypes;
+using Joktan.Api.Resources;
 using Type = Google.Protobuf.Reflection.FieldType;
 
 namespace Joktan.Api;
@@ -53,7 +54,7 @@ public static class ProtoJson
         if (descriptor.FullName == AnyName)
             return EncodeAny(json, types);
         if (json.ValueKind != JsonValueKind.Object)
-            throw new ProtoJsonException($"A {descriptor.Name} is written as a JSON object.");
+            throw new ProtoJsonException(string.Format(Strings.ProtoJson_AIsWrittenAsAJSON, descriptor.Name));
 
         return EncodeFields(json.EnumerateObject(), descriptor, types);
     }
@@ -66,7 +67,7 @@ public static class ProtoJson
         {
             var field = descriptor.FindFieldByName(property.Name)
                         ?? descriptor.Fields.InDeclarationOrder().FirstOrDefault(f => f.JsonName == property.Name)
-                        ?? throw new ProtoJsonException($"{descriptor.Name} has no field {property.Name}.");
+                        ?? throw new ProtoJsonException(string.Format(Strings.ProtoJson_HasNoField, descriptor.Name, property.Name));
             var value = property.Value;
             if (value.ValueKind == JsonValueKind.Null && field.FieldType != Type.Message)
                 continue;
@@ -74,7 +75,7 @@ public static class ProtoJson
             if (field.IsMap)
             {
                 if (value.ValueKind != JsonValueKind.Object)
-                    throw new ProtoJsonException($"{descriptor.Name}.{field.Name} is a map, written as a JSON object.");
+                    throw new ProtoJsonException(string.Format(Strings.ProtoJson_IsAMapWrittenAsA, descriptor.Name, field.Name));
                 var entry = field.MessageType;
                 foreach (var pair in value.EnumerateObject())
                 {
@@ -90,7 +91,7 @@ public static class ProtoJson
             else if (field.IsRepeated)
             {
                 if (value.ValueKind != JsonValueKind.Array)
-                    throw new ProtoJsonException($"{descriptor.Name}.{field.Name} is repeated, written as a JSON array.");
+                    throw new ProtoJsonException(string.Format(Strings.ProtoJson_IsRepeatedWrittenAsAJSON, descriptor.Name, field.Name));
                 foreach (var item in value.EnumerateArray())
                     WriteField(output, field, item, types);
             }
@@ -107,17 +108,17 @@ public static class ProtoJson
     private static byte[] EncodeAny(JsonElement json, TypeRegistry types)
     {
         if (json.ValueKind != JsonValueKind.Object)
-            throw new ProtoJsonException("An Any is written as a JSON object with its type in \"@type\".");
+            throw new ProtoJsonException(Strings.ProtoJson_AnAnyIsWrittenAsA);
 
         var fields = json.EnumerateObject().Where(p => p.Name != AnyType).ToList();
         if (!json.TryGetProperty(AnyType, out var type))
-            return fields.Count == 0 ? [] : throw new ProtoJsonException("An Any with fields needs its type in \"@type\".");
+            return fields.Count == 0 ? [] : throw new ProtoJsonException(Strings.ProtoJson_AnAnyWithFieldsNeedsIts);
 
         var url = type.ValueKind == JsonValueKind.String ? type.GetString()! : "";
         if (!url.Contains('/', StringComparison.Ordinal))
-            throw new ProtoJsonException("The \"@type\" of an Any is written like type.googleapis.com/package.Message.");
+            throw new ProtoJsonException(Strings.ProtoJson_TheTypeOfAnAnyIs);
         var packed = FindPacked(url, types)
-                     ?? throw new ProtoJsonException($"{url} is not among the loaded services, so it cannot be put in an Any. With .proto files, add the file that defines it.");
+                     ?? throw new ProtoJsonException(string.Format(Strings.ProtoJson_IsNotAmongTheLoadedServices, url));
 
         byte[] value;
         if (!HasOwnForm(packed))
@@ -125,7 +126,7 @@ public static class ProtoJson
         else if (json.TryGetProperty(AnyValue, out var inner))
             value = Encode(inner, packed, types);
         else
-            throw new ProtoJsonException($"An Any that holds a {packed.Name} has it in \"value\".");
+            throw new ProtoJsonException(string.Format(Strings.ProtoJson_AnAnyThatHoldsAHas, packed.Name));
 
         return new Any { TypeUrl = url, Value = ByteString.CopyFrom(value) }.ToByteArray();
     }
@@ -340,12 +341,12 @@ public static class ProtoJson
                     JsonValueKind.True => true,
                     JsonValueKind.False => false,
                     JsonValueKind.String when bool.TryParse(value.GetString(), out var parsed) => parsed,
-                    _ => throw new ProtoJsonException($"{name} is true or false."),
+                    _ => throw new ProtoJsonException(string.Format(Strings.ProtoJson_IsTrueOrFalse, name)),
                 });
                 break;
             case Type.String:
                 if (value.ValueKind != JsonValueKind.String)
-                    throw new ProtoJsonException($"{name} is a string.");
+                    throw new ProtoJsonException(string.Format(Strings.ProtoJson_IsAString, name));
                 output.WriteTag(field.FieldNumber, WireFormat.WireType.LengthDelimited);
                 output.WriteString(value.GetString()!);
                 break;
@@ -357,7 +358,7 @@ public static class ProtoJson
                 }
                 catch (Exception e) when (e is FormatException or InvalidOperationException)
                 {
-                    throw new ProtoJsonException($"{name} is bytes, written as a base64 string.");
+                    throw new ProtoJsonException(string.Format(Strings.ProtoJson_IsBytesWrittenAsABase64, name));
                 }
 
                 break;
@@ -365,7 +366,7 @@ public static class ProtoJson
                 output.WriteTag(field.FieldNumber, WireFormat.WireType.Varint);
                 output.WriteEnum(value.ValueKind == JsonValueKind.String
                     ? field.EnumType.FindValueByName(value.GetString()!)?.Number
-                      ?? throw new ProtoJsonException($"{value.GetString()} is not one of {field.EnumType.Name}'s values: "
+                      ?? throw new ProtoJsonException(string.Format(Strings.ProtoJson_IsNotOneOfSValues, value.GetString(), field.EnumType.Name)
                                                       + string.Join(", ", field.EnumType.Values.Select(v => v.Name)) + ".")
                     : Integer<int>(value, name));
                 break;
@@ -374,7 +375,7 @@ public static class ProtoJson
                 output.WriteBytes(ByteString.CopyFrom(Encode(value, field.MessageType, types)));
                 break;
             default:
-                throw new ProtoJsonException($"{name} is a group, which cannot be sent.");
+                throw new ProtoJsonException(string.Format(Strings.ProtoJson_IsAGroupWhichCannotBe, name));
         }
     }
 
@@ -428,7 +429,7 @@ public static class ProtoJson
                 return parsed;
         }
 
-        throw new ProtoJsonException($"{name} is a number.");
+        throw new ProtoJsonException(string.Format(Strings.ProtoJson_IsANumber, name));
     }
 
     // Integers may be JSON numbers or strings, since 64-bit values do not fit in a JSON number.
@@ -438,7 +439,7 @@ public static class ProtoJson
         {
             JsonValueKind.Number => value.GetRawText(),
             JsonValueKind.String => value.GetString()!.Trim(),
-            _ => throw new ProtoJsonException($"{name} is a whole number."),
+            _ => throw new ProtoJsonException(string.Format(Strings.ProtoJson_IsAWholeNumber, name)),
         };
         if (T.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsed))
             return parsed;
@@ -454,7 +455,7 @@ public static class ProtoJson
             }
         }
 
-        throw new ProtoJsonException($"{name} is a whole number that fits its type; {text} does not.");
+        throw new ProtoJsonException(string.Format(Strings.ProtoJson_IsAWholeNumberThatFits, name, text));
     }
 
     // Map keys are always JSON strings; a number or bool key is read back from the string.

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Joktan.Agent.Mcp;
+using Joktan.Mqtt;
 using Joktan.Mqtt.ViewModels;
 using static Joktan.Agent.Tools.AgentTools;
 
@@ -90,7 +91,7 @@ public static class MqttTools
                 }
 
                 var last = client.Entries.FirstOrDefault();
-                if (last?.Event == "Failed")
+                if (last?.Event == ActivityEntry.FailedEvent)
                     throw new ToolFailure(last.Detail);
                 return "Published.";
             }),

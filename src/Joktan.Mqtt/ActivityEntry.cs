@@ -1,4 +1,5 @@
 using System;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt;
 
@@ -8,9 +9,12 @@ namespace Joktan.Mqtt;
 public sealed record ActivityEntry(
     DateTime Time, string Event, string Topic = "", string Source = "", string Detail = "", string? Body = null)
 {
+    /// <summary>The event of a line that records a failure.</summary>
+    public static string FailedEvent => Strings.ActivityEntry_Failed;
+
     public string TimeText => Time.ToString("HH:mm:ss");
 
     /// <summary>The detail of a sent message: its size, and for a gzipped one the size before zipping too.</summary>
     public static string SizeDetail(int bodyLength, int payloadLength, bool gzipped)
-        => gzipped ? $"{payloadLength:N0} bytes gzipped ({bodyLength:N0} unzipped)" : $"{payloadLength:N0} bytes";
+        => gzipped ? string.Format(Strings.ActivityEntry_BytesGzippedUnzipped, payloadLength, bodyLength) : string.Format(Strings.ActivityEntry_Bytes, payloadLength);
 }

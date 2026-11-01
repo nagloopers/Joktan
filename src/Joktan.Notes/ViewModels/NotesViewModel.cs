@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Core;
 using Joktan.Core.ViewModels;
+using Joktan.Notes.Resources;
 
 namespace Joktan.Notes.ViewModels;
 
@@ -21,35 +22,13 @@ public partial class NotesViewModel : PageViewModel
     // Typing is written to disk this long after the last key.
     private static readonly TimeSpan SaveDelay = TimeSpan.FromMilliseconds(600);
 
-    private const string WelcomeText = """
-        # Notes
-
-        Each page is written in **Markdown** and shown formatted beside the text. Pages can sit below other pages: use **New child page**, or **Indent** to move a page below the one above it.
-
-        ## What you can write
-
-        - *Italic*, **bold**, ~~struck out~~ and `code`
-        - [Links](https://commonmark.org/help/) and <https://example.com>
-        - [x] Task lists
-        - [ ] Numbered lists, quotes, tables and code blocks
-
-        > A quote
-
-        | Shortcut | Does |
-        | --- | ---: |
-        | `# ` | Heading |
-        | `- ` | List item |
-
-        ```
-        code block
-        ```
-        """;
+    private static string WelcomeText => Strings.Notes_NotesEachPageIsWrittenIn;
 
     private readonly DispatcherTimer _saveTimer;
     private NoteStore _store;
     private bool _indexDirty;
 
-    public NotesViewModel(NoteStore store) : base("Notes", "Notes")
+    public NotesViewModel(NoteStore store) : base(Strings.Notes_Notes, Strings.Notes_Notes)
     {
         _saveTimer = new DispatcherTimer { Interval = SaveDelay };
         _saveTimer.Tick += (_, _) => Save();
@@ -174,10 +153,10 @@ public partial class NotesViewModel : PageViewModel
             var rest = below switch
             {
                 0 => "",
-                1 => " and the page below it",
-                _ => $" and the {below} pages below it",
+                1 => Strings.Notes_AndThePageBelowIt,
+                _ => string.Format(Strings.Notes_AndThePagesBelowIt, below),
             };
-            return $"Delete {Selected.DisplayTitle}{rest}? This cannot be undone.";
+            return string.Format(Strings.Notes_DeleteThisCannotBeUndone, Selected.DisplayTitle, rest);
         }
     }
 
@@ -202,7 +181,7 @@ public partial class NotesViewModel : PageViewModel
                 found.Add(node);
         }
 
-        return found.OrderBy(n => TextSearch.HasAll(words, n.DisplayTitle) ? 0 : 1).Select(node => new SearchHit("Notes", node.DisplayTitle, SnippetOf(node, words), () =>
+        return found.OrderBy(n => TextSearch.HasAll(words, n.DisplayTitle) ? 0 : 1).Select(node => new SearchHit(Strings.Notes_Notes, node.DisplayTitle, SnippetOf(node, words), () =>
         {
             OpenPage?.Invoke();
             Selected = node;
@@ -258,7 +237,7 @@ public partial class NotesViewModel : PageViewModel
             folder = System.IO.Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), folder[1..].TrimStart('/', '\\'));
         if (!System.IO.Path.IsPathFullyQualified(folder))
         {
-            FolderMessage = "Give the whole path of the folder, such as one picked with Browse.";
+            FolderMessage = Strings.Notes_GiveTheWholePathOfThe;
             return;
         }
 
@@ -280,7 +259,7 @@ public partial class NotesViewModel : PageViewModel
         }
         catch (Exception e) when (e is System.IO.IOException or UnauthorizedAccessException)
         {
-            FolderMessage = $"Could not copy the notes to {folder}: {e.Message}";
+            FolderMessage = string.Format(Strings.Notes_CouldNotCopyTheNotesTo, folder, e.Message);
             return;
         }
 
@@ -289,8 +268,8 @@ public partial class NotesViewModel : PageViewModel
         Open(NoteStore.Load(folder));
         IsChoosingFolder = false;
         Message = copied
-            ? $"The notes were copied to {folder}. The originals are still in {previous}."
-            : $"Opened the notes already in {folder}.";
+            ? string.Format(Strings.Notes_TheNotesWereCopiedToThe, folder, previous)
+            : string.Format(Strings.Notes_OpenedTheNotesAlreadyIn, folder);
     }
 
     /// <summary>What happened last, such as where the notes were copied to.</summary>
@@ -314,7 +293,7 @@ public partial class NotesViewModel : PageViewModel
 
         if (store.IsNew)
         {
-            var welcome = new NoteNodeViewModel(NotePage.NewId(), "Welcome", null) { Text = WelcomeText, IsDirty = true };
+            var welcome = new NoteNodeViewModel(NotePage.NewId(), Strings.Notes_Welcome, null) { Text = WelcomeText, IsDirty = true };
             Roots.Add(welcome);
             Selected = welcome;
             _indexDirty = true;
@@ -342,7 +321,7 @@ public partial class NotesViewModel : PageViewModel
     };
 
     private void OnWriteFailed(string path, Exception e)
-        => Dispatcher.UIThread.Post(() => Error = $"Could not write {path}: {e.Message}");
+        => Dispatcher.UIThread.Post(() => Error = string.Format(Strings.Notes_CouldNotWrite, path, e.Message));
 
     partial void OnIsEditingChanged(bool value)
     {

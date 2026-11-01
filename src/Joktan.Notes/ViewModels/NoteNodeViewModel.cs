@@ -3,13 +3,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Joktan.Core.ViewModels;
+using Joktan.Notes.Resources;
 
 namespace Joktan.Notes.ViewModels;
 
 /// <summary>One page of notes in the tree, below its parent page.</summary>
 public partial class NoteNodeViewModel : ViewModelBase
 {
-    public const string Untitled = "Untitled";
+    public static string Untitled => Strings.NoteNode_Untitled;
 
     public NoteNodeViewModel(string id, string title, NoteNodeViewModel? parent)
     {

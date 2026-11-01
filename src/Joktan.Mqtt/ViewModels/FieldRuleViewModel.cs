@@ -7,6 +7,7 @@ using System.Text.Json.Nodes;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Joktan.Certificates.ViewModels;
 using Joktan.Core.ViewModels;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt.ViewModels;
 
@@ -17,14 +18,14 @@ public partial class FieldRuleViewModel : ViewModelBase
 {
     public static IReadOnlyList<string> TypeNames { get; } =
     [
-        "Unix time (seconds)", "Unix time (milliseconds)", "ISO timestamp", "GUID",
-        "Counter", "Random integer", "Random number", "One of, at random", "Each in turn", "Fixed value",
+        Strings.FieldRule_UnixTimeSeconds, Strings.FieldRule_UnixTimeMilliseconds, Strings.FieldRule_ISOTimestamp, "GUID",
+        Strings.FieldRule_Counter, Strings.FieldRule_RandomInteger, Strings.FieldRule_RandomNumber, Strings.FieldRule_OneOfAtRandom, Strings.FieldRule_EachInTurn, Strings.FieldRule_FixedValue,
     ];
 
     /// <summary>The kinds of fixed value, in the order of <see cref="ValueKind"/>.</summary>
     public static IReadOnlyList<string> ValueKindNames { get; } =
     [
-        "Text", "Number", "True or false", "Null", "JSON", "From a list",
+        Strings.FieldRule_Text, Strings.FieldRule_Number, Strings.FieldRule_TrueOrFalse, Strings.FieldRule_Null, "JSON", Strings.FieldRule_FromAList,
     ];
 
     public enum ValueKind
@@ -135,7 +136,7 @@ public partial class FieldRuleViewModel : ViewModelBase
 
     public bool ShowChoices => ShowFixed && Kind == ValueKind.List;
 
-    public string ValuesLabel => ShowFixed ? "Allowed values, separated by commas" : "Values, separated by commas";
+    public string ValuesLabel => ShowFixed ? Strings.FieldRule_AllowedValuesSeparatedByCommas : Strings.FieldRule_ValuesSeparatedByCommas;
 
     public string FixedPlaceholder => Kind switch
     {
@@ -190,26 +191,26 @@ public partial class FieldRuleViewModel : ViewModelBase
     {
         var path = Path.Trim();
         if (path.Length == 0)
-            throw new FormatException("Every varying field needs a field path");
+            throw new FormatException(Strings.FieldRule_EveryVaryingFieldNeedsAField);
 
         var rule = new FieldRule(path, Type);
         rule = Type switch
         {
             FieldType.Counter => rule with
             {
-                Start = Whole(Start, "start"),
-                Step = Whole(Step, "step"),
+                Start = Whole(Start, Strings.FieldRule_Start),
+                Step = Whole(Step, Strings.FieldRule_Step),
             },
             FieldType.RandomInteger => rule with
             {
-                Min = Whole(Min, "minimum"),
-                Max = Whole(Max, "maximum"),
+                Min = Whole(Min, Strings.FieldRule_Minimum),
+                Max = Whole(Max, Strings.FieldRule_Maximum),
             },
             FieldType.RandomNumber => rule with
             {
                 Min = Number(Min, "minimum"),
                 Max = Number(Max, "maximum"),
-                Decimals = (int)Whole(Decimals, "decimals"),
+                Decimals = (int)Whole(Decimals, Strings.FieldRule_Decimals),
             },
             FieldType.OneOf or FieldType.Cycle => rule with { Values = ParseValues() },
             FieldType.Fixed => FixedRule(rule),
@@ -217,7 +218,7 @@ public partial class FieldRuleViewModel : ViewModelBase
         };
 
         if (MessageSettings.CheckRule(rule) is { } problem)
-            throw new FormatException($"Field {path}: {problem.Replace("\"", "")}");
+            throw new FormatException(string.Format(Strings.FieldRule_Field, path, problem.Replace("\"", "")));
         return rule;
 
         FieldRule FixedRule(FieldRule rule)
@@ -246,13 +247,13 @@ public partial class FieldRuleViewModel : ViewModelBase
                     }
                     catch (JsonException)
                     {
-                        throw new FormatException($"Field {path}: the value is not valid JSON");
+                        throw new FormatException(string.Format(Strings.FieldRule_FieldTheValueIsNotValid, path));
                     }
 
                 case ValueKind.List:
                     var values = ParseValues();
                     if (values.Length == 0)
-                        throw new FormatException($"Field {path}: list at least one allowed value");
+                        throw new FormatException(string.Format(Strings.FieldRule_FieldListAtLeastOneAllowed, path));
                     var picked = values.FirstOrDefault(v => Display(v) == Choice, values[0]);
                     return rule with { Values = values, Value = picked?.DeepClone() };
 
@@ -264,12 +265,12 @@ public partial class FieldRuleViewModel : ViewModelBase
         long Whole(string text, string name)
             => long.TryParse(text.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var value)
                 ? value
-                : throw new FormatException($"Field {path}: the {name} must be a whole number");
+                : throw new FormatException(string.Format(Strings.FieldRule_FieldTheMustBeAWhole, path, name));
 
         double Number(string text, string name)
             => double.TryParse(text.Trim().Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture, out var value)
                 ? value
-                : throw new FormatException($"Field {path}: the {name} must be a number");
+                : throw new FormatException(string.Format(Strings.FieldRule_FieldTheMustBeANumber, path, name));
     }
 
     // Each comma-separated item is read as JSON when it is JSON (42, true, "text"), otherwise as text.

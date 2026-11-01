@@ -1,6 +1,7 @@
 using System;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using Joktan.Certificates.Resources;
 
 namespace Joktan.Certificates;
 
@@ -58,7 +59,7 @@ public static class CertificateMaker
 
     private static AsymmetricAlgorithm IssuerKey(X509Certificate2 issuer)
         => (AsymmetricAlgorithm?)issuer.GetECDsaPrivateKey() ?? issuer.GetRSAPrivateKey()
-           ?? throw new CryptographicException("The CA's private key is missing or of an unsupported type");
+           ?? throw new CryptographicException(Strings.CertificateMaker_TheCASPrivateKeyIs);
 
     // The hash follows the strength of the key that signs.
     private static HashAlgorithmName HashFor(AsymmetricAlgorithm signingKey) => signingKey switch

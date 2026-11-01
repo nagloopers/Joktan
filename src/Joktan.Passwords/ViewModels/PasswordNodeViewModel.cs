@@ -4,13 +4,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Joktan.Core.ViewModels;
+using Joktan.Passwords.Resources;
 
 namespace Joktan.Passwords.ViewModels;
 
 /// <summary>A folder or an entry in the password tree.</summary>
 public partial class PasswordNodeViewModel : ViewModelBase
 {
-    public const string Untitled = "Untitled";
+    public static string Untitled => Strings.PasswordNode_Untitled;
 
     public PasswordNodeViewModel(PasswordFolder folder, PasswordNodeViewModel? parent)
     {

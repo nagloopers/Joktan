@@ -3,6 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json.Serialization;
+using Joktan.Certificates.Resources;
 
 namespace Joktan.Certificates;
 
@@ -89,17 +90,17 @@ public sealed class StoredCertificate
         {
             if (!File.Exists(CertificatePath))
             {
-                Problem = $"{CertificateFile} is missing from {Folder}";
+                Problem = string.Format(Strings.StoredCertificate_IsMissingFrom, CertificateFile, Folder);
                 return;
             }
 
             Certificate = X509Certificate2.CreateFromPem(File.ReadAllText(CertificatePath));
             if (!HasKey)
-                Problem = $"{KeyFile} is missing from {Folder}";
+                Problem = string.Format(Strings.StoredCertificate_IsMissingFrom, KeyFile, Folder);
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or CryptographicException or ArgumentException)
         {
-            Problem = $"{CertificateFile} cannot be read: {e.Message}";
+            Problem = string.Format(Strings.StoredCertificate_CannotBeRead, CertificateFile, e.Message);
         }
     }
 
@@ -112,7 +113,7 @@ public sealed class StoredCertificate
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or CryptographicException or ArgumentException)
         {
-            throw new FormatException($"The key of {DisplayName} cannot be read: {e.Message}", e);
+            throw new FormatException(string.Format(Strings.StoredCertificate_TheKeyOfCannotBeRead, DisplayName, e.Message), e);
         }
     }
 }

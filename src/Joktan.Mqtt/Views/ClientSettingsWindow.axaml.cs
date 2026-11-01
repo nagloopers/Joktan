@@ -3,18 +3,19 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
+using Joktan.Mqtt.Resources;
 using Joktan.Mqtt.ViewModels;
 
 namespace Joktan.Mqtt.Views;
 
 public partial class ClientSettingsWindow : Window
 {
-    private static readonly FilePickerFileType Certificates = new("Certificates")
+    private static readonly FilePickerFileType Certificates = new(Strings.ClientSettingsWindow_Certificates)
     {
         Patterns = ["*.pem", "*.crt", "*.cer", "*.der", "*.pfx", "*.p12"],
     };
 
-    private static readonly FilePickerFileType Keys = new("Private keys")
+    private static readonly FilePickerFileType Keys = new(Strings.ClientSettingsWindow_PrivateKeys)
     {
         Patterns = ["*.key", "*.pem"],
     };
@@ -49,9 +50,9 @@ public partial class ClientSettingsWindow : Window
         {
             Title = kind switch
             {
-                CertificateFileKind.Authority => "Choose the CA certificate",
-                CertificateFileKind.Client => "Choose the client certificate",
-                _ => "Choose the private key",
+                CertificateFileKind.Authority => Strings.ClientSettingsWindow_ChooseTheCACertificate,
+                CertificateFileKind.Client => Strings.ClientSettingsWindow_ChooseTheClientCertificate,
+                _ => Strings.ClientSettingsWindow_ChooseThePrivateKey,
             },
             AllowMultiple = false,
             FileTypeFilter = [kind == CertificateFileKind.Key ? Keys : Certificates, FilePickerFileTypes.All],

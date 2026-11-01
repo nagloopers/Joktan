@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Joktan.Certificates.Resources;
 using Joktan.Core.ViewModels;
 
 namespace Joktan.Certificates.ViewModels;
@@ -18,8 +19,8 @@ public partial class CertificateNodeViewModel : ViewModelBase
     public CertificateNodeViewModel(StoredCertificate entry, StoredCertificate? issuer, IReadOnlyList<string> usedBy)
     {
         Entry = entry;
-        IssuerName = issuer?.DisplayName ?? (entry.Kind == CertificateKind.RootAuthority ? "Itself" : "A CA that is no longer in the list");
-        UsedBy = usedBy.Count == 0 ? "No MQTT client" : string.Join(", ", usedBy);
+        IssuerName = issuer?.DisplayName ?? (entry.Kind == CertificateKind.RootAuthority ? Strings.CertificateNode_Itself : Strings.CertificateNode_ACAThatIsNoLonger);
+        UsedBy = usedBy.Count == 0 ? Strings.CertificateNode_NoMQTTClient : string.Join(", ", usedBy);
     }
 
     public StoredCertificate Entry { get; }
@@ -65,22 +66,22 @@ public partial class CertificateNodeViewModel : ViewModelBase
         get
         {
             if (Certificate is null)
-                return "Cannot be read";
+                return Strings.CertificateNode_CannotBeRead;
             if (IsExpired)
-                return $"Expired on {Certificate.NotAfter:yyyy-MM-dd}";
+                return string.Format(Strings.CertificateNode_ExpiredOn, Certificate.NotAfter);
             var days = (int)Math.Floor((Certificate.NotAfter - DateTime.Now).TotalDays);
             return days switch
             {
-                0 => "Expires today",
-                1 => "Expires tomorrow",
-                _ when IsExpiring => $"Expires in {days} days",
-                _ => $"Valid for {days} more days",
+                0 => Strings.CertificateNode_ExpiresToday,
+                1 => Strings.CertificateNode_ExpiresTomorrow,
+                _ when IsExpiring => string.Format(Strings.CertificateNode_ExpiresInDays, days),
+                _ => string.Format(Strings.CertificateNode_ValidForMoreDays, days),
             };
         }
     }
 
     /// <summary>A short line beside the name in the tree.</summary>
-    public string Summary => Certificate is null ? KindText : $"{KindText} · until {Certificate.NotAfter:yyyy-MM-dd}";
+    public string Summary => Certificate is null ? KindText : string.Format(Strings.CertificateNode_Until, KindText, Certificate.NotAfter);
 
     public string? Problem => Entry.Problem;
 
@@ -112,18 +113,18 @@ public partial class CertificateNodeViewModel : ViewModelBase
         {
             var extension = Certificate?.Extensions.OfType<X509SubjectAlternativeNameExtension>().FirstOrDefault();
             if (extension is null)
-                return "None";
+                return Strings.CertificateNode_None;
 
             var names = extension.EnumerateDnsNames().Concat(extension.EnumerateIPAddresses().Select(a => a.ToString())).ToList();
-            return names.Count == 0 ? "None" : string.Join(", ", names);
+            return names.Count == 0 ? Strings.CertificateNode_None : string.Join(", ", names);
         }
     }
 
     public string Usage => Entry.Kind switch
     {
-        CertificateKind.RootAuthority or CertificateKind.IntermediateAuthority => "Signs certificates",
-        CertificateKind.Server => "TLS server authentication",
-        _ => "TLS client authentication",
+        CertificateKind.RootAuthority or CertificateKind.IntermediateAuthority => Strings.CertificateNode_SignsCertificates,
+        CertificateKind.Server => Strings.CertificateNode_TLSServerAuthentication,
+        _ => Strings.CertificateNode_TLSClientAuthentication,
     };
 
     public string SerialNumber => Certificate?.SerialNumber ?? "";

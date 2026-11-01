@@ -6,6 +6,7 @@ using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
+using Joktan.Mqtt.Resources;
 using MQTTnet;
 using MQTTnet.Exceptions;
 using MQTTnet.Protocol;
@@ -19,6 +20,20 @@ public enum ConnectionState
     Connected,
     Reconnecting,
     Failed,
+}
+
+public static class ConnectionStateText
+{
+    /// <summary>What a ConnectionState is called on screen.</summary>
+    public static string Text(this ConnectionState value) => value switch
+    {
+        ConnectionState.Disconnected => Strings.ConnectionState_Disconnected,
+        ConnectionState.Connecting => Strings.ConnectionState_Connecting,
+        ConnectionState.Connected => Strings.ConnectionState_Connected,
+        ConnectionState.Reconnecting => Strings.ConnectionState_Reconnecting,
+        ConnectionState.Failed => Strings.ConnectionState_Failed,
+        _ => value.ToString(),
+    };
 }
 
 public sealed record BrokerEndpoint(
@@ -40,7 +55,7 @@ public sealed class MqttConnection
 {
     private static readonly TimeSpan ConnectTimeout = TimeSpan.FromSeconds(10);
     private static readonly TimeSpan ReconnectDelay = TimeSpan.FromSeconds(5);
-    private const string NoAnswer = "No answer from the broker within 10 seconds";
+    private static string NoAnswer => Strings.MqttConnection_NoAnswerFromTheBrokerWithin;
 
     private readonly IMqttClient _client = new MqttClientFactory().CreateMqttClient();
     private MqttClientOptions? _options;
@@ -194,7 +209,7 @@ public sealed class MqttConnection
     public async Task<(bool Ok, string? Error)> PublishAsync(string topic, byte[] payload, int qos, bool retain)
     {
         if (!IsConnected)
-            return (false, "Not connected");
+            return (false, Strings.MqttConnection_NotConnected);
 
         try
         {
@@ -230,13 +245,13 @@ public sealed class MqttConnection
         catch (OperationCanceledException)
         {
             return _certificateRejection is { } rejected
-                ? $"The broker's certificate was refused: {rejected}"
+                ? string.Format(Strings.MqttConnection_TheBrokerSCertificateWasRefused, rejected)
                 : NoAnswer;
         }
         catch (Exception e)
         {
             if (_certificateRejection is { } rejected)
-                return $"The broker's certificate was refused: {rejected}";
+                return string.Format(Strings.MqttConnection_TheBrokerSCertificateWasRefused, rejected);
 
             // The client reports running out of time as the connection closing, or as its own timeout.
             if (timeout.IsCancellationRequested || Find<MqttCommunicationTimedOutException>(e) is not null)
@@ -247,14 +262,14 @@ public sealed class MqttConnection
             {
                 var reason = Innermost(handshake).Message.TrimEnd('.');
                 return _usesClientCertificate
-                    ? $"The TLS handshake failed: {reason}. Check that the broker accepts the client certificate"
-                    : $"The TLS handshake failed: {reason}. If the broker asks for a client certificate, choose one";
+                    ? string.Format(Strings.MqttConnection_TheTLSHandshakeFailedCheckThat, reason)
+                    : string.Format(Strings.MqttConnection_TheTLSHandshakeFailedIfThe, reason);
             }
 
             // A broker that refuses the client certificate usually just closes the connection.
             return _usesClientCertificate && _options?.ChannelOptions?.TlsOptions?.UseTls == true
-                ? $"Could not connect: {cause.Message}. Check that the broker accepts the client certificate"
-                : $"Could not connect: {cause.Message}";
+                ? string.Format(Strings.MqttConnection_CouldNotConnectCheckThatThe, cause.Message)
+                : string.Format(Strings.MqttConnection_CouldNotConnect, cause.Message);
         }
     }
 
@@ -298,14 +313,14 @@ public sealed class MqttConnection
 
         var errors = args.SslPolicyErrors;
         if (errors.HasFlag(System.Net.Security.SslPolicyErrors.RemoteCertificateNotAvailable))
-            return Refuse("the broker sent no certificate");
+            return Refuse(Strings.MqttConnection_TheBrokerSentNoCertificate);
         if (errors.HasFlag(System.Net.Security.SslPolicyErrors.RemoteCertificateNameMismatch))
-            return Refuse("it was not issued for this host name");
+            return Refuse(Strings.MqttConnection_ItWasNotIssuedForThis);
 
         if (_authorities is null)
         {
             return errors == System.Net.Security.SslPolicyErrors.None
-                || Refuse("it is not signed by an authority this computer trusts; choose the CA certificate that signed it");
+                || Refuse(Strings.MqttConnection_ItIsNotSignedByAn);
         }
 
         using var certificate = X509CertificateLoader.LoadCertificate(args.Certificate.GetRawCertData());
@@ -375,7 +390,7 @@ public sealed class MqttConnection
                 // QoS 2 here means messages arrive at whatever QoS they were published with.
                 var result = await _client.SubscribeAsync(filter, MqttQualityOfServiceLevel.ExactlyOnce);
                 if (result.Items.Any(i => i.ResultCode > MqttClientSubscribeResultCode.GrantedQoS2))
-                    return $"The broker refused the filter {filter}";
+                    return string.Format(Strings.MqttConnection_TheBrokerRefusedTheFilter, filter);
             }
 
             return null;
@@ -408,11 +423,11 @@ public sealed class MqttConnection
 
     private static string Describe(MqttClientConnectResultCode code) => code switch
     {
-        MqttClientConnectResultCode.BadUserNameOrPassword => "Bad username or password",
-        MqttClientConnectResultCode.NotAuthorized => "Not authorized",
-        MqttClientConnectResultCode.ClientIdentifierNotValid => "The broker rejected the client ID",
-        MqttClientConnectResultCode.ServerUnavailable => "The broker is unavailable",
-        MqttClientConnectResultCode.UnsupportedProtocolVersion => "The broker does not support this MQTT version",
-        _ => $"The broker refused the connection: {code}",
+        MqttClientConnectResultCode.BadUserNameOrPassword => Strings.MqttConnection_BadUsernameOrPassword,
+        MqttClientConnectResultCode.NotAuthorized => Strings.MqttConnection_NotAuthorized,
+        MqttClientConnectResultCode.ClientIdentifierNotValid => Strings.MqttConnection_TheBrokerRejectedTheClientID,
+        MqttClientConnectResultCode.ServerUnavailable => Strings.MqttConnection_TheBrokerIsUnavailable,
+        MqttClientConnectResultCode.UnsupportedProtocolVersion => Strings.MqttConnection_TheBrokerDoesNotSupportThis,
+        _ => string.Format(Strings.MqttConnection_TheBrokerRefusedTheConnection, code),
     };
 }

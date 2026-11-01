@@ -1,5 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:res="using:Joktan.TopicExplorer.Resources"
         xmlns:vm="using:Joktan.TopicExplorer.ViewModels"
         xmlns:views="using:Joktan.TopicExplorer.Views"
         xmlns:core="using:Joktan.Core"
@@ -14,7 +15,7 @@
         WindowDecorations="BorderOnly"
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaTitleBarHeightHint="0"
-        Title="Topic Explorer · Joktan">
+        Title="{x:Static res:Strings.TopicExplorerWindow_TopicExplorerJoktan}">
 
     <DockPanel>
         <!-- The window's title bar, as in the main window: drag it to move the window, double-click to maximise -->
@@ -26,19 +27,19 @@
                 <TextBlock VerticalAlignment="Center"
                            FontWeight="SemiBold"
                            Foreground="{DynamicResource TextBrush}"
-                           Text="Topic Explorer" />
+                           Text="{x:Static res:Strings.TopicExplorerWindow_TopicExplorer}" />
 
                 <controls:HelpButton Grid.Column="1" VerticalAlignment="Center" />
 
                 <!-- Window controls, in place of the system title bar -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="2" Margin="20,0,0,0">
-                    <Button Classes="window-button" ToolTip.Tip="Minimise" Click="OnMinimizeClick">
+                    <Button Classes="window-button" ToolTip.Tip="{x:Static res:Strings.TopicExplorerWindow_Minimise}" Click="OnMinimizeClick">
                         <PathIcon Data="{x:Static core:Icons.WindowMinimize}" />
                     </Button>
-                    <Button Classes="window-button" ToolTip.Tip="Maximise" Name="MaximizeButton" Click="OnMaximizeClick">
+                    <Button Classes="window-button" ToolTip.Tip="{x:Static res:Strings.TopicExplorerWindow_Maximise}" Name="MaximizeButton" Click="OnMaximizeClick">
                         <PathIcon Name="MaximizeIcon" Data="{x:Static core:Icons.WindowMaximize}" />
                     </Button>
-                    <Button Classes="window-button close" ToolTip.Tip="Close" Click="OnCloseClick">
+                    <Button Classes="window-button close" ToolTip.Tip="{x:Static res:Strings.TopicExplorerWindow_Close}" Click="OnCloseClick">
                         <PathIcon Data="{x:Static core:Icons.WindowClose}" />
                     </Button>
                 </StackPanel>

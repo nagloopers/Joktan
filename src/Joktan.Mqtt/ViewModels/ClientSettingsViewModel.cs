@@ -10,6 +10,7 @@ using Joktan.Certificates;
 using Joktan.Certificates.ViewModels;
 using Joktan.Core.ViewModels;
 using Joktan.Mqtt.Controls;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt.ViewModels;
 
@@ -82,7 +83,7 @@ public partial class ClientSettingsViewModel : ViewModelBase
 
     public bool IsNew { get; }
 
-    public string Title => IsNew ? "New client" : $"Client {Name}";
+    public string Title => IsNew ? Strings.ClientSettings_NewClient : string.Format(Strings.ClientSettings_Client, Name);
 
     /// <summary>Asks the user for a certificate file. Set by the window, which owns the system dialog.</summary>
     public Func<CertificateFileKind, Task<string?>>? PickFile { get; set; }
@@ -367,17 +368,17 @@ public partial class ClientSettingsViewModel : ViewModelBase
         if (ClientProfile.CheckName(Name, _otherNames) is { } nameError)
             return nameError;
         if (!IsValidHost(Host))
-            return "Enter the broker's host name or IP address, without spaces";
+            return Strings.ClientSettings_EnterTheBrokerSHostName;
         if (ParsePort(Port) is null)
-            return "The port must be a whole number from 1 to 65535";
+            return Strings.ClientSettings_ThePortMustBeAWhole;
         if (Password.Length > 0 && Username.Trim().Length == 0)
-            return "A password is only sent with a username";
+            return Strings.ClientSettings_APasswordIsOnlySentWith;
         if (ClientId.Trim().Any(char.IsWhiteSpace))
-            return "The client ID must not contain spaces";
+            return Strings.ClientSettings_TheClientIDMustNotContain;
         if (!TabColors.IsValid(TabText) || !TabColors.IsValid(TabFill) || !TabColors.IsValid(PageBackground))
-            return "A colour must be like #3BB001, or empty for the theme's own";
+            return Strings.ClientSettings_AColourMustBeLike3BB001;
         if (UseTls && ShowKeyFile && ClientKey.Trim().Length > 0 && ClientCertificate.Trim().Length == 0)
-            return "Choose the client certificate that goes with the private key";
+            return Strings.ClientSettings_ChooseTheClientCertificateThatGoes;
         return null;
     }
 
@@ -398,15 +399,15 @@ public partial class ClientSettingsViewModel : ViewModelBase
             {
                 var authorities = CertificateLoader.LoadAuthorities(CaCertificate);
                 info.Add(authorities.Count == 1
-                    ? $"CA: {authorities[0].GetNameInfo(System.Security.Cryptography.X509Certificates.X509NameType.SimpleName, false)}"
-                    : $"CA: {authorities.Count} certificates");
+                    ? string.Format(Strings.ClientSettings_CA, authorities[0].GetNameInfo(System.Security.Cryptography.X509Certificates.X509NameType.SimpleName, false))
+                    : string.Format(Strings.ClientSettings_CACertificates, authorities.Count));
             }
 
             if (ClientCertificate.Trim().Length > 0)
             {
                 using var client = CertificateLoader.LoadClient(ClientCertificate, ShowKeyFile ? ClientKey : null, KeyPassword);
                 var subject = client.GetNameInfo(System.Security.Cryptography.X509Certificates.X509NameType.SimpleName, false);
-                info.Add($"Client certificate: {subject}, valid until {client.NotAfter:yyyy-MM-dd}");
+                info.Add(string.Format(Strings.ClientSettings_ClientCertificateValidUntil, subject, client.NotAfter));
             }
         }
         catch (FormatException e)

@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="KeychainStorage_TheListOfEntriesCannotBe" xml:space="preserve">
+    <value>The list of entries cannot be read: {0}</value>
+    <comment>{0}: e.Message</comment>
+  </data>
+  <data name="KeychainStorage_TheListOfEntriesCouldNot" xml:space="preserve">
+    <value>The list of entries could not be written: {0}</value>
+    <comment>{0}: e.Message</comment>
+  </data>
+  <data name="KeychainStorage_TheListOfEntriesIsDamaged" xml:space="preserve">
+    <value>The list of entries is damaged.</value>
+  </data>
+  <data name="KeychainStorage_ThePasswordCouldNotBeSaved" xml:space="preserve">
+    <value>The password could not be saved in the system keychain.</value>
+  </data>
+  <data name="KeychainStorage_ThisComputerHasNoSystemKeychain" xml:space="preserve">
+    <value>This computer has no system keychain Joktan can use.</value>
+  </data>
+  <data name="PasswordNode_Untitled" xml:space="preserve">
+    <value>Untitled</value>
+  </data>
+  <data name="PasswordsView_AVaultFile" xml:space="preserve">
+    <value>A vault file</value>
+  </data>
+  <data name="PasswordsView_AVaultIsAlreadyThereIt" xml:space="preserve">
+    <value>A vault is already there. It is opened with its own master password.</value>
+  </data>
+  <data name="PasswordsView_AddAFolderInTheSelected" xml:space="preserve">
+    <value>Add a folder in the selected folder</value>
+  </data>
+  <data name="PasswordsView_AddALoginInTheSelected" xml:space="preserve">
+    <value>Add a login in the selected folder</value>
+  </data>
+  <data name="PasswordsView_AnEncryptedVaultFile" xml:space="preserve">
+    <value>An encrypted vault file</value>
+  </data>
+  <data name="PasswordsView_Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="PasswordsView_Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="PasswordsView_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="PasswordsView_Change" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="PasswordsView_ChangeTheMasterPassword" xml:space="preserve">
+    <value>Change the master password</value>
+  </data>
+  <data name="PasswordsView_ChooseAVaultFileOrWhere" xml:space="preserve">
+    <value>Choose a vault file, or where to make one</value>
+  </data>
+  <data name="PasswordsView_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="PasswordsView_CloseTheVaultTheMasterPassword" xml:space="preserve">
+    <value>Close the vault; the master password is needed to open it again</value>
+  </data>
+  <data name="PasswordsView_Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="PasswordsView_CopyItTheClipboardIsCleared" xml:space="preserve">
+    <value>Copy it; the clipboard is cleared again after 30 seconds</value>
+  </data>
+  <data name="PasswordsView_CurrentMasterPassword" xml:space="preserve">
+    <value>Current master password</value>
+  </data>
+  <data name="PasswordsView_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="PasswordsView_EachPasswordIsKeptByThe" xml:space="preserve">
+    <value>Each password is kept by the operating system and protected by your login, with no master password. The list of entries stays in Joktan's data folder. The passwords stay on this computer.</value>
+  </data>
+  <data name="PasswordsView_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="PasswordsView_EnterTheMasterPasswordOf" xml:space="preserve">
+    <value>Enter the master password of</value>
+  </data>
+  <data name="PasswordsView_EveryEntryIsCopiedThereThen" xml:space="preserve">
+    <value>Every entry is copied there, then removed from where it is now. If the copy fails, nothing is removed.</value>
+  </data>
+  <data name="PasswordsView_Folder" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="PasswordsView_ForAnyPasswordYouWantTo" xml:space="preserve">
+    <value>For any password you want to keep: websites, servers, Wi-Fi, accounts. This can be changed later; the entries are moved across.</value>
+  </data>
+  <data name="PasswordsView_Generate" xml:space="preserve">
+    <value>Generate</value>
+  </data>
+  <data name="PasswordsView_Hide" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="PasswordsView_JoktanVault" xml:space="preserve">
+    <value>Joktan vault</value>
+  </data>
+  <data name="PasswordsView_Length" xml:space="preserve">
+    <value>Length</value>
+  </data>
+  <data name="PasswordsView_Lock" xml:space="preserve">
+    <value>Lock</value>
+  </data>
+  <data name="PasswordsView_LockTheVaultWhenUnused" xml:space="preserve">
+    <value>Lock the vault when unused</value>
+  </data>
+  <data name="PasswordsView_MasterPassword" xml:space="preserve">
+    <value>Master password</value>
+  </data>
+  <data name="PasswordsView_MasterPasswordAtLeast8Characters" xml:space="preserve">
+    <value>Master password, at least 8 characters</value>
+  </data>
+  <data name="PasswordsView_MoveEntries" xml:space="preserve">
+    <value>Move entries</value>
+  </data>
+  <data name="PasswordsView_MoveTheEntriesTo" xml:space="preserve">
+    <value>Move the entries to</value>
+  </data>
+  <data name="PasswordsView_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="PasswordsView_NewEntry" xml:space="preserve">
+    <value>New entry</value>
+  </data>
+  <data name="PasswordsView_NewFolder" xml:space="preserve">
+    <value>New folder</value>
+  </data>
+  <data name="PasswordsView_NewMasterPassword" xml:space="preserve">
+    <value>New master password</value>
+  </data>
+  <data name="PasswordsView_NoEntriesYetAddOneWith" xml:space="preserve">
+    <value>No entries yet. Add one with New entry, or make folders to sort them with New folder.</value>
+  </data>
+  <data name="PasswordsView_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="PasswordsView_NothingMatches" xml:space="preserve">
+    <value>Nothing matches.</value>
+  </data>
+  <data name="PasswordsView_OneFileEncryptedWithAES256" xml:space="preserve">
+    <value>One file, encrypted with AES-256 using a key made from your master password. It locks itself when unused, and can be kept in a synced folder or backed up. If the master password is forgotten, the passwords cannot be recovered.</value>
+  </data>
+  <data name="PasswordsView_Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="PasswordsView_Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="PasswordsView_RepeatIt" xml:space="preserve">
+    <value>Repeat it</value>
+  </data>
+  <data name="PasswordsView_ReplaceThePasswordWithARandom" xml:space="preserve">
+    <value>Replace the password with a random one</value>
+  </data>
+  <data name="PasswordsView_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="PasswordsView_SearchTitlesUsernamesWebsitesAndNotes" xml:space="preserve">
+    <value>Search titles, usernames, websites and notes</value>
+  </data>
+  <data name="PasswordsView_SelectAnEntryToSeeIt" xml:space="preserve">
+    <value>Select an entry to see it, or add one with New entry.</value>
+  </data>
+  <data name="PasswordsView_Show" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="PasswordsView_Storage" xml:space="preserve">
+    <value>Storage</value>
+  </data>
+  <data name="PasswordsView_Symbols" xml:space="preserve">
+    <value>Symbols</value>
+  </data>
+  <data name="PasswordsView_TheVaultIsLocked" xml:space="preserve">
+    <value>The vault is locked</value>
+  </data>
+  <data name="PasswordsView_Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="PasswordsView_Unlock" xml:space="preserve">
+    <value>Unlock</value>
+  </data>
+  <data name="PasswordsView_Untitled" xml:space="preserve">
+    <value>Untitled</value>
+  </data>
+  <data name="PasswordsView_UseAnotherVaultOrTheKeychain" xml:space="preserve">
+    <value>Use another vault or the keychain</value>
+  </data>
+  <data name="PasswordsView_Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="PasswordsView_UsernameOrEmail" xml:space="preserve">
+    <value>Username or email</value>
+  </data>
+  <data name="PasswordsView_Website" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="PasswordsView_WhereShouldYourPasswordsBeKept" xml:space="preserve">
+    <value>Where should your passwords be kept?</value>
+  </data>
+  <data name="PasswordsView_WhereThePasswordsAreKeptWhen" xml:space="preserve">
+    <value>Where the passwords are kept, when the vault locks, and its master password</value>
+  </data>
+  <data name="Passwords_1Entry" xml:space="preserve">
+    <value>1 entry</value>
+  </data>
+  <data name="Passwords_After15Minutes" xml:space="preserve">
+    <value>After 15 minutes</value>
+  </data>
+  <data name="Passwords_After1Hour" xml:space="preserve">
+    <value>After 1 hour</value>
+  </data>
+  <data name="Passwords_After1Minute" xml:space="preserve">
+    <value>After 1 minute</value>
+  </data>
+  <data name="Passwords_After30Minutes" xml:space="preserve">
+    <value>After 30 minutes</value>
+  </data>
+  <data name="Passwords_After5Minutes" xml:space="preserve">
+    <value>After 5 minutes</value>
+  </data>
+  <data name="Passwords_AfterMinutes" xml:space="preserve">
+    <value>After {0} minutes</value>
+    <comment>{0}: settings.LockMinutes</comment>
+  </data>
+  <data name="Passwords_AndTheAndInIt" xml:space="preserve">
+    <value> and the {0} and {1} in it</value>
+    <comment>{0}: Plural(entries, Strings.Passwords_Entry, Strings.Passwords_Entries2), {1}: Plural(folders, Strings.Passwords_Folder, Strings.Passwords_Folders)</comment>
+  </data>
+  <data name="Passwords_AndTheInIt" xml:space="preserve">
+    <value> and the {0} in it</value>
+    <comment>{0}: Plural(entries, Strings.Passwords_Entry, Strings.Passwords_Entries2)</comment>
+  </data>
+  <data name="Passwords_CreateVault" xml:space="preserve">
+    <value>Create vault</value>
+  </data>
+  <data name="Passwords_CreatedLastChanged" xml:space="preserve">
+    <value>Created {0:yyyy-MM-dd HH:mm}, last changed {1:yyyy-MM-dd HH:mm}</value>
+    <comment>{0}: entry.Created.ToLocalTime(), {1}: entry.Modified.ToLocalTime()</comment>
+  </data>
+  <data name="Passwords_DeleteAndItsPasswordThisCannot" xml:space="preserve">
+    <value>Delete {0} and its password? This cannot be undone.</value>
+    <comment>{0}: node.Name</comment>
+  </data>
+  <data name="Passwords_DeleteTheFolderThisCannotBe" xml:space="preserve">
+    <value>Delete the folder {0}{1}? This cannot be undone.</value>
+    <comment>{0}: node.Name, {1}: inside</comment>
+  </data>
+  <data name="Passwords_Edit" xml:space="preserve">
+    <value>Edit {0}</value>
+    <comment>{0}: node.Name</comment>
+  </data>
+  <data name="Passwords_EncryptedVaultFile" xml:space="preserve">
+    <value>Encrypted vault file</value>
+  </data>
+  <data name="Passwords_Entries" xml:space="preserve">
+    <value>{0} entries</value>
+    <comment>{0}: count</comment>
+  </data>
+  <data name="Passwords_Entries2" xml:space="preserve">
+    <value>entries</value>
+  </data>
+  <data name="Passwords_Entry" xml:space="preserve">
+    <value>entry</value>
+  </data>
+  <data name="Passwords_EntryDeleted" xml:space="preserve">
+    <value>Entry deleted.</value>
+  </data>
+  <data name="Passwords_EntrySaved" xml:space="preserve">
+    <value>Entry saved.</value>
+  </data>
+  <data name="Passwords_Folder" xml:space="preserve">
+    <value>folder</value>
+  </data>
+  <data name="Passwords_FolderDeleted" xml:space="preserve">
+    <value>Folder deleted.</value>
+  </data>
+  <data name="Passwords_FolderSaved" xml:space="preserve">
+    <value>Folder saved.</value>
+  </data>
+  <data name="Passwords_Folders" xml:space="preserve">
+    <value>folders</value>
+  </data>
+  <data name="Passwords_MacOSKeychain" xml:space="preserve">
+    <value>macOS Keychain</value>
+  </data>
+  <data name="Passwords_MasterPasswordForTheNewVault" xml:space="preserve">
+    <value>Master password for the new vault</value>
+  </data>
+  <data name="Passwords_MasterPasswordOfTheVaultAlready" xml:space="preserve">
+    <value>Master password of the vault already there; the entries are added to it</value>
+  </data>
+  <data name="Passwords_Never" xml:space="preserve">
+    <value>Never</value>
+  </data>
+  <data name="Passwords_NewEntry" xml:space="preserve">
+    <value>New entry</value>
+  </data>
+  <data name="Passwords_NewFolder" xml:space="preserve">
+    <value>New folder</value>
+  </data>
+  <data name="Passwords_NoEntries" xml:space="preserve">
+    <value>No entries</value>
+  </data>
+  <data name="Passwords_OpenVault" xml:space="preserve">
+    <value>Open vault</value>
+  </data>
+  <data name="Passwords_PasswordCopiedTheClipboardIsCleared" xml:space="preserve">
+    <value>Password copied. The clipboard is cleared in 30 seconds.</value>
+  </data>
+  <data name="Passwords_Passwords" xml:space="preserve">
+    <value>Passwords</value>
+  </data>
+  <data name="Passwords_SystemKeychainSecretService" xml:space="preserve">
+    <value>System keychain (Secret Service)</value>
+  </data>
+  <data name="Passwords_ThatIsNotTheMasterPassword" xml:space="preserve">
+    <value>That is not the master password of the vault there.</value>
+  </data>
+  <data name="Passwords_ThatIsNotTheMasterPassword2" xml:space="preserve">
+    <value>That is not the master password.</value>
+  </data>
+  <data name="Passwords_The" xml:space="preserve">
+    <value>the {0}</value>
+    <comment>{0}: KeychainName</comment>
+  </data>
+  <data name="Passwords_TheCurrentMasterPasswordIsNot" xml:space="preserve">
+    <value>The current master password is not right.</value>
+  </data>
+  <data name="Passwords_TheEntriesAreAlreadyInThe" xml:space="preserve">
+    <value>The entries are already in the keychain.</value>
+  </data>
+  <data name="Passwords_TheEntriesAreAlreadyInThis" xml:space="preserve">
+    <value>The entries are already in this vault.</value>
+  </data>
+  <data name="Passwords_TheEntriesWereCopiedToBut" xml:space="preserve">
+    <value>The entries were copied to {0}, but could not be removed from {1}.</value>
+    <comment>{0}: Describe(), {1}: from</comment>
+  </data>
+  <data name="Passwords_TheEntriesWereMovedToAnd" xml:space="preserve">
+    <value>The entries were moved to {0}, and removed from {1}.</value>
+    <comment>{0}: Describe(), {1}: from</comment>
+  </data>
+  <data name="Passwords_TheMasterPasswordNeedsAtLeast" xml:space="preserve">
+    <value>The master password needs at least {0} characters.</value>
+    <comment>{0}: VaultStorage.MinimumMasterPasswordLength</comment>
+  </data>
+  <data name="Passwords_TheMasterPasswordWasChanged" xml:space="preserve">
+    <value>The master password was changed.</value>
+  </data>
+  <data name="Passwords_TheTwoMasterPasswordsAreNot" xml:space="preserve">
+    <value>The two master passwords are not the same.</value>
+  </data>
+  <data name="Passwords_TheVault" xml:space="preserve">
+    <value>the vault {0}</value>
+    <comment>{0}: _storage.Location</comment>
+  </data>
+  <data name="Passwords_TheWebsiteIsNotAWeb" xml:space="preserve">
+    <value>The website is not a web address that can be opened.</value>
+  </data>
+  <data name="Passwords_ThisComputerHasNoSystemKeychain" xml:space="preserve">
+    <value>This computer has no system keychain Joktan can use.</value>
+  </data>
+  <data name="Passwords_TopLevel" xml:space="preserve">
+    <value>(Top level)</value>
+  </data>
+  <data name="Passwords_UseKeychain" xml:space="preserve">
+    <value>Use keychain</value>
+  </data>
+  <data name="Passwords_UsernameCopied" xml:space="preserve">
+    <value>Username copied.</value>
+  </data>
+  <data name="Passwords_WebsiteCopied" xml:space="preserve">
+    <value>Website copied.</value>
+  </data>
+  <data name="Passwords_WindowsCredentialManager" xml:space="preserve">
+    <value>Windows Credential Manager</value>
+  </data>
+  <data name="VaultStorage_TheVaultCouldNotBeWritten" xml:space="preserve">
+    <value>The vault could not be written to {0}: {1}</value>
+    <comment>{0}: Path, {1}: e.Message</comment>
+  </data>
+  <data name="VaultStorage_TheVaultFileCannotBeRead" xml:space="preserve">
+    <value>The vault file cannot be read: {0}</value>
+    <comment>{0}: e.Message</comment>
+  </data>
+  <data name="VaultStorage_TheVaultFileIsDamaged" xml:space="preserve">
+    <value>The vault file is damaged.</value>
+  </data>
+  <data name="VaultStorage_TheVaultFileIsEmpty" xml:space="preserve">
+    <value>The vault file is empty.</value>
+  </data>
+  <data name="VaultStorage_TheVaultIsNotOpen" xml:space="preserve">
+    <value>The vault is not open.</value>
+  </data>
+  <data name="VaultStorage_TheVaultSContentsAreDamaged" xml:space="preserve">
+    <value>The vault's contents are damaged.</value>
+  </data>
+  <data name="VaultStorage_TheVaultWasWrittenByA" xml:space="preserve">
+    <value>The vault was written by a newer version of Joktan.</value>
+  </data>
+  <data name="VaultStorage_ThisIsNotAVaultFile" xml:space="preserve">
+    <value>This is not a vault file, or it is damaged.</value>
+  </data>
+  <data name="VaultStorage_ThisIsNotAVaultFileJoktan" xml:space="preserve">
+    <value>This is not a vault file Joktan can read.</value>
+  </data>
+</root>

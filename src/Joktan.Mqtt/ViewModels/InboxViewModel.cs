@@ -13,6 +13,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Core;
 using Joktan.Core.ViewModels;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt.ViewModels;
 
@@ -32,7 +33,7 @@ public partial class ChatRowViewModel(ChatMessage message, bool isOwn) : ViewMod
     public string Initial => InboxViewModel.InitialOf(Message.Name);
 
     /// <summary>Says a message went to one person, or is empty for one to everyone.</summary>
-    public string DirectText => Message.To is not { } to ? "" : IsOwn ? $"to @{to}" : "to you";
+    public string DirectText => Message.To is not { } to ? "" : IsOwn ? string.Format(Strings.ChatRow_To, to) : Strings.ChatRow_ToYou;
 
     public bool IsDirect => Message.To is not null;
 
@@ -71,7 +72,7 @@ public sealed partial class AlertRowViewModel(AlertEntry alert) : ViewModelBase
 
     public bool IsFound => FoundWords is not null;
 
-    public string Level => Alert.Severity.ToString();
+    public string Level => Alert.Severity.Text();
 
     public AlertEntry Alert { get; } = alert;
 
@@ -101,7 +102,7 @@ public partial class InboxViewModel : ViewModelBase
     public const int MaxStartRetries = 3;
 
     private const string SubscriptionOwner = "messaging";
-    private const string AllLevels = "All levels";
+    private static string AllLevels => Strings.Inbox_AllLevels;
 
     private readonly MessagingHistory _history;
     private readonly HashSet<string> _messageIds = new(StringComparer.Ordinal);
@@ -161,7 +162,7 @@ public partial class InboxViewModel : ViewModelBase
     public IReadOnlyList<AlertSeverity> AlertLevels { get; } = Enum.GetValues<AlertSeverity>();
 
     /// <summary>What the Alerts panel can be limited to.</summary>
-    public IReadOnlyList<string> AlertFilters { get; } = [AllLevels, .. Enum.GetNames<AlertSeverity>()];
+    public IReadOnlyList<string> AlertFilters { get; } = [AllLevels, .. Enum.GetValues<AlertSeverity>().Select(severity => severity.Text())];
 
     /// <summary>Raised when the draft is ready to be added to, after Reply.</summary>
     public event Action? DraftFocusRequested;
@@ -194,7 +195,7 @@ public partial class InboxViewModel : ViewModelBase
     [NotifyPropertyChangedFor(nameof(ReplyingText), nameof(IsReplying))]
     public partial ChatRowViewModel? ReplyingTo { get; private set; }
 
-    public string ReplyingText => ReplyingTo is { } row ? $"Replying to @{row.Name}: {Clip(row.Text)}" : "";
+    public string ReplyingText => ReplyingTo is { } row ? string.Format(Strings.Inbox_ReplyingTo, row.Name, Clip(row.Text)) : "";
 
     public bool IsReplying => ReplyingTo is not null;
 
@@ -241,9 +242,9 @@ public partial class InboxViewModel : ViewModelBase
 
     public bool HasUnreadAlerts => UnreadAlerts > 0;
 
-    public string MessagesTip => UnreadMessages > 0 ? $"Messages: {UnreadMessages} unread" : "Messages";
+    public string MessagesTip => UnreadMessages > 0 ? string.Format(Strings.Inbox_MessagesUnread, UnreadMessages) : Strings.Inbox_Messages;
 
-    public string AlertsTip => UnreadAlerts > 0 ? $"Alerts: {UnreadAlerts} unread" : "Alerts";
+    public string AlertsTip => UnreadAlerts > 0 ? string.Format(Strings.Inbox_AlertsUnread, UnreadAlerts) : Strings.Inbox_Alerts;
 
     /// <summary>Whether the Messages panel is open. What arrives while it is counts as read.</summary>
     [ObservableProperty]
@@ -340,7 +341,7 @@ public partial class InboxViewModel : ViewModelBase
 
         var topic = to is null ? MessagingWire.MessagesTopic(Prefix) : MessagingWire.DirectTopic(Prefix, to);
         var (ok, error) = await Client.Connection.PublishAsync(topic, MessagingWire.Write(message), 1, false);
-        SendError = ok ? null : error ?? "The message could not be sent";
+        SendError = ok ? null : error ?? Strings.Inbox_TheMessageCouldNotBeSent;
         if (!ok)
             return;
 
@@ -356,13 +357,13 @@ public partial class InboxViewModel : ViewModelBase
         var name = (space < 0 ? draft[1..] : draft[1..space]).ToLowerInvariant();
         var text = space < 0 ? "" : draft[space..].Trim();
         if (name.Length == 0 || MessagingSettings.CheckName(name) is not null)
-            return (null, text, $"@{name} is not a name, so this was not sent");
+            return (null, text, string.Format(Strings.Inbox_IsNotANameSoThis, name));
         if (text.Length == 0)
-            return (null, text, $"Write something after @{name}");
+            return (null, text, string.Format(Strings.Inbox_WriteSomethingAfter, name));
         if (OwnAddress is null)
-            return (null, text, "Choose a display name under Settings / Alerts and Messages first, so that they can answer");
+            return (null, text, Strings.Inbox_ChooseADisplayNameUnderSettings);
         if (!PeopleNames.Contains(name))
-            return (null, text, $"Nobody called @{name} has been seen on this server, so this was not sent");
+            return (null, text, string.Format(Strings.Inbox_NobodyCalledHasBeenSeenOn, name));
         return (name, text, null);
     }
 
@@ -397,7 +398,7 @@ public partial class InboxViewModel : ViewModelBase
     {
         var topic = $"{MessagingWire.AlertsTopic(Prefix)}/{OwnAddress ?? MessagingSettings.AnonymousName}";
         var (ok, error) = await Client.Connection.PublishAsync(topic, MessagingWire.WriteAlert(AlertDraft.Trim(), AlertLevel), 1, false);
-        SendError = ok ? null : error ?? "The alert could not be sent";
+        SendError = ok ? null : error ?? Strings.Inbox_TheAlertCouldNotBeSent;
         if (ok)
             AlertDraft = "";
     }
@@ -427,12 +428,12 @@ public partial class InboxViewModel : ViewModelBase
     /// <summary>The messages with all the words in their sender or text, newest first, for the search box of the top bar.</summary>
     public IEnumerable<SearchHit> SearchMessages(IReadOnlyList<string> words) => Messages.Reverse()
         .Where(row => TextSearch.HasAll(words, row.Name, row.Text))
-        .Select(row => new SearchHit("Messages", row.Name, $"{row.Time} · {TextSearch.Snippet(TextSearch.Lines(row.Text), words)}", () => ShowMessage(row, words)));
+        .Select(row => new SearchHit(Strings.Inbox_Messages, row.Name, $"{row.Time} · {TextSearch.Snippet(TextSearch.Lines(row.Text), words)}", () => ShowMessage(row, words)));
 
     /// <summary>The alerts with all the words in their title, level or text, newest first, for the search box of the top bar. The panel's filter does not limit them.</summary>
     public IEnumerable<SearchHit> SearchAlerts(IReadOnlyList<string> words) => Alerts
         .Where(row => TextSearch.HasAll(words, row.Title, row.Level, row.Text))
-        .Select(row => new SearchHit("Alerts", row.Title, row.HasText ? $"{row.Time} · {row.Level} · {TextSearch.Snippet(TextSearch.Lines(row.Text), words)}" : $"{row.Time} · {row.Level}", () => ShowAlert(row, words)));
+        .Select(row => new SearchHit(Strings.Inbox_Alerts, row.Title, row.HasText ? $"{row.Time} · {row.Level} · {TextSearch.Snippet(TextSearch.Lines(row.Text), words)}" : $"{row.Time} · {row.Level}", () => ShowAlert(row, words)));
 
     private void ShowMessage(ChatRowViewModel row, IReadOnlyList<string> words)
     {

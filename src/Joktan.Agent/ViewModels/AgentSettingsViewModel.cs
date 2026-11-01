@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Agent.Clients;
+using Joktan.Agent.Resources;
 using Joktan.Agent.Speech;
 using Joktan.Core;
 using Joktan.Core.ViewModels;
@@ -16,12 +17,12 @@ namespace Joktan.Agent.ViewModels;
 public partial class AgentSettingsViewModel : PageViewModel
 {
     private readonly AgentSettings _settings;
-    private const string SystemVoice = "System default";
+    private static string SystemVoice => Strings.AgentSettings_SystemDefault;
 
     private bool _loading;
     private bool _isShown;
 
-    public AgentSettingsViewModel(AgentViewModel agent) : base("Agent", "Settings / Agent")
+    public AgentSettingsViewModel(AgentViewModel agent) : base(Strings.AgentSettings_Agent, Strings.AgentSettings_SettingsAgent)
     {
         Agent = agent;
         _settings = agent.Settings;
@@ -55,7 +56,7 @@ public partial class AgentSettingsViewModel : PageViewModel
     }
 
     /// <summary>Says so if this build came without the speech model.</summary>
-    public string? VoiceProblem => SpeechToText.IsAvailable ? null : "This copy of Joktan came without its speech model, so the microphone button is not shown.";
+    public string? VoiceProblem => SpeechToText.IsAvailable ? null : Strings.AgentSettings_ThisCopyOfJoktanCameWithout;
 
     public string SelectedVoice
     {
@@ -92,7 +93,7 @@ public partial class AgentSettingsViewModel : PageViewModel
 
     public string ModelHint => Agent.SelectedClient.ModelHint;
 
-    public string PathHint => IsCustom ? "The whole path of the program." : "Empty looks for it in the usual folders.";
+    public string PathHint => IsCustom ? Strings.AgentSettings_TheWholePathOfTheProgram : Strings.AgentSettings_EmptyLooksForItInThe;
 
     [ObservableProperty]
     public partial string ProgramPath { get; set; } = "";
@@ -122,7 +123,7 @@ public partial class AgentSettingsViewModel : PageViewModel
     public partial string NewPromptText { get; set; } = "";
 
     /// <summary>Why the new prompt's name cannot be used, or null.</summary>
-    public string? NewPromptProblem => IsNameTaken ? $"There is already a prompt called {NewPromptName.Trim()}." : null;
+    public string? NewPromptProblem => IsNameTaken ? string.Format(Strings.AgentSettings_ThereIsAlreadyAPromptCalled, NewPromptName.Trim()) : null;
 
     private bool IsNameTaken => Agent.Prompts.Any(p => p.Name.Equals(NewPromptName.Trim(), StringComparison.OrdinalIgnoreCase));
 
@@ -170,7 +171,7 @@ public partial class AgentSettingsViewModel : PageViewModel
         set
         {
             if (!int.TryParse(value, out var port) || port is < 1024 or > 65535)
-                throw new ArgumentException("Give a port from 1024 to 65535.");
+                throw new ArgumentException(Strings.AgentSettings_GiveAPortFrom1024To);
             if (port == _settings.OutsidePort)
                 return;
             _settings.OutsidePort = port;
@@ -234,7 +235,7 @@ public partial class AgentSettingsViewModel : PageViewModel
         _ = CheckAsync();
 
         SpeechProblem = SpeechOutput.FindProgram() is null
-            ? "Nothing on this computer can read aloud. On Linux, install espeak-ng or speech-dispatcher."
+            ? Strings.AgentSettings_NothingOnThisComputerCanRead
             : null;
         var voices = await SpeechOutput.VoicesAsync();
         Voices = [SystemVoice, .. voices];
@@ -270,7 +271,7 @@ public partial class AgentSettingsViewModel : PageViewModel
         if (AgentProgram.Find(client, Profile) is not { } program)
         {
             ClientFound = false;
-            ClientStatus = $"{client.DisplayName} was not found. {client.InstallHint}";
+            ClientStatus = string.Format(Strings.AgentSettings_WasNotFound, client.DisplayName, client.InstallHint);
             return;
         }
 
@@ -299,13 +300,13 @@ public partial class AgentSettingsViewModel : PageViewModel
             },
         };
         await CopyText(configuration.ToJsonString(JsonFormats.Indented));
-        Message = "Copied. It holds the token, so keep it private.";
+        Message = Strings.AgentSettings_CopiedItHoldsTheTokenSo;
     }
 
     [RelayCommand]
     private void ReplaceToken()
     {
         Agent.ReplaceOutsideToken();
-        Message = "A new token is in use. Clients holding the old one are shut out.";
+        Message = Strings.AgentSettings_ANewTokenIsInUse;
     }
 }

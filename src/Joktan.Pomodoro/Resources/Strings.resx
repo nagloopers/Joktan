@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PomodoroView_ANewLengthAppliesFromThe" xml:space="preserve">
+    <value>A new length applies from the next time a phase begins, and at once to a phase that has not begun.</value>
+  </data>
+  <data name="PomodoroView_AddAnAlertWhenAPhase" xml:space="preserve">
+    <value>Add an alert when a phase ends</value>
+  </data>
+  <data name="PomodoroView_FocusInMinutes" xml:space="preserve">
+    <value>Focus, in minutes</value>
+  </data>
+  <data name="PomodoroView_FocusPeriodsBeforeALongBreak" xml:space="preserve">
+    <value>Focus periods before a long break</value>
+  </data>
+  <data name="PomodoroView_HeardEvenWhileJoktanIsBehind" xml:space="preserve">
+    <value>Heard even while Joktan is behind other windows</value>
+  </data>
+  <data name="PomodoroView_LongBreakInMinutes" xml:space="preserve">
+    <value>Long break, in minutes</value>
+  </data>
+  <data name="PomodoroView_MoveOnToTheNextPhase" xml:space="preserve">
+    <value>Move on to the next phase without counting this one as finished</value>
+  </data>
+  <data name="PomodoroView_Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="PomodoroView_SayItAloudWhenAPhase" xml:space="preserve">
+    <value>Say it aloud when a phase ends</value>
+  </data>
+  <data name="PomodoroView_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="PomodoroView_ShortBreakInMinutes" xml:space="preserve">
+    <value>Short break, in minutes</value>
+  </data>
+  <data name="PomodoroView_ShowsUnderTheBellInThe" xml:space="preserve">
+    <value>Shows under the bell in the top bar, on this computer only</value>
+  </data>
+  <data name="PomodoroView_Skip" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="PomodoroView_StartTheNextPhaseByItself" xml:space="preserve">
+    <value>Start the next phase by itself</value>
+  </data>
+  <data name="PomodoroView_StopAndGoBackToThe" xml:space="preserve">
+    <value>Stop, and go back to the start of this phase</value>
+  </data>
+  <data name="PomodoroView_WhenAPhaseEndsTheNext" xml:space="preserve">
+    <value>When a phase ends, the next one starts without pressing Start</value>
+  </data>
+  <data name="Pomodoro_1FocusPeriodFinishedToday" xml:space="preserve">
+    <value>1 focus period finished today</value>
+  </data>
+  <data name="Pomodoro_FocusIsOverTimeForA" xml:space="preserve">
+    <value>Focus is over. Time for a long break.</value>
+  </data>
+  <data name="Pomodoro_FocusIsOverTimeForAShort" xml:space="preserve">
+    <value>Focus is over. Time for a short break.</value>
+  </data>
+  <data name="Pomodoro_FocusOf" xml:space="preserve">
+    <value>Focus {0} of {1}</value>
+    <comment>{0}: Math.Min(_focusesDone + 1, FocusesBeforeLongBreak), {1}: FocusesBeforeLongBreak</comment>
+  </data>
+  <data name="Pomodoro_FocusPeriodsFinishedToday" xml:space="preserve">
+    <value>{0} focus periods finished today</value>
+    <comment>{0}: count</comment>
+  </data>
+  <data name="Pomodoro_LongBreak" xml:space="preserve">
+    <value>Long break</value>
+  </data>
+  <data name="Pomodoro_NoFocusPeriodsFinishedToday" xml:space="preserve">
+    <value>No focus periods finished today</value>
+  </data>
+  <data name="Pomodoro_Pause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="Pomodoro_PeriodsOfFocusWithBreaksBetween" xml:space="preserve">
+    <value>Periods of focus with breaks between them</value>
+  </data>
+  <data name="Pomodoro_Pomodoro" xml:space="preserve">
+    <value>Pomodoro</value>
+  </data>
+  <data name="Pomodoro_PomodoroLeft" xml:space="preserve">
+    <value>Pomodoro: {0}, {1} left</value>
+    <comment>{0}: PhaseName, {1}: RemainingText</comment>
+  </data>
+  <data name="Pomodoro_Resume" xml:space="preserve">
+    <value>Resume</value>
+  </data>
+  <data name="Pomodoro_ShortBreak" xml:space="preserve">
+    <value>Short break</value>
+  </data>
+  <data name="Pomodoro_Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Pomodoro_TheBreakIsOverTimeTo" xml:space="preserve">
+    <value>The break is over. Time to focus.</value>
+  </data>
+</root>

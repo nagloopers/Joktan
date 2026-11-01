@@ -1,4 +1,5 @@
 using Joktan.Core.ViewModels;
+using Joktan.TopicDashboards.Resources;
 
 namespace Joktan.TopicDashboards.ViewModels;
 
@@ -27,7 +28,7 @@ public partial class GraphSeriesViewModel : ViewModelBase
             : byKeys.Length > 0 ? byKeys
             : topicName is not null ? (Path.Length > 0 ? $"{topicName} {Path}" : topicName)
             : Path.Length > 0 ? Path
-            : "Value";
+            : Strings.GraphSeries_Value;
     }
 
     public string Id { get; }

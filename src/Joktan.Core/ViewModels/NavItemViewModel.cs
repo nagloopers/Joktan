@@ -8,7 +8,13 @@ namespace Joktan.Core.ViewModels;
 public partial class NavItemViewModel : ViewModelBase
 {
     public NavItemViewModel(string title, Geometry? icon = null, params NavItemViewModel[] children)
+        : this(title, title, icon, children)
     {
+    }
+
+    public NavItemViewModel(string id, string title, Geometry? icon = null, params NavItemViewModel[] children)
+    {
+        Id = id;
         Title = title;
         Icon = icon;
         Children = new ObservableCollection<NavItemViewModel>(children);
@@ -16,6 +22,9 @@ public partial class NavItemViewModel : ViewModelBase
         foreach (var child in children)
             child.Parent = this;
     }
+
+    /// <summary>What a saved menu layout knows this entry by: its English title, whatever language is showing.</summary>
+    public string Id { get; }
 
     public string Title { get; }
 

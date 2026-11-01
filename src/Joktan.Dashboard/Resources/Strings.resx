@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DashboardView_AboutThisMachine" xml:space="preserve">
+    <value>About this machine.</value>
+  </data>
+  <data name="DashboardView_OpenTelemetryMetrics" xml:space="preserve">
+    <value>OpenTelemetry metrics</value>
+  </data>
+  <data name="DashboardView_System" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="Dashboard_Architecture" xml:space="preserve">
+    <value>Architecture</value>
+  </data>
+  <data name="Dashboard_CPUUsage" xml:space="preserve">
+    <value>CPU usage</value>
+  </data>
+  <data name="Dashboard_DiskUsed" xml:space="preserve">
+    <value>Disk used</value>
+  </data>
+  <data name="Dashboard_ExportedOverOTLPToFromThe" xml:space="preserve">
+    <value>Exported over OTLP to {0} from the {1} meter.</value>
+    <comment>{0}: TelemetryHost.Endpoint, {1}: MachineMetrics.MeterName</comment>
+  </data>
+  <data name="Dashboard_GB" xml:space="preserve">
+    <value>{0:0.0} GB</value>
+    <comment>{0}: b / gb</comment>
+  </data>
+  <data name="Dashboard_LiveMetricsForThisMachine" xml:space="preserve">
+    <value>Live metrics for this machine</value>
+  </data>
+  <data name="Dashboard_LogicalProcessors" xml:space="preserve">
+    <value>Logical processors</value>
+  </data>
+  <data name="Dashboard_LogicalProcessors2" xml:space="preserve">
+    <value>{0} logical processors</value>
+    <comment>{0}: Environment.ProcessorCount</comment>
+  </data>
+  <data name="Dashboard_MB" xml:space="preserve">
+    <value>{0:0} MB</value>
+    <comment>{0}: b / mb</comment>
+  </data>
+  <data name="Dashboard_MachineName" xml:space="preserve">
+    <value>Machine name</value>
+  </data>
+  <data name="Dashboard_MemoryUsed" xml:space="preserve">
+    <value>Memory used</value>
+  </data>
+  <data name="Dashboard_NETRuntime" xml:space="preserve">
+    <value>.NET runtime</value>
+  </data>
+  <data name="Dashboard_NotAvailable" xml:space="preserve">
+    <value>Not available</value>
+  </data>
+  <data name="Dashboard_Of" xml:space="preserve">
+    <value>{0} of {1}</value>
+    <comment>{0}: FormatBytes(used), {1}: FormatBytes(total)</comment>
+  </data>
+  <data name="Dashboard_OperatingSystem" xml:space="preserve">
+    <value>Operating system</value>
+  </data>
+  <data name="Dashboard_Overview" xml:space="preserve">
+    <value>Overview</value>
+  </data>
+  <data name="Dashboard_Started" xml:space="preserve">
+    <value>Started {0:g}</value>
+    <comment>{0}: DateTime.Now - s.Uptime</comment>
+  </data>
+  <data name="Dashboard_Uptime" xml:space="preserve">
+    <value>Uptime</value>
+  </data>
+</root>

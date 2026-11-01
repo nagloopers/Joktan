@@ -8,8 +8,8 @@ public class NoteNodeViewModelTests
 {
     [Theory]
     [InlineData("Page", "Page")]
-    [InlineData("", NoteNodeViewModel.Untitled)]
-    [InlineData("   ", NoteNodeViewModel.Untitled)]
+    [InlineData("", "Untitled")]
+    [InlineData("   ", "Untitled")]
     public void The_title_in_the_tree_is_never_blank(string title, string expected)
     {
         Assert.Equal(expected, new NoteNodeViewModel("id", title, null).DisplayTitle);

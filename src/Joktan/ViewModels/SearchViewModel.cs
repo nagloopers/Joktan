@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Core;
 using Joktan.Core.ViewModels;
+using Joktan.Resources;
 
 namespace Joktan.ViewModels;
 
@@ -63,9 +64,9 @@ public partial class SearchViewModel : ViewModelBase
             var names = _sources.Where(s => s.IsOn()).Select(s => s.Name).ToList();
             return names.Count switch
             {
-                0 => "Search is switched off",
-                1 => $"Search {names[0]}...",
-                _ => $"Search {string.Join(", ", names.SkipLast(1))} and {names[^1]}...",
+                0 => Strings.Search_SearchIsSwitchedOff,
+                1 => string.Format(Strings.Search_Search, names[0]),
+                _ => string.Format(Strings.Search_SearchAnd, string.Join(", ", names.SkipLast(1)), names[^1]),
             };
         }
     }

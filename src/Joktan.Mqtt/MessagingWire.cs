@@ -1,6 +1,8 @@
 using System;
 using System.Text;
 using System.Text.Json;
+using Avalonia.Data.Converters;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt;
 
@@ -36,6 +38,20 @@ public enum AlertSeverity
     Info,
     Warning,
     Critical,
+}
+
+public static class AlertSeverityText
+{
+    /// <summary>What a AlertSeverity is called on screen.</summary>
+    public static string Text(this AlertSeverity value) => value switch
+    {
+        AlertSeverity.Info => Strings.AlertSeverity_Info,
+        AlertSeverity.Warning => Strings.AlertSeverity_Warning,
+        AlertSeverity.Critical => Strings.AlertSeverity_Critical,
+        _ => value.ToString(),
+    };
+
+    public static readonly FuncValueConverter<AlertSeverity, string> AlertSeverityConverter = new(value => value.Text());
 }
 
 /// <summary>An alert that arrived.</summary>
@@ -149,7 +165,7 @@ public static class MessagingWire
         if (entry.Title.Length == 0 && entry.Text.Length == 0)
             return null;
         if (entry.Title.Length == 0)
-            entry.Title = source.Length > 0 ? source : "Alert";
+            entry.Title = source.Length > 0 ? source : Strings.MessagingWire_Alert;
         return entry;
     }
 

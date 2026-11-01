@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Core;
 using Joktan.Core.ViewModels;
+using Joktan.Help.Resources;
 
 namespace Joktan.Help.ViewModels;
 
@@ -55,7 +56,7 @@ public partial class HelpViewModel : ViewModelBase
     public IEnumerable<SearchHit> Search(IReadOnlyList<string> words) => _topics
         .Where(t => t.Matches(words))
         .OrderBy(t => words.All(t.MatchesTitle) ? 0 : 1)
-        .Select(t => new SearchHit("Help", t.Title, t.SnippetFor(words), () =>
+        .Select(t => new SearchHit(Strings.Help_Help, t.Title, t.SnippetFor(words), () =>
         {
             HelpContext.Opener?.Invoke(t.Topic.Id);
             HighlightWords = words;

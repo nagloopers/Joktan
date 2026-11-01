@@ -19,6 +19,17 @@ public class ThemeEditorTests : DataFolderTest
 
     private static string ColorKey => ThemeTokens.AccentBrush;
 
+    [Theory]
+    [InlineData(ThemeEditor.FollowSystem, "Follow system")]
+    [InlineData(BuiltInThemes.LightName, "Light")]
+    [InlineData(BuiltInThemes.DarkName, "Dark")]
+    [InlineData(BuiltInThemes.GreenDarkName, "Green Dark")]
+    [InlineData("Mine", "Mine")]
+    public void A_theme_is_shown_by_its_display_name_and_one_of_the_users_by_its_own(string name, string shown)
+    {
+        Assert.Equal(shown, ThemeEditor.DisplayName(name));
+    }
+
     [Fact]
     public Task Starts_following_the_system_with_the_themes_that_come_with_Joktan() => Headless.Run(() =>
     {

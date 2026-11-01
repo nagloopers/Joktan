@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AlternativeName_Email" xml:space="preserve">
+    <value>email {0}</value>
+    <comment>{0}: Value</comment>
+  </data>
+  <data name="AlternativeName_IP" xml:space="preserve">
+    <value>IP {0}</value>
+    <comment>{0}: Value</comment>
+  </data>
+  <data name="CertificateChoice_SignedBy" xml:space="preserve">
+    <value>{0} (signed by {1})</value>
+    <comment>{0}: Name, {1}: IssuerName</comment>
+  </data>
+  <data name="CertificateDefaultsView_ACAOrClientCertificatePicked" xml:space="preserve">
+    <value>A CA or client certificate picked in an MQTT client's settings is copied here when the client is saved, into a folder named after the client: ca.crt, client.crt and client.key. The client uses the copies. Empty for the folder shown.</value>
+  </data>
+  <data name="CertificateDefaultsView_AppleSSystemsRefuseTLSServer" xml:space="preserve">
+    <value>Apple's systems refuse TLS server certificates valid for more than 825 days</value>
+  </data>
+  <data name="CertificateDefaultsView_Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="CertificateDefaultsView_CAsValidForDays" xml:space="preserve">
+    <value>CAs valid for (days)</value>
+  </data>
+  <data name="CertificateDefaultsView_CertificatesValidForDays" xml:space="preserve">
+    <value>Certificates valid for (days)</value>
+  </data>
+  <data name="CertificateDefaultsView_ChooseTheFolderForMQTTClients" xml:space="preserve">
+    <value>Choose the folder for MQTT clients' certificates</value>
+  </data>
+  <data name="CertificateDefaultsView_ClientCommonName" xml:space="preserve">
+    <value>Client common name</value>
+  </data>
+  <data name="CertificateDefaultsView_CountryC" xml:space="preserve">
+    <value>Country (C)</value>
+  </data>
+  <data name="CertificateDefaultsView_Defaults" xml:space="preserve">
+    <value>Defaults</value>
+  </data>
+  <data name="CertificateDefaultsView_FolderForMQTTClientsCertificates" xml:space="preserve">
+    <value>Folder for MQTT clients' certificates</value>
+  </data>
+  <data name="CertificateDefaultsView_GoBackToTheBuiltIn" xml:space="preserve">
+    <value>Go back to the built-in defaults</value>
+  </data>
+  <data name="CertificateDefaultsView_IntermediateCACommonName" xml:space="preserve">
+    <value>Intermediate CA common name</value>
+  </data>
+  <data name="CertificateDefaultsView_Key" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="CertificateDefaultsView_LocalityL" xml:space="preserve">
+    <value>Locality (L)</value>
+  </data>
+  <data name="CertificateDefaultsView_OrganisationO" xml:space="preserve">
+    <value>Organisation (O)</value>
+  </data>
+  <data name="CertificateDefaultsView_OrganisationalUnitOU" xml:space="preserve">
+    <value>Organisational unit (OU)</value>
+  </data>
+  <data name="CertificateDefaultsView_Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="CertificateDefaultsView_RootCACommonName" xml:space="preserve">
+    <value>Root CA common name</value>
+  </data>
+  <data name="CertificateDefaultsView_ServerCommonName" xml:space="preserve">
+    <value>Server common name</value>
+  </data>
+  <data name="CertificateDefaultsView_ServerHostNamesAndIPAddresses" xml:space="preserve">
+    <value>Server host names and IP addresses</value>
+  </data>
+  <data name="CertificateDefaultsView_StateOrProvinceST" xml:space="preserve">
+    <value>State or province (ST)</value>
+  </data>
+  <data name="CertificateDefaultsView_WhatANewCertificateIsFilled" xml:space="preserve">
+    <value>What a new certificate is filled in with; each one can still be changed. A certificate signed by a CA takes the organisation, unit, locality, state and country from the CA, and these where the CA has none. Saved as you type.</value>
+  </data>
+  <data name="CertificateDefaults_CertificateDefaults" xml:space="preserve">
+    <value>Certificate Defaults</value>
+  </data>
+  <data name="CertificateDefaults_Client" xml:space="preserve">
+    <value>client</value>
+  </data>
+  <data name="CertificateDefaults_IntermediateCA" xml:space="preserve">
+    <value>intermediate CA</value>
+  </data>
+  <data name="CertificateDefaults_MQTTClientsFolder" xml:space="preserve">
+    <value>MQTT clients' folder: {0}</value>
+    <comment>{0}: folderError</comment>
+  </data>
+  <data name="CertificateDefaults_RootCA" xml:space="preserve">
+    <value>root CA</value>
+  </data>
+  <data name="CertificateDefaults_Server" xml:space="preserve">
+    <value>server</value>
+  </data>
+  <data name="CertificateDefaults_SettingsCertificateDefaults" xml:space="preserve">
+    <value>Settings / Certificate Defaults</value>
+  </data>
+  <data name="CertificateDefaults_TheCommonNameMustNotBe" xml:space="preserve">
+    <value>The {0} common name must not be longer than 64 characters</value>
+    <comment>{0}: label</comment>
+  </data>
+  <data name="CertificateDefaults_TheNumberOfDaysMustBe" xml:space="preserve">
+    <value>The number of days must be a whole number from 1 to {0}</value>
+    <comment>{0}: MaxValidityDays</comment>
+  </data>
+  <data name="CertificateKinds_Client" xml:space="preserve">
+    <value>Client</value>
+  </data>
+  <data name="CertificateKinds_IntermediateCA" xml:space="preserve">
+    <value>Intermediate CA</value>
+  </data>
+  <data name="CertificateKinds_RootCA" xml:space="preserve">
+    <value>Root CA</value>
+  </data>
+  <data name="CertificateKinds_Server" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="CertificateMaker_TheCASPrivateKeyIs" xml:space="preserve">
+    <value>The CA's private key is missing or of an unsupported type</value>
+  </data>
+  <data name="CertificateNode_ACAThatIsNoLonger" xml:space="preserve">
+    <value>A CA that is no longer in the list</value>
+  </data>
+  <data name="CertificateNode_CannotBeRead" xml:space="preserve">
+    <value>Cannot be read</value>
+  </data>
+  <data name="CertificateNode_ExpiredOn" xml:space="preserve">
+    <value>Expired on {0:yyyy-MM-dd}</value>
+    <comment>{0}: Certificate.NotAfter</comment>
+  </data>
+  <data name="CertificateNode_ExpiresInDays" xml:space="preserve">
+    <value>Expires in {0} days</value>
+    <comment>{0}: days</comment>
+  </data>
+  <data name="CertificateNode_ExpiresToday" xml:space="preserve">
+    <value>Expires today</value>
+  </data>
+  <data name="CertificateNode_ExpiresTomorrow" xml:space="preserve">
+    <value>Expires tomorrow</value>
+  </data>
+  <data name="CertificateNode_Itself" xml:space="preserve">
+    <value>Itself</value>
+  </data>
+  <data name="CertificateNode_NoMQTTClient" xml:space="preserve">
+    <value>No MQTT client</value>
+  </data>
+  <data name="CertificateNode_None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="CertificateNode_SignsCertificates" xml:space="preserve">
+    <value>Signs certificates</value>
+  </data>
+  <data name="CertificateNode_TLSClientAuthentication" xml:space="preserve">
+    <value>TLS client authentication</value>
+  </data>
+  <data name="CertificateNode_TLSServerAuthentication" xml:space="preserve">
+    <value>TLS server authentication</value>
+  </data>
+  <data name="CertificateNode_Until" xml:space="preserve">
+    <value>{0} · until {1:yyyy-MM-dd}</value>
+    <comment>{0}: KindText, {1}: Certificate.NotAfter</comment>
+  </data>
+  <data name="CertificateNode_ValidForMoreDays" xml:space="preserve">
+    <value>Valid for {0} more days</value>
+    <comment>{0}: days</comment>
+  </data>
+  <data name="CertificateSpec_EnterACommonNameCN" xml:space="preserve">
+    <value>Enter a common name (CN)</value>
+  </data>
+  <data name="CertificateSpec_EnterANameForTheCertificate" xml:space="preserve">
+    <value>Enter a name for the certificate</value>
+  </data>
+  <data name="CertificateSpec_IsNotAHostNameIP" xml:space="preserve">
+    <value>{0} is not a host name, IP address or email address</value>
+    <comment>{0}: entry</comment>
+  </data>
+  <data name="CertificateSpec_IsNotAValidEmailAddress" xml:space="preserve">
+    <value>{0} is not a valid email address</value>
+    <comment>{0}: entry</comment>
+  </data>
+  <data name="CertificateSpec_Locality" xml:space="preserve">
+    <value>locality</value>
+  </data>
+  <data name="CertificateSpec_Organisation" xml:space="preserve">
+    <value>organisation</value>
+  </data>
+  <data name="CertificateSpec_OrganisationalUnit" xml:space="preserve">
+    <value>organisational unit</value>
+  </data>
+  <data name="CertificateSpec_State" xml:space="preserve">
+    <value>state</value>
+  </data>
+  <data name="CertificateSpec_TheCommonNameMustNotBe" xml:space="preserve">
+    <value>The common name must not be longer than {0} characters</value>
+    <comment>{0}: MaxCommonNameLength</comment>
+  </data>
+  <data name="CertificateSpec_TheCountryMustBeATwo" xml:space="preserve">
+    <value>The country must be a two-letter code, such as ZA, DE or US</value>
+  </data>
+  <data name="CertificateSpec_TheEmailAddressIsNotValid" xml:space="preserve">
+    <value>The email address is not valid</value>
+  </data>
+  <data name="CertificateSpec_TheMustNotBeLongerThan" xml:space="preserve">
+    <value>The {0} must not be longer than {1} characters</value>
+    <comment>{0}: label, {1}: MaxFieldLength</comment>
+  </data>
+  <data name="CertificateSpec_TheNameMustNotBeLonger" xml:space="preserve">
+    <value>The name must not be longer than {0} characters</value>
+    <comment>{0}: MaxNameLength</comment>
+  </data>
+  <data name="CertificateSpec_TheNameMustNotContainControl" xml:space="preserve">
+    <value>The name must not contain control characters</value>
+  </data>
+  <data name="CertificateSpec_ThereIsAlreadyACertificateCalled" xml:space="preserve">
+    <value>There is already a certificate called {0}</value>
+    <comment>{0}: name</comment>
+  </data>
+  <data name="CertificateStore_ARootCASignsItselfSo" xml:space="preserve">
+    <value>A root CA signs itself, so it has no issuer</value>
+  </data>
+  <data name="CertificateStore_AServerCertificateNeedsAtLeast" xml:space="preserve">
+    <value>A server certificate needs at least one host name or IP address</value>
+  </data>
+  <data name="CertificateStore_AlreadyInTheFolderChooseAnother" xml:space="preserve">
+    <value>{0} {1} already in the folder. Choose another folder or name, or replace them</value>
+    <comment>{0}: string.Join(", ", existing), {1}: (existing.Count == 1 ? Strings.CertificateStore_Is : Strings.CertificateStore_Are)</comment>
+  </data>
+  <data name="CertificateStore_Are" xml:space="preserve">
+    <value>are</value>
+  </data>
+  <data name="CertificateStore_CannotSignCertificates" xml:space="preserve">
+    <value>{0} cannot sign certificates</value>
+    <comment>{0}: authority.DisplayName</comment>
+  </data>
+  <data name="CertificateStore_ChooseTheCAThatSignsThe" xml:space="preserve">
+    <value>Choose the CA that signs the certificate</value>
+  </data>
+  <data name="CertificateStore_EnterAFileNameWithoutA" xml:space="preserve">
+    <value>Enter a file name without a folder or extension, such as server</value>
+  </data>
+  <data name="CertificateStore_EnterTheFolderSFullPath" xml:space="preserve">
+    <value>Enter the folder's full path, or choose it with Browse</value>
+  </data>
+  <data name="CertificateStore_ExpiredOn" xml:space="preserve">
+    <value>{0} expired on {1:yyyy-MM-dd}</value>
+    <comment>{0}: authority.DisplayName, {1}: authority.Certificate.NotAfter</comment>
+  </data>
+  <data name="CertificateStore_HasNoPrivateKeyToExport" xml:space="preserve">
+    <value>{0} has no private key to export</value>
+    <comment>{0}: entry.DisplayName</comment>
+  </data>
+  <data name="CertificateStore_Is" xml:space="preserve">
+    <value>is</value>
+  </data>
+  <data name="CertificateStore_IsAFileNotAFolder" xml:space="preserve">
+    <value>{0} is a file, not a folder</value>
+    <comment>{0}: folder</comment>
+  </data>
+  <data name="CertificateStore_IsNotACASoIt" xml:space="preserve">
+    <value>{0} is not a CA, so it cannot sign certificates</value>
+    <comment>{0}: authority.DisplayName</comment>
+  </data>
+  <data name="CertificateStore_IsNotValidUntil" xml:space="preserve">
+    <value>{0} is not valid until {1:yyyy-MM-dd}</value>
+    <comment>{0}: authority.DisplayName, {1}: authority.Certificate.NotBefore</comment>
+  </data>
+  <data name="CertificateStore_TheCertificateCannotBeMade" xml:space="preserve">
+    <value>The certificate cannot be made: {0}</value>
+    <comment>{0}: e.Message</comment>
+  </data>
+  <data name="CertificateStore_TheCertificateCannotBeRead" xml:space="preserve">
+    <value>The certificate cannot be read</value>
+  </data>
+  <data name="CertificateStore_TheCertificateCannotBeSavedIn" xml:space="preserve">
+    <value>The certificate cannot be saved in {0}: {1}</value>
+    <comment>{0}: folder, {1}: e.Message</comment>
+  </data>
+  <data name="CertificateStore_TheCertificatesCannotBeCopiedTo" xml:space="preserve">
+    <value>The certificates cannot be copied to {0}: {1}</value>
+    <comment>{0}: folder, {1}: e.Message</comment>
+  </data>
+  <data name="CertificateStore_TheExpiryDateMustBeIn" xml:space="preserve">
+    <value>The expiry date must be in the future</value>
+  </data>
+  <data name="CertificateStore_TheFilesCannotBeWrittenTo" xml:space="preserve">
+    <value>The files cannot be written to {0}: {1}</value>
+    <comment>{0}: options.Folder, {1}: e.Message</comment>
+  </data>
+  <data name="CertificateStore_TheFolderDoesNotExist" xml:space="preserve">
+    <value>The folder {0} does not exist</value>
+    <comment>{0}: options.Folder</comment>
+  </data>
+  <data name="CertificateStore_ThePFXP12FileCannotBe" xml:space="preserve">
+    <value>The PFX/P12 file cannot be made: {0}</value>
+    <comment>{0}: e.Message</comment>
+  </data>
+  <data name="CertificatesView_ACASignedByThisOne" xml:space="preserve">
+    <value>A CA signed by this one, which can sign certificates of its own</value>
+  </data>
+  <data name="CertificatesView_AlternativeNames" xml:space="preserve">
+    <value>Alternative names</value>
+  </data>
+  <data name="CertificatesView_AnyoneWithACASKey" xml:space="preserve">
+    <value>Anyone with a CA's key can make certificates that clients and brokers trusting the CA accept. </value>
+  </data>
+  <data name="CertificatesView_AuthoritiesAndCertificates" xml:space="preserve">
+    <value>Authorities and certificates</value>
+  </data>
+  <data name="CertificatesView_CACertificatesToTrustItBy" xml:space="preserve">
+    <value>CA certificates to trust it by, for a cafile</value>
+  </data>
+  <data name="CertificatesView_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CertificatesView_Certificate" xml:space="preserve">
+    <value>Certificate</value>
+  </data>
+  <data name="CertificatesView_CertificateAndIntermediateCAsForA" xml:space="preserve">
+    <value>Certificate and intermediate CAs, for a broker's certfile</value>
+  </data>
+  <data name="CertificatesView_ClientCertificate" xml:space="preserve">
+    <value>Client certificate</value>
+  </data>
+  <data name="CertificatesView_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="CertificatesView_DeleteItAndEverythingItSigned" xml:space="preserve">
+    <value>Delete it, and everything it signed, with their keys</value>
+  </data>
+  <data name="CertificatesView_EachCertificateIsMadeInThe" xml:space="preserve">
+    <value>Each certificate is made in the folder chosen for it; the list is kept in</value>
+  </data>
+  <data name="CertificatesView_EachCertificateSitsBelowTheCA" xml:space="preserve">
+    <value>Each certificate sits below the CA that signed it.</value>
+  </data>
+  <data name="CertificatesView_Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="CertificatesView_Files" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="CertificatesView_ForABrokerTheCertificateIt" xml:space="preserve">
+    <value>For a broker: the certificate it shows to clients</value>
+  </data>
+  <data name="CertificatesView_ForAnMQTTClientToProve" xml:space="preserve">
+    <value>For an MQTT client to prove who it is to a broker that asks (mutual TLS)</value>
+  </data>
+  <data name="CertificatesView_IntermediateCA" xml:space="preserve">
+    <value>Intermediate CA</value>
+  </data>
+  <data name="CertificatesView_Key" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="CertificatesView_MQTTClientsWhoseTLSSettingsUse" xml:space="preserve">
+    <value>MQTT clients whose TLS settings use one of its files</value>
+  </data>
+  <data name="CertificatesView_MakeACertificateAuthorityThatSigns" xml:space="preserve">
+    <value>Make a certificate authority that signs itself. Select it afterwards to sign server and client certificates with it.</value>
+  </data>
+  <data name="CertificatesView_NameInTheList" xml:space="preserve">
+    <value>Name in the list</value>
+  </data>
+  <data name="CertificatesView_NewRootCA" xml:space="preserve">
+    <value>New root CA</value>
+  </data>
+  <data name="CertificatesView_NoCertificatesYetStartWithNew" xml:space="preserve">
+    <value>No certificates yet. Start with New root CA, then select it and make a server certificate for the broker and a client certificate for each client.</value>
+  </data>
+  <data name="CertificatesView_OpenFolder" xml:space="preserve">
+    <value>Open folder</value>
+  </data>
+  <data name="CertificatesView_PrivateKeyNotEncrypted" xml:space="preserve">
+    <value>Private key (not encrypted)</value>
+  </data>
+  <data name="CertificatesView_PrivateKeysAreStoredUnencryptedOn" xml:space="preserve">
+    <value>. Private keys are stored unencrypted; on Linux and macOS only you can read them. </value>
+  </data>
+  <data name="CertificatesView_Rename" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="CertificatesView_SHA256Fingerprint" xml:space="preserve">
+    <value>SHA-256 fingerprint</value>
+  </data>
+  <data name="CertificatesView_SelectACAOrCertificateTo" xml:space="preserve">
+    <value>Select a CA or certificate to see it, sign more certificates with a CA, or export the files for a broker or client.</value>
+  </data>
+  <data name="CertificatesView_SerialNumber" xml:space="preserve">
+    <value>Serial number</value>
+  </data>
+  <data name="CertificatesView_ServerCertificate" xml:space="preserve">
+    <value>Server certificate</value>
+  </data>
+  <data name="CertificatesView_SignANewCertificateWithThis" xml:space="preserve">
+    <value>Sign a new certificate with this CA</value>
+  </data>
+  <data name="CertificatesView_SignedBy" xml:space="preserve">
+    <value>Signed by</value>
+  </data>
+  <data name="CertificatesView_Subject" xml:space="preserve">
+    <value>Subject</value>
+  </data>
+  <data name="CertificatesView_To" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="CertificatesView_UsedBy" xml:space="preserve">
+    <value>Used by</value>
+  </data>
+  <data name="CertificatesView_UsedFor" xml:space="preserve">
+    <value>Used for</value>
+  </data>
+  <data name="CertificatesView_Valid" xml:space="preserve">
+    <value>Valid</value>
+  </data>
+  <data name="CertificatesView_WhatANewCertificateIsFilled" xml:space="preserve">
+    <value>What a new certificate is filled in with is set on Settings / Certificate Defaults.</value>
+  </data>
+  <data name="CertificatesView_WriteTheCertificateAndItsKey" xml:space="preserve">
+    <value>Write the certificate, and its key and CA if wanted, to a folder for a broker or client</value>
+  </data>
+  <data name="Certificates_AndThe1CertificateItSigned" xml:space="preserve">
+    <value> and the 1 certificate it signed</value>
+  </data>
+  <data name="Certificates_AndTheCertificatesBelowIt" xml:space="preserve">
+    <value> and the {0} certificates below it</value>
+    <comment>{0}: count</comment>
+  </data>
+  <data name="Certificates_Certificates" xml:space="preserve">
+    <value>Certificates</value>
+  </data>
+  <data name="Certificates_DeleteWithTheirPrivateKeysThis" xml:space="preserve">
+    <value>Delete {0}{1}, with their private keys? This cannot be undone.</value>
+    <comment>{0}: Selected.Name, {1}: below</comment>
+  </data>
+  <data name="Certificates_Deleted" xml:space="preserve">
+    <value>Deleted {0}</value>
+    <comment>{0}: removed[0].DisplayName</comment>
+  </data>
+  <data name="Certificates_DeletedAndMore" xml:space="preserve">
+    <value>Deleted {0} and {1} more</value>
+    <comment>{0}: removed[0].DisplayName, {1}: removed.Count - 1</comment>
+  </data>
+  <data name="Certificates_DevToolsCertificates" xml:space="preserve">
+    <value>Dev Tools / Certificates</value>
+  </data>
+  <data name="Certificates_MadeSignedBy" xml:space="preserve">
+    <value>Made {0}, signed by {1}</value>
+    <comment>{0}: created.DisplayName, {1}: Selected?.Name</comment>
+  </data>
+  <data name="Certificates_MadeTheRootCA" xml:space="preserve">
+    <value>Made the root CA {0}</value>
+    <comment>{0}: created.DisplayName</comment>
+  </data>
+  <data name="Certificates_WroteTo" xml:space="preserve">
+    <value>Wrote {0} to {1}</value>
+    <comment>{0}: string.Join(", ", editor.Written.Select(Path.GetFileName)), {1}: Path.GetDirectoryName(editor.Written[0])</comment>
+  </data>
+  <data name="ExportCertificateWindow_ABrokerShouldShowItsIntermediate" xml:space="preserve">
+    <value>A broker should show its intermediate CAs with its certificate, so clients that trust only the root can check it</value>
+  </data>
+  <data name="ExportCertificateWindow_ACASKeyIsOnly" xml:space="preserve">
+    <value>A CA's key is only needed to sign certificates somewhere else. Brokers and clients need only its certificate.</value>
+  </data>
+  <data name="ExportCertificateWindow_Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="ExportCertificateWindow_CACertificatesCaCrtForA" xml:space="preserve">
+    <value>CA certificates (ca.crt), for a broker's or client's cafile</value>
+  </data>
+  <data name="ExportCertificateWindow_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ExportCertificateWindow_ChooseTheFolderToExportTo" xml:space="preserve">
+    <value>Choose the folder to export to</value>
+  </data>
+  <data name="ExportCertificateWindow_Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="ExportCertificateWindow_ExportCertificate" xml:space="preserve">
+    <value>Export certificate</value>
+  </data>
+  <data name="ExportCertificateWindow_FileName" xml:space="preserve">
+    <value>File name</value>
+  </data>
+  <data name="ExportCertificateWindow_FilesWritten" xml:space="preserve">
+    <value>Files written</value>
+  </data>
+  <data name="ExportCertificateWindow_Folder" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="ExportCertificateWindow_PFXP12FileNameP12With" xml:space="preserve">
+    <value>PFX/P12 file (name.p12) with the certificate, key and CAs</value>
+  </data>
+  <data name="ExportCertificateWindow_PasswordForThePFXP12File" xml:space="preserve">
+    <value>Password for the PFX/P12 file</value>
+  </data>
+  <data name="ExportCertificateWindow_PrivateKeyNameKeyNotEncrypted" xml:space="preserve">
+    <value>Private key (name.key, not encrypted)</value>
+  </data>
+  <data name="ExportCertificateWindow_PutTheIntermediateCAsAfterThe" xml:space="preserve">
+    <value>Put the intermediate CAs after the certificate in name.crt</value>
+  </data>
+  <data name="ExportCertificateWindow_ReplaceFilesOfTheSameName" xml:space="preserve">
+    <value>Replace files of the same name</value>
+  </data>
+  <data name="ExportCertificateWindow_WithoutAnExtensionTheCertificateIs" xml:space="preserve">
+    <value>Without an extension. The certificate is written as name.crt, its key as name.key.</value>
+  </data>
+  <data name="ExportCertificate_ChooseTheFolderToWriteThe" xml:space="preserve">
+    <value>Choose the folder to write the files to</value>
+  </data>
+  <data name="ExportCertificate_EnterAFileNameWithoutA" xml:space="preserve">
+    <value>Enter a file name without a folder or extension, such as server</value>
+  </data>
+  <data name="ExportCertificate_EnterAPasswordForThePFX" xml:space="preserve">
+    <value>Enter a password for the PFX/P12 file</value>
+  </data>
+  <data name="ExportCertificate_Export" xml:space="preserve">
+    <value>Export {0}</value>
+    <comment>{0}: _entry.DisplayName</comment>
+  </data>
+  <data name="ExportCertificate_TheFolderDoesNotExist" xml:space="preserve">
+    <value>The folder does not exist</value>
+  </data>
+  <data name="NewCertificateWindow_10Years" xml:space="preserve">
+    <value>10 years</value>
+  </data>
+  <data name="NewCertificateWindow_1Year" xml:space="preserve">
+    <value>1 year</value>
+  </data>
+  <data name="NewCertificateWindow_2Years" xml:space="preserve">
+    <value>2 years</value>
+  </data>
+  <data name="NewCertificateWindow_5Years" xml:space="preserve">
+    <value>5 years</value>
+  </data>
+  <data name="NewCertificateWindow_AlternativeNames" xml:space="preserve">
+    <value>Alternative names</value>
+  </data>
+  <data name="NewCertificateWindow_Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="NewCertificateWindow_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="NewCertificateWindow_Certificate" xml:space="preserve">
+    <value>Certificate</value>
+  </data>
+  <data name="NewCertificateWindow_ChooseTheFolderToMakeThe" xml:space="preserve">
+    <value>Choose the folder to make the certificate in</value>
+  </data>
+  <data name="NewCertificateWindow_CommonNameCN" xml:space="preserve">
+    <value>Common name (CN)</value>
+  </data>
+  <data name="NewCertificateWindow_CountryC" xml:space="preserve">
+    <value>Country (C)</value>
+  </data>
+  <data name="NewCertificateWindow_EmailAddressOptional" xml:space="preserve">
+    <value>Email address (optional)</value>
+  </data>
+  <data name="NewCertificateWindow_EmptyForTheCommonName" xml:space="preserve">
+    <value>Empty for the common name</value>
+  </data>
+  <data name="NewCertificateWindow_ExpiresOn" xml:space="preserve">
+    <value>Expires on</value>
+  </data>
+  <data name="NewCertificateWindow_Folder" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="NewCertificateWindow_ItIsValidFromNowUntil" xml:space="preserve">
+    <value>It is valid from now until the end of the day it expires on. A certificate cannot outlast the CA that signs it.</value>
+  </data>
+  <data name="NewCertificateWindow_Key" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="NewCertificateWindow_KeyAndValidity" xml:space="preserve">
+    <value>Key and validity</value>
+  </data>
+  <data name="NewCertificateWindow_Kind" xml:space="preserve">
+    <value>Kind</value>
+  </data>
+  <data name="NewCertificateWindow_LocalityL" xml:space="preserve">
+    <value>Locality (L)</value>
+  </data>
+  <data name="NewCertificateWindow_MakeCertificate" xml:space="preserve">
+    <value>Make certificate</value>
+  </data>
+  <data name="NewCertificateWindow_NameInTheList" xml:space="preserve">
+    <value>Name in the list</value>
+  </data>
+  <data name="NewCertificateWindow_NewCertificate" xml:space="preserve">
+    <value>New certificate</value>
+  </data>
+  <data name="NewCertificateWindow_OrganisationO" xml:space="preserve">
+    <value>Organisation (O)</value>
+  </data>
+  <data name="NewCertificateWindow_OrganisationalUnitOU" xml:space="preserve">
+    <value>Organisational unit (OU)</value>
+  </data>
+  <data name="NewCertificateWindow_SignedBy" xml:space="preserve">
+    <value>Signed by</value>
+  </data>
+  <data name="NewCertificateWindow_StateOrProvinceST" xml:space="preserve">
+    <value>State or province (ST)</value>
+  </data>
+  <data name="NewCertificateWindow_Subject" xml:space="preserve">
+    <value>Subject</value>
+  </data>
+  <data name="NewCertificateWindow_WhoTheCertificateNamesFilledIn" xml:space="preserve">
+    <value>Who the certificate names. Filled in from the defaults and from the CA that signs it.</value>
+  </data>
+  <data name="NewCertificate_1DayFromToday" xml:space="preserve">
+    <value>1 day from today</value>
+  </data>
+  <data name="NewCertificate_ACASignedByThisOne" xml:space="preserve">
+    <value>A CA signed by this one, which can sign certificates of its own.</value>
+  </data>
+  <data name="NewCertificate_ChooseTheExpiryDate" xml:space="preserve">
+    <value>Choose the expiry date</value>
+  </data>
+  <data name="NewCertificate_DaysFromToday" xml:space="preserve">
+    <value>{0} days from today</value>
+    <comment>{0}: days</comment>
+  </data>
+  <data name="NewCertificate_EnterAtLeastOneHostName" xml:space="preserve">
+    <value>Enter at least one host name or IP address the broker is reached by</value>
+  </data>
+  <data name="NewCertificate_ItsFilesGoIn" xml:space="preserve">
+    <value>Its files go in {0}</value>
+    <comment>{0}: _store.FolderFor(Folder, ToSpec().Name)</comment>
+  </data>
+  <data name="NewCertificate_ItselfARootCAIsThe" xml:space="preserve">
+    <value>Itself. A root CA is the top of a chain; clients and brokers trust it by its certificate.</value>
+  </data>
+  <data name="NewCertificate_NewCertificateSignedBy" xml:space="preserve">
+    <value>New certificate signed by {0}</value>
+    <comment>{0}: _issuer.DisplayName</comment>
+  </data>
+  <data name="NewCertificate_NewRootCA" xml:space="preserve">
+    <value>New root CA</value>
+  </data>
+  <data name="NewCertificate_OptionalHostNamesIPAddressesOr" xml:space="preserve">
+    <value>Optional. Host names, IP addresses or email addresses, separated by commas.</value>
+  </data>
+  <data name="NewCertificate_SignsItselfAndThenTheCertificates" xml:space="preserve">
+    <value>Signs itself and then the certificates below it.</value>
+  </data>
+  <data name="NewCertificate_TheCertificateABrokerShowsTo" xml:space="preserve">
+    <value>The certificate a broker shows to clients.</value>
+  </data>
+  <data name="NewCertificate_TheCertificateAClientShowsTo" xml:space="preserve">
+    <value>The certificate a client shows to a broker that asks for one (mutual TLS).</value>
+  </data>
+  <data name="NewCertificate_TheDayExpires" xml:space="preserve">
+    <value>{0}, the day {1} expires</value>
+    <comment>{0}: text, {1}: _issuer!.DisplayName</comment>
+  </data>
+  <data name="NewCertificate_TheExpiryDateCannotBeAfter" xml:space="preserve">
+    <value>The expiry date cannot be after {0:yyyy-MM-dd}, when {1} expires</value>
+    <comment>{0}: last, {1}: _issuer!.DisplayName</comment>
+  </data>
+  <data name="NewCertificate_TheExpiryDateMustBeAfter" xml:space="preserve">
+    <value>The expiry date must be after today</value>
+  </data>
+  <data name="NewCertificate_TheHostNamesAndIPAddresses" xml:space="preserve">
+    <value>The host names and IP addresses clients connect to the broker by, separated by commas. Clients check the broker's address against these, not against the common name.</value>
+  </data>
+  <data name="NewCertificate_ValidUntil" xml:space="preserve">
+    <value>{0} ({1}), valid until {2:yyyy-MM-dd}</value>
+    <comment>{0}: _issuer.DisplayName, {1}: _issuer.Kind.Text(), {2}: _issuer.Certificate?.NotAfter</comment>
+  </data>
+  <data name="StoredCertificate_CannotBeRead" xml:space="preserve">
+    <value>{0} cannot be read: {1}</value>
+    <comment>{0}: CertificateFile, {1}: e.Message</comment>
+  </data>
+  <data name="StoredCertificate_IsMissingFrom" xml:space="preserve">
+    <value>{0} is missing from {1}</value>
+    <comment>{0}: CertificateFile, {1}: Folder</comment>
+  </data>
+  <data name="StoredCertificate_TheKeyOfCannotBeRead" xml:space="preserve">
+    <value>The key of {0} cannot be read: {1}</value>
+    <comment>{0}: DisplayName, {1}: e.Message</comment>
+  </data>
+</root>

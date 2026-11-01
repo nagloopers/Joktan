@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Joktan.Mqtt.Resources;
 using Joktan.Mqtt.ViewModels;
 
 namespace Joktan.Mqtt.Views;
@@ -35,7 +36,7 @@ public partial class MqttClientView : UserControl
 
         var folders = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
         {
-            Title = "Choose the folder that holds the messages",
+            Title = Strings.MqttClientView_ChooseTheFolderThatHoldsThe,
             AllowMultiple = false,
         });
         return folders.Count > 0 ? folders[0].TryGetLocalPath() : null;

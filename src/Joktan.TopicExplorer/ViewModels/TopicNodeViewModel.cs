@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Core.ViewModels;
 using Joktan.Mqtt;
+using Joktan.TopicExplorer.Resources;
 
 namespace Joktan.TopicExplorer.ViewModels;
 
@@ -37,7 +38,7 @@ public partial class TopicNodeViewModel : ViewModelBase
 
     public TopicNodeViewModel? Parent { get; }
 
-    public string DisplayName => Name.Length == 0 ? "(empty level)" : Name;
+    public string DisplayName => Name.Length == 0 ? Strings.TopicNode_EmptyLevel : Name;
 
     public ObservableCollection<TopicNodeViewModel> Children { get; } = [];
 
@@ -89,7 +90,7 @@ public partial class TopicNodeViewModel : ViewModelBase
 
     public bool HasMoreTrends => MoreTrends > 0;
 
-    public string MoreTrendsText => $"{MoreTrends:N0} more not shown";
+    public string MoreTrendsText => string.Format(Strings.TopicNode_MoreNotShown, MoreTrends);
 
     public bool HasNumbers => Choices.Count > 0;
 
@@ -119,10 +120,10 @@ public partial class TopicNodeViewModel : ViewModelBase
         get
         {
             if (TopicCount == 0)
-                return MessageCount > 1 ? $"({MessageCount:N0} messages)" : "";
+                return MessageCount > 1 ? string.Format(Strings.TopicNode_Messages, MessageCount) : "";
 
-            var topics = TopicCount == 1 ? "1 topic" : $"{TopicCount:N0} topics";
-            var messages = SubtreeMessages == 1 ? "1 message" : $"{SubtreeMessages:N0} messages";
+            var topics = TopicCount == 1 ? Strings.TopicNode_1Topic : string.Format(Strings.TopicNode_Topics, TopicCount);
+            var messages = SubtreeMessages == 1 ? Strings.TopicNode_1Message : string.Format(Strings.TopicNode_Messages2, SubtreeMessages);
             return $"({topics}, {messages})";
         }
     }

@@ -13,6 +13,7 @@ using Joktan.Core.ViewModels;
 using Joktan.Mqtt;
 using Joktan.Mqtt.ViewModels;
 using Joktan.TopicDashboards.ViewModels;
+using Joktan.TopicExplorer.Resources;
 
 namespace Joktan.TopicExplorer.ViewModels;
 
@@ -74,9 +75,9 @@ public partial class ClientExplorerViewModel : ViewModelBase, IDisposable
     /// "Unsubscribe" while subscribed to the filters in the box; "Subscribe" when not subscribed, or
     /// when the box has been changed since, so that pressing it applies the new filters.
     /// </summary>
-    public string SubscribeText => IsSubscribedToBox ? "Unsubscribe" : "Subscribe";
+    public string SubscribeText => IsSubscribedToBox ? Strings.ClientExplorer_Unsubscribe : Strings.ClientExplorer_Subscribe;
 
-    private bool IsSubscribedToBox => SubscribedFilters is not null && SubscribedFilters == Filters;
+    public bool IsSubscribedToBox => SubscribedFilters is not null && SubscribedFilters == Filters;
 
     [ObservableProperty]
     public partial string? FilterError { get; set; }
@@ -158,7 +159,7 @@ public partial class ClientExplorerViewModel : ViewModelBase, IDisposable
         var filters = Filters.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         if (filters.Length == 0)
         {
-            FilterError = "Enter at least one topic filter, for example #";
+            FilterError = Strings.ClientExplorer_EnterAtLeastOneTopicFilter;
             return;
         }
 
@@ -234,8 +235,8 @@ public partial class ClientExplorerViewModel : ViewModelBase, IDisposable
             MqttMetrics.RecordFailed();
 
         PublishStatus = ok
-            ? $"Sent to {topic} at {DateTime.Now:HH:mm:ss}"
-            : $"Not sent: {error}";
+            ? string.Format(Strings.ClientExplorer_SentToAt, topic, DateTime.Now)
+            : string.Format(Strings.ClientExplorer_NotSent, error);
     }
 
     /// <summary>The graph editor for the selected topic, starting with what is drawn here and what has been received.</summary>
@@ -402,8 +403,8 @@ public partial class ClientExplorerViewModel : ViewModelBase, IDisposable
 
     private void UpdateSummary()
     {
-        var topics = _topicCount == 1 ? "1 topic" : $"{_topicCount:N0} topics";
-        var messages = _messageCount == 1 ? "1 message" : $"{_messageCount:N0} messages";
+        var topics = _topicCount == 1 ? Strings.ClientExplorer_1Topic : string.Format(Strings.ClientExplorer_Topics, _topicCount);
+        var messages = _messageCount == 1 ? Strings.ClientExplorer_1Message : string.Format(Strings.ClientExplorer_Messages, _messageCount);
         Summary = $"{topics}, {messages}";
     }
 

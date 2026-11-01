@@ -5,6 +5,7 @@ using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Core.ViewModels;
+using Joktan.Settings.Resources;
 using Joktan.Settings.Themes;
 
 namespace Joktan.Settings.ViewModels;
@@ -14,7 +15,7 @@ public partial class ThemesViewModel : PageViewModel
 {
     private readonly ThemeEditor _editor;
 
-    public ThemesViewModel(ThemeEditor editor, ThemeBarViewModel bar) : base("Themes", "Settings / Themes")
+    public ThemesViewModel(ThemeEditor editor, ThemeBarViewModel bar) : base(Strings.Themes_Themes, Strings.Themes_SettingsThemes)
     {
         _editor = editor;
         Bar = bar;
@@ -78,12 +79,14 @@ public partial class ThemeRowViewModel : ViewModelBase
 
     public string Name { get; }
 
+    public string DisplayName => ThemeEditor.DisplayName(Name);
+
     /// <summary>The theme, when it is one the user saved and so can be removed.</summary>
     public Theme? Saved { get; }
 
     public bool CanDelete => Saved is not null;
 
-    public string Kind => Saved is null ? "Built in" : "Saved";
+    public string Kind => Saved is null ? Strings.ThemeRow_BuiltIn : Strings.ThemeRow_Saved;
 
     /// <summary>Set by the radio button as well as by the theme in use changing.</summary>
     [ObservableProperty]

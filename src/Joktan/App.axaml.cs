@@ -15,6 +15,7 @@ using Joktan.Help.Views;
 using Joktan.Mqtt;
 using Joktan.Notes;
 using Joktan.Passwords;
+using Joktan.Resources;
 using Joktan.Settings;
 using Joktan.Settings.Themes;
 using Joktan.Dashboard.Telemetry;
@@ -61,7 +62,7 @@ public partial class App : Application
 
         // Telemetry is set up and the settings files are read on background threads, all at once,
         // so the splash keeps drawing. Only the view models are made on the UI thread.
-        splash.Status = "Loading telemetry, certificates, MQTT clients and notes…";
+        splash.Status = Strings.App_LoadingTelemetryCertificatesMQTTClientsAnd;
         var monitor = new MachineMonitor();
         var telemetryTask = Task.Run(() => new TelemetryHost(monitor, MqttMetrics.MeterName));
         var certificatesTask = Task.Run(() => CertificateStore.Load());
@@ -73,7 +74,7 @@ public partial class App : Application
         await Task.WhenAll(telemetryTask, certificatesTask, mqttSettingsTask, notesTask, passwordSettingsTask, dashboardsTask, menuLayoutTask);
         var telemetry = telemetryTask.Result;
 
-        splash.Status = "Opening…";
+        splash.Status = Strings.App_Opening;
         await Rendered();
         var main = new MainViewModel(monitor, certificatesTask.Result, mqttSettingsTask.Result, notesTask.Result, passwordSettingsTask.Result, dashboardsTask.Result, menuLayoutTask.Result, themes);
         _ = main.Inbox.StartAsync();

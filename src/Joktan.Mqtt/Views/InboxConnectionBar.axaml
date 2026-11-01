@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Mqtt.Resources"
              xmlns:vm="using:Joktan.Mqtt.ViewModels"
              x:Class="Joktan.Mqtt.Views.InboxConnectionBar"
              x:DataType="vm:InboxViewModel">
@@ -12,9 +13,9 @@
             <TextBlock Grid.Column="1" Classes="info-label" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
                        Text="{Binding Client.Address}" ToolTip.Tip="{Binding Client.StateText}" />
             <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4">
-                <Button Classes="small" Content="Connect" Command="{Binding Client.ConnectCommand}" IsVisible="{Binding Client.CanEdit}" />
-                <Button Classes="small" Content="Server" Command="{Binding ShowSettingsCommand}"
-                        ToolTip.Tip="Set up the server under Settings / Alerts and Messages" />
+                <Button Classes="small" Content="{x:Static res:Strings.InboxConnectionBar_Connect}" Command="{Binding Client.ConnectCommand}" IsVisible="{Binding Client.CanEdit}" />
+                <Button Classes="small" Content="{x:Static res:Strings.InboxConnectionBar_Server}" Command="{Binding ShowSettingsCommand}"
+                        ToolTip.Tip="{x:Static res:Strings.InboxConnectionBar_SetUpTheServerUnderSettings}" />
             </StackPanel>
         </Grid>
         <TextBlock Classes="error" TextWrapping="Wrap" Text="{Binding Client.FailureReason}"

@@ -27,6 +27,7 @@ using Joktan.Passwords;
 using Joktan.Passwords.ViewModels;
 using Joktan.Pomodoro;
 using Joktan.Pomodoro.ViewModels;
+using Joktan.Resources;
 using Joktan.Settings;
 using Joktan.Settings.Backup;
 using Joktan.Settings.Themes;
@@ -74,7 +75,7 @@ public partial class MainViewModel : ViewModelBase
         Inbox = new InboxViewModel(mqtt);
         _topicDashboards = new TopicDashboardsViewModel(mqtt, dashboards);
 
-        var passwordsItem = new NavItemViewModel("Passwords", Icons.Key) { Page = _passwords, HelpTopic = "passwords" };
+        var passwordsItem = new NavItemViewModel("Passwords", Strings.Main_Passwords, Icons.Key) { Page = _passwords, HelpTopic = "passwords" };
         var folders = new FolderSources(_notes, _topicDashboards, _apiClient, certificates, _passwords, mqtt, () => NavigateCommand.Execute(passwordsItem), FlushAsync, () => RestartRequested?.Invoke());
         _backup = new BackupViewModel(folders.All, BackupSettings.Load(), FlushAsync, () => RestartRequested?.Invoke(),
             Assembly.GetEntryAssembly()?.GetName().Version?.ToString(3) ?? "");
@@ -82,11 +83,11 @@ public partial class MainViewModel : ViewModelBase
 
         themes ??= ThemeEditor.Load();
         var themeBar = new ThemeBarViewModel(themes);
-        var alertsAndMessages = new NavItemViewModel("Alerts and Messages") { Page = new MessagingViewModel(mqtt, Inbox), HelpTopic = "alerts-and-messages" };
+        var alertsAndMessages = new NavItemViewModel("Alerts and Messages", Strings.Main_AlertsAndMessages) { Page = new MessagingViewModel(mqtt, Inbox), HelpTopic = "alerts-and-messages" };
         Inbox.OpenSettings = () => NavigateCommand.Execute(alertsAndMessages);
-        var menuSettings = new NavItemViewModel("Menu") { HelpTopic = "settings-and-data", CanHide = false };
-        var foldersItem = new NavItemViewModel("Folders and Backup") { Page = _backup, HelpTopic = "folders-and-backup" };
-        var notesItem = new NavItemViewModel("Notes", Icons.Notes) { Page = _notes, HelpTopic = "notes" };
+        var menuSettings = new NavItemViewModel("Menu", Strings.Main_Menu) { HelpTopic = "settings-and-data", CanHide = false };
+        var foldersItem = new NavItemViewModel("Folders and Backup", Strings.Main_FoldersAndBackup) { Page = _backup, HelpTopic = "folders-and-backup" };
+        var notesItem = new NavItemViewModel("Notes", Strings.Main_Notes, Icons.Notes) { Page = _notes, HelpTopic = "notes" };
         _notes.OpenPage = () => NavigateCommand.Execute(notesItem);
 
         Pomodoro = new PomodoroViewModel(PomodoroSettings.Load())
@@ -94,17 +95,17 @@ public partial class MainViewModel : ViewModelBase
             AddAlert = Inbox.AddLocalAlert,
             Speak = text => _speech.Say(text, "", 100),
         };
-        _pomodoroItem = new NavItemViewModel("Pomodoro", Icons.Timer) { Page = Pomodoro, HelpTopic = "pomodoro" };
+        _pomodoroItem = new NavItemViewModel("Pomodoro", Strings.Main_Pomodoro, Icons.Timer) { Page = Pomodoro, HelpTopic = "pomodoro" };
 
         var searchSettings = SearchSettings.Load();
         var searchPage = new SearchSettingsViewModel(searchSettings);
-        var searchItem = new NavItemViewModel("Search") { Page = searchPage, HelpTopic = "search" };
+        var searchItem = new NavItemViewModel("Search", Strings.Main_Search) { Page = searchPage, HelpTopic = "search" };
         Search = new SearchViewModel(
         [
-            new SearchSource("notes", () => searchSettings.Notes, _notes.Search),
-            new SearchSource("help", () => searchSettings.Help, Help.Search),
-            new SearchSource("messages", () => searchSettings.Messages, Inbox.SearchMessages),
-            new SearchSource("alerts", () => searchSettings.Alerts, Inbox.SearchAlerts),
+            new SearchSource(Strings.Main_Notes2, () => searchSettings.Notes, _notes.Search),
+            new SearchSource(Strings.Main_Help, () => searchSettings.Help, Help.Search),
+            new SearchSource(Strings.Main_Messages, () => searchSettings.Messages, Inbox.SearchMessages),
+            new SearchSource(Strings.Main_Alerts, () => searchSettings.Alerts, Inbox.SearchAlerts),
         ]) { OpenSettings = () => NavigateCommand.Execute(searchItem) };
         searchPage.Changed += Search.AreasChanged;
         Search.Cleared += () =>
@@ -147,30 +148,30 @@ public partial class MainViewModel : ViewModelBase
 
         MenuItems =
         [
-            new NavItemViewModel("Dashboard", Icons.Dashboard,
-                new NavItemViewModel("Overview") { Page = overview, HelpTopic = "dashboard" },
-                new NavItemViewModel("MQTT Dashboards") { FormerTitle = "Topic Dashboards", Page = _topicDashboards, HelpTopic = "topic-dashboards" }),
+            new NavItemViewModel("Dashboard", Strings.Main_Dashboard, Icons.Dashboard,
+                new NavItemViewModel("Overview", Strings.Main_Overview) { Page = overview, HelpTopic = "dashboard" },
+                new NavItemViewModel("MQTT Dashboards", Strings.Main_MQTTDashboards) { FormerTitle = Strings.Main_TopicDashboards, Page = _topicDashboards, HelpTopic = "topic-dashboards" }),
             notesItem,
             passwordsItem,
             _pomodoroItem,
-            new NavItemViewModel("Dev Tools", Icons.DevTools,
-                new NavItemViewModel("Brokers", null,
-                    new NavItemViewModel("MQTT") { Page = mqtt, HelpTopic = "mqtt" },
-                    new NavItemViewModel("Topic Explorer") { Page = explorer, HelpTopic = "topic-explorer" }) { FormerTitle = "Connectivity" },
-                new NavItemViewModel("Certificates") { Page = certificatesPage, HelpTopic = "certificates" },
-                new NavItemViewModel("API Client") { Page = _apiClient, HelpTopic = "api-client" },
-                new NavItemViewModel("Containers") { Page = _containers, HelpTopic = "containers" }),
-            new NavItemViewModel("Settings", Icons.Settings,
+            new NavItemViewModel("Dev Tools", Strings.Main_DevTools, Icons.DevTools,
+                new NavItemViewModel("Brokers", Strings.Main_Brokers, null,
+                    new NavItemViewModel("MQTT", Strings.Main_MQTT) { Page = mqtt, HelpTopic = "mqtt" },
+                    new NavItemViewModel("Topic Explorer", Strings.Main_TopicExplorer) { Page = explorer, HelpTopic = "topic-explorer" }) { FormerTitle = Strings.Main_Connectivity },
+                new NavItemViewModel("Certificates", Strings.Main_Certificates) { Page = certificatesPage, HelpTopic = "certificates" },
+                new NavItemViewModel("API Client", Strings.Main_APIClient) { Page = _apiClient, HelpTopic = "api-client" },
+                new NavItemViewModel("Containers", Strings.Main_Containers) { Page = _containers, HelpTopic = "containers" }),
+            new NavItemViewModel("Settings", Strings.Main_Settings, Icons.Settings,
                 menuSettings,
                 searchItem,
-                new NavItemViewModel("Themes") { Page = new ThemesViewModel(themes, themeBar), HelpTopic = "themes" },
-                new NavItemViewModel("Colours") { Page = new ColorsViewModel(themes, themeBar), HelpTopic = "themes" },
-                new NavItemViewModel("Fonts") { Page = new FontsViewModel(themes, themeBar), HelpTopic = "themes" },
-                new NavItemViewModel("Text Sizes") { Page = new TextSizesViewModel(themes, themeBar), HelpTopic = "themes" },
+                new NavItemViewModel("Themes", Strings.Main_Themes) { Page = new ThemesViewModel(themes, themeBar), HelpTopic = "themes" },
+                new NavItemViewModel("Colours", Strings.Main_Colours) { Page = new ColorsViewModel(themes, themeBar), HelpTopic = "themes" },
+                new NavItemViewModel("Fonts", Strings.Main_Fonts) { Page = new FontsViewModel(themes, themeBar), HelpTopic = "themes" },
+                new NavItemViewModel("Text Sizes", Strings.Main_TextSizes) { Page = new TextSizesViewModel(themes, themeBar), HelpTopic = "themes" },
                 alertsAndMessages,
-                new NavItemViewModel("Certificate Defaults") { Page = certificateDefaults, HelpTopic = "certificates" },
+                new NavItemViewModel("Certificate Defaults", Strings.Main_CertificateDefaults) { Page = certificateDefaults, HelpTopic = "certificates" },
                 foldersItem,
-                new NavItemViewModel("Agent") { Page = new AgentSettingsViewModel(Agent), HelpTopic = "agent" }) { CanHide = false },
+                new NavItemViewModel("Agent", Strings.Main_Agent) { Page = new AgentSettingsViewModel(Agent), HelpTopic = "agent" }) { CanHide = false },
         ];
 
         menuSettings.Page = new MenuSettingsViewModel(MenuItems, menuLayout ?? MenuLayout.Load());
@@ -205,8 +206,8 @@ public partial class MainViewModel : ViewModelBase
 
     /// <summary>Says which module the help icon will open help on.</summary>
     public string HelpTip => _selectedItem is { HelpTopic: not null, Page: { } page }
-        ? $"Help on {page.Title} (F1)"
-        : "Help: getting started (F1)";
+        ? string.Format(Strings.Main_HelpOnF1, page.Title)
+        : Strings.Main_HelpGettingStartedF1;
 
     [ObservableProperty]
     public partial bool IsSidebarOpen { get; set; } = true;

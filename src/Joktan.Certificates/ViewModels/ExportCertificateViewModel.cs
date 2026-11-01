@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Joktan.Certificates.Resources;
 using Joktan.Core.ViewModels;
 
 namespace Joktan.Certificates.ViewModels;
@@ -43,7 +44,7 @@ public partial class ExportCertificateViewModel : ViewModelBase
         Revalidate();
     }
 
-    public string Title => $"Export {_entry.DisplayName}";
+    public string Title => string.Format(Strings.ExportCertificate_Export, _entry.DisplayName);
 
     /// <summary>Asks the user for a folder. Set by the window, which owns the system dialog.</summary>
     public Func<Task<string?>>? PickFolder { get; set; }
@@ -144,11 +145,11 @@ public partial class ExportCertificateViewModel : ViewModelBase
     {
         var options = Options();
         FilesText = string.Join(", ", _store.ExportFileNames(_entry, options));
-        Error = Folder.Trim().Length == 0 ? "Choose the folder to write the files to"
-            : !Directory.Exists(Folder.Trim()) ? "The folder does not exist"
+        Error = Folder.Trim().Length == 0 ? Strings.ExportCertificate_ChooseTheFolderToWriteThe
+            : !Directory.Exists(Folder.Trim()) ? Strings.ExportCertificate_TheFolderDoesNotExist
             : BaseName.Trim().Length == 0 || BaseName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0 || BaseName.Contains('/')
-                ? "Enter a file name without a folder or extension, such as server"
-            : IncludePkcs12 && Pkcs12Password.Length == 0 ? "Enter a password for the PFX/P12 file"
+                ? Strings.ExportCertificate_EnterAFileNameWithoutA
+            : IncludePkcs12 && Pkcs12Password.Length == 0 ? Strings.ExportCertificate_EnterAPasswordForThePFX
             : null;
     }
 }

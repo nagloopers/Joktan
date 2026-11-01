@@ -1,5 +1,6 @@
 using System.Reflection;
 using Avalonia.Controls;
+using Joktan.Resources;
 
 namespace Joktan.Views;
 
@@ -11,7 +12,7 @@ public partial class SplashWindow : Window
         InitializeComponent();
 
         var version = Assembly.GetExecutingAssembly().GetName().Version;
-        VersionText.Text = version is null ? "" : $"Version {version.ToString(3)}";
+        VersionText.Text = version is null ? "" : string.Format(Strings.SplashWindow_Version, version.ToString(3));
     }
 
     /// <summary>What is being loaded, such as "Loading MQTT clients".</summary>

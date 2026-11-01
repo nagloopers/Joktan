@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Agent.Resources"
              xmlns:vm="using:Joktan.Agent.ViewModels"
              xmlns:agent="using:Joktan.Agent"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -20,40 +21,40 @@
             <StackPanel Margin="24" Spacing="16">
                 <Border Classes="card">
                     <StackPanel Spacing="10">
-                        <TextBlock Classes="card-title" Text="Command-line client" />
-                        <TextBlock Classes="card-subtitle" Text="The agent in the panel runs through one of these programs, under your own account with it. Joktan connects it to the app's tools." />
+                        <TextBlock Classes="card-title" Text="{x:Static res:Strings.AgentSettingsView_CommandLineClient}" />
+                        <TextBlock Classes="card-subtitle" Text="{x:Static res:Strings.AgentSettingsView_TheAgentInThePanelRuns}" />
 
-                        <TextBlock Classes="field-label" Text="Client" />
+                        <TextBlock Classes="field-label" Text="{x:Static res:Strings.AgentSettingsView_Client}" />
                         <ComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding Agent.Clients}" SelectedItem="{Binding Agent.SelectedClient}"
                                   IsEnabled="{Binding Agent.IsIdle}" />
 
-                        <TextBlock Classes="field-label" Text="Program" />
+                        <TextBlock Classes="field-label" Text="{x:Static res:Strings.AgentSettingsView_Program}" />
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                             <TextBox Text="{Binding ProgramPath}" PlaceholderText="{Binding PathHint}" />
-                            <Button Grid.Column="1" Classes="small" Content="Check" Command="{Binding CheckCommand}" />
+                            <Button Grid.Column="1" Classes="small" Content="{x:Static res:Strings.AgentSettingsView_Check}" Command="{Binding CheckCommand}" />
                         </Grid>
                         <TextBlock Classes="info-label" TextWrapping="Wrap" Text="{Binding ClientStatus}" IsVisible="{Binding ClientFound}" />
                         <TextBlock Classes="error" TextWrapping="Wrap" Text="{Binding ClientStatus}" IsVisible="{Binding !ClientFound}" />
 
                         <StackPanel Spacing="4" IsVisible="{Binding IsCustom}">
-                            <TextBlock Classes="field-label" Text="Arguments" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.AgentSettingsView_Arguments}" />
                             <TextBox Classes="code" Text="{Binding CustomArguments}" />
                             <TextBlock Classes="info-label" TextWrapping="Wrap"
-                                       Text="{}{prompt} is what you said, {mcp_config} a file naming the app's server under mcpServers, {mcp_url} and {mcp_token} the server's address and token, and {model} the model below. What the program prints is the reply." />
+                                       Text="{x:Static res:Strings.AgentSettingsView_PromptIsWhatYouSaidMcp}" />
                         </StackPanel>
 
-                        <TextBlock Classes="field-label" Text="Model" />
+                        <TextBlock Classes="field-label" Text="{x:Static res:Strings.AgentSettingsView_Model}" />
                         <TextBox Text="{Binding Model}" PlaceholderText="{Binding ModelHint}" />
 
-                        <TextBlock Classes="field-label" Text="More arguments" />
-                        <TextBox Classes="code" Text="{Binding ExtraArguments}" PlaceholderText="Added to the command line each turn" />
+                        <TextBlock Classes="field-label" Text="{x:Static res:Strings.AgentSettingsView_MoreArguments}" />
+                        <TextBox Classes="code" Text="{Binding ExtraArguments}" PlaceholderText="{x:Static res:Strings.AgentSettingsView_AddedToTheCommandLineEach}" />
 
                         <Border Classes="table-row">
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                                 <StackPanel>
-                                    <TextBlock Classes="table-cell" Text="Also let the agent use the client's own tools" />
+                                    <TextBlock Classes="table-cell" Text="{x:Static res:Strings.AgentSettingsView_AlsoLetTheAgentUseThe}" />
                                     <TextBlock Classes="info-label" TextWrapping="Wrap"
-                                               Text="Such as its shell and file tools. These run outside Joktan, which cannot ask you about them. Left off, the agent can only use the app's tools." />
+                                               Text="{x:Static res:Strings.AgentSettingsView_SuchAsItsShellAndFile}" />
                                 </StackPanel>
                                 <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding AllowClientTools}" />
                             </Grid>
@@ -63,11 +64,11 @@
 
                 <Border Classes="card">
                     <StackPanel Spacing="10">
-                        <TextBlock Classes="card-title" Text="Prompts" />
+                        <TextBlock Classes="card-title" Text="{x:Static res:Strings.AgentSettingsView_Prompts}" />
                         <TextBlock Classes="card-subtitle" TextWrapping="Wrap"
-                                   Text="Requests kept ready, offered by the lightning button beside the message box in the chat. Picking one puts it in the box, to change or send." />
+                                   Text="{x:Static res:Strings.AgentSettingsView_RequestsKeptReadyOfferedByThe}" />
 
-                        <TextBlock Classes="info-label" Text="No prompts. Add one below." IsVisible="{Binding Agent.HasNoPrompts}" />
+                        <TextBlock Classes="info-label" Text="{x:Static res:Strings.AgentSettingsView_NoPromptsAddOneBelow}" IsVisible="{Binding Agent.HasNoPrompts}" />
                         <ItemsControl Name="PromptList" ItemsSource="{Binding Agent.Prompts}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate x:DataType="agent:AgentPrompt">
@@ -77,7 +78,7 @@
                                                 <TextBlock Classes="table-cell" Text="{Binding Name}" />
                                                 <TextBlock Classes="info-label" TextWrapping="Wrap" Text="{Binding Text}" />
                                             </StackPanel>
-                                            <Button Grid.Column="1" Classes="small" Content="Remove" VerticalAlignment="Center"
+                                            <Button Grid.Column="1" Classes="small" Content="{x:Static res:Strings.AgentSettingsView_Remove}" VerticalAlignment="Center"
                                                     Command="{Binding $parent[UserControl].((vm:AgentSettingsViewModel)DataContext).RemovePromptCommand}"
                                                     CommandParameter="{Binding}" />
                                         </Grid>
@@ -86,28 +87,28 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
-                        <TextBlock Classes="field-label" Text="Name" />
-                        <TextBox Text="{Binding NewPromptName}" PlaceholderText="What the chat lists it as" />
+                        <TextBlock Classes="field-label" Text="{x:Static res:Strings.AgentSettingsView_Name}" />
+                        <TextBox Text="{Binding NewPromptName}" PlaceholderText="{x:Static res:Strings.AgentSettingsView_WhatTheChatListsItAs}" />
                         <TextBlock Classes="error" TextWrapping="Wrap" Text="{Binding NewPromptProblem}"
                                    IsVisible="{Binding NewPromptProblem, Converter={x:Static ObjectConverters.IsNotNull}}" />
 
-                        <TextBlock Classes="field-label" Text="Prompt" />
+                        <TextBlock Classes="field-label" Text="{x:Static res:Strings.AgentSettingsView_Prompt}" />
                         <TextBox Text="{Binding NewPromptText}" AcceptsReturn="True" TextWrapping="Wrap" MaxHeight="160"
-                                 PlaceholderText="What goes in the message box" />
+                                 PlaceholderText="{x:Static res:Strings.AgentSettingsView_WhatGoesInTheMessageBox}" />
 
-                        <Button Classes="small" Content="Add prompt" Command="{Binding AddPromptCommand}" />
+                        <Button Classes="small" Content="{x:Static res:Strings.AgentSettingsView_AddPrompt}" Command="{Binding AddPromptCommand}" />
                     </StackPanel>
                 </Border>
 
                 <Border Classes="card">
                     <StackPanel Spacing="10">
-                        <TextBlock Classes="card-title" Text="Speech" />
+                        <TextBlock Classes="card-title" Text="{x:Static res:Strings.AgentSettingsView_Speech}" />
                         <TextBlock Classes="card-subtitle" TextWrapping="Wrap"
-                                   Text="Everything here happens on this computer. Replies are read by its own speech, and what you say is turned into text by a speech model that ships with the app. Your words only leave once you send them to the agent, like anything you type." />
+                                   Text="{x:Static res:Strings.AgentSettingsView_EverythingHereHappensOnThisComputer}" />
 
                         <Border Classes="table-row">
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                <TextBlock Classes="table-cell" Text="Read replies aloud" />
+                                <TextBlock Classes="table-cell" Text="{x:Static res:Strings.AgentSettingsView_ReadRepliesAloud}" />
                                 <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding Agent.IsReadingAloud}" />
                             </Grid>
                         </Border>
@@ -117,9 +118,9 @@
                         <Border Classes="table-row">
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                                 <StackPanel>
-                                    <TextBlock Classes="table-cell" Text="Voice input" />
+                                    <TextBlock Classes="table-cell" Text="{x:Static res:Strings.AgentSettingsView_VoiceInput}" />
                                     <TextBlock Classes="info-label" TextWrapping="Wrap"
-                                               Text="Shows a microphone button in the chat. Hold it, talk, and let go: your message is sent straight away. Say only &quot;stop&quot; to stop the agent, or only &quot;clear chat&quot; to clear the chat. Approvals are still clicked." />
+                                               Text="{x:Static res:Strings.AgentSettingsView_ShowsAMicrophoneButtonInThe}" />
                                 </StackPanel>
                                 <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding VoiceInput}" />
                             </Grid>
@@ -127,13 +128,13 @@
                         <TextBlock Classes="error" TextWrapping="Wrap" Text="{Binding VoiceProblem}"
                                    IsVisible="{Binding VoiceProblem, Converter={x:Static ObjectConverters.IsNotNull}}" />
 
-                        <TextBlock Classes="field-label" Text="Voice" />
+                        <TextBlock Classes="field-label" Text="{x:Static res:Strings.AgentSettingsView_Voice}" />
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                             <ComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding Voices}" SelectedItem="{Binding SelectedVoice}" />
-                            <Button Grid.Column="1" Classes="small" Content="Try it" Command="{Binding TrySpeechCommand}" />
+                            <Button Grid.Column="1" Classes="small" Content="{x:Static res:Strings.AgentSettingsView_TryIt}" Command="{Binding TrySpeechCommand}" />
                         </Grid>
 
-                        <TextBlock Classes="field-label" Text="Speed" />
+                        <TextBlock Classes="field-label" Text="{x:Static res:Strings.AgentSettingsView_Speed}" />
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
                             <Slider Minimum="50" Maximum="200" SmallChange="10" LargeChange="10" Value="{Binding SpeechSpeed}" />
                             <TextBlock Grid.Column="1" Classes="info-label" VerticalAlignment="Center" Text="{Binding SpeechSpeedText}" />
@@ -143,12 +144,12 @@
 
                 <Border Classes="card">
                     <StackPanel Spacing="10">
-                        <TextBlock Classes="card-title" Text="Clients outside the app" />
-                        <TextBlock Classes="card-subtitle" Text="Let another MCP client on this computer, such as an IDE or a CLI you started yourself, use the app's tools. It connects while Joktan is open. Its risky calls still wait for your approval in the agent panel." />
+                        <TextBlock Classes="card-title" Text="{x:Static res:Strings.AgentSettingsView_ClientsOutsideTheApp}" />
+                        <TextBlock Classes="card-subtitle" Text="{x:Static res:Strings.AgentSettingsView_LetAnotherMCPClientOnThis}" />
 
                         <Border Classes="table-row">
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                <TextBlock Classes="table-cell" Text="Let outside clients connect" />
+                                <TextBlock Classes="table-cell" Text="{x:Static res:Strings.AgentSettingsView_LetOutsideClientsConnect}" />
                                 <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding OutsideEnabled}" />
                             </Grid>
                         </Border>
@@ -156,14 +157,14 @@
                         <TextBlock Classes="error" TextWrapping="Wrap" Text="{Binding Agent.ServerProblem}"
                                    IsVisible="{Binding Agent.ServerProblem, Converter={x:Static ObjectConverters.IsNotNull}}" />
 
-                        <TextBlock Classes="field-label" Text="Port" />
+                        <TextBlock Classes="field-label" Text="{x:Static res:Strings.AgentSettingsView_Port}" />
                         <TextBox Width="120" HorizontalAlignment="Left" Text="{Binding OutsidePort}" />
 
                         <StackPanel Spacing="8" IsVisible="{Binding OutsideEnabled}">
                             <TextBlock Classes="info-label" Text="{Binding OutsideUrl}" />
                             <StackPanel Orientation="Horizontal" Spacing="8">
-                                <Button Classes="small" Content="Copy configuration" Command="{Binding CopyConfigurationCommand}" />
-                                <Button Classes="small" Content="Replace token" Command="{Binding ReplaceTokenCommand}" />
+                                <Button Classes="small" Content="{x:Static res:Strings.AgentSettingsView_CopyConfiguration}" Command="{Binding CopyConfigurationCommand}" />
+                                <Button Classes="small" Content="{x:Static res:Strings.AgentSettingsView_ReplaceToken}" Command="{Binding ReplaceTokenCommand}" />
                             </StackPanel>
                         </StackPanel>
                         <TextBlock Classes="info-label" TextWrapping="Wrap" Text="{Binding Message}"

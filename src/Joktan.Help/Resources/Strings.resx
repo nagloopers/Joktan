@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="HelpTopic_APIClient" xml:space="preserve">
+    <value>API Client</value>
+  </data>
+  <data name="HelpTopic_Agent" xml:space="preserve">
+    <value>Agent</value>
+  </data>
+  <data name="HelpTopic_AlertsAndMessages" xml:space="preserve">
+    <value>Alerts and messages</value>
+  </data>
+  <data name="HelpTopic_Certificates" xml:space="preserve">
+    <value>Certificates</value>
+  </data>
+  <data name="HelpTopic_ClientsAndBrokers" xml:space="preserve">
+    <value>Clients and brokers</value>
+  </data>
+  <data name="HelpTopic_Containers" xml:space="preserve">
+    <value>Containers</value>
+  </data>
+  <data name="HelpTopic_Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="HelpTopic_EnvironmentsAndVariables" xml:space="preserve">
+    <value>Environments and variables</value>
+  </data>
+  <data name="HelpTopic_FolderMessages" xml:space="preserve">
+    <value>Folder messages</value>
+  </data>
+  <data name="HelpTopic_FoldersAndBackup" xml:space="preserve">
+    <value>Folders and backup</value>
+  </data>
+  <data name="HelpTopic_GRPCRequests" xml:space="preserve">
+    <value>gRPC requests</value>
+  </data>
+  <data name="HelpTopic_GettingStarted" xml:space="preserve">
+    <value>Getting started</value>
+  </data>
+  <data name="HelpTopic_MQTT" xml:space="preserve">
+    <value>MQTT</value>
+  </data>
+  <data name="HelpTopic_MQTTDashboards" xml:space="preserve">
+    <value>MQTT Dashboards</value>
+  </data>
+  <data name="HelpTopic_MessageSettings" xml:space="preserve">
+    <value>Message settings</value>
+  </data>
+  <data name="HelpTopic_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="HelpTopic_Passwords" xml:space="preserve">
+    <value>Passwords</value>
+  </data>
+  <data name="HelpTopic_Pomodoro" xml:space="preserve">
+    <value>Pomodoro</value>
+  </data>
+  <data name="HelpTopic_Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="HelpTopic_SettingsAndData" xml:space="preserve">
+    <value>Settings and data</value>
+  </data>
+  <data name="HelpTopic_TLSAndMutualTLS" xml:space="preserve">
+    <value>TLS and mutual TLS</value>
+  </data>
+  <data name="HelpTopic_Themes" xml:space="preserve">
+    <value>Themes</value>
+  </data>
+  <data name="HelpTopic_TopicExplorer" xml:space="preserve">
+    <value>Topic Explorer</value>
+  </data>
+  <data name="HelpTopic_VaryingFields" xml:space="preserve">
+    <value>Varying fields</value>
+  </data>
+  <data name="HelpWindow_Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="HelpWindow_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="HelpWindow_GoBackToTheTopicRead" xml:space="preserve">
+    <value>Go back to the topic read before this one</value>
+  </data>
+  <data name="HelpWindow_Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="HelpWindow_HelpJoktan" xml:space="preserve">
+    <value>Help · Joktan</value>
+  </data>
+  <data name="HelpWindow_Maximise" xml:space="preserve">
+    <value>Maximise</value>
+  </data>
+  <data name="HelpWindow_Minimise" xml:space="preserve">
+    <value>Minimise</value>
+  </data>
+  <data name="HelpWindow_NoTopicMentionsThat" xml:space="preserve">
+    <value>No topic mentions that.</value>
+  </data>
+  <data name="HelpWindow_Restore" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="HelpWindow_SearchHelp" xml:space="preserve">
+    <value>Search help</value>
+  </data>
+  <data name="Help_Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+</root>

@@ -4,6 +4,7 @@ using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Core.ViewModels;
+using Joktan.TopicDashboards.Resources;
 
 namespace Joktan.TopicDashboards.ViewModels;
 
@@ -37,10 +38,10 @@ public partial class GraphKeyViewModel : ViewModelBase
 
     public static IReadOnlyList<KeyShowChoice> Choices { get; } =
     [
-        new(KeyShow.Line, "One line"),
-        new(KeyShow.Graph, "One graph"),
-        new(KeyShow.Tab, "One tab"),
-        new(KeyShow.Only, "Only"),
+        new(KeyShow.Line, Strings.GraphKey_OneLine),
+        new(KeyShow.Graph, Strings.GraphKey_OneGraph),
+        new(KeyShow.Tab, Strings.GraphKey_OneTab),
+        new(KeyShow.Only, Strings.GraphKey_Only),
     ];
 
     [ObservableProperty]
@@ -57,7 +58,7 @@ public partial class GraphKeyViewModel : ViewModelBase
     public partial IReadOnlyList<string> Values { get; private set; } = [];
 
     [ObservableProperty]
-    public partial string SeenText { get; private set; } = "Nothing yet";
+    public partial string SeenText { get; private set; } = Strings.GraphKey_NothingYet;
 
     public GraphKey ToKey() => new() { Name = Name, Field = Field, Show = SelectedShow.Show, Only = OnlyValue };
 
@@ -68,9 +69,9 @@ public partial class GraphKeyViewModel : ViewModelBase
             return;
 
         Values = list;
-        SeenText = list.Count == 0 ? "Nothing yet"
+        SeenText = list.Count == 0 ? Strings.GraphKey_NothingYet
             : list.Count <= 4 ? string.Join(", ", list)
-            : $"{string.Join(", ", list.Take(3))} and {list.Count - 3} more";
+            : string.Format(Strings.GraphKey_AndMore, string.Join(", ", list.Take(3)), list.Count - 3);
     }
 
     partial void OnSelectedShowChanged(KeyShowChoice value)

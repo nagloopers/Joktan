@@ -1,5 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:res="using:Joktan.Certificates.Resources"
         xmlns:help="using:Joktan.Core.Controls"
         xmlns:core="using:Joktan.Core"
         xmlns:vm="using:Joktan.Certificates.ViewModels"
@@ -14,13 +15,13 @@
         Icon="avares://Joktan.Core/Assets/joktan.ico"
         WindowStartupLocation="CenterOwner"
         Background="{DynamicResource AppBackgroundBrush}"
-        Title="Export certificate">
+        Title="{x:Static res:Strings.ExportCertificateWindow_ExportCertificate}">
 
     <DockPanel>
         <Border DockPanel.Dock="Top" Classes="page-header">
             <Grid ColumnDefinitions="*,Auto">
                 <StackPanel>
-                    <TextBlock Classes="page-title" FontSize="{DynamicResource DialogTitleFontSize}" Text="Export certificate" />
+                    <TextBlock Classes="page-title" FontSize="{DynamicResource DialogTitleFontSize}" Text="{x:Static res:Strings.ExportCertificateWindow_ExportCertificate}" />
                     <TextBlock Classes="page-subtitle" Text="{Binding Title}" />
                 </StackPanel>
                 <help:HelpButton Grid.Column="1" VerticalAlignment="Center" />
@@ -35,8 +36,8 @@
                            Margin="0,0,16,0"
                            Text="{Binding Error}" />
                 <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
-                    <Button Content="Cancel" Command="{Binding CancelCommand}" IsCancel="True" />
-                    <Button Classes="accent" Content="Export" Command="{Binding ExportCommand}" />
+                    <Button Content="{x:Static res:Strings.ExportCertificateWindow_Cancel}" Command="{Binding CancelCommand}" IsCancel="True" />
+                    <Button Classes="accent" Content="{x:Static res:Strings.ExportCertificateWindow_Export}" Command="{Binding ExportCommand}" />
                 </StackPanel>
             </Grid>
         </Border>
@@ -46,40 +47,40 @@
                 <Border Classes="card">
                     <StackPanel Spacing="12">
                         <StackPanel>
-                            <TextBlock Classes="field-label" Text="Folder" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.ExportCertificateWindow_Folder}" />
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                                 <TextBox Classes="code" Text="{Binding Folder}" />
-                                <Button Grid.Column="1" Content="Browse" Command="{Binding BrowseCommand}" />
+                                <Button Grid.Column="1" Content="{x:Static res:Strings.ExportCertificateWindow_Browse}" Command="{Binding BrowseCommand}" />
                             </Grid>
                         </StackPanel>
                         <StackPanel>
-                            <TextBlock Classes="field-label" Text="File name" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.ExportCertificateWindow_FileName}" />
                             <TextBox Text="{Binding BaseName}" Width="240" HorizontalAlignment="Left" />
                             <TextBlock Classes="info-label" Margin="0,6,0,0" TextWrapping="Wrap"
-                                       Text="Without an extension. The certificate is written as name.crt, its key as name.key." />
+                                       Text="{x:Static res:Strings.ExportCertificateWindow_WithoutAnExtensionTheCertificateIs}" />
                         </StackPanel>
 
-                        <CheckBox Content="Private key (name.key, not encrypted)" IsChecked="{Binding IncludeKey}" IsEnabled="{Binding HasKey}" />
+                        <CheckBox Content="{x:Static res:Strings.ExportCertificateWindow_PrivateKeyNameKeyNotEncrypted}" IsChecked="{Binding IncludeKey}" IsEnabled="{Binding HasKey}" />
                         <TextBlock Classes="info-label" TextWrapping="Wrap" Margin="28,-6,0,0"
                                    IsVisible="{Binding IsAuthority}"
-                                   Text="A CA's key is only needed to sign certificates somewhere else. Brokers and clients need only its certificate." />
-                        <CheckBox Content="CA certificates (ca.crt), for a broker's or client's cafile"
+                                   Text="{x:Static res:Strings.ExportCertificateWindow_ACASKeyIsOnly}" />
+                        <CheckBox Content="{x:Static res:Strings.ExportCertificateWindow_CACertificatesCaCrtForA}"
                                   IsChecked="{Binding IncludeAuthority}" IsVisible="{Binding ShowAuthority}" />
-                        <CheckBox Content="Put the intermediate CAs after the certificate in name.crt"
+                        <CheckBox Content="{x:Static res:Strings.ExportCertificateWindow_PutTheIntermediateCAsAfterThe}"
                                   IsChecked="{Binding IncludeChain}" IsVisible="{Binding ShowChain}"
-                                  ToolTip.Tip="A broker should show its intermediate CAs with its certificate, so clients that trust only the root can check it" />
+                                  ToolTip.Tip="{x:Static res:Strings.ExportCertificateWindow_ABrokerShouldShowItsIntermediate}" />
 
-                        <CheckBox Content="PFX/P12 file (name.p12) with the certificate, key and CAs"
+                        <CheckBox Content="{x:Static res:Strings.ExportCertificateWindow_PFXP12FileNameP12With}"
                                   IsChecked="{Binding IncludePkcs12}" IsEnabled="{Binding HasKey}" />
                         <StackPanel IsVisible="{Binding IncludePkcs12}" Margin="28,0,0,0">
-                            <TextBlock Classes="field-label" Text="Password for the PFX/P12 file" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.ExportCertificateWindow_PasswordForThePFXP12File}" />
                             <TextBox Text="{Binding Pkcs12Password}" PasswordChar="•" Width="240" HorizontalAlignment="Left" />
                         </StackPanel>
 
-                        <CheckBox Content="Replace files of the same name" IsChecked="{Binding ReplaceExisting}" />
+                        <CheckBox Content="{x:Static res:Strings.ExportCertificateWindow_ReplaceFilesOfTheSameName}" IsChecked="{Binding ReplaceExisting}" />
 
                         <StackPanel>
-                            <TextBlock Classes="field-label" Text="Files written" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.ExportCertificateWindow_FilesWritten}" />
                             <TextBlock Classes="code" TextWrapping="Wrap" Text="{Binding FilesText}" />
                         </StackPanel>
                     </StackPanel>

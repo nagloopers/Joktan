@@ -8,6 +8,7 @@ using Joktan.Agent.ViewModels;
 using Joktan.Agent.Views;
 using Joktan.Core;
 using Joktan.Mqtt.ViewModels;
+using Joktan.Resources;
 using Joktan.ViewModels;
 
 namespace Joktan.Views;
@@ -33,7 +34,7 @@ public partial class MainWindow : Window
         {
             var maximized = WindowState == WindowState.Maximized;
             MaximizeIcon.Data = maximized ? Icons.WindowRestore : Icons.WindowMaximize;
-            ToolTip.SetTip(MaximizeButton, maximized ? "Restore" : "Maximise");
+            ToolTip.SetTip(MaximizeButton, maximized ? Strings.MainWindow_Restore : Strings.MainWindow_Maximise);
         }
     }
 

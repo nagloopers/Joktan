@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Joktan.Agent.Clients;
+using Joktan.Agent.Resources;
 using Markdig;
 
 namespace Joktan.Agent.Speech;
@@ -244,7 +245,7 @@ public sealed partial class SpeechOutput : IDisposable
     /// <summary>What to read of a reply: its words without the Markdown, and code only named, as it does not read well aloud.</summary>
     public static string SpokenText(string markdown)
     {
-        var text = FencedCode().Replace(markdown, "\n\nCode left out.\n\n");
+        var text = FencedCode().Replace(markdown, Strings.SpeechOutput_CodeLeftOut);
         return Whitespace().Replace(Markdown.ToPlainText(text, Pipeline), " ").Trim();
     }
 

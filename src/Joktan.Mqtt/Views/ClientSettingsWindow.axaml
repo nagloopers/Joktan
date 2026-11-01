@@ -1,5 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:res="using:Joktan.Mqtt.Resources"
         xmlns:help="using:Joktan.Core.Controls"
         xmlns:c="using:Joktan.Mqtt.Controls"
         xmlns:core="using:Joktan.Core"
@@ -15,14 +16,14 @@
         Icon="avares://Joktan.Core/Assets/joktan.ico"
         WindowStartupLocation="CenterOwner"
         Background="{DynamicResource AppBackgroundBrush}"
-        Title="MQTT client"
+        Title="{x:Static res:Strings.ClientSettingsWindow_MQTTClient}"
         x:Name="Root">
 
     <DockPanel>
         <Border DockPanel.Dock="Top" Classes="page-header">
             <Grid ColumnDefinitions="*,Auto">
                 <StackPanel>
-                    <TextBlock Classes="page-title" FontSize="{DynamicResource DialogTitleFontSize}" Text="MQTT client" />
+                    <TextBlock Classes="page-title" FontSize="{DynamicResource DialogTitleFontSize}" Text="{x:Static res:Strings.ClientSettingsWindow_MQTTClient}" />
                     <TextBlock Classes="page-subtitle" Text="{Binding Title}" />
                 </StackPanel>
                 <help:HelpButton Grid.Column="1" VerticalAlignment="Center" />
@@ -37,8 +38,8 @@
                            Margin="0,0,16,0"
                            Text="{Binding Error}" />
                 <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
-                    <Button Content="Cancel" Command="{Binding CancelCommand}" IsCancel="True" />
-                    <Button Classes="accent" Content="Save" Command="{Binding SaveCommand}" />
+                    <Button Content="{x:Static res:Strings.ClientSettingsWindow_Cancel}" Command="{Binding CancelCommand}" IsCancel="True" />
+                    <Button Classes="accent" Content="{x:Static res:Strings.ClientSettingsWindow_Save}" Command="{Binding SaveCommand}" />
                 </StackPanel>
             </Grid>
         </Border>
@@ -49,34 +50,34 @@
                 <!-- Broker -->
                 <Border Classes="card">
                     <StackPanel Spacing="12">
-                        <TextBlock Classes="card-title" Text="Broker" />
+                        <TextBlock Classes="card-title" Text="{x:Static res:Strings.ClientSettingsWindow_Broker}" />
                         <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
                             <StackPanel>
-                                <TextBlock Classes="field-label" Text="Name" />
-                                <TextBox Text="{Binding Name}" PlaceholderText="plant-a, shown on the client's tab" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientSettingsWindow_Name}" />
+                                <TextBox Text="{Binding Name}" PlaceholderText="{x:Static res:Strings.ClientSettingsWindow_PlantAShownOnTheClient}" />
                             </StackPanel>
                             <StackPanel Grid.Column="1">
-                                <TextBlock Classes="field-label" Text="Client ID" />
-                                <TextBox Text="{Binding ClientId}" PlaceholderText="Empty to make one up" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientSettingsWindow_ClientID}" />
+                                <TextBox Text="{Binding ClientId}" PlaceholderText="{x:Static res:Strings.ClientSettingsWindow_EmptyToMakeOneUp}" />
                             </StackPanel>
                         </Grid>
                         <Grid ColumnDefinitions="*,100" ColumnSpacing="16">
                             <StackPanel>
-                                <TextBlock Classes="field-label" Text="Host" />
-                                <TextBox Text="{Binding Host}" PlaceholderText="IP address or host name" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientSettingsWindow_Host}" />
+                                <TextBox Text="{Binding Host}" PlaceholderText="{x:Static res:Strings.ClientSettingsWindow_IPAddressOrHostName}" />
                             </StackPanel>
                             <StackPanel Grid.Column="1">
-                                <TextBlock Classes="field-label" Text="Port" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientSettingsWindow_Port}" />
                                 <TextBox Text="{Binding Port}" />
                             </StackPanel>
                         </Grid>
                         <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
                             <StackPanel>
-                                <TextBlock Classes="field-label" Text="Username (optional)" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientSettingsWindow_UsernameOptional}" />
                                 <TextBox Text="{Binding Username}" />
                             </StackPanel>
                             <StackPanel Grid.Column="1">
-                                <TextBlock Classes="field-label" Text="Password (optional)" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientSettingsWindow_PasswordOptional}" />
                                 <TextBox Text="{Binding Password}" PasswordChar="•" />
                             </StackPanel>
                         </Grid>
@@ -87,72 +88,72 @@
                 <Border Classes="card">
                     <StackPanel Spacing="12">
                         <StackPanel>
-                            <TextBlock Classes="card-title" Text="TLS" />
+                            <TextBlock Classes="card-title" Text="{x:Static res:Strings.ClientSettingsWindow_TLS}" />
                             <TextBlock Classes="card-subtitle"
-                                       Text="Encrypts the connection and checks the broker's certificate. Add a client certificate when the broker asks the client to prove who it is (mutual TLS)." />
+                                       Text="{x:Static res:Strings.ClientSettingsWindow_EncryptsTheConnectionAndChecksThe}" />
                         </StackPanel>
 
-                        <CheckBox Content="Use TLS" IsChecked="{Binding UseTls}" />
+                        <CheckBox Content="{x:Static res:Strings.ClientSettingsWindow_UseTLS}" IsChecked="{Binding UseTls}" />
 
                         <StackPanel Spacing="12" IsVisible="{Binding UseTls}">
                             <StackPanel>
-                                <TextBlock Classes="field-label" Text="CA certificate (optional)" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientSettingsWindow_CACertificateOptional}" />
                                 <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
-                                    <TextBox Classes="code" Text="{Binding CaCertificate}" PlaceholderText="Empty to trust the authorities this computer trusts" />
-                                    <Button Grid.Column="1" Content="Browse" Command="{Binding BrowseCommand}" CommandParameter="{x:Static vm:CertificateFileKind.Authority}" />
-                                    <Button Grid.Column="2" Content="Clear" Command="{Binding ClearFileCommand}" CommandParameter="{x:Static vm:CertificateFileKind.Authority}" />
+                                    <TextBox Classes="code" Text="{Binding CaCertificate}" PlaceholderText="{x:Static res:Strings.ClientSettingsWindow_EmptyToTrustTheAuthoritiesThis}" />
+                                    <Button Grid.Column="1" Content="{x:Static res:Strings.ClientSettingsWindow_Browse}" Command="{Binding BrowseCommand}" CommandParameter="{x:Static vm:CertificateFileKind.Authority}" />
+                                    <Button Grid.Column="2" Content="{x:Static res:Strings.ClientSettingsWindow_Clear}" Command="{Binding ClearFileCommand}" CommandParameter="{x:Static vm:CertificateFileKind.Authority}" />
                                 </Grid>
                                 <TextBlock Classes="info-label"
                                            Margin="0,6,0,0"
                                            TextWrapping="Wrap"
-                                           Text="The certificate that signed the broker's, as PEM or DER. Choose it for a broker with a certificate of its own making." />
+                                           Text="{x:Static res:Strings.ClientSettingsWindow_TheCertificateThatSignedTheBroker}" />
                                 <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,8,0,0" IsVisible="{Binding HasStoreAuthorities}">
-                                    <TextBlock Classes="info-label" VerticalAlignment="Center" Text="Or a CA from Certificates:" />
+                                    <TextBlock Classes="info-label" VerticalAlignment="Center" Text="{x:Static res:Strings.ClientSettingsWindow_OrACAFromCertificates}" />
                                     <ComboBox ItemsSource="{Binding StoreAuthorities}"
                                               SelectedItem="{Binding SelectedStoreAuthority}"
-                                              PlaceholderText="Choose a CA"
+                                              PlaceholderText="{x:Static res:Strings.ClientSettingsWindow_ChooseACA}"
                                               MinWidth="280"
-                                              ToolTip.Tip="A CA made on Dev Tools / Certificates. When saved, its file, with any CAs above it, is copied into this client's folder of certificates and used from there." />
+                                              ToolTip.Tip="{x:Static res:Strings.ClientSettingsWindow_ACAMadeOnDevTools}" />
                                 </StackPanel>
                             </StackPanel>
 
-                            <CheckBox Content="Accept any broker certificate (testing only)"
+                            <CheckBox Content="{x:Static res:Strings.ClientSettingsWindow_AcceptAnyBrokerCertificateTestingOnly}"
                                       IsChecked="{Binding AcceptAnyServerCertificate}"
-                                      ToolTip.Tip="Neither who signed the broker's certificate nor its host name is checked, so the connection is encrypted but the broker is not verified." />
+                                      ToolTip.Tip="{x:Static res:Strings.ClientSettingsWindow_NeitherWhoSignedTheBrokerS}" />
 
                             <StackPanel>
-                                <TextBlock Classes="field-label" Text="Client certificate (optional, for mutual TLS)" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientSettingsWindow_ClientCertificateOptionalForMutualTLS}" />
                                 <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
-                                    <TextBox Classes="code" Text="{Binding ClientCertificate}" PlaceholderText="A PEM certificate, or a PFX/P12 file" />
-                                    <Button Grid.Column="1" Content="Browse" Command="{Binding BrowseCommand}" CommandParameter="{x:Static vm:CertificateFileKind.Client}" />
-                                    <Button Grid.Column="2" Content="Clear" Command="{Binding ClearFileCommand}" CommandParameter="{x:Static vm:CertificateFileKind.Client}" />
+                                    <TextBox Classes="code" Text="{Binding ClientCertificate}" PlaceholderText="{x:Static res:Strings.ClientSettingsWindow_APEMCertificateOrAPFX}" />
+                                    <Button Grid.Column="1" Content="{x:Static res:Strings.ClientSettingsWindow_Browse}" Command="{Binding BrowseCommand}" CommandParameter="{x:Static vm:CertificateFileKind.Client}" />
+                                    <Button Grid.Column="2" Content="{x:Static res:Strings.ClientSettingsWindow_Clear}" Command="{Binding ClearFileCommand}" CommandParameter="{x:Static vm:CertificateFileKind.Client}" />
                                 </Grid>
                                 <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,8,0,0" IsVisible="{Binding HasStoreClients}">
-                                    <TextBlock Classes="info-label" VerticalAlignment="Center" Text="Or one from Certificates:" />
+                                    <TextBlock Classes="info-label" VerticalAlignment="Center" Text="{x:Static res:Strings.ClientSettingsWindow_OrOneFromCertificates}" />
                                     <ComboBox ItemsSource="{Binding StoreClients}"
                                               SelectedItem="{Binding SelectedStoreClient}"
-                                              PlaceholderText="Choose a client certificate"
+                                              PlaceholderText="{x:Static res:Strings.ClientSettingsWindow_ChooseAClientCertificate}"
                                               MinWidth="280"
-                                              ToolTip.Tip="A client certificate made on Dev Tools / Certificates. Its key is filled in, and its CA too when none is chosen. When saved, they are copied into this client's folder of certificates and used from there." />
+                                              ToolTip.Tip="{x:Static res:Strings.ClientSettingsWindow_AClientCertificateMadeOnDev}" />
                                 </StackPanel>
                             </StackPanel>
 
                             <StackPanel IsVisible="{Binding ShowKeyFile}">
-                                <TextBlock Classes="field-label" Text="Private key" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientSettingsWindow_PrivateKey}" />
                                 <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
-                                    <TextBox Classes="code" Text="{Binding ClientKey}" PlaceholderText="Empty when the key is in the certificate file" />
-                                    <Button Grid.Column="1" Content="Browse" Command="{Binding BrowseCommand}" CommandParameter="{x:Static vm:CertificateFileKind.Key}" />
-                                    <Button Grid.Column="2" Content="Clear" Command="{Binding ClearFileCommand}" CommandParameter="{x:Static vm:CertificateFileKind.Key}" />
+                                    <TextBox Classes="code" Text="{Binding ClientKey}" PlaceholderText="{x:Static res:Strings.ClientSettingsWindow_EmptyWhenTheKeyIsIn}" />
+                                    <Button Grid.Column="1" Content="{x:Static res:Strings.ClientSettingsWindow_Browse}" Command="{Binding BrowseCommand}" CommandParameter="{x:Static vm:CertificateFileKind.Key}" />
+                                    <Button Grid.Column="2" Content="{x:Static res:Strings.ClientSettingsWindow_Clear}" Command="{Binding ClearFileCommand}" CommandParameter="{x:Static vm:CertificateFileKind.Key}" />
                                 </Grid>
                             </StackPanel>
 
                             <StackPanel>
-                                <TextBlock Classes="field-label" Text="Key password (optional)" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientSettingsWindow_KeyPasswordOptional}" />
                                 <TextBox Text="{Binding KeyPassword}" PasswordChar="•" Width="300" HorizontalAlignment="Left" />
                                 <TextBlock Classes="info-label"
                                            Margin="0,6,0,0"
                                            TextWrapping="Wrap"
-                                           Text="Opens a PFX/P12 file or an encrypted private key. It is kept in the system's credential store after a successful connection." />
+                                           Text="{x:Static res:Strings.ClientSettingsWindow_OpensAPFXP12FileOr}" />
                             </StackPanel>
 
                             <TextBlock Classes="info-label"
@@ -171,12 +172,12 @@
                 <Border Classes="card">
                     <StackPanel Spacing="12">
                         <StackPanel>
-                            <TextBlock Classes="card-title" Text="Appearance" />
+                            <TextBlock Classes="card-title" Text="{x:Static res:Strings.ClientSettingsWindow_Appearance}" />
                             <TextBlock Classes="card-subtitle"
-                                       Text="Colours for this client's tab and the page behind its cards, on the MQTT page and in the topic explorer. Pick one, type a colour such as #3BB001, or leave it empty for the default. The default text is white on a tab with a fill." />
+                                       Text="{x:Static res:Strings.ClientSettingsWindow_ColoursForThisClientSTab}" />
                         </StackPanel>
                         <StackPanel>
-                            <TextBlock Classes="field-label" Text="Tab text" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientSettingsWindow_TabText}" />
                             <Grid ColumnDefinitions="*,Auto,110" ColumnSpacing="8">
                                 <ItemsControl ItemsSource="{Binding Palette}" VerticalAlignment="Center">
                                     <ItemsControl.ItemsPanel>
@@ -194,14 +195,14 @@
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
-                                <Button Grid.Column="1" Classes="small" Content="Default" VerticalAlignment="Center"
+                                <Button Grid.Column="1" Classes="small" Content="{x:Static res:Strings.ClientSettingsWindow_Default}" VerticalAlignment="Center"
                                         Command="{Binding PickTabTextCommand}" CommandParameter=""
-                                        ToolTip.Tip="Use the theme's colour" />
-                                <TextBox Grid.Column="2" Classes="code" Text="{Binding TabText}" PlaceholderText="White" VerticalAlignment="Center" />
+                                        ToolTip.Tip="{x:Static res:Strings.ClientSettingsWindow_UseTheThemeSColour}" />
+                                <TextBox Grid.Column="2" Classes="code" Text="{Binding TabText}" PlaceholderText="{x:Static res:Strings.ClientSettingsWindow_White}" VerticalAlignment="Center" />
                             </Grid>
                         </StackPanel>
                         <StackPanel>
-                            <TextBlock Classes="field-label" Text="Tab fill" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientSettingsWindow_TabFill}" />
                             <Grid ColumnDefinitions="*,Auto,110" ColumnSpacing="8">
                                 <ItemsControl ItemsSource="{Binding Palette}" VerticalAlignment="Center">
                                     <ItemsControl.ItemsPanel>
@@ -219,14 +220,14 @@
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
-                                <Button Grid.Column="1" Classes="small" Content="Default" VerticalAlignment="Center"
+                                <Button Grid.Column="1" Classes="small" Content="{x:Static res:Strings.ClientSettingsWindow_Default}" VerticalAlignment="Center"
                                         Command="{Binding PickTabFillCommand}" CommandParameter=""
-                                        ToolTip.Tip="Use the theme's colour" />
-                                <TextBox Grid.Column="2" Classes="code" Text="{Binding TabFill}" PlaceholderText="Theme" VerticalAlignment="Center" />
+                                        ToolTip.Tip="{x:Static res:Strings.ClientSettingsWindow_UseTheThemeSColour}" />
+                                <TextBox Grid.Column="2" Classes="code" Text="{Binding TabFill}" PlaceholderText="{x:Static res:Strings.ClientSettingsWindow_Theme}" VerticalAlignment="Center" />
                             </Grid>
                         </StackPanel>
                         <StackPanel>
-                            <TextBlock Classes="field-label" Text="Page background" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientSettingsWindow_PageBackground}" />
                             <Grid ColumnDefinitions="*,Auto,110" ColumnSpacing="8">
                                 <ItemsControl ItemsSource="{Binding Palette}" VerticalAlignment="Center">
                                     <ItemsControl.ItemsPanel>
@@ -244,14 +245,14 @@
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
-                                <Button Grid.Column="1" Classes="small" Content="Default" VerticalAlignment="Center"
+                                <Button Grid.Column="1" Classes="small" Content="{x:Static res:Strings.ClientSettingsWindow_Default}" VerticalAlignment="Center"
                                         Command="{Binding PickPageBackgroundCommand}" CommandParameter=""
-                                        ToolTip.Tip="Use the theme's colour" />
-                                <TextBox Grid.Column="2" Classes="code" Text="{Binding PageBackground}" PlaceholderText="Theme" VerticalAlignment="Center" />
+                                        ToolTip.Tip="{x:Static res:Strings.ClientSettingsWindow_UseTheThemeSColour}" />
+                                <TextBox Grid.Column="2" Classes="code" Text="{Binding PageBackground}" PlaceholderText="{x:Static res:Strings.ClientSettingsWindow_Theme}" VerticalAlignment="Center" />
                             </Grid>
                         </StackPanel>
                         <StackPanel>
-                            <TextBlock Classes="field-label" Text="Preview" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientSettingsWindow_Preview}" />
                             <Border Background="{Binding PreviewPageBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Padding="12" HorizontalAlignment="Left">
                                 <StackPanel Spacing="8">
                                     <Border Classes="tab-header" Background="{Binding PreviewFillBrush}" HorizontalAlignment="Left">
@@ -261,7 +262,7 @@
                                         </StackPanel>
                                     </Border>
                                     <Border Classes="card" Width="260" Padding="12">
-                                        <TextBlock Classes="card-title" Text="Broker" />
+                                        <TextBlock Classes="card-title" Text="{x:Static res:Strings.ClientSettingsWindow_Broker}" />
                                     </Border>
                                 </StackPanel>
                             </Border>

@@ -20,5 +20,6 @@ under shared parent folders that follow the menu, such as `dev-tools/`. `dev-too
 | Search                                  | [search/spec.md](search/spec.md)                                                               | Implemented                    |
 | Agent panel and MCP server              | [agent/spec.md](agent/spec.md)                                                                 | Implemented                    |
 | Settings and themes                     | [settings/spec.md](settings/spec.md)                                                           | Implemented                    |
+| Localization                            | [localization/spec.md](localization/spec.md)                                                   | Implemented, English only      |
 
 For the visual language shared by all features, see [../design.md](../design.md).

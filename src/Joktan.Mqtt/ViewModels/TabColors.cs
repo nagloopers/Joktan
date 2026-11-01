@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt.ViewModels;
 
@@ -20,23 +21,23 @@ public static class TabColors
 {
     public static IReadOnlyList<Swatch> Palette { get; } =
     [
-        new("Purple", "#5747B5"),
-        new("Blue", "#0D8BF2"),
-        new("Teal", "#00A3A3"),
-        new("Green", "#3BB001"),
-        new("Amber", "#E0920B"),
-        new("Red", "#DC3545"),
-        new("Pink", "#F10075"),
-        new("Navy", "#1C273C"),
-        new("White", "#FFFFFF"),
-        new("Lavender", "#E8E5F8"),
-        new("Sky", "#DCEEFE"),
-        new("Mint", "#D6F5F5"),
-        new("Leaf", "#E2F3D9"),
-        new("Sand", "#FCEFD8"),
-        new("Rose", "#F9DCDF"),
-        new("Blush", "#FDD9EA"),
-        new("Grey", "#EDEFF4"),
+        new(Strings.TabColors_Purple, "#5747B5"),
+        new(Strings.TabColors_Blue, "#0D8BF2"),
+        new(Strings.TabColors_Teal, "#00A3A3"),
+        new(Strings.TabColors_Green, "#3BB001"),
+        new(Strings.TabColors_Amber, "#E0920B"),
+        new(Strings.TabColors_Red, "#DC3545"),
+        new(Strings.TabColors_Pink, "#F10075"),
+        new(Strings.TabColors_Navy, "#1C273C"),
+        new(Strings.TabColors_White, "#FFFFFF"),
+        new(Strings.TabColors_Lavender, "#E8E5F8"),
+        new(Strings.TabColors_Sky, "#DCEEFE"),
+        new(Strings.TabColors_Mint, "#D6F5F5"),
+        new(Strings.TabColors_Leaf, "#E2F3D9"),
+        new(Strings.TabColors_Sand, "#FCEFD8"),
+        new(Strings.TabColors_Rose, "#F9DCDF"),
+        new(Strings.TabColors_Blush, "#FDD9EA"),
+        new(Strings.TabColors_Grey, "#EDEFF4"),
     ];
 
     /// <summary>The colour, or null when the text is empty or not a colour.</summary>

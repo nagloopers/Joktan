@@ -3,6 +3,7 @@ using System.Linq;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Joktan.Core.ViewModels;
+using Joktan.Settings.Resources;
 using Joktan.Settings.Themes;
 
 namespace Joktan.Settings.ViewModels;
@@ -12,7 +13,7 @@ public partial class ColorsViewModel : PageViewModel
 {
     private readonly ThemeEditor _editor;
 
-    public ColorsViewModel(ThemeEditor editor, ThemeBarViewModel bar) : base("Colours", "Settings / Colours")
+    public ColorsViewModel(ThemeEditor editor, ThemeBarViewModel bar) : base(Strings.Colors_Colours, Strings.Colors_SettingsColours)
     {
         _editor = editor;
         Bar = bar;

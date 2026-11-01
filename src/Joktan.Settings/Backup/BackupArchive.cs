@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text.Json;
 using Joktan.Core;
+using Joktan.Settings.Resources;
 
 namespace Joktan.Settings.Backup;
 
@@ -102,7 +103,7 @@ public static class BackupArchive
                         }
 
                         if (written == 0)
-                            skipped.Add($"{item.Name}: nothing found at {root.Path}");
+                            skipped.Add(string.Format(Strings.BackupArchive_NothingFoundAt, item.Name, root.Path));
                         count += written;
                         entry.Roots.Add(new ManifestRoot { Key = root.Key, Path = root.Path, IsFile = root.IsFile, Folder = folder, FileCount = written });
                     }
@@ -120,7 +121,7 @@ public static class BackupArchive
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
             TryDelete(temporary);
-            throw new BackupException($"Could not write {zipPath}: {e.Message}", e);
+            throw new BackupException(string.Format(Strings.BackupArchive_CouldNotWrite, zipPath, e.Message), e);
         }
 
         return new BackupResult(zipPath, count, skipped);
@@ -132,16 +133,16 @@ public static class BackupArchive
         try
         {
             using var zip = ZipFile.OpenRead(zipPath);
-            var entry = zip.GetEntry(ManifestName) ?? throw new BackupException($"{Path.GetFileName(zipPath)} is not a Joktan backup.");
+            var entry = zip.GetEntry(ManifestName) ?? throw new BackupException(string.Format(Strings.BackupArchive_IsNotAJoktanBackup, Path.GetFileName(zipPath)));
             using var stream = entry.Open();
-            var manifest = JsonSerializer.Deserialize<BackupManifest>(stream) ?? throw new BackupException($"{Path.GetFileName(zipPath)} is not a Joktan backup.");
+            var manifest = JsonSerializer.Deserialize<BackupManifest>(stream) ?? throw new BackupException(string.Format(Strings.BackupArchive_IsNotAJoktanBackup, Path.GetFileName(zipPath)));
             if (manifest.Version > 1)
-                throw new BackupException($"{Path.GetFileName(zipPath)} was made by a newer Joktan.");
+                throw new BackupException(string.Format(Strings.BackupArchive_WasMadeByANewerJoktan, Path.GetFileName(zipPath)));
             return manifest;
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or InvalidDataException or JsonException)
         {
-            throw new BackupException($"Could not read {Path.GetFileName(zipPath)}: {e.Message}", e);
+            throw new BackupException(string.Format(Strings.BackupArchive_CouldNotRead, Path.GetFileName(zipPath), e.Message), e);
         }
     }
 
@@ -160,7 +161,7 @@ public static class BackupArchive
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or InvalidDataException)
         {
-            throw new BackupException($"{Path.GetFileName(zipPath)} is damaged: {e.Message}", e);
+            throw new BackupException(string.Format(Strings.BackupArchive_IsDamaged, Path.GetFileName(zipPath), e.Message), e);
         }
     }
 
@@ -257,7 +258,7 @@ public static class BackupArchive
                 // A zip can name a path outside where it is unpacked, which must never be followed.
                 var destination = Path.GetFullPath(Path.Combine(target, entry.FullName[prefix.Length..]));
                 if (!destination.StartsWith(root, StringComparison.Ordinal))
-                    throw new BackupException($"{Path.GetFileName(zipPath)} names a file outside its folder: {entry.FullName}");
+                    throw new BackupException(string.Format(Strings.BackupArchive_NamesAFileOutsideItsFolder, Path.GetFileName(zipPath), entry.FullName));
 
                 Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
                 entry.ExtractToFile(destination, overwrite: true);
@@ -265,7 +266,7 @@ public static class BackupArchive
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or InvalidDataException)
         {
-            throw new BackupException($"Could not unpack {Path.GetFileName(zipPath)}: {e.Message}", e);
+            throw new BackupException(string.Format(Strings.BackupArchive_CouldNotUnpack, Path.GetFileName(zipPath), e.Message), e);
         }
     }
 

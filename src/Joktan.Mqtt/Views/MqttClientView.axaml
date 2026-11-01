@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Mqtt.Resources"
              xmlns:vm="using:Joktan.Mqtt.ViewModels"
              xmlns:mqtt="using:Joktan.Mqtt"
              xmlns:core="using:Joktan.Core"
@@ -19,40 +20,40 @@
                     <Grid ColumnDefinitions="*,Auto">
                         <StackPanel>
                             <Button Classes="group-toggle" Classes.collapsed="{Binding IsBrokerCollapsed}" Command="{Binding ToggleBrokerCommand}"
-                                    ToolTip.Tip="Show or hide the broker's details. Its state and Connect stay.">
+                                    ToolTip.Tip="{x:Static res:Strings.MqttClientView_ShowOrHideTheBrokerS}">
                                 <StackPanel Orientation="Horizontal" Spacing="8">
                                     <PathIcon Data="{x:Static core:Icons.ChevronDown}" />
-                                    <TextBlock Classes="card-title" Text="Broker" />
+                                    <TextBlock Classes="card-title" Text="{x:Static res:Strings.MqttClientView_Broker}" />
                                 </StackPanel>
                             </Button>
-                            <TextBlock Classes="card-subtitle" Text="Where this client connects to. Everything on this tab is sent through it."
+                            <TextBlock Classes="card-subtitle" Text="{x:Static res:Strings.MqttClientView_WhereThisClientConnectsToEverything}"
                                        IsVisible="{Binding !IsBrokerCollapsed}" />
                         </StackPanel>
                         <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Top" Margin="16,0,0,0">
-                            <Button Content="Edit client"
+                            <Button Content="{x:Static res:Strings.MqttClientView_EditClient}"
                                     Command="{Binding EditClientCommand}"
-                                    ToolTip.Tip="Change the broker, login and certificates. Disconnect first." />
-                            <Button Content="Remove client"
+                                    ToolTip.Tip="{x:Static res:Strings.MqttClientView_ChangeTheBrokerLoginAndCertificates}" />
+                            <Button Content="{x:Static res:Strings.MqttClientView_RemoveClient}"
                                     Command="{Binding RemoveClientCommand}"
-                                    ToolTip.Tip="Remove this client and its tab. Disconnect first. The last client and the alerts and messages server cannot be removed." />
+                                    ToolTip.Tip="{x:Static res:Strings.MqttClientView_RemoveThisClientAndItsTab}" />
                         </StackPanel>
                     </Grid>
 
                     <Grid ColumnDefinitions="2*,*,1.4*,*" ColumnSpacing="16" IsVisible="{Binding !IsBrokerCollapsed}">
                         <StackPanel>
-                            <TextBlock Classes="field-label" Text="Broker" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.MqttClientView_Broker}" />
                             <TextBlock Classes="table-cell" Text="{Binding Address}" ToolTip.Tip="{Binding Address}" />
                         </StackPanel>
                         <StackPanel Grid.Column="1">
-                            <TextBlock Classes="field-label" Text="Login" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.MqttClientView_Login}" />
                             <TextBlock Classes="table-cell" Text="{Binding Login}" />
                         </StackPanel>
                         <StackPanel Grid.Column="2">
-                            <TextBlock Classes="field-label" Text="Client ID" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.MqttClientView_ClientID}" />
                             <TextBlock Classes="table-cell" Text="{Binding ClientId}" />
                         </StackPanel>
                         <StackPanel Grid.Column="3">
-                            <TextBlock Classes="field-label" Text="Security" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.MqttClientView_Security}" />
                             <TextBlock Classes="table-cell" Text="{Binding Security}" ToolTip.Tip="{Binding SecurityDetail}" />
                         </StackPanel>
                     </Grid>
@@ -70,7 +71,7 @@
                                    Text="{Binding StateText}" />
                         <Panel Grid.Column="2">
                             <Button Classes="accent"
-                                    Content="Connect"
+                                    Content="{x:Static res:Strings.MqttClientView_Connect}"
                                     Command="{Binding ConnectCommand}"
                                     IsVisible="{Binding CanEdit}" />
                             <Button Content="{Binding DisconnectText}"
@@ -90,17 +91,17 @@
                 <StackPanel Spacing="12">
                     <StackPanel>
                         <Button Classes="group-toggle" Classes.collapsed="{Binding IsManualCollapsed}" Command="{Binding ToggleManualCommand}"
-                                ToolTip.Tip="Show or hide the manual message">
+                                ToolTip.Tip="{x:Static res:Strings.MqttClientView_ShowOrHideTheManualMessage}">
                             <StackPanel Orientation="Horizontal" Spacing="8">
                                 <PathIcon Data="{x:Static core:Icons.ChevronDown}" />
-                                <TextBlock Classes="card-title" Text="Manual message" />
+                                <TextBlock Classes="card-title" Text="{x:Static res:Strings.MqttClientView_ManualMessage}" />
                             </StackPanel>
                         </Button>
-                        <TextBlock Classes="card-subtitle" Text="Send one message typed in by hand." IsVisible="{Binding !IsManualCollapsed}" />
+                        <TextBlock Classes="card-subtitle" Text="{x:Static res:Strings.MqttClientView_SendOneMessageTypedInBy}" IsVisible="{Binding !IsManualCollapsed}" />
                     </StackPanel>
 
                     <StackPanel IsVisible="{Binding !IsManualCollapsed}">
-                        <TextBlock Classes="field-label" Text="Topic" />
+                        <TextBlock Classes="field-label" Text="{x:Static res:Strings.MqttClientView_Topic}" />
                         <TextBox Text="{Binding ManualTopic}" PlaceholderText="plant/line1/telemetry" />
                         <TextBlock Classes="error"
                                    Text="{Binding ManualTopicError}"
@@ -108,7 +109,7 @@
                     </StackPanel>
 
                     <StackPanel IsVisible="{Binding !IsManualCollapsed}">
-                        <TextBlock Classes="field-label" Text="Body" />
+                        <TextBlock Classes="field-label" Text="{x:Static res:Strings.MqttClientView_Body}" />
                         <TextBox Classes="code"
                                  Text="{Binding ManualBody}"
                                  AcceptsReturn="True"
@@ -118,7 +119,7 @@
 
                     <Grid ColumnDefinitions="Auto,Auto,*,Auto" ColumnSpacing="16" IsVisible="{Binding !IsManualCollapsed}">
                         <StackPanel Orientation="Horizontal" Spacing="8">
-                            <TextBlock Classes="field-label" Text="QoS" VerticalAlignment="Center" Margin="0" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.MqttClientView_QoS}" VerticalAlignment="Center" Margin="0" />
                             <ComboBox SelectedIndex="{Binding ManualQos}" MinWidth="70">
                                 <ComboBoxItem Content="0" />
                                 <ComboBoxItem Content="1" />
@@ -126,12 +127,12 @@
                             </ComboBox>
                         </StackPanel>
                         <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="16">
-                            <CheckBox Content="Retain" IsChecked="{Binding ManualRetain}" />
-                            <CheckBox Content="Gzip"
+                            <CheckBox Content="{x:Static res:Strings.MqttClientView_Retain}" IsChecked="{Binding ManualRetain}" />
+                            <CheckBox Content="{x:Static res:Strings.MqttClientView_Gzip}"
                                       IsChecked="{Binding ManualGzip}"
-                                      ToolTip.Tip="Compress the body with gzip before it is sent" />
+                                      ToolTip.Tip="{x:Static res:Strings.MqttClientView_CompressTheBodyWithGzipBefore}" />
                         </StackPanel>
-                        <Button Grid.Column="3" Classes="accent" Content="Send" Command="{Binding SendManualCommand}" />
+                        <Button Grid.Column="3" Classes="accent" Content="{x:Static res:Strings.MqttClientView_Send}" Command="{Binding SendManualCommand}" />
                     </Grid>
                 </StackPanel>
             </Border>
@@ -142,18 +143,18 @@
                     <Grid ColumnDefinitions="*,Auto">
                         <StackPanel>
                             <Button Classes="group-toggle" Classes.collapsed="{Binding IsFolderCollapsed}" Command="{Binding ToggleFolderCommand}"
-                                    ToolTip.Tip="Show or hide the messages. Those switched on keep being sent.">
+                                    ToolTip.Tip="{x:Static res:Strings.MqttClientView_ShowOrHideTheMessagesThose}">
                                 <StackPanel Orientation="Horizontal" Spacing="8">
                                     <PathIcon Data="{x:Static core:Icons.ChevronDown}" />
-                                    <TextBlock Classes="card-title" Text="Folder messages" />
+                                    <TextBlock Classes="card-title" Text="{x:Static res:Strings.MqttClientView_FolderMessages}" />
                                 </StackPanel>
                             </Button>
                             <TextBlock Classes="card-subtitle" IsVisible="{Binding !IsFolderCollapsed}"
-                                       Text="Every .json file below the folder is a message. The folder path is the topic, unless its settings give another, and the file is the body. A message that is switched on is sent on its schedule while this client is connected." />
+                                       Text="{x:Static res:Strings.MqttClientView_EveryJsonFileBelowTheFolder}" />
                         </StackPanel>
                         <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Top" Margin="16,0,0,0">
-                            <Button Content="Choose folder" Command="{Binding ChooseFolderCommand}" />
-                            <Button Content="Rescan" Command="{Binding RescanCommand}" />
+                            <Button Content="{x:Static res:Strings.MqttClientView_ChooseFolder}" Command="{Binding ChooseFolderCommand}" />
+                            <Button Content="{x:Static res:Strings.MqttClientView_Rescan}" Command="{Binding RescanCommand}" />
                         </StackPanel>
                     </Grid>
 
@@ -168,14 +169,14 @@
                     <Panel IsVisible="{Binding !IsFolderCollapsed}">
                     <StackPanel IsVisible="{Binding Rows.Count}">
                         <Grid ColumnDefinitions="52,2*,1.4*,1.6*,100,76,40,1.5*,150" ColumnSpacing="12" Margin="0,0,0,6">
-                            <TextBlock Classes="table-header" Text="On" />
-                            <TextBlock Grid.Column="1" Classes="table-header" Text="Topic" />
-                            <TextBlock Grid.Column="2" Classes="table-header" Text="File" />
-                            <TextBlock Grid.Column="3" Classes="table-header" Text="Schedule" />
-                            <TextBlock Grid.Column="4" Classes="table-header" Text="Next send" />
-                            <TextBlock Grid.Column="5" Classes="table-header" Text="Last sent" />
-                            <TextBlock Grid.Column="6" Classes="table-header" Text="Sent" TextAlignment="Right" />
-                            <TextBlock Grid.Column="7" Classes="table-header" Text="State" />
+                            <TextBlock Classes="table-header" Text="{x:Static res:Strings.MqttClientView_On}" />
+                            <TextBlock Grid.Column="1" Classes="table-header" Text="{x:Static res:Strings.MqttClientView_Topic}" />
+                            <TextBlock Grid.Column="2" Classes="table-header" Text="{x:Static res:Strings.MqttClientView_File}" />
+                            <TextBlock Grid.Column="3" Classes="table-header" Text="{x:Static res:Strings.MqttClientView_Schedule}" />
+                            <TextBlock Grid.Column="4" Classes="table-header" Text="{x:Static res:Strings.MqttClientView_NextSend}" />
+                            <TextBlock Grid.Column="5" Classes="table-header" Text="{x:Static res:Strings.MqttClientView_LastSent}" />
+                            <TextBlock Grid.Column="6" Classes="table-header" Text="{x:Static res:Strings.MqttClientView_Sent}" TextAlignment="Right" />
+                            <TextBlock Grid.Column="7" Classes="table-header" Text="{x:Static res:Strings.MqttClientView_State}" />
                         </Grid>
 
                         <!-- One flat list of group headers and rows, so only the rows on screen are built -->
@@ -193,7 +194,7 @@
                                             <ToggleSwitch Classes="compact"
                                                           IsChecked="{Binding IsOn}"
                                                           IsEnabled="{Binding CanSwitch}"
-                                                          ToolTip.Tip="Switch every message in this group and its sub-groups on or off" />
+                                                          ToolTip.Tip="{x:Static res:Strings.MqttClientView_SwitchEveryMessageInThisGroup}" />
                                             <Button Grid.Column="1"
                                                     Margin="{Binding Indent}"
                                                     Classes="group-toggle"
@@ -229,11 +230,11 @@
                                                        ToolTip.Tip="{Binding State}" />
                                             <StackPanel Grid.Column="8" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
                                                 <Button Classes="small"
-                                                        Content="Send now"
+                                                        Content="{x:Static res:Strings.MqttClientView_SendNow}"
                                                         Command="{Binding #Root.((vm:MqttClientViewModel)DataContext).SendNowCommand}"
                                                         CommandParameter="{Binding}" />
                                                 <Button Classes="small"
-                                                        Content="Edit"
+                                                        Content="{x:Static res:Strings.MqttClientView_Edit}"
                                                         Command="{Binding #Root.((vm:MqttClientViewModel)DataContext).EditMessageCommand}"
                                                         CommandParameter="{Binding}" />
                                             </StackPanel>
@@ -253,28 +254,28 @@
                     <Grid ColumnDefinitions="*,Auto">
                         <StackPanel>
                             <Button Classes="group-toggle" Classes.collapsed="{Binding IsActivityCollapsed}" Command="{Binding ToggleActivityCommand}"
-                                    ToolTip.Tip="Show or hide the activity. It keeps being recorded.">
+                                    ToolTip.Tip="{x:Static res:Strings.MqttClientView_ShowOrHideTheActivityIt}">
                                 <StackPanel Orientation="Horizontal" Spacing="8">
                                     <PathIcon Data="{x:Static core:Icons.ChevronDown}" />
-                                    <TextBlock Classes="card-title" Text="Activity" />
+                                    <TextBlock Classes="card-title" Text="{x:Static res:Strings.MqttClientView_Activity}" />
                                 </StackPanel>
                             </Button>
-                            <TextBlock Classes="card-subtitle" Text="The most recent 500 events from this session, newest first."
+                            <TextBlock Classes="card-subtitle" Text="{x:Static res:Strings.MqttClientView_TheMostRecent500EventsFrom}"
                                        IsVisible="{Binding !IsActivityCollapsed}" />
                         </StackPanel>
-                        <Button Grid.Column="1" Content="Clear" VerticalAlignment="Top" Command="{Binding ClearLogCommand}" />
+                        <Button Grid.Column="1" Content="{x:Static res:Strings.MqttClientView_Clear}" VerticalAlignment="Top" Command="{Binding ClearLogCommand}" />
                     </Grid>
 
                     <StackPanel Spacing="12" IsVisible="{Binding !IsActivityCollapsed}">
-                    <TextBlock Classes="info-label" Text="Nothing has happened yet." IsVisible="{Binding !Entries.Count}" />
+                    <TextBlock Classes="info-label" Text="{x:Static res:Strings.MqttClientView_NothingHasHappenedYet}" IsVisible="{Binding !Entries.Count}" />
 
                     <StackPanel IsVisible="{Binding Entries.Count}">
                         <Grid ColumnDefinitions="70,100,2*,1.4*,2*" ColumnSpacing="12" Margin="12,0,12,6">
-                            <TextBlock Classes="table-header" Text="Time" />
-                            <TextBlock Grid.Column="1" Classes="table-header" Text="Event" />
-                            <TextBlock Grid.Column="2" Classes="table-header" Text="Topic" />
-                            <TextBlock Grid.Column="3" Classes="table-header" Text="Source" />
-                            <TextBlock Grid.Column="4" Classes="table-header" Text="Detail" />
+                            <TextBlock Classes="table-header" Text="{x:Static res:Strings.MqttClientView_Time}" />
+                            <TextBlock Grid.Column="1" Classes="table-header" Text="{x:Static res:Strings.MqttClientView_Event}" />
+                            <TextBlock Grid.Column="2" Classes="table-header" Text="{x:Static res:Strings.MqttClientView_Topic}" />
+                            <TextBlock Grid.Column="3" Classes="table-header" Text="{x:Static res:Strings.MqttClientView_Source}" />
+                            <TextBlock Grid.Column="4" Classes="table-header" Text="{x:Static res:Strings.MqttClientView_Detail}" />
                         </Grid>
 
                         <ListBox Classes="log"
@@ -296,7 +297,7 @@
                     </StackPanel>
 
                     <StackPanel IsVisible="{Binding HasSelectedBody}">
-                        <TextBlock Classes="field-label" Text="Body that was sent, before any gzipping" />
+                        <TextBlock Classes="field-label" Text="{x:Static res:Strings.MqttClientView_BodyThatWasSentBeforeAny}" />
                         <TextBox Classes="code"
                                  Text="{Binding SelectedBody, Mode=OneWay}"
                                  IsReadOnly="True"

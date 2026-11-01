@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Data.Converters;
+using Joktan.Containers.Resources;
 
 namespace Joktan.Containers;
 
@@ -15,6 +17,18 @@ public enum ContainerEngine
     Auto,
     Docker,
     Podman,
+}
+
+public static class ContainerEngineText
+{
+    /// <summary>What a ContainerEngine is called on screen.</summary>
+    public static string Text(this ContainerEngine value) => value switch
+    {
+        ContainerEngine.Auto => Strings.ContainerEngine_Auto,
+        _ => value.ToString(),
+    };
+
+    public static readonly FuncValueConverter<ContainerEngine, string> ContainerEngineConverter = new(value => value.Text());
 }
 
 /// <summary>
@@ -87,9 +101,9 @@ public sealed partial class ComposeTool
         {
             throw new InvalidOperationException(engine switch
             {
-                ContainerEngine.Docker => "Docker is not installed, or its docker command is not in a usual folder.",
-                ContainerEngine.Podman => "Podman is not installed, or its podman command is not in a usual folder.",
-                _ => "Neither Docker nor Podman is installed, or their commands are not in a usual folder.",
+                ContainerEngine.Docker => Strings.ComposeTool_DockerIsNotInstalledOrIts,
+                ContainerEngine.Podman => Strings.ComposeTool_PodmanIsNotInstalledOrIts,
+                _ => Strings.ComposeTool_NeitherDockerNorPodmanIsInstalled,
             });
         }
 
@@ -136,7 +150,7 @@ public sealed partial class ComposeTool
         var exitCode = await RunAsync(Executable, ["compose", "-f", ComposeFile, .. arguments], output.Add, cancel, errors.Add);
         if (exitCode != 0)
         {
-            var message = errors.LastOrDefault(e => e.Length > 0) ?? $"{CommandLine(arguments)} failed with exit code {exitCode}.";
+            var message = errors.LastOrDefault(e => e.Length > 0) ?? string.Format(Strings.ComposeTool_FailedWithExitCode, CommandLine(arguments), exitCode);
             throw new InvalidOperationException(message);
         }
 

@@ -1,6 +1,7 @@
 using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Joktan.Core.ViewModels;
+using Joktan.TopicExplorer.Resources;
 
 namespace Joktan.TopicExplorer.ViewModels;
 
@@ -22,11 +23,11 @@ public partial class FieldChoiceViewModel : ViewModelBase
     /// <summary>Where the number is in the payload; empty when it is the whole payload.</summary>
     public string Path { get; }
 
-    public string DisplayPath => Path.Length == 0 ? "The whole payload" : Path;
+    public string DisplayPath => Path.Length == 0 ? Strings.FieldChoice_TheWholePayload : Path;
 
-    public string Kind => Path.Contains("[*]", StringComparison.Ordinal) ? "array"
-        : Path.Contains('[') ? "item"
-        : "value";
+    public string Kind => Path.Contains("[*]", StringComparison.Ordinal) ? Strings.FieldChoice_Array
+        : Path.Contains('[') ? Strings.FieldChoice_Item
+        : Strings.FieldChoice_Value;
 
     [ObservableProperty]
     public partial bool IsChosen { get; set; }

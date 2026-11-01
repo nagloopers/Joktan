@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt;
 
@@ -76,7 +77,7 @@ public sealed partial class TopicPattern
         problem = null;
         if (string.IsNullOrEmpty(text))
         {
-            problem = "The topic is empty";
+            problem = Strings.TopicPattern_TheTopicIsEmpty;
             return false;
         }
 
@@ -101,13 +102,13 @@ public sealed partial class TopicPattern
                 var name = level[1..^(toEnd ? 2 : 1)];
                 if (!NameRule().IsMatch(name))
                 {
-                    problem = $"{level} needs a name that starts with a letter, such as {{line}}";
+                    problem = string.Format(Strings.TopicPattern_NeedsANameThatStartsWith, level);
                     return false;
                 }
 
                 if (keys.Any(k => k.Name == name))
                 {
-                    problem = $"{{{name}}} is used twice in the topic";
+                    problem = string.Format(Strings.TopicPattern_IsUsedTwiceInTheTopic, name);
                     return false;
                 }
 
@@ -116,7 +117,7 @@ public sealed partial class TopicPattern
             }
             else if (level.Contains('{'))
             {
-                problem = $"In {level}, a key must be a whole level. Write \\{{ for a real brace";
+                problem = string.Format(Strings.TopicPattern_InAKeyMustBeA, level);
                 return false;
             }
             else

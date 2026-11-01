@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Core.ViewModels;
+using Joktan.TopicDashboards.Resources;
 
 namespace Joktan.TopicDashboards.ViewModels;
 
@@ -33,13 +34,13 @@ public partial class GraphValueChoiceViewModel : ViewModelBase
     /// <summary>Where the number is in the payload; empty when it is the whole payload.</summary>
     public string Path { get; }
 
-    public string DisplayPath => Path.Length == 0 ? "The whole payload" : Path;
+    public string DisplayPath => Path.Length == 0 ? Strings.GraphValueChoice_TheWholePayload : Path;
 
-    public string Kind => Path.Contains('{') ? "linked"
-        : Path.Contains("=*]", StringComparison.Ordinal) ? "each"
-        : Path.Contains("[*]", StringComparison.Ordinal) ? "array"
-        : Path.Contains('[') ? "item"
-        : "value";
+    public string Kind => Path.Contains('{') ? Strings.GraphValueChoice_Linked
+        : Path.Contains("=*]", StringComparison.Ordinal) ? Strings.GraphValueChoice_Each
+        : Path.Contains("[*]", StringComparison.Ordinal) ? Strings.GraphValueChoice_Array
+        : Path.Contains('[') ? Strings.GraphValueChoice_Item
+        : Strings.GraphValueChoice_Value;
 
     /// <summary>Whether it looks like a time or a counter of messages, so is not ticked by itself.</summary>
     public bool LooksLikeTime { get; set; }
@@ -55,7 +56,7 @@ public partial class GraphValueChoiceViewModel : ViewModelBase
 
     public bool HasBetterPath => IsChosen && BetterPath is not null;
 
-    public string BetterPathText => $"This depends on the order of the array. Use {BetterPath}?";
+    public string BetterPathText => string.Format(Strings.GraphValueChoice_ThisDependsOnTheOrderOf, BetterPath);
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasBetterPath))]

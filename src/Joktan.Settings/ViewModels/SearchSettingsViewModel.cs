@@ -1,11 +1,12 @@
 using System;
 using System.Runtime.CompilerServices;
 using Joktan.Core.ViewModels;
+using Joktan.Settings.Resources;
 
 namespace Joktan.Settings.ViewModels;
 
 /// <summary>Settings / Search: chooses what the search box looks through, and saves each change as it is made.</summary>
-public class SearchSettingsViewModel(SearchSettings settings) : PageViewModel("Search", "Settings / Search")
+public class SearchSettingsViewModel(SearchSettings settings) : PageViewModel(Strings.SearchSettings_Search, Strings.SearchSettings_SettingsSearch)
 {
     /// <summary>Raised after a switch changes.</summary>
     public event Action? Changed;

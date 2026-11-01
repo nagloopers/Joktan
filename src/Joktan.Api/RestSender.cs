@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Joktan.Api.Resources;
 
 namespace Joktan.Api;
 
@@ -102,11 +103,11 @@ public static class RestSender
         }
         catch (OperationCanceledException) when (cancel.IsCancellationRequested)
         {
-            return Failed("Cancelled", stopwatch.Elapsed);
+            return Failed(Strings.RestSender_Cancelled, stopwatch.Elapsed);
         }
         catch (TaskCanceledException)
         {
-            return Failed($"No answer within {request.TimeoutSeconds} seconds", stopwatch.Elapsed);
+            return Failed(string.Format(Strings.RestSender_NoAnswerWithinSeconds, request.TimeoutSeconds), stopwatch.Elapsed);
         }
         catch (Exception e) when (e is HttpRequestException or InvalidOperationException or UriFormatException or FormatException)
         {
@@ -119,7 +120,7 @@ public static class RestSender
     {
         var url = variables.Apply(request.Url.Trim());
         if (url.Length == 0)
-            throw new InvalidOperationException("Enter the address to send the request to.");
+            throw new InvalidOperationException(Strings.RestSender_EnterTheAddressToSendThe);
         if (!url.Contains("://", StringComparison.Ordinal))
             url = "http://" + url;
 
@@ -129,7 +130,7 @@ public static class RestSender
         if (query.Count > 0)
             url += (url.Contains('?') ? "&" : "?") + string.Join("&", query);
         if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) || (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps))
-            throw new InvalidOperationException($"{url} is not an http or https address.");
+            throw new InvalidOperationException(string.Format(Strings.RestSender_IsNotAnHttpOrHttps, url));
 
         var message = new HttpRequestMessage(new HttpMethod(request.Method.Trim().ToUpperInvariant()), uri);
         message.Content = Body(request, variables);
@@ -205,7 +206,7 @@ public static class RestSender
             }
         }
 
-        return size > MaxShownBody ? formatted + $"\n\n… cut short: the body is {size:N0} bytes." : formatted;
+        return size > MaxShownBody ? formatted + string.Format(Strings.RestSender_CutShortTheBodyIsBytes, size) : formatted;
     }
 
     public static string? TryIndentJson(string text)

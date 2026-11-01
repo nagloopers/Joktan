@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using Joktan.Mqtt.Controls;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt;
 
@@ -101,13 +102,13 @@ public sealed class ClientProfile
     {
         name = name.Trim();
         if (name.Length == 0)
-            return "Enter a name for the client";
+            return Strings.ClientProfile_EnterANameForTheClient;
         if (name.Length > MaxNameLength)
-            return $"The name must not be longer than {MaxNameLength} characters";
+            return string.Format(Strings.ClientProfile_TheNameMustNotBeLonger, MaxNameLength);
         if (!name.All(c => char.IsLetterOrDigit(c) || c is ' ' or '_' or '-' or '.'))
-            return "The name may use letters, digits, spaces, _, - and .";
+            return Strings.ClientProfile_TheNameMayUseLettersDigits;
         if (otherNames.Contains(name, StringComparer.OrdinalIgnoreCase))
-            return $"There is already a client called {name}";
+            return string.Format(Strings.ClientProfile_ThereIsAlreadyAClientCalled, name);
         return null;
     }
 

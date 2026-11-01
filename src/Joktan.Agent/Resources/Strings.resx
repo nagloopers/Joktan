@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AgentPanel_Allow" xml:space="preserve">
+    <value>Allow</value>
+  </data>
+  <data name="AgentPanel_AllowForThisConversation" xml:space="preserve">
+    <value>Allow for this conversation</value>
+  </data>
+  <data name="AgentPanel_AskTheAgent" xml:space="preserve">
+    <value>Ask the agent</value>
+  </data>
+  <data name="AgentPanel_ClearTheChatAndStartAgain" xml:space="preserve">
+    <value>Clear the chat and start again</value>
+  </data>
+  <data name="AgentPanel_CloseThePanel" xml:space="preserve">
+    <value>Close the panel</value>
+  </data>
+  <data name="AgentPanel_Decline" xml:space="preserve">
+    <value>Decline</value>
+  </data>
+  <data name="AgentPanel_DockInTheMainWindow" xml:space="preserve">
+    <value>Dock in the main window</value>
+  </data>
+  <data name="AgentPanel_ItCanDoWhatThePages" xml:space="preserve">
+    <value>It can do what the pages of this app do, through the app's MCP server. You are asked before it deletes anything, sends anything out, or reads a stored password.</value>
+  </data>
+  <data name="AgentPanel_NoPromptsAddThemOnThe" xml:space="preserve">
+    <value>No prompts. Add them on the Settings / Agent page.</value>
+  </data>
+  <data name="AgentPanel_OpenInItsOwnWindow" xml:space="preserve">
+    <value>Open in its own window</value>
+  </data>
+  <data name="AgentPanel_Prompts" xml:space="preserve">
+    <value>Prompts</value>
+  </data>
+  <data name="AgentPanel_Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="AgentPanel_Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="AgentPanel_StopReadingThisAloud" xml:space="preserve">
+    <value>Stop reading this aloud</value>
+  </data>
+  <data name="AgentPanel_WhichCommandLineAgentAnswersChange" xml:space="preserve">
+    <value>Which command-line agent answers. Change it on the Settings / Agent page.</value>
+  </data>
+  <data name="AgentPanel_Working" xml:space="preserve">
+    <value>Working…</value>
+  </data>
+  <data name="AgentProgram_ItStoppedWithExitCode" xml:space="preserve">
+    <value>It stopped with exit code {0}.</value>
+    <comment>{0}: process.ExitCode</comment>
+  </data>
+  <data name="AgentPrompt_CheckTheCertificates" xml:space="preserve">
+    <value>Check the certificates</value>
+  </data>
+  <data name="AgentPrompt_CheckTheContainers" xml:space="preserve">
+    <value>Check the containers</value>
+  </data>
+  <data name="AgentPrompt_CheckTheMQTTClients" xml:space="preserve">
+    <value>Check the MQTT clients</value>
+  </data>
+  <data name="AgentPrompt_ListTheCertificatesThatHaveExpired" xml:space="preserve">
+    <value>List the certificates that have expired or expire within 30 days.</value>
+  </data>
+  <data name="AgentPrompt_MakeANoteOfTodayS" xml:space="preserve">
+    <value>Make a note of today's alerts.</value>
+  </data>
+  <data name="AgentPrompt_NoteTheAlerts" xml:space="preserve">
+    <value>Note the alerts</value>
+  </data>
+  <data name="AgentPrompt_SummariseTheAlerts" xml:space="preserve">
+    <value>Summarise the alerts</value>
+  </data>
+  <data name="AgentPrompt_SummariseTheLatestAlertsAndMessages" xml:space="preserve">
+    <value>Summarise the latest alerts and messages, most important first.</value>
+  </data>
+  <data name="AgentPrompt_WhatCanYouDo" xml:space="preserve">
+    <value>What can you do?</value>
+  </data>
+  <data name="AgentPrompt_WhatCanYouDoInJoktan" xml:space="preserve">
+    <value>What can you do in Joktan? Give me a short list, with an example of each.</value>
+  </data>
+  <data name="AgentPrompt_WhichContainersAreRunningAndDo" xml:space="preserve">
+    <value>Which containers are running, and do any look unwell?</value>
+  </data>
+  <data name="AgentPrompt_WhichMQTTClientsAreConnectedAnd" xml:space="preserve">
+    <value>Which MQTT clients are connected, and which are not?</value>
+  </data>
+  <data name="AgentSettingsView_AddPrompt" xml:space="preserve">
+    <value>Add prompt</value>
+  </data>
+  <data name="AgentSettingsView_AddedToTheCommandLineEach" xml:space="preserve">
+    <value>Added to the command line each turn</value>
+  </data>
+  <data name="AgentSettingsView_AlsoLetTheAgentUseThe" xml:space="preserve">
+    <value>Also let the agent use the client's own tools</value>
+  </data>
+  <data name="AgentSettingsView_Arguments" xml:space="preserve">
+    <value>Arguments</value>
+  </data>
+  <data name="AgentSettingsView_Check" xml:space="preserve">
+    <value>Check</value>
+  </data>
+  <data name="AgentSettingsView_Client" xml:space="preserve">
+    <value>Client</value>
+  </data>
+  <data name="AgentSettingsView_ClientsOutsideTheApp" xml:space="preserve">
+    <value>Clients outside the app</value>
+  </data>
+  <data name="AgentSettingsView_CommandLineClient" xml:space="preserve">
+    <value>Command-line client</value>
+  </data>
+  <data name="AgentSettingsView_CopyConfiguration" xml:space="preserve">
+    <value>Copy configuration</value>
+  </data>
+  <data name="AgentSettingsView_EverythingHereHappensOnThisComputer" xml:space="preserve">
+    <value>Everything here happens on this computer. Replies are read by its own speech, and what you say is turned into text by a speech model that ships with the app. Your words only leave once you send them to the agent, like anything you type.</value>
+  </data>
+  <data name="AgentSettingsView_LetAnotherMCPClientOnThis" xml:space="preserve">
+    <value>Let another MCP client on this computer, such as an IDE or a CLI you started yourself, use the app's tools. It connects while Joktan is open. Its risky calls still wait for your approval in the agent panel.</value>
+  </data>
+  <data name="AgentSettingsView_LetOutsideClientsConnect" xml:space="preserve">
+    <value>Let outside clients connect</value>
+  </data>
+  <data name="AgentSettingsView_Model" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="AgentSettingsView_MoreArguments" xml:space="preserve">
+    <value>More arguments</value>
+  </data>
+  <data name="AgentSettingsView_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="AgentSettingsView_NoPromptsAddOneBelow" xml:space="preserve">
+    <value>No prompts. Add one below.</value>
+  </data>
+  <data name="AgentSettingsView_Port" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="AgentSettingsView_Program" xml:space="preserve">
+    <value>Program</value>
+  </data>
+  <data name="AgentSettingsView_Prompt" xml:space="preserve">
+    <value>Prompt</value>
+  </data>
+  <data name="AgentSettingsView_PromptIsWhatYouSaidMcp" xml:space="preserve">
+    <value>{prompt} is what you said, {mcp_config} a file naming the app's server under mcpServers, {mcp_url} and {mcp_token} the server's address and token, and {model} the model below. What the program prints is the reply.</value>
+  </data>
+  <data name="AgentSettingsView_Prompts" xml:space="preserve">
+    <value>Prompts</value>
+  </data>
+  <data name="AgentSettingsView_ReadRepliesAloud" xml:space="preserve">
+    <value>Read replies aloud</value>
+  </data>
+  <data name="AgentSettingsView_Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="AgentSettingsView_ReplaceToken" xml:space="preserve">
+    <value>Replace token</value>
+  </data>
+  <data name="AgentSettingsView_RequestsKeptReadyOfferedByThe" xml:space="preserve">
+    <value>Requests kept ready, offered by the lightning button beside the message box in the chat. Picking one puts it in the box, to change or send.</value>
+  </data>
+  <data name="AgentSettingsView_ShowsAMicrophoneButtonInThe" xml:space="preserve">
+    <value>Shows a microphone button in the chat. Hold it, talk, and let go: your message is sent straight away. Say only "stop" to stop the agent, or only "clear chat" to clear the chat. Approvals are still clicked.</value>
+  </data>
+  <data name="AgentSettingsView_Speech" xml:space="preserve">
+    <value>Speech</value>
+  </data>
+  <data name="AgentSettingsView_Speed" xml:space="preserve">
+    <value>Speed</value>
+  </data>
+  <data name="AgentSettingsView_SuchAsItsShellAndFile" xml:space="preserve">
+    <value>Such as its shell and file tools. These run outside Joktan, which cannot ask you about them. Left off, the agent can only use the app's tools.</value>
+  </data>
+  <data name="AgentSettingsView_TheAgentInThePanelRuns" xml:space="preserve">
+    <value>The agent in the panel runs through one of these programs, under your own account with it. Joktan connects it to the app's tools.</value>
+  </data>
+  <data name="AgentSettingsView_TryIt" xml:space="preserve">
+    <value>Try it</value>
+  </data>
+  <data name="AgentSettingsView_Voice" xml:space="preserve">
+    <value>Voice</value>
+  </data>
+  <data name="AgentSettingsView_VoiceInput" xml:space="preserve">
+    <value>Voice input</value>
+  </data>
+  <data name="AgentSettingsView_WhatGoesInTheMessageBox" xml:space="preserve">
+    <value>What goes in the message box</value>
+  </data>
+  <data name="AgentSettingsView_WhatTheChatListsItAs" xml:space="preserve">
+    <value>What the chat lists it as</value>
+  </data>
+  <data name="AgentSettings_ANewTokenIsInUse" xml:space="preserve">
+    <value>A new token is in use. Clients holding the old one are shut out.</value>
+  </data>
+  <data name="AgentSettings_Agent" xml:space="preserve">
+    <value>Agent</value>
+  </data>
+  <data name="AgentSettings_CopiedItHoldsTheTokenSo" xml:space="preserve">
+    <value>Copied. It holds the token, so keep it private.</value>
+  </data>
+  <data name="AgentSettings_EmptyLooksForItInThe" xml:space="preserve">
+    <value>Empty looks for it in the usual folders.</value>
+  </data>
+  <data name="AgentSettings_GiveAPortFrom1024To" xml:space="preserve">
+    <value>Give a port from 1024 to 65535.</value>
+  </data>
+  <data name="AgentSettings_NothingOnThisComputerCanRead" xml:space="preserve">
+    <value>Nothing on this computer can read aloud. On Linux, install espeak-ng or speech-dispatcher.</value>
+  </data>
+  <data name="AgentSettings_SettingsAgent" xml:space="preserve">
+    <value>Settings / Agent</value>
+  </data>
+  <data name="AgentSettings_SystemDefault" xml:space="preserve">
+    <value>System default</value>
+  </data>
+  <data name="AgentSettings_TheWholePathOfTheProgram" xml:space="preserve">
+    <value>The whole path of the program.</value>
+  </data>
+  <data name="AgentSettings_ThereIsAlreadyAPromptCalled" xml:space="preserve">
+    <value>There is already a prompt called {0}.</value>
+    <comment>{0}: NewPromptName.Trim()</comment>
+  </data>
+  <data name="AgentSettings_ThisCopyOfJoktanCameWithout" xml:space="preserve">
+    <value>This copy of Joktan came without its speech model, so the microphone button is not shown.</value>
+  </data>
+  <data name="AgentSettings_WasNotFound" xml:space="preserve">
+    <value>{0} was not found. {1}</value>
+    <comment>{0}: client.DisplayName, {1}: client.InstallHint</comment>
+  </data>
+  <data name="AgentWindow_JoktanAgent" xml:space="preserve">
+    <value>Joktan Agent</value>
+  </data>
+  <data name="Agent_AskTheAgentOrHoldThe" xml:space="preserve">
+    <value>Ask the agent, or hold the microphone and talk</value>
+  </data>
+  <data name="Agent_AskTheAgentShiftEnterFor" xml:space="preserve">
+    <value>Ask the agent… (Shift+Enter for a new line)</value>
+  </data>
+  <data name="Agent_CheckThatOneIsConnectedAnd" xml:space="preserve">
+    <value>{0} Check that one is connected, and that this app may use it in your system's privacy settings.</value>
+    <comment>{0}: e.Message</comment>
+  </data>
+  <data name="Agent_CouldNotBeStarted" xml:space="preserve">
+    <value>{0} could not be started: {1}</value>
+    <comment>{0}: client.DisplayName, {1}: e.Message</comment>
+  </data>
+  <data name="Agent_CouldNotListenOnPort" xml:space="preserve">
+    <value>Could not listen on port {0}: {1}</value>
+    <comment>{0}: Settings.OutsidePort, {1}: e.Message</comment>
+  </data>
+  <data name="Agent_Failed" xml:space="preserve">
+    <value>{0} failed: {1}</value>
+    <comment>{0}: client.DisplayName, {1}: problem</comment>
+  </data>
+  <data name="Agent_FinishedWithoutSayingAnything" xml:space="preserve">
+    <value>{0} finished without saying anything.</value>
+    <comment>{0}: client.DisplayName</comment>
+  </data>
+  <data name="Agent_ListeningLetGoToSend" xml:space="preserve">
+    <value>Listening. Let go to send.</value>
+  </data>
+  <data name="Agent_NoSoundReachedTheAppCheck" xml:space="preserve">
+    <value>No sound reached the app. Check that this app may use the microphone in your system's privacy settings.</value>
+  </data>
+  <data name="Agent_NoWordsWereHeardTryAgain" xml:space="preserve">
+    <value>No words were heard. Try again, a little closer to the microphone.</value>
+  </data>
+  <data name="Agent_NobodyAnsweredInTime" xml:space="preserve">
+    <value>Nobody answered in time</value>
+  </data>
+  <data name="Agent_ReadRepliesAloud" xml:space="preserve">
+    <value>Read replies aloud</value>
+  </data>
+  <data name="Agent_SomethingWentWrongSeeThePanel" xml:space="preserve">
+    <value>Something went wrong. See the panel.</value>
+  </data>
+  <data name="Agent_StopReadingRepliesAloud" xml:space="preserve">
+    <value>Stop reading replies aloud</value>
+  </data>
+  <data name="Agent_Stopped" xml:space="preserve">
+    <value>Stopped</value>
+  </data>
+  <data name="Agent_ThatWasTooQuietToBe" xml:space="preserve">
+    <value>That was too quiet to be speech. Try again, a little closer to the microphone.</value>
+  </data>
+  <data name="Agent_TheAgentIsAskingForYour" xml:space="preserve">
+    <value>The agent is asking for your approval.</value>
+  </data>
+  <data name="Agent_TheAgentIsStillWorkingThis" xml:space="preserve">
+    <value>The agent is still working. This goes when it has finished.</value>
+  </data>
+  <data name="Agent_TheTurnEnded" xml:space="preserve">
+    <value>The turn ended</value>
+  </data>
+  <data name="Agent_ThisIsHowRepliesWillSound" xml:space="preserve">
+    <value>This is how replies will sound.</value>
+  </data>
+  <data name="Agent_WaitForTheAgentToFinish" xml:space="preserve">
+    <value>Wait for the agent to finish its turn, then switch this on again.</value>
+  </data>
+  <data name="Agent_WasNotFoundYouCanGive" xml:space="preserve">
+    <value>{0} was not found. {1} You can give its path on the Settings / Agent page.</value>
+    <comment>{0}: client.DisplayName, {1}: client.InstallHint</comment>
+  </data>
+  <data name="Agent_WhatYouSaidCouldNotBe" xml:space="preserve">
+    <value>What you said could not be turned into text: {0}</value>
+    <comment>{0}: e.Message</comment>
+  </data>
+  <data name="Agent_WorkingOutWhatYouSaid" xml:space="preserve">
+    <value>Working out what you said…</value>
+  </data>
+  <data name="Approval_AClientOutsideTheAppAsks" xml:space="preserve">
+    <value>A client outside the app asks to do this:</value>
+  </data>
+  <data name="Approval_Allowed" xml:space="preserve">
+    <value>Allowed</value>
+  </data>
+  <data name="Approval_AllowedForThisConversation" xml:space="preserve">
+    <value>Allowed for this conversation</value>
+  </data>
+  <data name="Approval_Declined" xml:space="preserve">
+    <value>Declined</value>
+  </data>
+  <data name="Approval_ShowThisSecretToTheAgent" xml:space="preserve">
+    <value>Show this secret to the agent? It goes to the client's AI provider.</value>
+  </data>
+  <data name="Approval_TheAgentAsksToDoThis" xml:space="preserve">
+    <value>The agent asks to do this:</value>
+  </data>
+  <data name="ClaudeCodeClient_ClaudeCodeReportedAnError" xml:space="preserve">
+    <value>Claude Code reported an error.</value>
+  </data>
+  <data name="ClaudeCodeClient_InstallItFromHttpsClaudeCom" xml:space="preserve">
+    <value>Install it from https://claude.com/claude-code and sign in by running claude once in a terminal.</value>
+  </data>
+  <data name="ClaudeCodeClient_SuchAsSonnetOrOpusEmpty" xml:space="preserve">
+    <value>Such as sonnet or opus. Empty uses the client's default.</value>
+  </data>
+  <data name="CopilotClient_CopilotReportedAnError" xml:space="preserve">
+    <value>Copilot reported an error.</value>
+  </data>
+  <data name="CopilotClient_InstallItWithNpmInstallG" xml:space="preserve">
+    <value>Install it with npm install -g @github/copilot and sign in by running copilot once in a terminal.</value>
+  </data>
+  <data name="CopilotClient_SuchAsAutoEmptyUsesThe" xml:space="preserve">
+    <value>Such as auto. Empty uses the client's default.</value>
+  </data>
+  <data name="CustomClient_CustomCommand" xml:space="preserve">
+    <value>Custom command</value>
+  </data>
+  <data name="CustomClient_FillsInModelInTheArguments" xml:space="preserve">
+    <value>Fills in {model} in the arguments.</value>
+  </data>
+  <data name="CustomClient_GiveTheWholePathOfThe" xml:space="preserve">
+    <value>Give the whole path of the program.</value>
+  </data>
+  <data name="Microphone_NoMicrophoneCouldBeOpened" xml:space="preserve">
+    <value>No microphone could be opened.</value>
+  </data>
+  <data name="Microphone_TheAppSSoundRecordingLibrary" xml:space="preserve">
+    <value>The app's sound recording library could not be loaded.</value>
+  </data>
+  <data name="OpenCodeClient_AsProviderModelSuchAsLmstudio" xml:space="preserve">
+    <value>As provider/model, such as lmstudio/qwen3. Empty uses the client's default.</value>
+  </data>
+  <data name="OpenCodeClient_InstallItFromHttpsOpencodeAi" xml:space="preserve">
+    <value>Install it from https://opencode.ai and choose a provider with opencode auth.</value>
+  </data>
+  <data name="OpenCodeClient_OpenCodeReportedAnError" xml:space="preserve">
+    <value>OpenCode reported an error.</value>
+  </data>
+  <data name="SpeechOutput_CodeLeftOut" xml:space="preserve">
+    <value>
+
+Code left out.
+
+</value>
+  </data>
+  <data name="ToolCall_OutsideClient" xml:space="preserve">
+    <value>outside client</value>
+  </data>
+</root>

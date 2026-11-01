@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Joktan.Core.ViewModels;
+using Joktan.Settings.Resources;
 using Joktan.Settings.Themes;
 
 namespace Joktan.Settings.ViewModels;
@@ -9,7 +10,7 @@ namespace Joktan.Settings.ViewModels;
 /// <summary>Changes the text sizes of the theme being edited.</summary>
 public class TextSizesViewModel : PageViewModel
 {
-    public TextSizesViewModel(ThemeEditor editor, ThemeBarViewModel bar) : base("Text Sizes", "Settings / Text Sizes")
+    public TextSizesViewModel(ThemeEditor editor, ThemeBarViewModel bar) : base(Strings.TextSizes_TextSizes, Strings.TextSizes_SettingsTextSizes)
     {
         Bar = bar;
         Groups = ThemeTokens.TextSizes

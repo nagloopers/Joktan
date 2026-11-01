@@ -1,5 +1,7 @@
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Joktan.Tests.TestSupport;
 using Xunit;
 
@@ -8,6 +10,22 @@ namespace Joktan.Help.Tests;
 public class HelpTopicTests
 {
     private static readonly string TopicsFolder = RepositoryFiles.At("src", "Joktan.Help", "Topics");
+
+    [Fact]
+    public Task A_topic_with_no_translation_is_shown_in_English() => Headless.Run(() =>
+    {
+        var language = CultureInfo.CurrentUICulture;
+        CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("fr-FR");
+        try
+        {
+            var topic = HelpTopic.All[0];
+            Assert.Equal(File.ReadAllText(Path.Combine(TopicsFolder, topic.Id + ".md")), topic.ReadMarkdown());
+        }
+        finally
+        {
+            CultureInfo.CurrentUICulture = language;
+        }
+    });
 
     [Fact]
     public void Getting_started_comes_first()

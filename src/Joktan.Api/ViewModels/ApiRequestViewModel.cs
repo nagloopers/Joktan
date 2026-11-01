@@ -12,6 +12,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Google.Protobuf.Reflection;
 using Grpc.Core;
+using Joktan.Api.Resources;
 using Joktan.Core.ViewModels;
 
 namespace Joktan.Api.ViewModels;
@@ -158,7 +159,7 @@ public partial class ApiRequestViewModel : ViewModelBase
         if (RestSender.TryIndentJson(Body) is { } formatted)
             Body = formatted;
         else
-            Error = "The body is not valid JSON.";
+            Error = Strings.ApiRequest_TheBodyIsNotValidJSON;
     }
 
     // ---- gRPC ----
@@ -246,10 +247,10 @@ public partial class ApiRequestViewModel : ViewModelBase
                 return "";
             var kind = (method.IsClientStreaming, method.IsServerStreaming) switch
             {
-                (false, false) => "Unary",
-                (false, true) => "Server streaming",
-                (true, false) => "Client streaming; write the messages as a JSON array",
-                _ => "Two-way streaming; write the messages as a JSON array",
+                (false, false) => Strings.ApiRequest_Unary,
+                (false, true) => Strings.ApiRequest_ServerStreaming,
+                (true, false) => Strings.ApiRequest_ClientStreamingWriteTheMessagesAs,
+                _ => Strings.ApiRequest_TwoWayStreamingWriteTheMessages,
             };
             var input = (method.IsClientStreaming ? "stream " : "") + method.InputType.Name;
             var output = (method.IsServerStreaming ? "stream " : "") + method.OutputType.Name;
@@ -313,7 +314,7 @@ public partial class ApiRequestViewModel : ViewModelBase
     private async Task LoadServicesAsync()
     {
         Error = null;
-        SchemaStatus = Schema == GrpcSchemaSource.Reflection ? "Asking the server for its services…" : "Reading the .proto files…";
+        SchemaStatus = Schema == GrpcSchemaSource.Reflection ? Strings.ApiRequest_AskingTheServerForItsServices : Strings.ApiRequest_ReadingTheProtoFiles;
         try
         {
             ShowSchema(await FetchSchemaAsync(ToRequest()));
@@ -349,7 +350,7 @@ public partial class ApiRequestViewModel : ViewModelBase
             or RpcException or System.Net.Http.HttpRequestException;
 
     private static string SchemaFailure(Exception e)
-        => e is OperationCanceledException ? "The server did not answer in time." : RestSender.Message(e);
+        => e is OperationCanceledException ? Strings.ApiRequest_TheServerDidNotAnswerIn : RestSender.Message(e);
 
     /// <summary>Fills the message with an example of every field of the method's request.</summary>
     [RelayCommand]
@@ -357,7 +358,7 @@ public partial class ApiRequestViewModel : ViewModelBase
     {
         if (FindMethod() is not { } method)
         {
-            Error = "Load the services and choose a method first.";
+            Error = Strings.ApiRequest_LoadTheServicesAndChooseA;
             return;
         }
 
@@ -372,7 +373,7 @@ public partial class ApiRequestViewModel : ViewModelBase
         if (RestSender.TryIndentJson(Message) is { } formatted)
             Message = formatted;
         else
-            Error = "The message is not valid JSON.";
+            Error = Strings.ApiRequest_TheMessageIsNotValidJSON;
     }
 
     private void ShowSchema(GrpcSchema schema)
@@ -383,7 +384,7 @@ public partial class ApiRequestViewModel : ViewModelBase
             Service = Services.FirstOrDefault() ?? "";
         OnServiceChanged(Service);
         var methods = schema.Services.Sum(s => s.Methods.Count);
-        SchemaStatus = $"{schema.Services.Count} {(schema.Services.Count == 1 ? "service" : "services")}, {methods} {(methods == 1 ? "method" : "methods")}";
+        SchemaStatus = $"{schema.Services.Count} {(schema.Services.Count == 1 ? Strings.ApiRequest_Service : Strings.ApiRequest_Services)}, {methods} {(methods == 1 ? Strings.ApiRequest_Method : Strings.ApiRequest_Methods)}";
     }
 
     private void UseCachedSchema()
@@ -398,8 +399,8 @@ public partial class ApiRequestViewModel : ViewModelBase
         Sync(Services, Service.Length > 0 ? [Service] : []);
         Sync(Methods, Rpc.Length > 0 ? [Rpc] : []);
         SchemaStatus = Schema == GrpcSchemaSource.Reflection
-            ? "Load services to ask the server which services it has."
-            : "Load services to read them from the .proto files.";
+            ? Strings.ApiRequest_LoadServicesToAskTheServer
+            : Strings.ApiRequest_LoadServicesToReadThemFrom;
     }
 
     private void SchemaSourceChanged()
@@ -471,7 +472,7 @@ public partial class ApiRequestViewModel : ViewModelBase
 
     public bool CanResend => HasLastSent && !IsSending;
 
-    public string LastSentTime => LastSent is { } sent ? $"Sent {sent.Time:yyyy-MM-dd HH:mm:ss}" : "";
+    public string LastSentTime => LastSent is { } sent ? string.Format(Strings.ApiRequest_Sent, sent.Time) : "";
 
     public string LastSentText => LastSent?.Describe() ?? "";
 
@@ -496,7 +497,7 @@ public partial class ApiRequestViewModel : ViewModelBase
                 await LoadServicesAsync();
             if (FindMethod() is { } method)
                 return method;
-            Error = _schema is null ? SchemaStatus : $"{Service} has no method {Rpc}.";
+            Error = _schema is null ? SchemaStatus : string.Format(Strings.ApiRequest_HasNoMethod, Service, Rpc);
             return null;
         });
     }
@@ -514,7 +515,7 @@ public partial class ApiRequestViewModel : ViewModelBase
                 var schema = Schemas.TryGetValue(SchemaKey(request), out var known) ? known : await FetchSchemaAsync(request);
                 if (schema.FindMethod(request.Service, request.Rpc) is { } method)
                     return method;
-                Error = $"{request.Service} has no method {request.Rpc}.";
+                Error = string.Format(Strings.ApiRequest_HasNoMethod, request.Service, request.Rpc);
             }
             catch (Exception e) when (IsSchemaFailure(e))
             {
@@ -558,7 +559,7 @@ public partial class ApiRequestViewModel : ViewModelBase
             var missing = variables.Missing(string.Join(" ", request.Url, request.Address, request.Body, request.Message, request.Token,
                 string.Join(" ", request.Headers.Concat(request.Query).Concat(request.Metadata).Select(p => p.Name + p.Value)))).ToList();
             if (missing.Count > 0)
-                problems.Add($"Not defined in the environment, so sent as written: {string.Join(", ", missing.Select(m => "{{" + m + "}}"))}");
+                problems.Add(string.Format(Strings.ApiRequest_NotDefinedInTheEnvironmentSo, string.Join(", ", missing.Select(m => "{{" + m + "}}"))));
             if (response.IsSuccess)
                 SaveCaptures(response, request.Captures, problems);
             if (problems.Count > 0)
@@ -586,9 +587,9 @@ public partial class ApiRequestViewModel : ViewModelBase
             return;
         var names = string.Join(", ", values.Select(v => v.Name));
         if (_saveVariables(values) is { } environment)
-            SavedVariables = $"Saved to {environment}: {names}";
+            SavedVariables = string.Format(Strings.ApiRequest_SavedTo, environment, names);
         else
-            problems.Add($"Choose an environment at the top to save {names}.");
+            problems.Add(string.Format(Strings.ApiRequest_ChooseAnEnvironmentAtTheTop, names));
     }
 
     [RelayCommand]
@@ -632,7 +633,7 @@ public partial class ApiRequestViewModel : ViewModelBase
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
-            Error = $"Could not save {Path}: {e.Message}";
+            Error = string.Format(Strings.ApiRequest_CouldNotSave, Path, e.Message);
         }
     }
 
@@ -674,14 +675,14 @@ public sealed class ApiResponseViewModel(ApiResponse response, bool isGrpc)
     public bool IsFailure => !response.IsSuccess;
 
     public string Elapsed => response.Elapsed.TotalMilliseconds < 1000
-        ? $"{response.Elapsed.TotalMilliseconds:0} ms"
+        ? string.Format(Strings.ApiResponse_Ms, response.Elapsed.TotalMilliseconds)
         : $"{response.Elapsed.TotalSeconds:0.00} s";
 
     public string Size => response.Size switch
     {
         < 1024 => $"{response.Size} B",
-        < 1024 * 1024 => $"{response.Size / 1024.0:0.0} KB",
-        _ => $"{response.Size / 1024.0 / 1024.0:0.0} MB",
+        < 1024 * 1024 => string.Format(Strings.ApiResponse_KB, response.Size / 1024.0),
+        _ => string.Format(Strings.ApiResponse_MB, response.Size / 1024.0 / 1024.0),
     };
 
     public string Body => response.Body;

@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ComposeProject_Building" xml:space="preserve">
+    <value>Building</value>
+  </data>
+  <data name="ComposeProject_CouldNotOpenATerminal" xml:space="preserve">
+    <value>Could not open a terminal: {0}</value>
+    <comment>{0}: e.Message</comment>
+  </data>
+  <data name="ComposeProject_CouldNotReadTheContainers" xml:space="preserve">
+    <value>Could not read the containers: {0}</value>
+    <comment>{0}: e.Message</comment>
+  </data>
+  <data name="ComposeProject_DoesNotExist" xml:space="preserve">
+    <value>{0} does not exist.</value>
+    <comment>{0}: File</comment>
+  </data>
+  <data name="ComposeProject_Killing" xml:space="preserve">
+    <value>Killing</value>
+  </data>
+  <data name="ComposeProject_NothingIsPaused" xml:space="preserve">
+    <value>Nothing is paused.</value>
+  </data>
+  <data name="ComposeProject_OfRunning" xml:space="preserve">
+    <value>{0} of {1} running</value>
+    <comment>{0}: running, {1}: rows.Count</comment>
+  </data>
+  <data name="ComposeProject_Pausing" xml:space="preserve">
+    <value>Pausing</value>
+  </data>
+  <data name="ComposeProject_Pulling" xml:space="preserve">
+    <value>Pulling</value>
+  </data>
+  <data name="ComposeProject_Recreating" xml:space="preserve">
+    <value>Recreating</value>
+  </data>
+  <data name="ComposeProject_Removing" xml:space="preserve">
+    <value>Removing</value>
+  </data>
+  <data name="ComposeProject_Restarting" xml:space="preserve">
+    <value>Restarting</value>
+  </data>
+  <data name="ComposeProject_Resuming" xml:space="preserve">
+    <value>Resuming</value>
+  </data>
+  <data name="ComposeProject_Starting" xml:space="preserve">
+    <value>Starting</value>
+  </data>
+  <data name="ComposeProject_Stopping" xml:space="preserve">
+    <value>Stopping</value>
+  </data>
+  <data name="ComposeProject_TakeDownAndDeleteItsVolumes" xml:space="preserve">
+    <value>Take {0} down and delete its volumes too? What they hold is lost.</value>
+    <comment>{0}: Name</comment>
+  </data>
+  <data name="ComposeProject_TakingDown" xml:space="preserve">
+    <value>Taking down</value>
+  </data>
+  <data name="ComposeProject_TheFileHasNoServices" xml:space="preserve">
+    <value>The file has no services.</value>
+  </data>
+  <data name="ComposeServiceRow_NotCreated" xml:space="preserve">
+    <value>Not created</value>
+  </data>
+  <data name="ComposeTool_DockerIsNotInstalledOrIts" xml:space="preserve">
+    <value>Docker is not installed, or its docker command is not in a usual folder.</value>
+  </data>
+  <data name="ComposeTool_FailedWithExitCode" xml:space="preserve">
+    <value>{0} failed with exit code {1}.</value>
+    <comment>{0}: CommandLine(arguments), {1}: exitCode</comment>
+  </data>
+  <data name="ComposeTool_NeitherDockerNorPodmanIsInstalled" xml:space="preserve">
+    <value>Neither Docker nor Podman is installed, or their commands are not in a usual folder.</value>
+  </data>
+  <data name="ComposeTool_PodmanIsNotInstalledOrIts" xml:space="preserve">
+    <value>Podman is not installed, or its podman command is not in a usual folder.</value>
+  </data>
+  <data name="ContainerEngine_Auto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="ContainersView_Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="ContainersView_AutoUsesDockerWhenItsEngine" xml:space="preserve">
+    <value>Auto uses Docker when its engine is running and Podman otherwise</value>
+  </data>
+  <data name="ContainersView_Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="ContainersView_BuildImages" xml:space="preserve">
+    <value>Build images</value>
+  </data>
+  <data name="ContainersView_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ContainersView_CheckTheContainersNowAndLook" xml:space="preserve">
+    <value>Check the containers now, and look for Docker and Podman again. They are checked every 5 seconds while this page is shown.</value>
+  </data>
+  <data name="ContainersView_ChooseComposeFiles" xml:space="preserve">
+    <value>Choose compose files</value>
+  </data>
+  <data name="ContainersView_Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="ContainersView_CollapseTheLogsAndCommandOutput" xml:space="preserve">
+    <value>Collapse the logs and command output, to leave more room for the services</value>
+  </data>
+  <data name="ContainersView_CommandOutput" xml:space="preserve">
+    <value>Command output</value>
+  </data>
+  <data name="ContainersView_ComposeBuildBuildTheImagesWithout" xml:space="preserve">
+    <value>compose build: build the images without starting anything</value>
+  </data>
+  <data name="ContainersView_ComposeDownStopAndRemoveThe" xml:space="preserve">
+    <value>compose down: stop and remove the containers and their network. Volumes are kept.</value>
+  </data>
+  <data name="ContainersView_ComposeDownVolumesAsDownAnd" xml:space="preserve">
+    <value>compose down --volumes: as Down, and delete the volumes and what is in them</value>
+  </data>
+  <data name="ContainersView_ComposeFiles" xml:space="preserve">
+    <value>Compose files</value>
+  </data>
+  <data name="ContainersView_ComposeKillStopItAtOnce" xml:space="preserve">
+    <value>compose kill: stop it at once, without letting it shut down</value>
+  </data>
+  <data name="ContainersView_ComposeKillStopTheContainersAt" xml:space="preserve">
+    <value>compose kill: stop the containers at once, without letting them shut down</value>
+  </data>
+  <data name="ContainersView_ComposeLogsFollowShowWhatThe" xml:space="preserve">
+    <value>compose logs --follow: show what the containers write, as they write it</value>
+  </data>
+  <data name="ContainersView_ComposePauseFreezeIt" xml:space="preserve">
+    <value>compose pause: freeze it</value>
+  </data>
+  <data name="ContainersView_ComposePauseFreezeTheRunningContainers" xml:space="preserve">
+    <value>compose pause: freeze the running containers</value>
+  </data>
+  <data name="ContainersView_ComposePullIgnoreBuildableFetchThe" xml:space="preserve">
+    <value>compose pull --ignore-buildable: fetch the latest images; images built from the file are left out</value>
+  </data>
+  <data name="ContainersView_ComposePullIgnoreBuildableFetchTheLatest" xml:space="preserve">
+    <value>compose pull --ignore-buildable: fetch the latest image, unless it is built from the file</value>
+  </data>
+  <data name="ContainersView_ComposeRestartForThisService" xml:space="preserve">
+    <value>compose restart for this service</value>
+  </data>
+  <data name="ContainersView_ComposeRestartStopAndStartThe" xml:space="preserve">
+    <value>compose restart: stop and start the containers without recreating them</value>
+  </data>
+  <data name="ContainersView_ComposeRmStopForceStopAnd" xml:space="preserve">
+    <value>compose rm --stop --force: stop and remove it; Start makes it again</value>
+  </data>
+  <data name="ContainersView_ComposeStopForThisService" xml:space="preserve">
+    <value>compose stop for this service</value>
+  </data>
+  <data name="ContainersView_ComposeStopStopTheContainersAnd" xml:space="preserve">
+    <value>compose stop: stop the containers and keep them, to start again later</value>
+  </data>
+  <data name="ContainersView_ComposeUpDBuildBuildIts" xml:space="preserve">
+    <value>compose up -d --build: build its image again, then recreate and start it</value>
+  </data>
+  <data name="ContainersView_ComposeUpDBuildBuildThe" xml:space="preserve">
+    <value>compose up -d --build: build the images again, then recreate and start the containers</value>
+  </data>
+  <data name="ContainersView_ComposeUpDCreateTheContainers" xml:space="preserve">
+    <value>compose up -d: create the containers if needed, building images where the file says so, and start them</value>
+  </data>
+  <data name="ContainersView_ComposeUpDForThisService" xml:space="preserve">
+    <value>compose up -d for this service</value>
+  </data>
+  <data name="ContainersView_ComposeUpDForceRecreateA" xml:space="preserve">
+    <value>compose up -d --force-recreate: a new container even when nothing changed</value>
+  </data>
+  <data name="ContainersView_ComposeUpDForceRecreateMake" xml:space="preserve">
+    <value>compose up -d --force-recreate: make new containers even when nothing changed, and start them</value>
+  </data>
+  <data name="ContainersView_Container" xml:space="preserve">
+    <value>Container</value>
+  </data>
+  <data name="ContainersView_Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="ContainersView_CopyTheContainerName" xml:space="preserve">
+    <value>Copy the container name</value>
+  </data>
+  <data name="ContainersView_CopyTheLinesShown" xml:space="preserve">
+    <value>Copy the lines shown</value>
+  </data>
+  <data name="ContainersView_DeleteVolumes" xml:space="preserve">
+    <value>Delete volumes</value>
+  </data>
+  <data name="ContainersView_Down" xml:space="preserve">
+    <value>Down</value>
+  </data>
+  <data name="ContainersView_DownAndRemoveVolumes" xml:space="preserve">
+    <value>Down and remove volumes…</value>
+  </data>
+  <data name="ContainersView_EachFileIsItsOwnProject" xml:space="preserve">
+    <value>Each file is its own project. Commands run from the file's folder, so its .env is read. Saved as you change them.</value>
+  </data>
+  <data name="ContainersView_Engine" xml:space="preserve">
+    <value>Engine</value>
+  </data>
+  <data name="ContainersView_ExecItWithShInsideThe" xml:space="preserve">
+    <value>exec -it with sh inside the running container</value>
+  </data>
+  <data name="ContainersView_HowManyEarlierLinesOfEach" xml:space="preserve">
+    <value>How many earlier lines of each container's log to show when the logs start</value>
+  </data>
+  <data name="ContainersView_KeepNewestInView" xml:space="preserve">
+    <value>Keep newest in view</value>
+  </data>
+  <data name="ContainersView_Kill" xml:space="preserve">
+    <value>Kill</value>
+  </data>
+  <data name="ContainersView_Last" xml:space="preserve">
+    <value>Last</value>
+  </data>
+  <data name="ContainersView_Lines" xml:space="preserve">
+    <value>lines</value>
+  </data>
+  <data name="ContainersView_Logs" xml:space="preserve">
+    <value>Logs</value>
+  </data>
+  <data name="ContainersView_LogsAndCommandOutput" xml:space="preserve">
+    <value>Logs and command output</value>
+  </data>
+  <data name="ContainersView_More" xml:space="preserve">
+    <value>More</value>
+  </data>
+  <data name="ContainersView_MoreCommandsForEveryServiceIn" xml:space="preserve">
+    <value>More commands for every service in this file</value>
+  </data>
+  <data name="ContainersView_MoreForThisService" xml:space="preserve">
+    <value>More for this service</value>
+  </data>
+  <data name="ContainersView_NoComposeFilesYetAddOne" xml:space="preserve">
+    <value>No compose files yet. Add one under Compose files.</value>
+  </data>
+  <data name="ContainersView_OpenAShellInATerminal" xml:space="preserve">
+    <value>Open a shell in a terminal</value>
+  </data>
+  <data name="ContainersView_PathOfAComposeFile" xml:space="preserve">
+    <value>Path of a compose file</value>
+  </data>
+  <data name="ContainersView_Pause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="ContainersView_Ports" xml:space="preserve">
+    <value>Ports</value>
+  </data>
+  <data name="ContainersView_PullImage" xml:space="preserve">
+    <value>Pull image</value>
+  </data>
+  <data name="ContainersView_PullImages" xml:space="preserve">
+    <value>Pull images</value>
+  </data>
+  <data name="ContainersView_RebuildAndStart" xml:space="preserve">
+    <value>Rebuild and start</value>
+  </data>
+  <data name="ContainersView_Recreate" xml:space="preserve">
+    <value>Recreate</value>
+  </data>
+  <data name="ContainersView_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="ContainersView_Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="ContainersView_RemoveContainer" xml:space="preserve">
+    <value>Remove container</value>
+  </data>
+  <data name="ContainersView_Restart" xml:space="preserve">
+    <value>Restart</value>
+  </data>
+  <data name="ContainersView_Resume" xml:space="preserve">
+    <value>Resume</value>
+  </data>
+  <data name="ContainersView_Service" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="ContainersView_Services" xml:space="preserve">
+    <value>Services</value>
+  </data>
+  <data name="ContainersView_ShowItsLogs" xml:space="preserve">
+    <value>Show its logs</value>
+  </data>
+  <data name="ContainersView_ShowOrHideItsServices" xml:space="preserve">
+    <value>Show or hide its services</value>
+  </data>
+  <data name="ContainersView_ShowTheLogsAndCommandOutput" xml:space="preserve">
+    <value>Show the logs and command output</value>
+  </data>
+  <data name="ContainersView_Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="ContainersView_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ContainersView_Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="ContainersView_StopShowingThisFileItsContainers" xml:space="preserve">
+    <value>Stop showing this file. Its containers are left as they are.</value>
+  </data>
+  <data name="ContainersView_StopTheCommandContainersItAlready" xml:space="preserve">
+    <value>Stop the command. Containers it already changed stay as they are.</value>
+  </data>
+  <data name="ContainersView_TheLogsKeepComingWhileCollapsed" xml:space="preserve">
+    <value>The logs keep coming while collapsed.</value>
+  </data>
+  <data name="ContainersView_Timestamps" xml:space="preserve">
+    <value>Timestamps</value>
+  </data>
+  <data name="ContainersView_UnpauseLetItRunAgain" xml:space="preserve">
+    <value>unpause: let it run again</value>
+  </data>
+  <data name="ContainersView_UnpauseLetThePausedContainersRun" xml:space="preserve">
+    <value>unpause: let the paused containers run again</value>
+  </data>
+  <data name="ContainersView_WhatStartStopRestartAndDown" xml:space="preserve">
+    <value>What Start, Stop, Restart and Down wrote, after each file's name and command line.</value>
+  </data>
+  <data name="ContainersView_WhoseLogsToShowOneFile" xml:space="preserve">
+    <value>Whose logs to show: one file's services, or one of them</value>
+  </data>
+  <data name="Containers_AddAComposeFileToSee" xml:space="preserve">
+    <value>Add a compose file to see its logs.</value>
+  </data>
+  <data name="Containers_AllServices" xml:space="preserve">
+    <value>All services</value>
+  </data>
+  <data name="Containers_Cancelled" xml:space="preserve">
+    <value>Cancelled.</value>
+  </data>
+  <data name="Containers_ComposeWith" xml:space="preserve">
+    <value>{0} compose, with {1}</value>
+    <comment>{0}: tool.EngineName, {1}: tool.Executable</comment>
+  </data>
+  <data name="Containers_Containers" xml:space="preserve">
+    <value>Containers</value>
+  </data>
+  <data name="Containers_CouldNotSaveTheSettings" xml:space="preserve">
+    <value>Could not save the settings: {0}</value>
+    <comment>{0}: e.Message</comment>
+  </data>
+  <data name="Containers_DevToolsContainers" xml:space="preserve">
+    <value>Dev Tools / Containers</value>
+  </data>
+  <data name="Containers_DoesNotExist" xml:space="preserve">
+    <value>{0} does not exist.</value>
+    <comment>{0}: path</comment>
+  </data>
+  <data name="Containers_FailedWithExitCodeSeeThe" xml:space="preserve">
+    <value>{0} failed with exit code {1}. See the command output.</value>
+    <comment>{0}: commandLine, {1}: exitCode</comment>
+  </data>
+  <data name="Containers_HasTheSameProjectNameSo" xml:space="preserve">
+    <value>{0} has the same project name, so their containers are mixed up. Add a name: line at the top of one of the files.</value>
+    <comment>{0}: same.File</comment>
+  </data>
+  <data name="Containers_IsAlreadyOnTheList" xml:space="preserve">
+    <value>{0} is already on the list.</value>
+    <comment>{0}: path</comment>
+  </data>
+  <data name="Containers_OfRunning" xml:space="preserve">
+    <value>{0} of {1} running</value>
+    <comment>{0}: running, {1}: total</comment>
+  </data>
+  <data name="Containers_ShowLogs" xml:space="preserve">
+    <value>Show logs</value>
+  </data>
+  <data name="Containers_Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="Containers_TheLogsEndedBecauseNoContainer" xml:space="preserve">
+    <value>── The logs ended because no container is running. They continue when one is started from this page.</value>
+  </data>
+  <data name="Containers_TheLogsStoppedWithExitCode" xml:space="preserve">
+    <value>── The logs stopped with exit code {0}.</value>
+    <comment>{0}: exitCode</comment>
+  </data>
+  <data name="Terminal_NoTerminalWasFound" xml:space="preserve">
+    <value>No terminal was found.</value>
+  </data>
+</root>

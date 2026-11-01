@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Joktan.Agent.Resources;
 
 namespace Joktan.Agent.Speech;
 
@@ -63,11 +64,11 @@ public sealed class Microphone : IMicrophone
         }
         catch (Exception e) when (e is DllNotFoundException or EntryPointNotFoundException)
         {
-            throw new InvalidOperationException("The app's sound recording library could not be loaded.", e);
+            throw new InvalidOperationException(Strings.Microphone_TheAppSSoundRecordingLibrary, e);
         }
 
         if (_device == 0)
-            throw new InvalidOperationException("No microphone could be opened.");
+            throw new InvalidOperationException(Strings.Microphone_NoMicrophoneCouldBeOpened);
 
         _samples.Clear();
         alcCaptureStart(_device);

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt;
 
@@ -22,7 +23,7 @@ public static class CertificateLoader
     /// </summary>
     public static X509Certificate2Collection LoadAuthorities(string path)
     {
-        var file = Existing(path, "CA certificate");
+        var file = Existing(path, Strings.CertificateLoader_CACertificate);
         var certificates = new X509Certificate2Collection();
         try
         {
@@ -33,11 +34,11 @@ public static class CertificateLoader
         }
         catch (CryptographicException e)
         {
-            throw new FormatException($"The CA certificate {Path.GetFileName(file)} cannot be read: {e.Message}", e);
+            throw new FormatException(string.Format(Strings.CertificateLoader_TheCACertificateCannotBeRead, Path.GetFileName(file), e.Message), e);
         }
 
         if (certificates.Count == 0)
-            throw new FormatException($"The CA certificate {Path.GetFileName(file)} holds no certificate");
+            throw new FormatException(string.Format(Strings.CertificateLoader_TheCACertificateHoldsNoCertificate, Path.GetFileName(file)));
         return certificates;
     }
 
@@ -48,7 +49,7 @@ public static class CertificateLoader
     /// </summary>
     public static X509Certificate2 LoadClient(string certificatePath, string? keyPath, string? password)
     {
-        var certificateFile = Existing(certificatePath, "client certificate");
+        var certificateFile = Existing(certificatePath, Strings.CertificateLoader_ClientCertificate);
         var name = Path.GetFileName(certificateFile);
         X509Certificate2 certificate;
 
@@ -61,15 +62,15 @@ public static class CertificateLoader
             catch (CryptographicException e)
             {
                 throw new FormatException(string.IsNullOrEmpty(password)
-                    ? $"{name} cannot be opened; if it has a password, enter it"
-                    : $"{name} cannot be opened: the password is wrong or the file is damaged ({e.Message})", e);
+                    ? string.Format(Strings.CertificateLoader_CannotBeOpenedIfItHas, name)
+                    : string.Format(Strings.CertificateLoader_CannotBeOpenedThePasswordIs, name, e.Message), e);
             }
         }
         else
         {
-            var keyFile = string.IsNullOrWhiteSpace(keyPath) ? certificateFile : Existing(keyPath, "private key");
+            var keyFile = string.IsNullOrWhiteSpace(keyPath) ? certificateFile : Existing(keyPath, Strings.CertificateLoader_PrivateKey);
             if (string.IsNullOrEmpty(password) && IsEncryptedPem(keyFile))
-                throw new FormatException($"The private key in {Path.GetFileName(keyFile)} is encrypted; enter its password");
+                throw new FormatException(string.Format(Strings.CertificateLoader_ThePrivateKeyInIsEncrypted, Path.GetFileName(keyFile)));
             try
             {
                 using var pem = string.IsNullOrEmpty(password)
@@ -86,18 +87,18 @@ public static class CertificateLoader
             }
             catch (ArgumentException e)
             {
-                throw new FormatException($"{name} or its key cannot be read: {e.Message}", e);
+                throw new FormatException(string.Format(Strings.CertificateLoader_OrItsKeyCannotBeRead, name, e.Message), e);
             }
         }
 
         if (!certificate.HasPrivateKey)
-            throw new FormatException($"{name} has no private key, so it cannot be used as a client certificate");
+            throw new FormatException(string.Format(Strings.CertificateLoader_HasNoPrivateKeySoIt, name));
 
         var now = DateTime.Now;
         if (certificate.NotAfter < now)
-            throw new FormatException($"The client certificate expired on {certificate.NotAfter:yyyy-MM-dd}");
+            throw new FormatException(string.Format(Strings.CertificateLoader_TheClientCertificateExpiredOn, certificate.NotAfter));
         if (certificate.NotBefore > now)
-            throw new FormatException($"The client certificate is not valid until {certificate.NotBefore:yyyy-MM-dd}");
+            throw new FormatException(string.Format(Strings.CertificateLoader_TheClientCertificateIsNotValid, certificate.NotBefore));
         return certificate;
     }
 
@@ -129,13 +130,13 @@ public static class CertificateLoader
             {
                 // Windows reports NotSignatureValid when another CA of the same name is the issuer.
                 X509ChainStatusFlags.UntrustedRoot or X509ChainStatusFlags.PartialChain or X509ChainStatusFlags.NotSignatureValid
-                    => "it is not signed by the CA certificate",
-                X509ChainStatusFlags.NotTimeValid => "it has expired or is not valid yet",
+                    => Strings.CertificateLoader_ItIsNotSignedByThe,
+                X509ChainStatusFlags.NotTimeValid => Strings.CertificateLoader_ItHasExpiredOrIsNot,
                 _ => s.StatusInformation.Trim(),
             })
             .Distinct()
             .ToList();
-        return problems.Count == 0 ? "its chain could not be checked" : string.Join("; ", problems);
+        return problems.Count == 0 ? Strings.CertificateLoader_ItsChainCouldNotBeChecked : string.Join("; ", problems);
     }
 
     private static bool IsEncryptedPem(string path)
@@ -181,18 +182,18 @@ public static class CertificateLoader
     {
         var keyName = Path.GetFileName(keyFile);
         if (!string.IsNullOrEmpty(password) && PasswordIsWrong(keyFile, password))
-            return $"The private key in {keyName} cannot be opened: the password is wrong";
+            return string.Format(Strings.CertificateLoader_ThePrivateKeyInCannotBe, keyName);
 
         return sameFile
-            ? $"{name} cannot be used: it needs a PEM certificate and its private key, or choose the key file separately ({e.Message})"
-            : $"{name} and {keyName} cannot be used together: {e.Message}";
+            ? string.Format(Strings.CertificateLoader_CannotBeUsedItNeedsA, name, e.Message)
+            : string.Format(Strings.CertificateLoader_AndCannotBeUsedTogether, name, keyName, e.Message);
     }
 
     private static string Existing(string path, string what)
     {
         var file = path.Trim();
         if (!File.Exists(file))
-            throw new FormatException($"The {what} file {file} does not exist");
+            throw new FormatException(string.Format(Strings.CertificateLoader_TheFileDoesNotExist, what, file));
         return file;
     }
 }

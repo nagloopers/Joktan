@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Joktan.Certificates.Resources;
 using Joktan.Core.ViewModels;
 
 namespace Joktan.Certificates.ViewModels;
@@ -17,7 +18,7 @@ public partial class CertificateDefaultsViewModel : PageViewModel
     private bool _loading;
     private bool _saving;
 
-    public CertificateDefaultsViewModel(CertificateStore store) : base("Certificate Defaults", "Settings / Certificate Defaults")
+    public CertificateDefaultsViewModel(CertificateStore store) : base(Strings.CertificateDefaults_CertificateDefaults, Strings.CertificateDefaults_SettingsCertificateDefaults)
     {
         _store = store;
         KeyAlgorithms = System.Enum.GetValues<KeyAlgorithm>().Select(a => new Choice<KeyAlgorithm>(a, a.Text())).ToList();
@@ -163,12 +164,12 @@ public partial class CertificateDefaultsViewModel : PageViewModel
     {
         foreach (var (name, label) in new[]
                  {
-                     (RootCommonName, "root CA"), (IntermediateCommonName, "intermediate CA"),
-                     (ServerCommonName, "server"), (ClientCommonName, "client"),
+                     (RootCommonName, Strings.CertificateDefaults_RootCA), (IntermediateCommonName, Strings.CertificateDefaults_IntermediateCA),
+                     (ServerCommonName, Strings.CertificateDefaults_Server), (ClientCommonName, Strings.CertificateDefaults_Client),
                  })
         {
             if (name.Trim().Length > 64)
-                return $"The {label} common name must not be longer than 64 characters";
+                return string.Format(Strings.CertificateDefaults_TheCommonNameMustNotBe, label);
         }
 
         if (CertificateSpec.CheckFields(Organization, OrganizationalUnit, Locality, State, Country) is { } fieldError)
@@ -176,9 +177,9 @@ public partial class CertificateDefaultsViewModel : PageViewModel
         if (CertificateSpec.ParseAlternativeNames(ServerAlternativeNames, out _) is { } namesError)
             return namesError;
         if (CertificateStore.CheckFolder(ClientFolder) is { } folderError)
-            return $"MQTT clients' folder: {folderError}";
+            return string.Format(Strings.CertificateDefaults_MQTTClientsFolder, folderError);
         if (ParseDays(AuthorityValidityDays) is null || ParseDays(CertificateValidityDays) is null)
-            return $"The number of days must be a whole number from 1 to {MaxValidityDays}";
+            return string.Format(Strings.CertificateDefaults_TheNumberOfDaysMustBe, MaxValidityDays);
         return null;
     }
 

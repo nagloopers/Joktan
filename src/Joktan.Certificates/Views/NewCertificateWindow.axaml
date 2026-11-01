@@ -1,5 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:res="using:Joktan.Certificates.Resources"
         xmlns:help="using:Joktan.Core.Controls"
         xmlns:core="using:Joktan.Core"
         xmlns:vm="using:Joktan.Certificates.ViewModels"
@@ -14,13 +15,13 @@
         Icon="avares://Joktan.Core/Assets/joktan.ico"
         WindowStartupLocation="CenterOwner"
         Background="{DynamicResource AppBackgroundBrush}"
-        Title="New certificate">
+        Title="{x:Static res:Strings.NewCertificateWindow_NewCertificate}">
 
     <DockPanel>
         <Border DockPanel.Dock="Top" Classes="page-header">
             <Grid ColumnDefinitions="*,Auto">
                 <StackPanel>
-                    <TextBlock Classes="page-title" FontSize="{DynamicResource DialogTitleFontSize}" Text="New certificate" />
+                    <TextBlock Classes="page-title" FontSize="{DynamicResource DialogTitleFontSize}" Text="{x:Static res:Strings.NewCertificateWindow_NewCertificate}" />
                     <TextBlock Classes="page-subtitle" Text="{Binding Title}" />
                 </StackPanel>
                 <help:HelpButton Grid.Column="1" VerticalAlignment="Center" />
@@ -35,8 +36,8 @@
                            Margin="0,0,16,0"
                            Text="{Binding Error}" />
                 <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
-                    <Button Content="Cancel" Command="{Binding CancelCommand}" IsCancel="True" />
-                    <Button Classes="accent" Content="Make certificate" Command="{Binding SaveCommand}" />
+                    <Button Content="{x:Static res:Strings.NewCertificateWindow_Cancel}" Command="{Binding CancelCommand}" IsCancel="True" />
+                    <Button Classes="accent" Content="{x:Static res:Strings.NewCertificateWindow_MakeCertificate}" Command="{Binding SaveCommand}" />
                 </StackPanel>
             </Grid>
         </Border>
@@ -47,31 +48,31 @@
                 <!-- What it is -->
                 <Border Classes="card">
                     <StackPanel Spacing="12">
-                        <TextBlock Classes="card-title" Text="Certificate" />
+                        <TextBlock Classes="card-title" Text="{x:Static res:Strings.NewCertificateWindow_Certificate}" />
                         <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
                             <StackPanel>
-                                <TextBlock Classes="field-label" Text="Kind" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.NewCertificateWindow_Kind}" />
                                 <ComboBox ItemsSource="{Binding Kinds}"
                                           SelectedItem="{Binding SelectedKind}"
                                           IsEnabled="{Binding CanChooseKind}"
                                           HorizontalAlignment="Stretch" />
                             </StackPanel>
                             <StackPanel Grid.Column="1">
-                                <TextBlock Classes="field-label" Text="Name in the list" />
-                                <TextBox Text="{Binding Name}" PlaceholderText="Empty for the common name" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.NewCertificateWindow_NameInTheList}" />
+                                <TextBox Text="{Binding Name}" PlaceholderText="{x:Static res:Strings.NewCertificateWindow_EmptyForTheCommonName}" />
                             </StackPanel>
                         </Grid>
                         <TextBlock Classes="info-label" TextWrapping="Wrap" Text="{Binding KindHint}" />
                         <StackPanel>
-                            <TextBlock Classes="field-label" Text="Folder" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.NewCertificateWindow_Folder}" />
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                                 <TextBox Classes="code" Text="{Binding Folder}" />
-                                <Button Grid.Column="1" Content="Browse" Command="{Binding BrowseFolderCommand}" />
+                                <Button Grid.Column="1" Content="{x:Static res:Strings.NewCertificateWindow_Browse}" Command="{Binding BrowseFolderCommand}" />
                             </Grid>
                             <TextBlock Classes="info-label" Margin="0,6,0,0" TextWrapping="Wrap" Text="{Binding FolderPreview}" />
                         </StackPanel>
                         <StackPanel>
-                            <TextBlock Classes="field-label" Text="Signed by" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.NewCertificateWindow_SignedBy}" />
                             <TextBlock Classes="table-cell" TextWrapping="Wrap" Text="{Binding IssuerText}" />
                         </StackPanel>
                     </StackPanel>
@@ -81,44 +82,44 @@
                 <Border Classes="card">
                     <StackPanel Spacing="12">
                         <StackPanel>
-                            <TextBlock Classes="card-title" Text="Subject" />
-                            <TextBlock Classes="card-subtitle" Text="Who the certificate names. Filled in from the defaults and from the CA that signs it." />
+                            <TextBlock Classes="card-title" Text="{x:Static res:Strings.NewCertificateWindow_Subject}" />
+                            <TextBlock Classes="card-subtitle" Text="{x:Static res:Strings.NewCertificateWindow_WhoTheCertificateNamesFilledIn}" />
                         </StackPanel>
                         <StackPanel>
-                            <TextBlock Classes="field-label" Text="Common name (CN)" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.NewCertificateWindow_CommonNameCN}" />
                             <TextBox Text="{Binding CommonName}" />
                         </StackPanel>
                         <Grid ColumnDefinitions="*,*" ColumnSpacing="16" RowDefinitions="Auto,Auto,Auto" RowSpacing="12">
                             <StackPanel>
-                                <TextBlock Classes="field-label" Text="Organisation (O)" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.NewCertificateWindow_OrganisationO}" />
                                 <TextBox Text="{Binding Organization}" />
                             </StackPanel>
                             <StackPanel Grid.Column="1">
-                                <TextBlock Classes="field-label" Text="Organisational unit (OU)" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.NewCertificateWindow_OrganisationalUnitOU}" />
                                 <TextBox Text="{Binding OrganizationalUnit}" />
                             </StackPanel>
                             <StackPanel Grid.Row="1">
-                                <TextBlock Classes="field-label" Text="Locality (L)" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.NewCertificateWindow_LocalityL}" />
                                 <TextBox Text="{Binding Locality}" />
                             </StackPanel>
                             <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="*,90" ColumnSpacing="16">
                                 <StackPanel>
-                                    <TextBlock Classes="field-label" Text="State or province (ST)" />
+                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.NewCertificateWindow_StateOrProvinceST}" />
                                     <TextBox Text="{Binding State}" />
                                 </StackPanel>
                                 <StackPanel Grid.Column="1">
-                                    <TextBlock Classes="field-label" Text="Country (C)" />
+                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.NewCertificateWindow_CountryC}" />
                                     <TextBox Text="{Binding Country}" MaxLength="2" PlaceholderText="ZA" />
                                 </StackPanel>
                             </Grid>
                             <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
-                                <TextBlock Classes="field-label" Text="Email address (optional)" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.NewCertificateWindow_EmailAddressOptional}" />
                                 <TextBox Text="{Binding Email}" />
                             </StackPanel>
                         </Grid>
 
                         <StackPanel IsVisible="{Binding ShowAlternativeNames}">
-                            <TextBlock Classes="field-label" Text="Alternative names" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.NewCertificateWindow_AlternativeNames}" />
                             <TextBox Classes="code" Text="{Binding AlternativeNames}" PlaceholderText="localhost, 127.0.0.1, ::1, broker.example.com" />
                             <TextBlock Classes="info-label" Margin="0,6,0,0" TextWrapping="Wrap" Text="{Binding AlternativeNamesHint}" />
                         </StackPanel>
@@ -128,14 +129,14 @@
                 <!-- Key and validity -->
                 <Border Classes="card">
                     <StackPanel Spacing="12">
-                        <TextBlock Classes="card-title" Text="Key and validity" />
+                        <TextBlock Classes="card-title" Text="{x:Static res:Strings.NewCertificateWindow_KeyAndValidity}" />
                         <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
                             <StackPanel>
-                                <TextBlock Classes="field-label" Text="Key" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.NewCertificateWindow_Key}" />
                                 <ComboBox ItemsSource="{Binding KeyAlgorithms}" SelectedItem="{Binding SelectedKeyAlgorithm}" HorizontalAlignment="Stretch" />
                             </StackPanel>
                             <StackPanel Grid.Column="1">
-                                <TextBlock Classes="field-label" Text="Expires on" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.NewCertificateWindow_ExpiresOn}" />
                                 <CalendarDatePicker SelectedDate="{Binding ValidUntil}"
                                                     DisplayDateStart="{Binding FirstDate}"
                                                     DisplayDateEnd="{Binding LastDate}"
@@ -147,14 +148,14 @@
                         <Grid ColumnDefinitions="*,Auto">
                             <TextBlock Classes="info-label" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding ValidityText}" />
                             <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
-                                <Button Classes="small" Content="1 year" Command="{Binding ValidForCommand}" CommandParameter="1" />
-                                <Button Classes="small" Content="2 years" Command="{Binding ValidForCommand}" CommandParameter="2" />
-                                <Button Classes="small" Content="5 years" Command="{Binding ValidForCommand}" CommandParameter="5" />
-                                <Button Classes="small" Content="10 years" Command="{Binding ValidForCommand}" CommandParameter="10" />
+                                <Button Classes="small" Content="{x:Static res:Strings.NewCertificateWindow_1Year}" Command="{Binding ValidForCommand}" CommandParameter="1" />
+                                <Button Classes="small" Content="{x:Static res:Strings.NewCertificateWindow_2Years}" Command="{Binding ValidForCommand}" CommandParameter="2" />
+                                <Button Classes="small" Content="{x:Static res:Strings.NewCertificateWindow_5Years}" Command="{Binding ValidForCommand}" CommandParameter="5" />
+                                <Button Classes="small" Content="{x:Static res:Strings.NewCertificateWindow_10Years}" Command="{Binding ValidForCommand}" CommandParameter="10" />
                             </StackPanel>
                         </Grid>
                         <TextBlock Classes="info-label" TextWrapping="Wrap"
-                                   Text="It is valid from now until the end of the day it expires on. A certificate cannot outlast the CA that signs it." />
+                                   Text="{x:Static res:Strings.NewCertificateWindow_ItIsValidFromNowUntil}" />
                     </StackPanel>
                 </Border>
 

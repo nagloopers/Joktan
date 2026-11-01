@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Settings.Resources"
              xmlns:vm="using:Joktan.Settings.ViewModels"
              xmlns:views="using:Joktan.Settings.Views"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -21,9 +22,9 @@
         <ScrollViewer>
             <Border Classes="card" Margin="24" VerticalAlignment="Top">
                 <StackPanel>
-                    <TextBlock Classes="card-title" Text="Fonts" />
+                    <TextBlock Classes="card-title" Text="{x:Static res:Strings.FontsView_Fonts}" />
                     <TextBlock Classes="card-subtitle"
-                               Text="The fonts are the ones on this computer. A theme that names one another computer does not have uses Inter there instead." />
+                               Text="{x:Static res:Strings.FontsView_TheFontsAreTheOnesOn}" />
                     <ItemsControl ItemsSource="{Binding Rows}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="vm:FontRowViewModel">
@@ -36,7 +37,7 @@
                                         <TextBlock Grid.Column="2" VerticalAlignment="Center"
                                                    FontFamily="{Binding Sample}"
                                                    TextTrimming="CharacterEllipsis"
-                                                   Text="The quick brown fox jumps over the lazy dog 0123" />
+                                                   Text="{x:Static res:Strings.FontsView_TheQuickBrownFoxJumpsOver}" />
                                     </Grid>
                                 </Border>
                             </DataTemplate>

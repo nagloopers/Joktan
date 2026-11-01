@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using Avalonia.Platform;
+using Joktan.Help.Resources;
 
 namespace Joktan.Help;
 
@@ -14,36 +16,49 @@ public sealed record HelpTopic(string Id, string Title, string? Parent = null)
     /// <summary>The topics in the order they are listed, which follows the main menu.</summary>
     public static IReadOnlyList<HelpTopic> All { get; } =
     [
-        new(Home, "Getting started"),
-        new("settings-and-data", "Settings and data"),
-        new("themes", "Themes", "Settings and data"),
-        new("search", "Search", "Settings and data"),
-        new("alerts-and-messages", "Alerts and messages", "Settings and data"),
-        new("folders-and-backup", "Folders and backup", "Settings and data"),
-        new("agent", "Agent", "Settings and data"),
-        new("dashboard", "Dashboard"),
-        new("topic-dashboards", "MQTT Dashboards"),
-        new("notes", "Notes"),
-        new("passwords", "Passwords"),
-        new("pomodoro", "Pomodoro"),
-        new("mqtt", "MQTT"),
-        new("mqtt-clients", "Clients and brokers", "MQTT"),
-        new("mqtt-tls", "TLS and mutual TLS", "MQTT"),
-        new("mqtt-folder-messages", "Folder messages", "MQTT"),
-        new("mqtt-message-settings", "Message settings", "MQTT"),
-        new("mqtt-varying-fields", "Varying fields", "MQTT"),
-        new("topic-explorer", "Topic Explorer"),
-        new("certificates", "Certificates"),
-        new("api-client", "API Client"),
-        new("api-client-grpc", "gRPC requests", "API Client"),
-        new("api-client-variables", "Environments and variables", "API Client"),
-        new("containers", "Containers"),
+        new(Home, Strings.HelpTopic_GettingStarted),
+        new("settings-and-data", Strings.HelpTopic_SettingsAndData),
+        new("themes", Strings.HelpTopic_Themes, Strings.HelpTopic_SettingsAndData),
+        new("search", Strings.HelpTopic_Search, Strings.HelpTopic_SettingsAndData),
+        new("alerts-and-messages", Strings.HelpTopic_AlertsAndMessages, Strings.HelpTopic_SettingsAndData),
+        new("folders-and-backup", Strings.HelpTopic_FoldersAndBackup, Strings.HelpTopic_SettingsAndData),
+        new("agent", Strings.HelpTopic_Agent, Strings.HelpTopic_SettingsAndData),
+        new("dashboard", Strings.HelpTopic_Dashboard),
+        new("topic-dashboards", Strings.HelpTopic_MQTTDashboards),
+        new("notes", Strings.HelpTopic_Notes),
+        new("passwords", Strings.HelpTopic_Passwords),
+        new("pomodoro", Strings.HelpTopic_Pomodoro),
+        new("mqtt", Strings.HelpTopic_MQTT),
+        new("mqtt-clients", Strings.HelpTopic_ClientsAndBrokers, Strings.HelpTopic_MQTT),
+        new("mqtt-tls", Strings.HelpTopic_TLSAndMutualTLS, Strings.HelpTopic_MQTT),
+        new("mqtt-folder-messages", Strings.HelpTopic_FolderMessages, Strings.HelpTopic_MQTT),
+        new("mqtt-message-settings", Strings.HelpTopic_MessageSettings, Strings.HelpTopic_MQTT),
+        new("mqtt-varying-fields", Strings.HelpTopic_VaryingFields, Strings.HelpTopic_MQTT),
+        new("topic-explorer", Strings.HelpTopic_TopicExplorer),
+        new("certificates", Strings.HelpTopic_Certificates),
+        new("api-client", Strings.HelpTopic_APIClient),
+        new("api-client-grpc", Strings.HelpTopic_GRPCRequests, Strings.HelpTopic_APIClient),
+        new("api-client-variables", Strings.HelpTopic_EnvironmentsAndVariables, Strings.HelpTopic_APIClient),
+        new("containers", Strings.HelpTopic_Containers),
     ];
 
     public string ReadMarkdown()
     {
-        using var stream = AssetLoader.Open(new Uri($"avares://Joktan.Help/Topics/{Id}.md"));
+        using var stream = AssetLoader.Open(MarkdownUri());
         using var reader = new StreamReader(stream);
         return reader.ReadToEnd();
+    }
+
+    /// <summary>The topic in the language showing, from <c>Topics/&lt;language&gt;/&lt;id&gt;.md</c>, or else in English.</summary>
+    private Uri MarkdownUri()
+    {
+        for (var culture = CultureInfo.CurrentUICulture; culture.Name.Length > 0; culture = culture.Parent)
+        {
+            var translated = new Uri($"avares://Joktan.Help/Topics/{culture.Name}/{Id}.md");
+            if (AssetLoader.Exists(translated))
+                return translated;
+        }
+
+        return new Uri($"avares://Joktan.Help/Topics/{Id}.md");
     }
 }

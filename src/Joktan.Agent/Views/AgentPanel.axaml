@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Agent.Resources"
              xmlns:vm="using:Joktan.Agent.ViewModels"
              xmlns:agent="using:Joktan.Agent"
                       xmlns:core="using:Joktan.Core"
@@ -47,10 +48,10 @@
                     <TextBlock VerticalAlignment="Center"
                                FontWeight="SemiBold"
                                TextTrimming="CharacterEllipsis"
-                               ToolTip.Tip="Which command-line agent answers. Change it on the Settings / Agent page."
+                               ToolTip.Tip="{x:Static res:Strings.AgentPanel_WhichCommandLineAgentAnswersChange}"
                                Text="{Binding SelectedClient.DisplayName}" />
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="2">
-                        <Button Classes="icon-button" ToolTip.Tip="Stop reading this aloud"
+                        <Button Classes="icon-button" ToolTip.Tip="{x:Static res:Strings.AgentPanel_StopReadingThisAloud}"
                                 IsVisible="{Binding IsSpeaking}" Command="{Binding StopSpeakingCommand}">
                             <PathIcon Data="{x:Static core:Icons.Stop}" />
                         </Button>
@@ -60,19 +61,19 @@
                                 <PathIcon Data="{x:Static core:Icons.SpeakerOff}" IsVisible="{Binding !IsReadingAloud}" />
                             </Panel>
                         </Button>
-                        <Button Name="ClearButton" Classes="icon-button" ToolTip.Tip="Clear the chat and start again"
+                        <Button Name="ClearButton" Classes="icon-button" ToolTip.Tip="{x:Static res:Strings.AgentPanel_ClearTheChatAndStartAgain}"
                                 IsEnabled="{Binding !IsEmpty}" Command="{Binding ClearCommand}">
                             <PathIcon Data="{x:Static core:Icons.Trash}" />
                         </Button>
-                        <Button Classes="icon-button" ToolTip.Tip="Open in its own window"
+                        <Button Classes="icon-button" ToolTip.Tip="{x:Static res:Strings.AgentPanel_OpenInItsOwnWindow}"
                                 IsVisible="{Binding !IsFloating}" Command="{Binding PopOutCommand}">
                             <PathIcon Data="{x:Static core:Icons.WindowRestore}" />
                         </Button>
-                        <Button Classes="icon-button" ToolTip.Tip="Dock in the main window"
+                        <Button Classes="icon-button" ToolTip.Tip="{x:Static res:Strings.AgentPanel_DockInTheMainWindow}"
                                 IsVisible="{Binding IsFloating}" Command="{Binding DockCommand}">
                             <PathIcon Data="{x:Static core:Icons.Dashboard}" />
                         </Button>
-                        <Button Classes="icon-button" ToolTip.Tip="Close the panel" Command="{Binding CloseCommand}">
+                        <Button Classes="icon-button" ToolTip.Tip="{x:Static res:Strings.AgentPanel_CloseThePanel}" Command="{Binding CloseCommand}">
                             <PathIcon Data="{x:Static core:Icons.WindowClose}" />
                         </Button>
                     </StackPanel>
@@ -87,19 +88,19 @@
                 <StackPanel Spacing="6">
                 <StackPanel Name="WorkingStatus" Orientation="Horizontal" Spacing="8" IsVisible="{Binding IsBusy}">
                     <ProgressBar IsIndeterminate="True" VerticalAlignment="Center" />
-                    <TextBlock Classes="info-label" VerticalAlignment="Center" Text="Working…" />
+                    <TextBlock Classes="info-label" VerticalAlignment="Center" Text="{x:Static res:Strings.AgentPanel_Working}" />
                 </StackPanel>
                 <TextBlock Classes="info-label" TextWrapping="Wrap" Text="{Binding TalkMessage}"
                            IsVisible="{Binding TalkMessage, Converter={x:Static ObjectConverters.IsNotNull}}" />
                 <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="8">
-                    <Button Name="PromptsButton" VerticalAlignment="Bottom" Classes="icon-button" ToolTip.Tip="Prompts">
+                    <Button Name="PromptsButton" VerticalAlignment="Bottom" Classes="icon-button" ToolTip.Tip="{x:Static res:Strings.AgentPanel_Prompts}">
                         <PathIcon Data="{x:Static core:Icons.Prompt}" Foreground="{DynamicResource AgentPromptBrush}" />
                         <Button.Flyout>
                             <Flyout Placement="TopEdgeAlignedLeft">
                                 <ScrollViewer MaxHeight="320" MaxWidth="360" HorizontalScrollBarVisibility="Disabled">
                                     <StackPanel Spacing="4">
                                         <TextBlock Classes="info-label" TextWrapping="Wrap" IsVisible="{Binding HasNoPrompts}"
-                                                   Text="No prompts. Add them on the Settings / Agent page." />
+                                                   Text="{x:Static res:Strings.AgentPanel_NoPromptsAddThemOnThe}" />
                                         <ItemsControl Name="PromptChoices" ItemsSource="{Binding Prompts}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate x:DataType="agent:AgentPrompt">
@@ -126,9 +127,9 @@
                             IsVisible="{Binding CanTalk}" IsEnabled="{Binding CanPressTalk}">
                         <PathIcon Classes.listening="{Binding IsListening}" Data="{x:Static core:Icons.Microphone}" />
                     </Button>
-                    <Button Grid.Column="3" VerticalAlignment="Bottom" Classes="small" Content="Send"
+                    <Button Grid.Column="3" VerticalAlignment="Bottom" Classes="small" Content="{x:Static res:Strings.AgentPanel_Send}"
                             IsVisible="{Binding IsIdle}" Command="{Binding SendCommand}" />
-                    <Button Grid.Column="3" VerticalAlignment="Bottom" Classes="small" Content="Stop"
+                    <Button Grid.Column="3" VerticalAlignment="Bottom" Classes="small" Content="{x:Static res:Strings.AgentPanel_Stop}"
                             IsVisible="{Binding IsBusy}" Command="{Binding StopCommand}" />
                 </Grid>
                 </StackPanel>
@@ -136,9 +137,9 @@
 
             <Panel>
                 <StackPanel IsVisible="{Binding IsEmpty}" VerticalAlignment="Center" Margin="32" Spacing="8">
-                    <TextBlock Classes="card-title" HorizontalAlignment="Center" Text="Ask the agent" />
+                    <TextBlock Classes="card-title" HorizontalAlignment="Center" Text="{x:Static res:Strings.AgentPanel_AskTheAgent}" />
                     <TextBlock Classes="info-label" TextWrapping="Wrap" TextAlignment="Center"
-                               Text="It can do what the pages of this app do, through the app's MCP server. You are asked before it deletes anything, sends anything out, or reads a stored password." />
+                               Text="{x:Static res:Strings.AgentPanel_ItCanDoWhatThePages}" />
                 </StackPanel>
 
                 <ScrollViewer Name="Scroller" HorizontalScrollBarVisibility="Disabled">
@@ -183,10 +184,10 @@
                                         <TextBlock TextWrapping="Wrap" Text="{Binding Description}" />
                                         <TextBlock Classes="code" TextWrapping="Wrap" Text="{Binding Details}" />
                                         <WrapPanel IsVisible="{Binding IsWaiting}" ItemSpacing="6" LineSpacing="6">
-                                            <Button Classes="small" Content="Allow" Command="{Binding AllowCommand}" />
-                                            <Button Classes="small" Content="Allow for this conversation"
+                                            <Button Classes="small" Content="{x:Static res:Strings.AgentPanel_Allow}" Command="{Binding AllowCommand}" />
+                                            <Button Classes="small" Content="{x:Static res:Strings.AgentPanel_AllowForThisConversation}"
                                                     IsVisible="{Binding CanRemember}" Command="{Binding AllowAlwaysCommand}" />
-                                            <Button Classes="small" Content="Decline" Command="{Binding DenyCommand}" />
+                                            <Button Classes="small" Content="{x:Static res:Strings.AgentPanel_Decline}" Command="{Binding DenyCommand}" />
                                         </WrapPanel>
                                         <TextBlock Classes="info-label" Text="{Binding Outcome}" IsVisible="{Binding !IsWaiting}" />
                                     </StackPanel>

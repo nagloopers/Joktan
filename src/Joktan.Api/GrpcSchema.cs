@@ -10,6 +10,7 @@ using Google.Protobuf.Reflection;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Grpc.Net.Client;
+using Joktan.Api.Resources;
 using ParsedSet = ProtobufNet::Google.Protobuf.Reflection.FileDescriptorSet;
 
 namespace Joktan.Api;
@@ -39,7 +40,7 @@ public sealed class GrpcSchema(IReadOnlyList<ServiceDescriptor> services, TypeRe
     public static GrpcSchema FromProtoFiles(IReadOnlyList<string> files, IEnumerable<string> importPaths)
     {
         if (files.Count == 0)
-            throw new GrpcSchemaException("Add the .proto files that describe the service.");
+            throw new GrpcSchemaException(Strings.GrpcSchema_AddTheProtoFilesThatDescribe);
 
         var set = new ParsedSet();
         foreach (var folder in files.Select(f => Path.GetDirectoryName(Path.GetFullPath(f))!).Concat(importPaths).Distinct())
@@ -47,9 +48,9 @@ public sealed class GrpcSchema(IReadOnlyList<ServiceDescriptor> services, TypeRe
         foreach (var file in files)
         {
             if (!File.Exists(file))
-                throw new GrpcSchemaException($"{file} does not exist.");
+                throw new GrpcSchemaException(string.Format(Strings.GrpcSchema_DoesNotExist, file));
             if (!set.Add(Path.GetFileName(file), includeInOutput: true))
-                throw new GrpcSchemaException($"{file} could not be read.");
+                throw new GrpcSchemaException(string.Format(Strings.GrpcSchema_CouldNotBeRead, file));
         }
 
         set.Process();
@@ -80,12 +81,12 @@ public sealed class GrpcSchema(IReadOnlyList<ServiceDescriptor> services, TypeRe
             }
             catch (RpcException inner) when (inner.StatusCode == StatusCode.Unimplemented)
             {
-                throw new GrpcSchemaException("The server does not offer gRPC server reflection. Use .proto files instead.");
+                throw new GrpcSchemaException(Strings.GrpcSchema_TheServerDoesNotOfferGRPC);
             }
         }
         catch (RpcException e)
         {
-            throw new GrpcSchemaException($"Asking the server for its services failed: {e.Status.StatusCode}: {e.Status.Detail}");
+            throw new GrpcSchemaException(string.Format(Strings.GrpcSchema_AskingTheServerForItsServices, e.Status.StatusCode, e.Status.Detail));
         }
     }
 
@@ -144,7 +145,7 @@ public sealed class GrpcSchema(IReadOnlyList<ServiceDescriptor> services, TypeRe
         }
         catch (Exception e) when (e is DescriptorValidationException or ArgumentException or InvalidProtocolBufferException)
         {
-            throw new GrpcSchemaException($"The service descriptions do not fit together: {e.Message}");
+            throw new GrpcSchemaException(string.Format(Strings.GrpcSchema_TheServiceDescriptionsDoNotFit, e.Message));
         }
 
         var services = built.SelectMany(f => f.Services)
@@ -152,7 +153,7 @@ public sealed class GrpcSchema(IReadOnlyList<ServiceDescriptor> services, TypeRe
             .OrderBy(s => s.FullName, StringComparer.Ordinal)
             .ToList();
         if (services.Count == 0)
-            throw new GrpcSchemaException("No services were found.");
+            throw new GrpcSchemaException(Strings.GrpcSchema_NoServicesWereFound);
         return new GrpcSchema(services, TypeRegistry.FromFiles(built));
 
         void Visit(string name, HashSet<string> visiting)
@@ -160,11 +161,11 @@ public sealed class GrpcSchema(IReadOnlyList<ServiceDescriptor> services, TypeRe
             if (done.Contains(name) || !protos.TryGetValue(name, out var file))
                 return;
             if (!visiting.Add(name))
-                throw new GrpcSchemaException($"{name} imports itself through other files.");
+                throw new GrpcSchemaException(string.Format(Strings.GrpcSchema_ImportsItselfThroughOtherFiles, name));
             foreach (var dependency in file.Proto.Dependency)
             {
                 if (!protos.ContainsKey(dependency))
-                    throw new GrpcSchemaException($"{name} imports {dependency}, which was not found.");
+                    throw new GrpcSchemaException(string.Format(Strings.GrpcSchema_ImportsWhichWasNotFound, name, dependency));
                 Visit(dependency, visiting);
             }
 
@@ -199,7 +200,7 @@ public sealed class GrpcSchema(IReadOnlyList<ServiceDescriptor> services, TypeRe
 
         private static List<ByteString> Files(Grpc.Reflection.V1.ServerReflectionResponse response)
             => response.ErrorResponse is { } error
-                ? throw new GrpcSchemaException($"The server could not describe a service: {error.ErrorMessage}")
+                ? throw new GrpcSchemaException(string.Format(Strings.GrpcSchema_TheServerCouldNotDescribeA, error.ErrorMessage))
                 : response.FileDescriptorResponse?.FileDescriptorProto.ToList() ?? [];
 
         private async Task<Grpc.Reflection.V1.ServerReflectionResponse> AskAsync(
@@ -209,7 +210,7 @@ public sealed class GrpcSchema(IReadOnlyList<ServiceDescriptor> services, TypeRe
             await call.RequestStream.WriteAsync(request, cancel);
             await call.RequestStream.CompleteAsync();
             if (!await call.ResponseStream.MoveNext(cancel))
-                throw new GrpcSchemaException("The server gave no answer to the reflection request.");
+                throw new GrpcSchemaException(Strings.GrpcSchema_TheServerGaveNoAnswerTo);
             return call.ResponseStream.Current;
         }
     }
@@ -230,7 +231,7 @@ public sealed class GrpcSchema(IReadOnlyList<ServiceDescriptor> services, TypeRe
 
         private static List<ByteString> Files(Grpc.Reflection.V1Alpha.ServerReflectionResponse response)
             => response.ErrorResponse is { } error
-                ? throw new GrpcSchemaException($"The server could not describe a service: {error.ErrorMessage}")
+                ? throw new GrpcSchemaException(string.Format(Strings.GrpcSchema_TheServerCouldNotDescribeA, error.ErrorMessage))
                 : response.FileDescriptorResponse?.FileDescriptorProto.ToList() ?? [];
 
         private async Task<Grpc.Reflection.V1Alpha.ServerReflectionResponse> AskAsync(
@@ -240,7 +241,7 @@ public sealed class GrpcSchema(IReadOnlyList<ServiceDescriptor> services, TypeRe
             await call.RequestStream.WriteAsync(request, cancel);
             await call.RequestStream.CompleteAsync();
             if (!await call.ResponseStream.MoveNext(cancel))
-                throw new GrpcSchemaException("The server gave no answer to the reflection request.");
+                throw new GrpcSchemaException(Strings.GrpcSchema_TheServerGaveNoAnswerTo);
             return call.ResponseStream.Current;
         }
     }

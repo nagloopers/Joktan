@@ -1,5 +1,6 @@
 using System;
 using Joktan.Core.ViewModels;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt.ViewModels;
 
@@ -34,10 +35,10 @@ public class FolderMessageRowViewModel : ViewModelBase
 
     public string State => Message.State switch
     {
-        FolderMessageState.Invalid => $"Invalid: {Message.Error}",
-        FolderMessageState.Manual => "No schedule",
-        FolderMessageState.Waiting => "Waiting for connection",
-        var state => state.ToString(),
+        FolderMessageState.Invalid => string.Format(Strings.FolderMessageRow_Invalid, Message.Error),
+        FolderMessageState.Manual => Strings.FolderMessageRow_NoSchedule,
+        FolderMessageState.Waiting => Strings.FolderMessageRow_WaitingForConnection,
+        var state => state.Text(),
     };
 
     public bool IsInvalid => !Message.IsValid;
@@ -46,8 +47,8 @@ public class FolderMessageRowViewModel : ViewModelBase
     public bool CanSwitch => Message.HasSchedule;
 
     public string SwitchTip => Message.HasSchedule
-        ? "Send this message on its schedule"
-        : IsInvalid ? "This message cannot be sent" : "Give the message a schedule with Edit to switch it on";
+        ? Strings.FolderMessageRow_SendThisMessageOnItsSchedule
+        : IsInvalid ? Strings.FolderMessageRow_ThisMessageCannotBeSent : Strings.FolderMessageRow_GiveTheMessageAScheduleWith;
 
     /// <summary>The switch in the grid. Changing it saves the message's settings.</summary>
     public bool IsOn

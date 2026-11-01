@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt;
 
@@ -40,15 +41,15 @@ public static class FolderScanner
             text = File.ReadAllText(path);
             body = JsonNode.Parse(text, documentOptions: new JsonDocumentOptions { AllowDuplicateProperties = false });
             if (body is null)
-                error ??= "The file holds no JSON value";
+                error ??= Strings.FolderScanner_TheFileHoldsNoJSONValue;
         }
         catch (JsonException)
         {
-            error ??= "Not valid JSON";
+            error ??= Strings.FolderScanner_NotValidJSON;
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
-            error ??= $"Cannot be read: {e.Message}";
+            error ??= string.Format(Strings.FolderScanner_CannotBeRead, e.Message);
         }
 
         var settingsPath = MessageSettings.PathFor(path);
@@ -58,28 +59,28 @@ public static class FolderScanner
             {
                 var parsed = MessageSettings.Parse(File.ReadAllText(settingsPath));
                 if (VaryingFields.FindMissing(body, parsed.Fields) is { } missing)
-                    error ??= $"Settings name a field that is not in the body: {missing}";
+                    error ??= string.Format(Strings.FolderScanner_SettingsNameAFieldThatIs, missing);
                 else if (parsed.Arrays.Select(a => VaryingFields.CheckArray(body, a)).FirstOrDefault(e => e is not null) is { } arrayError)
                     error ??= arrayError;
                 else
                     settings = parsed;
                 if (parsed.TopicFields.FirstOrDefault(f => !TopicTemplate.IsValidName(f.Path)) is { } badName)
-                    error ??= $"\"{badName.Path}\" cannot be a topic field name; use letters, digits, _, - and .";
+                    error ??= string.Format(Strings.FolderScanner_CannotBeATopicFieldName, badName.Path);
             }
             catch (FormatException e)
             {
-                error ??= $"Settings file is not valid: {e.Message}";
+                error ??= string.Format(Strings.FolderScanner_SettingsFileIsNotValid, e.Message);
             }
             catch (Exception e) when (e is IOException or UnauthorizedAccessException)
             {
-                error ??= $"Settings file cannot be read: {e.Message}";
+                error ??= string.Format(Strings.FolderScanner_SettingsFileCannotBeRead, e.Message);
             }
         }
 
         // A topic from the settings replaces the folder path, so the file may then sit anywhere.
         var topic = TopicTemplate.Effective(folder, settings.Topic);
         if (topic.Length == 0)
-            error ??= "Not inside a topic folder, and the settings set no topic";
+            error ??= Strings.FolderScanner_NotInsideATopicFolderAnd;
         else if (TopicTemplate.Check(topic, settings.TopicFields) is { } topicError)
             error ??= topicError;
 

@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.TopicExplorer.Resources"
              xmlns:vm="using:Joktan.TopicExplorer.ViewModels"
              xmlns:views="using:Joktan.TopicExplorer.Views"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -24,9 +25,9 @@
 
             <Border Classes="card" Margin="24" VerticalAlignment="Top" IsVisible="{Binding IsPoppedOut}">
                 <StackPanel Spacing="12">
-                    <TextBlock Classes="card-title" Text="The topic explorer is open in its own window" />
-                    <TextBlock Classes="card-subtitle" Text="It keeps running while you use the rest of the app." />
-                    <Button Content="Back to main window" Command="{Binding DockCommand}" HorizontalAlignment="Left" />
+                    <TextBlock Classes="card-title" Text="{x:Static res:Strings.TopicExplorerView_TheTopicExplorerIsOpenIn}" />
+                    <TextBlock Classes="card-subtitle" Text="{x:Static res:Strings.TopicExplorerView_ItKeepsRunningWhileYouUse}" />
+                    <Button Content="{x:Static res:Strings.TopicExplorerView_BackToMainWindow}" Command="{Binding DockCommand}" HorizontalAlignment="Left" />
                 </StackPanel>
             </Border>
         </Panel>

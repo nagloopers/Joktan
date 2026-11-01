@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using Joktan.Core;
+using Joktan.Settings.Resources;
 
 namespace Joktan.Settings.Backup;
 
@@ -93,7 +94,7 @@ public sealed class PendingRestore
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or JsonException)
         {
-            SaveOutcome(new RestoreOutcome { Error = $"The restore could not be started: {e.Message}" });
+            SaveOutcome(new RestoreOutcome { Error = string.Format(Strings.PendingRestore_TheRestoreCouldNotBeStarted, e.Message) });
             Cancel();
             return;
         }

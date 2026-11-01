@@ -1,0 +1,11 @@
+<Project>
+  <!-- Each assembly keeps the text it shows in Resources/Strings.resx. The build makes the Strings class from it. -->
+  <ItemGroup Condition="Exists('$(MSBuildProjectDirectory)/Resources/Strings.resx')">
+    <EmbeddedResource Update="Resources/Strings.resx"
+                      StronglyTypedLanguage="CSharp"
+                      StronglyTypedNamespace="$(RootNamespace).Resources"
+                      StronglyTypedClassName="Strings"
+                      StronglyTypedFileName="$(IntermediateOutputPath)Strings.g.cs"
+                      PublicClass="true" />
+  </ItemGroup>
+</Project>

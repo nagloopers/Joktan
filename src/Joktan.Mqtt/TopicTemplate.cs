@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt;
 
@@ -43,15 +44,15 @@ public static partial class TopicTemplate
     public static string? Check(string template, IReadOnlyList<FieldRule> rules)
     {
         if (template.Length == 0)
-            return "The topic is empty";
+            return Strings.TopicTemplate_TheTopicIsEmpty;
 
         var names = Names(template);
         if (names.Contains(FolderName))
-            return "{folder} can only be used in a topic set in the settings, for a message inside a folder";
+            return Strings.TopicTemplate_FolderCanOnlyBeUsedIn;
         if (names.FirstOrDefault(n => rules.All(r => r.Path != n)) is { } unfilled)
-            return $"Topic part {{{unfilled}}} has no topic field";
+            return string.Format(Strings.TopicTemplate_TopicPartHasNoTopicField, unfilled);
         if (rules.FirstOrDefault(r => !names.Contains(r.Path)) is { } unused)
-            return $"Topic field {unused.Path} is not used in the topic; write it as {{{unused.Path}}}";
+            return string.Format(Strings.TopicTemplate_TopicFieldIsNotUsedIn, unused.Path, unused.Path);
 
         // Check the fixed parts of the topic with every field standing in as plain text.
         return TopicRules.Validate(Placeholder().Replace(template, "x"));

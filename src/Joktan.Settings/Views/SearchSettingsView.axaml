@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Settings.Resources"
              xmlns:vm="using:Joktan.Settings.ViewModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -18,36 +19,36 @@
         <ScrollViewer>
             <Border Classes="card" Margin="24" VerticalAlignment="Top">
                 <StackPanel>
-                    <TextBlock Classes="card-title" Text="Search" />
+                    <TextBlock Classes="card-title" Text="{x:Static res:Strings.SearchSettingsView_Search}" />
                     <TextBlock Classes="card-subtitle"
-                               Text="Choose what the search box in the top bar looks through. Switching an area off only leaves it out of the results: nothing in it changes." />
+                               Text="{x:Static res:Strings.SearchSettingsView_ChooseWhatTheSearchBoxIn}" />
 
                     <Border Classes="table-row">
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                            <TextBlock Classes="table-cell" Text="Notes" />
+                            <TextBlock Classes="table-cell" Text="{x:Static res:Strings.SearchSettingsView_Notes}" />
                             <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding Notes}"
-                                          ToolTip.Tip="Search the titles and text of notes" />
+                                          ToolTip.Tip="{x:Static res:Strings.SearchSettingsView_SearchTheTitlesAndTextOf}" />
                         </Grid>
                     </Border>
                     <Border Classes="table-row">
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                            <TextBlock Classes="table-cell" Text="Help" />
+                            <TextBlock Classes="table-cell" Text="{x:Static res:Strings.SearchSettingsView_Help}" />
                             <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding Help}"
-                                          ToolTip.Tip="Search the help topics" />
+                                          ToolTip.Tip="{x:Static res:Strings.SearchSettingsView_SearchTheHelpTopics}" />
                         </Grid>
                     </Border>
                     <Border Classes="table-row">
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                            <TextBlock Classes="table-cell" Text="Messages" />
+                            <TextBlock Classes="table-cell" Text="{x:Static res:Strings.SearchSettingsView_Messages}" />
                             <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding Messages}"
-                                          ToolTip.Tip="Search the messages kept on this computer" />
+                                          ToolTip.Tip="{x:Static res:Strings.SearchSettingsView_SearchTheMessagesKeptOnThis}" />
                         </Grid>
                     </Border>
                     <Border Classes="table-row">
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                            <TextBlock Classes="table-cell" Text="Alerts" />
+                            <TextBlock Classes="table-cell" Text="{x:Static res:Strings.SearchSettingsView_Alerts}" />
                             <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding Alerts}"
-                                          ToolTip.Tip="Search the alerts kept on this computer" />
+                                          ToolTip.Tip="{x:Static res:Strings.SearchSettingsView_SearchTheAlertsKeptOnThis}" />
                         </Grid>
                     </Border>
                 </StackPanel>

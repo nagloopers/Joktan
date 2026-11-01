@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Nodes;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt;
 
@@ -19,6 +20,22 @@ public enum FolderMessageState
     Finished,
     Missed,
     Invalid,
+}
+
+public static class FolderMessageStateText
+{
+    /// <summary>What a FolderMessageState is called on screen.</summary>
+    public static string Text(this FolderMessageState value) => value switch
+    {
+        FolderMessageState.Manual => Strings.FolderMessageState_Manual,
+        FolderMessageState.Off => Strings.FolderMessageState_Off,
+        FolderMessageState.Waiting => Strings.FolderMessageState_Waiting,
+        FolderMessageState.Scheduled => Strings.FolderMessageState_Scheduled,
+        FolderMessageState.Finished => Strings.FolderMessageState_Finished,
+        FolderMessageState.Missed => Strings.FolderMessageState_Missed,
+        FolderMessageState.Invalid => Strings.FolderMessageState_Invalid,
+        _ => value.ToString(),
+    };
 }
 
 /// <summary>

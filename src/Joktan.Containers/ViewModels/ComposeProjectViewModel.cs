@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Joktan.Containers.Resources;
 using Joktan.Core.ViewModels;
 
 namespace Joktan.Containers.ViewModels;
@@ -18,7 +19,7 @@ public sealed record ComposeServiceRow(string Service, ComposeContainer? Contain
 {
     public string Name => Container?.Name ?? "";
 
-    public string Status => Container is null ? "Not created"
+    public string Status => Container is null ? Strings.ComposeServiceRow_NotCreated
         : Container.Health is { Length: > 0 } health && !Container.Status.Contains(health, StringComparison.OrdinalIgnoreCase)
             ? $"{Container.Status} ({health})"
             : Container.Status;
@@ -88,7 +89,7 @@ public partial class ComposeProjectViewModel : ViewModelBase
     [ObservableProperty]
     public partial bool IsConfirmingDownWithVolumes { get; set; }
 
-    public string DownWithVolumesText => $"Take {Name} down and delete its volumes too? What they hold is lost.";
+    public string DownWithVolumesText => string.Format(Strings.ComposeProject_TakeDownAndDeleteItsVolumes, Name);
 
     partial void OnNameChanged(string value) => OnPropertyChanged(nameof(DownWithVolumesText));
 
@@ -103,34 +104,34 @@ public partial class ComposeProjectViewModel : ViewModelBase
 
     /// <summary>Creates and starts the containers, building images where the file says so.</summary>
     [RelayCommand(CanExecute = nameof(CanRun))]
-    private Task UpAsync(string? service) => _page.RunCommandAsync(this, "Starting", ["up", "-d", .. Only(service)]);
+    private Task UpAsync(string? service) => _page.RunCommandAsync(this, Strings.ComposeProject_Starting, ["up", "-d", .. Only(service)]);
 
     [RelayCommand(CanExecute = nameof(CanRun))]
-    private Task StopAsync(string? service) => _page.RunCommandAsync(this, "Stopping", ["stop", .. Only(service)]);
+    private Task StopAsync(string? service) => _page.RunCommandAsync(this, Strings.ComposeProject_Stopping, ["stop", .. Only(service)]);
 
     [RelayCommand(CanExecute = nameof(CanRun))]
-    private Task RestartAsync(string? service) => _page.RunCommandAsync(this, "Restarting", ["restart", .. Only(service)]);
+    private Task RestartAsync(string? service) => _page.RunCommandAsync(this, Strings.ComposeProject_Restarting, ["restart", .. Only(service)]);
 
     /// <summary>Stops and removes the containers and networks; volumes are kept.</summary>
     [RelayCommand(CanExecute = nameof(CanRun))]
-    private Task DownAsync() => _page.RunCommandAsync(this, "Taking down", ["down"]);
+    private Task DownAsync() => _page.RunCommandAsync(this, Strings.ComposeProject_TakingDown, ["down"]);
 
     /// <summary>Makes new containers even when nothing changed, and starts them.</summary>
     [RelayCommand(CanExecute = nameof(CanRun))]
-    private Task RecreateAsync(string? service) => _page.RunCommandAsync(this, "Recreating", ["up", "-d", "--force-recreate", .. Only(service)]);
+    private Task RecreateAsync(string? service) => _page.RunCommandAsync(this, Strings.ComposeProject_Recreating, ["up", "-d", "--force-recreate", .. Only(service)]);
 
     /// <summary>Builds the images again, then recreates and starts the containers that use them.</summary>
     [RelayCommand(CanExecute = nameof(CanRun))]
-    private Task RebuildAsync(string? service) => _page.RunCommandAsync(this, "Building", ["up", "-d", "--build", .. Only(service)]);
+    private Task RebuildAsync(string? service) => _page.RunCommandAsync(this, Strings.ComposeProject_Building, ["up", "-d", "--build", .. Only(service)]);
 
     [RelayCommand(CanExecute = nameof(CanRun))]
-    private Task PullAsync(string? service) => _page.RunCommandAsync(this, "Pulling", ["pull", "--ignore-buildable", .. Only(service)]);
+    private Task PullAsync(string? service) => _page.RunCommandAsync(this, Strings.ComposeProject_Pulling, ["pull", "--ignore-buildable", .. Only(service)]);
 
     [RelayCommand(CanExecute = nameof(CanRun))]
-    private Task BuildAsync(string? service) => _page.RunCommandAsync(this, "Building", ["build", .. Only(service)]);
+    private Task BuildAsync(string? service) => _page.RunCommandAsync(this, Strings.ComposeProject_Building, ["build", .. Only(service)]);
 
     [RelayCommand(CanExecute = nameof(CanRun))]
-    private Task PauseAsync(string? service) => _page.RunCommandAsync(this, "Pausing", ["pause", .. Only(service)]);
+    private Task PauseAsync(string? service) => _page.RunCommandAsync(this, Strings.ComposeProject_Pausing, ["pause", .. Only(service)]);
 
     // compose unpause finds no paused containers under Podman, so the engine resumes them by name.
     [RelayCommand(CanExecute = nameof(CanRun))]
@@ -139,20 +140,20 @@ public partial class ComposeProjectViewModel : ViewModelBase
         var paused = Services.Where(r => r.IsPaused && (string.IsNullOrEmpty(service) || r.Service == service)).Select(r => r.Name).ToArray();
         if (paused.Length == 0)
         {
-            Error = "Nothing is paused.";
+            Error = Strings.ComposeProject_NothingIsPaused;
             return Task.CompletedTask;
         }
 
-        return _page.RunCommandAsync(this, "Resuming", ["unpause", .. paused], engine: true);
+        return _page.RunCommandAsync(this, Strings.ComposeProject_Resuming, ["unpause", .. paused], engine: true);
     }
 
     /// <summary>Stops the containers at once, without letting them shut down.</summary>
     [RelayCommand(CanExecute = nameof(CanRun))]
-    private Task KillAsync(string? service) => _page.RunCommandAsync(this, "Killing", ["kill", .. Only(service)]);
+    private Task KillAsync(string? service) => _page.RunCommandAsync(this, Strings.ComposeProject_Killing, ["kill", .. Only(service)]);
 
     /// <summary>Stops and removes the containers; Start makes them again.</summary>
     [RelayCommand(CanExecute = nameof(CanRun))]
-    private Task RemoveContainerAsync(string? service) => _page.RunCommandAsync(this, "Removing", ["rm", "--stop", "--force", .. Only(service)]);
+    private Task RemoveContainerAsync(string? service) => _page.RunCommandAsync(this, Strings.ComposeProject_Removing, ["rm", "--stop", "--force", .. Only(service)]);
 
     [RelayCommand(CanExecute = nameof(CanRun))]
     private void DownWithVolumes() => IsConfirmingDownWithVolumes = true;
@@ -165,7 +166,7 @@ public partial class ComposeProjectViewModel : ViewModelBase
     private Task ConfirmDownWithVolumesAsync()
     {
         IsConfirmingDownWithVolumes = false;
-        return _page.RunCommandAsync(this, "Taking down", ["down", "--volumes"]);
+        return _page.RunCommandAsync(this, Strings.ComposeProject_TakingDown, ["down", "--volumes"]);
     }
 
     /// <summary>Shows only this service's logs, starting them if they are not shown.</summary>
@@ -187,7 +188,7 @@ public partial class ComposeProjectViewModel : ViewModelBase
         }
         catch (Exception e) when (e is InvalidOperationException or System.ComponentModel.Win32Exception or PlatformNotSupportedException)
         {
-            Error = $"Could not open a terminal: {e.Message}";
+            Error = string.Format(Strings.ComposeProject_CouldNotOpenATerminal, e.Message);
         }
     }
 
@@ -251,7 +252,7 @@ public partial class ComposeProjectViewModel : ViewModelBase
             {
                 Services.Clear();
                 Summary = "";
-                ShowStatusError($"{File} does not exist.");
+                ShowStatusError(string.Format(Strings.ComposeProject_DoesNotExist, File));
                 return;
             }
 
@@ -281,7 +282,7 @@ public partial class ComposeProjectViewModel : ViewModelBase
             }
 
             var running = rows.Count(r => r.IsRunning);
-            Summary = rows.Count == 0 ? "The file has no services." : $"{running} of {rows.Count} running";
+            Summary = rows.Count == 0 ? Strings.ComposeProject_TheFileHasNoServices : string.Format(Strings.ComposeProject_OfRunning, running, rows.Count);
 
             // A failed command's message stays until the next command; only a status problem clears.
             if (Error is not null && Error == _statusError)
@@ -290,7 +291,7 @@ public partial class ComposeProjectViewModel : ViewModelBase
         }
         catch (Exception e) when (e is InvalidOperationException or JsonException or System.ComponentModel.Win32Exception)
         {
-            ShowStatusError($"Could not read the containers: {e.Message}");
+            ShowStatusError(string.Format(Strings.ComposeProject_CouldNotReadTheContainers, e.Message));
         }
     }
 

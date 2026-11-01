@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Core;
 using Joktan.Core.ViewModels;
+using Joktan.Passwords.Resources;
 
 namespace Joktan.Passwords.ViewModels;
 
@@ -28,7 +29,7 @@ public partial class PasswordsViewModel : PageViewModel
     private PasswordNodeViewModel _root = new(new PasswordFolder(), null);
     private DateTime _lastActivity = DateTime.UtcNow;
 
-    public PasswordsViewModel(PasswordSettings settings, CredentialStore credentials) : base("Passwords", "Passwords")
+    public PasswordsViewModel(PasswordSettings settings, CredentialStore credentials) : base(Strings.Passwords_Passwords, Strings.Passwords_Passwords)
     {
         _settings = settings;
         _credentials = credentials;
@@ -37,7 +38,7 @@ public partial class PasswordsViewModel : PageViewModel
 
         SetupVaultPath = settings.EffectiveVaultPath;
         SelectedLockChoice = LockChoices.FirstOrDefault(c => c.Minutes == settings.LockMinutes)
-                             ?? new LockChoice(settings.LockMinutes, $"After {settings.LockMinutes} minutes");
+                             ?? new LockChoice(settings.LockMinutes, string.Format(Strings.Passwords_AfterMinutes, settings.LockMinutes));
         if (settings.Storage is null)
             State = PasswordsState.Setup;
         else if (!_storage.Exists)
@@ -62,15 +63,15 @@ public partial class PasswordsViewModel : PageViewModel
 
     public bool IsVault => _storage.Kind == PasswordStorageKind.Vault;
 
-    public string StorageText => IsVault ? "Encrypted vault file" : KeychainName;
+    public string StorageText => IsVault ? Strings.Passwords_EncryptedVaultFile : KeychainName;
 
     public string StorageLocation => _storage.Location;
 
     public bool IsKeychainAvailable => _credentials.IsAvailable;
 
-    public static string KeychainName => OperatingSystem.IsWindows() ? "Windows Credential Manager"
-        : OperatingSystem.IsMacOS() ? "macOS Keychain"
-        : "System keychain (Secret Service)";
+    public static string KeychainName => OperatingSystem.IsWindows() ? Strings.Passwords_WindowsCredentialManager
+        : OperatingSystem.IsMacOS() ? Strings.Passwords_MacOSKeychain
+        : Strings.Passwords_SystemKeychainSecretService;
 
     [ObservableProperty]
     public partial string? Error { get; set; }
@@ -107,7 +108,7 @@ public partial class PasswordsViewModel : PageViewModel
     /// <summary>Whether a vault file is already at the chosen place, so it is opened rather than made.</summary>
     public bool SetupVaultExists => SetupIsVault && File.Exists(FullPath(SetupVaultPath));
 
-    public string SetupButtonText => SetupIsVault ? SetupVaultExists ? "Open vault" : "Create vault" : "Use keychain";
+    public string SetupButtonText => SetupIsVault ? SetupVaultExists ? Strings.Passwords_OpenVault : Strings.Passwords_CreateVault : Strings.Passwords_UseKeychain;
 
     [ObservableProperty]
     public partial string NewMasterPassword { get; set; } = "";
@@ -197,8 +198,8 @@ public partial class PasswordsViewModel : PageViewModel
 
     public IReadOnlyList<LockChoice> LockChoices { get; } =
     [
-        new(1, "After 1 minute"), new(5, "After 5 minutes"), new(15, "After 15 minutes"),
-        new(30, "After 30 minutes"), new(60, "After 1 hour"), new(0, "Never"),
+        new(1, Strings.Passwords_After1Minute), new(5, Strings.Passwords_After5Minutes), new(15, Strings.Passwords_After15Minutes),
+        new(30, Strings.Passwords_After30Minutes), new(60, Strings.Passwords_After1Hour), new(0, Strings.Passwords_Never),
     ];
 
     /// <summary>How long an open vault may go unused before it locks.</summary>
@@ -304,7 +305,7 @@ public partial class PasswordsViewModel : PageViewModel
     public bool HasNotes => EntryNotes.Trim().Length > 0;
 
     public string ModifiedText => SelectedEntry is { } entry
-        ? $"Created {entry.Created.ToLocalTime():yyyy-MM-dd HH:mm}, last changed {entry.Modified.ToLocalTime():yyyy-MM-dd HH:mm}"
+        ? string.Format(Strings.Passwords_CreatedLastChanged, entry.Created.ToLocalTime(), entry.Modified.ToLocalTime())
         : "";
 
     public string FolderSummary
@@ -316,9 +317,9 @@ public partial class PasswordsViewModel : PageViewModel
             var count = folder.AllEntries().Count();
             return count switch
             {
-                0 => "No entries",
-                1 => "1 entry",
-                _ => $"{count} entries",
+                0 => Strings.Passwords_NoEntries,
+                1 => Strings.Passwords_1Entry,
+                _ => string.Format(Strings.Passwords_Entries, count),
             };
         }
     }
@@ -385,15 +386,15 @@ public partial class PasswordsViewModel : PageViewModel
     }
 
     [RelayCommand]
-    private Task CopyUsernameAsync() => Copy(SelectedEntry?.Username, "Username copied.");
+    private Task CopyUsernameAsync() => Copy(SelectedEntry?.Username, Strings.Passwords_UsernameCopied);
 
     [RelayCommand]
     private Task CopyPasswordAsync()
         => Copy(SelectedEntry is { } entry ? _storage.ReadPassword(entry) : null,
-            "Password copied. The clipboard is cleared in 30 seconds.");
+            Strings.Passwords_PasswordCopiedTheClipboardIsCleared);
 
     [RelayCommand]
-    private Task CopyUrlAsync() => Copy(SelectedEntry?.Url, "Website copied.");
+    private Task CopyUrlAsync() => Copy(SelectedEntry?.Url, Strings.Passwords_WebsiteCopied);
 
     [RelayCommand]
     private async Task OpenUrlAsync()
@@ -405,7 +406,7 @@ public partial class PasswordsViewModel : PageViewModel
         if (Uri.TryCreate(url, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.UriSchemeHttps || uri.Scheme == Uri.UriSchemeHttp))
             await OpenUri(uri);
         else
-            Error = "The website is not a web address that can be opened.";
+            Error = Strings.Passwords_TheWebsiteIsNotAWeb;
     }
 
     private async Task Copy(string? text, string message)
@@ -476,11 +477,11 @@ public partial class PasswordsViewModel : PageViewModel
         // A folder cannot go inside itself.
         var excluded = node.IsFolder ? node.SelfAndDescendants().ToHashSet() : [];
         FolderChoices.Clear();
-        FolderChoices.Add(new PasswordFolderChoice(_root, "(Top level)"));
+        FolderChoices.Add(new PasswordFolderChoice(_root, Strings.Passwords_TopLevel));
         foreach (var folder in _root.SelfAndDescendants().Where(n => n.IsFolder && n != _root && !excluded.Contains(n)))
             FolderChoices.Add(new PasswordFolderChoice(folder, new string(' ', 4 * folder.Ancestors().Count()) + folder.Name));
         EditFolder = FolderChoices.FirstOrDefault(c => c.Node == node.Parent);
-        EditHeading = $"Edit {node.Name}";
+        EditHeading = string.Format(Strings.Passwords_Edit, node.Name);
         Message = null;
         IsEditing = true;
     }
@@ -492,7 +493,7 @@ public partial class PasswordsViewModel : PageViewModel
     private void Save()
     {
         if (FinishEditing())
-            Message = Selected?.IsFolder == true ? "Folder saved." : "Entry saved.";
+            Message = Selected?.IsFolder == true ? Strings.Passwords_FolderSaved : Strings.Passwords_EntrySaved;
     }
 
     [RelayCommand]
@@ -562,7 +563,7 @@ public partial class PasswordsViewModel : PageViewModel
     private void NewEntry() => Add(new PasswordNodeViewModel(new PasswordEntry(), TargetFolder()));
 
     [RelayCommand]
-    private void NewFolder() => Add(new PasswordNodeViewModel(new PasswordFolder { Name = "New folder" }, TargetFolder()));
+    private void NewFolder() => Add(new PasswordNodeViewModel(new PasswordFolder { Name = Strings.Passwords_NewFolder }, TargetFolder()));
 
     // New things go in the selected folder, or the folder of the selected entry.
     private PasswordNodeViewModel TargetFolder() => Selected switch
@@ -587,7 +588,7 @@ public partial class PasswordsViewModel : PageViewModel
         SearchText = "";
         Selected = node;
         Edit();
-        EditHeading = node.IsFolder ? "New folder" : "New entry";
+        EditHeading = node.IsFolder ? Strings.Passwords_NewFolder : Strings.Passwords_NewEntry;
         _newNode = node;
     }
 
@@ -636,18 +637,18 @@ public partial class PasswordsViewModel : PageViewModel
             if (Selected is not { } node)
                 return "";
             if (node.Entry is not null)
-                return $"Delete {node.Name} and its password? This cannot be undone.";
+                return string.Format(Strings.Passwords_DeleteAndItsPasswordThisCannot, node.Name);
 
             var entries = node.Folder!.AllEntries().Count();
             var folders = node.SelfAndDescendants().Count(n => n.IsFolder) - 1;
             var inside = (entries, folders) switch
             {
                 (0, 0) => "",
-                (_, 0) => $" and the {Plural(entries, "entry", "entries")} in it",
-                (0, _) => $" and the {Plural(folders, "folder", "folders")} in it",
-                _ => $" and the {Plural(entries, "entry", "entries")} and {Plural(folders, "folder", "folders")} in it",
+                (_, 0) => string.Format(Strings.Passwords_AndTheInIt, Plural(entries, Strings.Passwords_Entry, Strings.Passwords_Entries2)),
+                (0, _) => string.Format(Strings.Passwords_AndTheInIt, Plural(folders, Strings.Passwords_Folder, Strings.Passwords_Folders)),
+                _ => string.Format(Strings.Passwords_AndTheAndInIt, Plural(entries, Strings.Passwords_Entry, Strings.Passwords_Entries2), Plural(folders, Strings.Passwords_Folder, Strings.Passwords_Folders)),
             };
-            return $"Delete the folder {node.Name}{inside}? This cannot be undone.";
+            return string.Format(Strings.Passwords_DeleteTheFolderThisCannotBe, node.Name, inside);
 
             static string Plural(int count, string one, string many) => count == 1 ? $"1 {one}" : $"{count} {many}";
         }
@@ -684,7 +685,7 @@ public partial class PasswordsViewModel : PageViewModel
         Selected = index < siblings.Count ? siblings[index]
             : index > 0 ? siblings[index - 1]
             : node.Parent == _root ? Roots.FirstOrDefault() : node.Parent;
-        Message = node.IsFolder ? "Folder deleted." : "Entry deleted.";
+        Message = node.IsFolder ? Strings.Passwords_FolderDeleted : Strings.Passwords_EntryDeleted;
     }
 
     // ---- Storage and master password ----
@@ -709,8 +710,8 @@ public partial class PasswordsViewModel : PageViewModel
     public bool TargetVaultExists => TargetIsVault && File.Exists(FullPath(TargetVaultPath));
 
     public string TargetPasswordLabel => TargetVaultExists
-        ? "Master password of the vault already there; the entries are added to it"
-        : "Master password for the new vault";
+        ? Strings.Passwords_MasterPasswordOfTheVaultAlready
+        : Strings.Passwords_MasterPasswordForTheNewVault;
 
     [ObservableProperty]
     public partial string TargetMasterPassword { get; set; } = "";
@@ -748,7 +749,7 @@ public partial class PasswordsViewModel : PageViewModel
             var path = FullPath(TargetVaultPath);
             if (IsVault && string.Equals(path, _storage.Location, StringComparison.Ordinal))
             {
-                Error = "The entries are already in this vault.";
+                Error = Strings.Passwords_TheEntriesAreAlreadyInThis;
                 return;
             }
 
@@ -758,7 +759,7 @@ public partial class PasswordsViewModel : PageViewModel
                 if (!Run(() =>
                     {
                         if (!target.Open(TargetMasterPassword))
-                            throw new PasswordStorageException("That is not the master password of the vault there.");
+                            throw new PasswordStorageException(Strings.Passwords_ThatIsNotTheMasterPassword);
                     }))
                     return;
             }
@@ -779,14 +780,14 @@ public partial class PasswordsViewModel : PageViewModel
         {
             if (!IsVault)
             {
-                Error = "The entries are already in the keychain.";
+                Error = Strings.Passwords_TheEntriesAreAlreadyInThe;
                 return;
             }
 
             var keychain = new KeychainStorage(_credentials);
             if (!keychain.IsAvailable)
             {
-                Error = "This computer has no system keychain Joktan can use.";
+                Error = Strings.Passwords_ThisComputerHasNoSystemKeychain;
                 return;
             }
 
@@ -831,8 +832,8 @@ public partial class PasswordsViewModel : PageViewModel
         IsChangingStorage = false;
         TargetMasterPassword = TargetRepeatPassword = "";
         Message = removed
-            ? $"The entries were moved to {Describe()}, and removed from {from}."
-            : $"The entries were copied to {Describe()}, but could not be removed from {from}.";
+            ? string.Format(Strings.Passwords_TheEntriesWereMovedToAnd, Describe(), from)
+            : string.Format(Strings.Passwords_TheEntriesWereCopiedToBut, Describe(), from);
     }
 
     [RelayCommand]
@@ -845,7 +846,7 @@ public partial class PasswordsViewModel : PageViewModel
         if (!Run(() =>
             {
                 if (!check.Open(CurrentMasterPassword))
-                    throw new PasswordStorageException("The current master password is not right.");
+                    throw new PasswordStorageException(Strings.Passwords_TheCurrentMasterPasswordIsNot);
             }))
             return;
         check.Close();
@@ -860,12 +861,12 @@ public partial class PasswordsViewModel : PageViewModel
             return;
         CurrentMasterPassword = TargetMasterPassword = TargetRepeatPassword = "";
         IsChangingStorage = false;
-        Message = "The master password was changed.";
+        Message = Strings.Passwords_TheMasterPasswordWasChanged;
     }
 
     // ---- Helpers ----
 
-    private string Describe() => IsVault ? $"the vault {_storage.Location}" : $"the {KeychainName}";
+    private string Describe() => IsVault ? string.Format(Strings.Passwords_TheVault, _storage.Location) : string.Format(Strings.Passwords_The, KeychainName);
 
     private PasswordStorage MakeStorage(PasswordStorageKind kind, string vaultPath) => kind == PasswordStorageKind.Vault
         ? new VaultStorage(vaultPath)
@@ -892,7 +893,7 @@ public partial class PasswordsViewModel : PageViewModel
             return false;
         if (!opened)
         {
-            Error = "That is not the master password.";
+            Error = Strings.Passwords_ThatIsNotTheMasterPassword2;
             return false;
         }
 
@@ -934,9 +935,9 @@ public partial class PasswordsViewModel : PageViewModel
     private static string? CheckMasterPassword(string password, string repeat)
     {
         if (password.Length < VaultStorage.MinimumMasterPasswordLength)
-            return $"The master password needs at least {VaultStorage.MinimumMasterPasswordLength} characters.";
+            return string.Format(Strings.Passwords_TheMasterPasswordNeedsAtLeast, VaultStorage.MinimumMasterPasswordLength);
         if (password != repeat)
-            return "The two master passwords are not the same.";
+            return Strings.Passwords_TheTwoMasterPasswordsAreNot;
         return null;
     }
 

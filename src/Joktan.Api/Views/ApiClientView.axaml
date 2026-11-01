@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Api.Resources"
              xmlns:vm="using:Joktan.Api.ViewModels"
              xmlns:api="using:Joktan.Api"
              xmlns:core="using:Joktan.Core"
@@ -14,19 +15,19 @@
         <!-- A row of a header, parameter, metadata or variable list -->
         <DataTemplate x:Key="PairRow" x:DataType="vm:ApiPairViewModel">
             <Grid ColumnDefinitions="Auto,*,2*,Auto" ColumnSpacing="8" Margin="0,0,0,6">
-                <CheckBox IsChecked="{Binding Enabled}" MinWidth="0" ToolTip.Tip="Send it" />
-                <TextBox Grid.Column="1" Classes="code" Text="{Binding Name}" PlaceholderText="Name" />
-                <TextBox Grid.Column="2" Classes="code" Text="{Binding Value}" PlaceholderText="Value" />
-                <Button Grid.Column="3" Classes="small" Content="Remove" Command="{Binding RemoveCommand}" />
+                <CheckBox IsChecked="{Binding Enabled}" MinWidth="0" ToolTip.Tip="{x:Static res:Strings.ApiClientView_SendIt}" />
+                <TextBox Grid.Column="1" Classes="code" Text="{Binding Name}" PlaceholderText="{x:Static res:Strings.ApiClientView_Name}" />
+                <TextBox Grid.Column="2" Classes="code" Text="{Binding Value}" PlaceholderText="{x:Static res:Strings.ApiClientView_Value}" />
+                <Button Grid.Column="3" Classes="small" Content="{x:Static res:Strings.ApiClientView_Remove}" Command="{Binding RemoveCommand}" />
             </Grid>
         </DataTemplate>
         <!-- A variable to save from the response -->
         <DataTemplate x:Key="CaptureRow" x:DataType="vm:ApiPairViewModel">
             <Grid ColumnDefinitions="Auto,*,2*,Auto" ColumnSpacing="8" Margin="0,0,0,6">
-                <CheckBox IsChecked="{Binding Enabled}" MinWidth="0" ToolTip.Tip="Save it" />
-                <TextBox Grid.Column="1" Classes="code" Text="{Binding Name}" PlaceholderText="Variable, such as token" />
-                <TextBox Grid.Column="2" Classes="code" Text="{Binding Value}" PlaceholderText="Path in the body, such as data.token; empty for the whole body" />
-                <Button Grid.Column="3" Classes="small" Content="Remove" Command="{Binding RemoveCommand}" />
+                <CheckBox IsChecked="{Binding Enabled}" MinWidth="0" ToolTip.Tip="{x:Static res:Strings.ApiClientView_SaveIt}" />
+                <TextBox Grid.Column="1" Classes="code" Text="{Binding Name}" PlaceholderText="{x:Static res:Strings.ApiClientView_VariableSuchAsToken}" />
+                <TextBox Grid.Column="2" Classes="code" Text="{Binding Value}" PlaceholderText="{x:Static res:Strings.ApiClientView_PathInTheBodySuchAs}" />
+                <Button Grid.Column="3" Classes="small" Content="{x:Static res:Strings.ApiClientView_Remove}" Command="{Binding RemoveCommand}" />
             </Grid>
         </DataTemplate>
         <!-- The request as last sent, on both kinds of request -->
@@ -36,7 +37,7 @@
                            IsVisible="{Binding HasLastSent}" />
                 <Panel>
                     <TextBlock Classes="info-label" TextWrapping="Wrap" IsVisible="{Binding !HasLastSent}"
-                               Text="Nothing has been sent from this request yet." />
+                               Text="{x:Static res:Strings.ApiClientView_NothingHasBeenSentFromThis}" />
                     <TextBox Classes="code response" IsReadOnly="True" Text="{Binding LastSentText, Mode=OneWay}" IsVisible="{Binding HasLastSent}" />
                 </Panel>
             </DockPanel>
@@ -45,7 +46,7 @@
             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8" Margin="0,0,0,6">
                 <TextBlock Classes="code" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Text="{Binding Path}"
                            ToolTip.Tip="{Binding Path}" />
-                <Button Grid.Column="1" Classes="small" Content="Remove" Command="{Binding RemoveCommand}" />
+                <Button Grid.Column="1" Classes="small" Content="{x:Static res:Strings.ApiClientView_Remove}" Command="{Binding RemoveCommand}" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="HeaderRow" x:DataType="api:ApiPair">
@@ -76,14 +77,14 @@
                 <!-- Wraps onto another line when the window is narrow -->
                 <WrapPanel HorizontalAlignment="Right" VerticalAlignment="Center" ItemSpacing="8" LineSpacing="8">
                     <ComboBox ItemsSource="{Binding EnvironmentChoices}" SelectedItem="{Binding SelectedEnvironment}" MinWidth="170"
-                              ToolTip.Tip="Whose {{variables}} are filled in when a request is sent" />
-                    <Button Content="Environments" Command="{Binding ToggleEnvironmentsCommand}"
-                            ToolTip.Tip="Sets of variables, such as one per server" />
-                    <Button Content="Folder" Command="{Binding ToggleWorkspaceCommand}"
-                            ToolTip.Tip="Choose the folder the requests are kept in" />
-                    <Button Content="New folder" Command="{Binding NewFolderCommand}" />
-                    <Button Content="New gRPC" Command="{Binding NewGrpcRequestCommand}" ToolTip.Tip="Add a gRPC request" />
-                    <Button Classes="accent" Content="New REST" Command="{Binding NewRestRequestCommand}" ToolTip.Tip="Add a REST request" />
+                              ToolTip.Tip="{x:Static res:Strings.ApiClientView_WhoseVariablesAreFilledInWhen}" />
+                    <Button Content="{x:Static res:Strings.ApiClientView_Environments}" Command="{Binding ToggleEnvironmentsCommand}"
+                            ToolTip.Tip="{x:Static res:Strings.ApiClientView_SetsOfVariablesSuchAsOne}" />
+                    <Button Content="{x:Static res:Strings.ApiClientView_Folder}" Command="{Binding ToggleWorkspaceCommand}"
+                            ToolTip.Tip="{x:Static res:Strings.ApiClientView_ChooseTheFolderTheRequestsAre}" />
+                    <Button Content="{x:Static res:Strings.ApiClientView_NewFolder}" Command="{Binding NewFolderCommand}" />
+                    <Button Content="{x:Static res:Strings.ApiClientView_NewGRPC}" Command="{Binding NewGrpcRequestCommand}" ToolTip.Tip="{x:Static res:Strings.ApiClientView_AddAGRPCRequest}" />
+                    <Button Classes="accent" Content="{x:Static res:Strings.ApiClientView_NewREST}" Command="{Binding NewRestRequestCommand}" ToolTip.Tip="{x:Static res:Strings.ApiClientView_AddARESTRequest}" />
                 </WrapPanel>
             </DockPanel>
         </Border>
@@ -91,16 +92,16 @@
         <!-- Where the requests are kept -->
         <Border DockPanel.Dock="Top" Classes="card" Margin="24,16,24,0" IsVisible="{Binding IsChoosingWorkspace}">
             <StackPanel Spacing="8">
-                <TextBlock Classes="card-title" Text="Requests folder" />
+                <TextBlock Classes="card-title" Text="{x:Static res:Strings.ApiClientView_RequestsFolder}" />
                 <TextBlock Classes="card-subtitle" Margin="0"
-                           Text="Each request is a .request.json file and each folder a folder, so the requests can be kept in a project and in version control. A folder that already holds requests is opened as it is; otherwise the requests open now are copied into it." />
+                           Text="{x:Static res:Strings.ApiClientView_EachRequestIsARequestJson}" />
                 <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                     <TextBox Classes="code" Text="{Binding WorkspaceText}" PlaceholderText="{Binding DefaultFolder}" />
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
-                        <Button Content="Browse" Command="{Binding BrowseWorkspaceCommand}" />
-                        <Button Content="Default" Command="{Binding UseDefaultWorkspaceCommand}" />
-                        <Button Content="Cancel" Command="{Binding ToggleWorkspaceCommand}" />
-                        <Button Classes="accent" Content="Use folder" Command="{Binding ApplyWorkspaceCommand}" />
+                        <Button Content="{x:Static res:Strings.ApiClientView_Browse}" Command="{Binding BrowseWorkspaceCommand}" />
+                        <Button Content="{x:Static res:Strings.ApiClientView_Default}" Command="{Binding UseDefaultWorkspaceCommand}" />
+                        <Button Content="{x:Static res:Strings.ApiClientView_Cancel}" Command="{Binding ToggleWorkspaceCommand}" />
+                        <Button Classes="accent" Content="{x:Static res:Strings.ApiClientView_UseFolder}" Command="{Binding ApplyWorkspaceCommand}" />
                     </StackPanel>
                 </Grid>
                 <TextBlock Classes="error" TextWrapping="Wrap" Text="{Binding WorkspaceMessage}"
@@ -113,16 +114,16 @@
             <StackPanel Spacing="12">
                 <Grid ColumnDefinitions="*,Auto">
                     <StackPanel>
-                        <TextBlock Classes="card-title" Text="Environments" />
+                        <TextBlock Classes="card-title" Text="{x:Static res:Strings.ApiClientView_Environments}" />
                         <TextBlock Classes="card-subtitle" Margin="0,6,0,0"
-                                   Text="Write {{name}} in an address, header, body or message to use a variable of the environment chosen at the top. Kept in environments.json in the requests folder." />
+                                   Text="{x:Static res:Strings.ApiClientView_WriteNameInAnAddressHeader}" />
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Top">
-                        <Button Content="New environment" Command="{Binding NewEnvironmentCommand}" />
-                        <Button Content="Close" Command="{Binding ToggleEnvironmentsCommand}" />
+                        <Button Content="{x:Static res:Strings.ApiClientView_NewEnvironment}" Command="{Binding NewEnvironmentCommand}" />
+                        <Button Content="{x:Static res:Strings.ApiClientView_Close}" Command="{Binding ToggleEnvironmentsCommand}" />
                     </StackPanel>
                 </Grid>
-                <TextBlock Classes="info-label" Text="No environments yet." IsVisible="{Binding !HasEnvironments}" />
+                <TextBlock Classes="info-label" Text="{x:Static res:Strings.ApiClientView_NoEnvironmentsYet}" IsVisible="{Binding !HasEnvironments}" />
                 <Grid ColumnDefinitions="200,16,*" IsVisible="{Binding HasEnvironments}">
                     <ListBox ItemsSource="{Binding Environments}" SelectedItem="{Binding EditedEnvironment}" Classes="log" MaxHeight="220">
                         <ListBox.ItemTemplate>
@@ -134,14 +135,14 @@
                     <StackPanel Grid.Column="2" Spacing="8" DataContext="{Binding $parent[UserControl].((vm:ApiClientViewModel)DataContext).EditedEnvironment}" x:DataType="vm:ApiEnvironmentViewModel"
                                 IsVisible="{Binding $parent[UserControl].((vm:ApiClientViewModel)DataContext).EditedEnvironment, Converter={x:Static ObjectConverters.IsNotNull}}">
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                            <TextBox Text="{Binding Name}" PlaceholderText="Name" />
-                            <Button Grid.Column="1" Content="Delete environment"
+                            <TextBox Text="{Binding Name}" PlaceholderText="{x:Static res:Strings.ApiClientView_Name}" />
+                            <Button Grid.Column="1" Content="{x:Static res:Strings.ApiClientView_DeleteEnvironment}"
                                     Command="{Binding $parent[UserControl].((vm:ApiClientViewModel)DataContext).DeleteEnvironmentCommand}" />
                         </Grid>
                         <ScrollViewer MaxHeight="200">
                             <ItemsControl ItemsSource="{Binding Variables}" ItemTemplate="{StaticResource PairRow}" />
                         </ScrollViewer>
-                        <Button Classes="small" Content="Add variable" Command="{Binding Variables.AddCommand}" />
+                        <Button Classes="small" Content="{x:Static res:Strings.ApiClientView_AddVariable}" Command="{Binding Variables.AddCommand}" />
                     </StackPanel>
                 </Grid>
             </StackPanel>
@@ -158,15 +159,15 @@
             <Border Classes="card" Padding="8">
                 <DockPanel>
                     <Grid DockPanel.Dock="Top" Margin="12,8,4,8" ColumnDefinitions="*,Auto">
-                        <TextBlock Classes="card-title" Text="Requests" VerticalAlignment="Center" />
-                        <Button Grid.Column="1" Classes="small" Content="Reload" Command="{Binding RefreshCommand}"
-                                ToolTip.Tip="Read the folder again, after files were changed outside Joktan" />
+                        <TextBlock Classes="card-title" Text="{x:Static res:Strings.ApiClientView_Requests}" VerticalAlignment="Center" />
+                        <Button Grid.Column="1" Classes="small" Content="{x:Static res:Strings.ApiClientView_Reload}" Command="{Binding RefreshCommand}"
+                                ToolTip.Tip="{x:Static res:Strings.ApiClientView_ReadTheFolderAgainAfterFiles}" />
                     </Grid>
                     <TextBlock DockPanel.Dock="Bottom" Classes="info-label" Margin="12,8" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"
                                FontFamily="{DynamicResource CodeFontFamily}" FontSize="{DynamicResource TinyFontSize}" Text="{Binding Folder}" ToolTip.Tip="{Binding Folder}" />
                     <Panel>
                         <TextBlock Classes="info-label" Margin="12" TextWrapping="Wrap" IsVisible="{Binding IsEmpty}"
-                                   Text="No requests yet. Add one with New REST or New gRPC, and folders to sort them with New folder." />
+                                   Text="{x:Static res:Strings.ApiClientView_NoRequestsYetAddOneWith}" />
                         <TreeView ItemsSource="{Binding Roots}" SelectedItem="{Binding TreeSelection}">
                             <TreeView.Styles>
                                 <Style Selector="TreeViewItem" x:DataType="vm:ApiNodeViewModel">
@@ -188,7 +189,7 @@
             </Border>
 
             <Border Grid.Column="2" Classes="card" VerticalAlignment="Top" IsVisible="{Binding !HasSelection}">
-                <TextBlock Classes="info-label" TextWrapping="Wrap" Text="Select a request to edit and send it, or add one with New REST or New gRPC." />
+                <TextBlock Classes="info-label" TextWrapping="Wrap" Text="{x:Static res:Strings.ApiClientView_SelectARequestToEditAnd}" />
             </Border>
 
             <Grid Grid.Column="2" RowDefinitions="Auto,*" IsVisible="{Binding HasSelection}">
@@ -197,13 +198,13 @@
                 <Border Classes="card" Padding="16,12" Margin="0,0,0,12">
                     <StackPanel Spacing="8">
                         <Grid ColumnDefinitions="*,220,Auto" ColumnSpacing="8">
-                            <TextBox x:Name="NameBox" Text="{Binding EditName}" PlaceholderText="Name"
-                                     ToolTip.Tip="Renames the file or folder when you press Enter or leave the box" />
+                            <TextBox x:Name="NameBox" Text="{Binding EditName}" PlaceholderText="{x:Static res:Strings.ApiClientView_Name}"
+                                     ToolTip.Tip="{x:Static res:Strings.ApiClientView_RenamesTheFileOrFolderWhen}" />
                             <ComboBox Grid.Column="1" ItemsSource="{Binding FolderChoices}" SelectedItem="{Binding EditFolder}" HorizontalAlignment="Stretch"
-                                      ToolTip.Tip="The folder it is in; choose another to move it" />
+                                      ToolTip.Tip="{x:Static res:Strings.ApiClientView_TheFolderItIsInChoose}" />
                             <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
-                                <Button Content="Duplicate" Command="{Binding DuplicateCommand}" IsVisible="{Binding !IsFolderSelected}" />
-                                <Button Content="Delete" Command="{Binding DeleteCommand}" />
+                                <Button Content="{x:Static res:Strings.ApiClientView_Duplicate}" Command="{Binding DuplicateCommand}" IsVisible="{Binding !IsFolderSelected}" />
+                                <Button Content="{x:Static res:Strings.ApiClientView_Delete}" Command="{Binding DeleteCommand}" />
                             </StackPanel>
                         </Grid>
                         <TextBlock Classes="info-label" Text="{Binding FolderSummary}" IsVisible="{Binding IsFolderSelected}" />
@@ -211,8 +212,8 @@
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
                                 <TextBlock Classes="table-cell" TextWrapping="Wrap" Text="{Binding DeleteText}" />
                                 <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                                    <Button Content="Cancel" Command="{Binding CancelDeleteCommand}" />
-                                    <Button Classes="accent" Content="Delete" Command="{Binding ConfirmDeleteCommand}" />
+                                    <Button Content="{x:Static res:Strings.ApiClientView_Cancel}" Command="{Binding CancelDeleteCommand}" />
+                                    <Button Classes="accent" Content="{x:Static res:Strings.ApiClientView_Delete}" Command="{Binding ConfirmDeleteCommand}" />
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -236,31 +237,31 @@
                                 </ComboBox>
                                 <TextBox Grid.Column="1" Classes="code" Text="{Binding Url}" PlaceholderText="https://api.example.com/items or {{baseUrl}}/items" />
                                 <Panel Grid.Column="2">
-                                    <Button Classes="accent" Content="Send" Command="{Binding SendCommand}" IsVisible="{Binding IsNotSending}" MinWidth="80" />
-                                    <Button Content="Cancel" Command="{Binding CancelCommand}" IsVisible="{Binding IsSending}" MinWidth="80" />
+                                    <Button Classes="accent" Content="{x:Static res:Strings.ApiClientView_Send}" Command="{Binding SendCommand}" IsVisible="{Binding IsNotSending}" MinWidth="80" />
+                                    <Button Content="{x:Static res:Strings.ApiClientView_Cancel}" Command="{Binding CancelCommand}" IsVisible="{Binding IsSending}" MinWidth="80" />
                                 </Panel>
-                                <Button Grid.Column="3" Content="Resend" Command="{Binding ResendCommand}" IsVisible="{Binding CanResend}"
-                                        ToolTip.Tip="Send the last request again as it was sent, even if it has been edited since. Variables are filled in from the environment in use." />
+                                <Button Grid.Column="3" Content="{x:Static res:Strings.ApiClientView_Resend}" Command="{Binding ResendCommand}" IsVisible="{Binding CanResend}"
+                                        ToolTip.Tip="{x:Static res:Strings.ApiClientView_SendTheLastRequestAgainAs}" />
                             </Grid>
 
                             <!-- gRPC: address, send, service and method -->
                             <StackPanel DockPanel.Dock="Top" Spacing="8" IsVisible="{Binding IsGrpc}">
                                 <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
-                                    <TextBox Classes="code" Text="{Binding Address}" PlaceholderText="https://localhost:5001, or http://localhost:5000 for plain HTTP/2" />
+                                    <TextBox Classes="code" Text="{Binding Address}" PlaceholderText="{x:Static res:Strings.ApiClientView_HttpsLocalhost5001OrHttpLocalhost}" />
                                     <Panel Grid.Column="1">
-                                        <Button Classes="accent" Content="Send" Command="{Binding SendCommand}" IsVisible="{Binding IsNotSending}" MinWidth="80" />
-                                        <Button Content="Cancel" Command="{Binding CancelCommand}" IsVisible="{Binding IsSending}" MinWidth="80" />
+                                        <Button Classes="accent" Content="{x:Static res:Strings.ApiClientView_Send}" Command="{Binding SendCommand}" IsVisible="{Binding IsNotSending}" MinWidth="80" />
+                                        <Button Content="{x:Static res:Strings.ApiClientView_Cancel}" Command="{Binding CancelCommand}" IsVisible="{Binding IsSending}" MinWidth="80" />
                                     </Panel>
-                                    <Button Grid.Column="2" Content="Resend" Command="{Binding ResendCommand}" IsVisible="{Binding CanResend}"
-                                            ToolTip.Tip="Send the last message again as it was sent, even if it has been edited since. Variables are filled in from the environment in use." />
+                                    <Button Grid.Column="2" Content="{x:Static res:Strings.ApiClientView_Resend}" Command="{Binding ResendCommand}" IsVisible="{Binding CanResend}"
+                                            ToolTip.Tip="{x:Static res:Strings.ApiClientView_SendTheLastMessageAgainAs}" />
                                 </Grid>
                                 <Grid ColumnDefinitions="*,*,Auto" ColumnSpacing="8">
                                     <ComboBox ItemsSource="{Binding Services}" SelectedItem="{Binding ServiceChoice}" HorizontalAlignment="Stretch"
-                                              PlaceholderText="Service" />
+                                              PlaceholderText="{x:Static res:Strings.ApiClientView_Service}" />
                                     <ComboBox Grid.Column="1" ItemsSource="{Binding Methods}" SelectedItem="{Binding RpcChoice}" HorizontalAlignment="Stretch"
-                                              PlaceholderText="Method" />
-                                    <Button Grid.Column="2" Content="Load services" Command="{Binding LoadServicesCommand}"
-                                            ToolTip.Tip="Ask the server, or read the .proto files, as set on the Schema tab" />
+                                              PlaceholderText="{x:Static res:Strings.ApiClientView_Method}" />
+                                    <Button Grid.Column="2" Content="{x:Static res:Strings.ApiClientView_LoadServices}" Command="{Binding LoadServicesCommand}"
+                                            ToolTip.Tip="{x:Static res:Strings.ApiClientView_AskTheServerOrReadThe}" />
                                 </Grid>
                                 <TextBlock Classes="info-label" TextWrapping="Wrap">
                                     <Run Text="{Binding MethodText}" />
@@ -274,27 +275,33 @@
 
                             <!-- REST tabs -->
                             <TabControl Margin="0,8,0,0" IsVisible="{Binding IsRest}">
-                                <TabItem Header="Params">
+                                <TabItem Header="{x:Static res:Strings.ApiClientView_Params}">
                                     <ScrollViewer>
                                         <StackPanel Margin="0,8,0,0">
                                             <ItemsControl ItemsSource="{Binding Query}" ItemTemplate="{StaticResource PairRow}" />
-                                            <Button Classes="small" Content="Add parameter" Command="{Binding Query.AddCommand}" />
+                                            <Button Classes="small" Content="{x:Static res:Strings.ApiClientView_AddParameter}" Command="{Binding Query.AddCommand}" />
                                         </StackPanel>
                                     </ScrollViewer>
                                 </TabItem>
-                                <TabItem Header="Headers">
+                                <TabItem Header="{x:Static res:Strings.ApiClientView_Headers}">
                                     <ScrollViewer>
                                         <StackPanel Margin="0,8,0,0">
                                             <ItemsControl ItemsSource="{Binding Headers}" ItemTemplate="{StaticResource PairRow}" />
-                                            <Button Classes="small" Content="Add header" Command="{Binding Headers.AddCommand}" />
+                                            <Button Classes="small" Content="{x:Static res:Strings.ApiClientView_AddHeader}" Command="{Binding Headers.AddCommand}" />
                                         </StackPanel>
                                     </ScrollViewer>
                                 </TabItem>
-                                <TabItem Header="Body">
+                                <TabItem Header="{x:Static res:Strings.ApiClientView_Body}">
                                     <DockPanel Margin="0,8,0,0">
                                         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="8" Margin="0,0,0,8">
-                                            <ComboBox ItemsSource="{Binding BodyKinds}" SelectedItem="{Binding BodyKind}" Width="140" />
-                                            <Button Classes="small" Content="Format JSON" Command="{Binding FormatBodyCommand}" VerticalAlignment="Center"
+                                            <ComboBox ItemsSource="{Binding BodyKinds}" SelectedItem="{Binding BodyKind}" Width="140">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate x:DataType="api:ApiBodyKind">
+                                                        <TextBlock Text="{Binding Converter={x:Static api:ApiKindText.ApiBodyKindConverter}}" />
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                            <Button Classes="small" Content="{x:Static res:Strings.ApiClientView_FormatJSON}" Command="{Binding FormatBodyCommand}" VerticalAlignment="Center"
                                                     IsVisible="{Binding IsBodyText}" />
                                         </StackPanel>
                                         <Panel>
@@ -302,53 +309,59 @@
                                             <ScrollViewer IsVisible="{Binding IsBodyForm}">
                                                 <StackPanel>
                                                     <ItemsControl ItemsSource="{Binding Form}" ItemTemplate="{StaticResource PairRow}" />
-                                                    <Button Classes="small" Content="Add field" Command="{Binding Form.AddCommand}" />
+                                                    <Button Classes="small" Content="{x:Static res:Strings.ApiClientView_AddField}" Command="{Binding Form.AddCommand}" />
                                                 </StackPanel>
                                             </ScrollViewer>
                                         </Panel>
                                     </DockPanel>
                                 </TabItem>
-                                <TabItem Header="Auth">
+                                <TabItem Header="{x:Static res:Strings.ApiClientView_Auth}">
                                     <StackPanel Margin="0,8,0,0" Spacing="12">
-                                        <ComboBox ItemsSource="{Binding AuthKinds}" SelectedItem="{Binding AuthKind}" Width="140" />
+                                        <ComboBox ItemsSource="{Binding AuthKinds}" SelectedItem="{Binding AuthKind}" Width="140">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate x:DataType="api:ApiAuthKind">
+                                                    <TextBlock Text="{Binding Converter={x:Static api:ApiKindText.ApiAuthKindConverter}}" />
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
                                         <StackPanel IsVisible="{Binding IsBearer}">
-                                            <TextBlock Classes="field-label" Text="Token" />
+                                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.ApiClientView_Token}" />
                                             <TextBox Classes="code" Text="{Binding Token}" PlaceholderText="{}{{token}}" />
                                         </StackPanel>
                                         <Grid ColumnDefinitions="*,*" ColumnSpacing="8" IsVisible="{Binding IsBasic}">
                                             <StackPanel>
-                                                <TextBlock Classes="field-label" Text="Username" />
+                                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.ApiClientView_Username}" />
                                                 <TextBox Text="{Binding Username}" />
                                             </StackPanel>
                                             <StackPanel Grid.Column="1">
-                                                <TextBlock Classes="field-label" Text="Password" />
+                                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.ApiClientView_Password}" />
                                                 <TextBox PasswordChar="•" Text="{Binding Password}" />
                                             </StackPanel>
                                         </Grid>
                                         <TextBlock Classes="info-label" TextWrapping="Wrap"
-                                                   Text="Saved in the request's file as written. Put secrets in an environment variable, such as {{token}}, to keep them out of shared requests." />
+                                                   Text="{x:Static res:Strings.ApiClientView_SavedInTheRequestSFile}" />
                                     </StackPanel>
                                 </TabItem>
-                                <TabItem Header="Save to variables">
+                                <TabItem Header="{x:Static res:Strings.ApiClientView_SaveToVariables}">
                                     <ScrollViewer>
                                         <StackPanel Margin="0,8,0,0">
                                             <ItemsControl ItemsSource="{Binding Captures}" ItemTemplate="{StaticResource CaptureRow}" />
-                                            <Button Classes="small" Content="Add variable" Command="{Binding Captures.AddCommand}" />
+                                            <Button Classes="small" Content="{x:Static res:Strings.ApiClientView_AddVariable}" Command="{Binding Captures.AddCommand}" />
                                             <TextBlock Classes="info-label" Margin="0,8,0,0" TextWrapping="Wrap"
-                                                       Text="After a successful response, each value is saved in the environment chosen at the top, for {{name}} in other requests. Saved values are kept in environments.json." />
+                                                       Text="{x:Static res:Strings.ApiClientView_AfterASuccessfulResponseEachValue}" />
                                         </StackPanel>
                                     </ScrollViewer>
                                 </TabItem>
-                                <TabItem Header="Last sent">
+                                <TabItem Header="{x:Static res:Strings.ApiClientView_LastSent}">
                                     <ContentControl Content="{Binding}" ContentTemplate="{StaticResource LastSentView}" />
                                 </TabItem>
-                                <TabItem Header="Settings">
+                                <TabItem Header="{x:Static res:Strings.ApiClientView_Settings}">
                                     <StackPanel Margin="0,8,0,0" Spacing="12">
-                                        <CheckBox Content="Accept any TLS certificate (for local servers with self-signed ones)" IsChecked="{Binding AcceptAnyCertificate}" />
+                                        <CheckBox Content="{x:Static res:Strings.ApiClientView_AcceptAnyTLSCertificateForLocal}" IsChecked="{Binding AcceptAnyCertificate}" />
                                         <StackPanel Orientation="Horizontal" Spacing="8">
-                                            <TextBlock Classes="info-label" Text="Give up after" VerticalAlignment="Center" />
+                                            <TextBlock Classes="info-label" Text="{x:Static res:Strings.ApiClientView_GiveUpAfter}" VerticalAlignment="Center" />
                                             <NumericUpDown Value="{Binding TimeoutSeconds}" Minimum="1" Maximum="3600" Increment="5" FormatString="0" Width="120" />
-                                            <TextBlock Classes="info-label" Text="seconds" VerticalAlignment="Center" />
+                                            <TextBlock Classes="info-label" Text="{x:Static res:Strings.ApiClientView_Seconds}" VerticalAlignment="Center" />
                                         </StackPanel>
                                     </StackPanel>
                                 </TabItem>
@@ -356,62 +369,62 @@
 
                             <!-- gRPC tabs -->
                             <TabControl Margin="0,8,0,0" IsVisible="{Binding IsGrpc}">
-                                <TabItem Header="Message">
+                                <TabItem Header="{x:Static res:Strings.ApiClientView_Message}">
                                     <DockPanel Margin="0,8,0,0">
                                         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="8" Margin="0,0,0,8">
-                                            <Button Classes="small" Content="Example message" Command="{Binding TemplateCommand}"
-                                                    ToolTip.Tip="Fill in every field of the method's request message" />
-                                            <Button Classes="small" Content="Format JSON" Command="{Binding FormatMessageCommand}" />
+                                            <Button Classes="small" Content="{x:Static res:Strings.ApiClientView_ExampleMessage}" Command="{Binding TemplateCommand}"
+                                                    ToolTip.Tip="{x:Static res:Strings.ApiClientView_FillInEveryFieldOfThe}" />
+                                            <Button Classes="small" Content="{x:Static res:Strings.ApiClientView_FormatJSON}" Command="{Binding FormatMessageCommand}" />
                                         </StackPanel>
                                         <TextBox Classes="code note-editor" Text="{Binding Message}" />
                                     </DockPanel>
                                 </TabItem>
-                                <TabItem Header="Metadata">
+                                <TabItem Header="{x:Static res:Strings.ApiClientView_Metadata}">
                                     <ScrollViewer>
                                         <StackPanel Margin="0,8,0,0">
                                             <ItemsControl ItemsSource="{Binding Metadata}" ItemTemplate="{StaticResource PairRow}" />
-                                            <Button Classes="small" Content="Add metadata" Command="{Binding Metadata.AddCommand}" />
+                                            <Button Classes="small" Content="{x:Static res:Strings.ApiClientView_AddMetadata}" Command="{Binding Metadata.AddCommand}" />
                                             <TextBlock Classes="info-label" Margin="0,8,0,0" TextWrapping="Wrap"
-                                                       Text="Such as authorization: Bearer {{token}}. Names ending in -bin take base64 values." />
+                                                       Text="{x:Static res:Strings.ApiClientView_SuchAsAuthorizationBearerTokenNames}" />
                                         </StackPanel>
                                     </ScrollViewer>
                                 </TabItem>
-                                <TabItem Header="Schema">
+                                <TabItem Header="{x:Static res:Strings.ApiClientView_Schema}">
                                     <ScrollViewer>
                                         <StackPanel Margin="0,8,0,0" Spacing="8">
                                             <RadioButton GroupName="schema" IsChecked="{Binding UsesReflection}"
-                                                         Content="Ask the server (gRPC server reflection)" />
-                                            <RadioButton GroupName="schema" IsChecked="{Binding UsesProtoFiles}" Content="Read .proto files" />
+                                                         Content="{x:Static res:Strings.ApiClientView_AskTheServerGRPCServerReflection}" />
+                                            <RadioButton GroupName="schema" IsChecked="{Binding UsesProtoFiles}" Content="{x:Static res:Strings.ApiClientView_ReadProtoFiles}" />
                                             <StackPanel Margin="28,4,0,0" Spacing="6" IsVisible="{Binding UsesProtoFiles}">
                                                 <ItemsControl ItemsSource="{Binding ProtoFiles}" ItemTemplate="{StaticResource PathRow}" />
-                                                <Button Classes="small" Content="Add .proto files" Command="{Binding AddProtoFilesCommand}" />
-                                                <TextBlock Classes="field-label" Margin="0,8,0,4" Text="Folders to look for imports in, besides each file's own" />
+                                                <Button Classes="small" Content="{x:Static res:Strings.ApiClientView_AddProtoFiles}" Command="{Binding AddProtoFilesCommand}" />
+                                                <TextBlock Classes="field-label" Margin="0,8,0,4" Text="{x:Static res:Strings.ApiClientView_FoldersToLookForImportsIn}" />
                                                 <ItemsControl ItemsSource="{Binding ImportPaths}" ItemTemplate="{StaticResource PathRow}" />
-                                                <Button Classes="small" Content="Add import folder" Command="{Binding AddImportPathCommand}" />
+                                                <Button Classes="small" Content="{x:Static res:Strings.ApiClientView_AddImportFolder}" Command="{Binding AddImportPathCommand}" />
                                             </StackPanel>
                                         </StackPanel>
                                     </ScrollViewer>
                                 </TabItem>
-                                <TabItem Header="Save to variables">
+                                <TabItem Header="{x:Static res:Strings.ApiClientView_SaveToVariables}">
                                     <ScrollViewer>
                                         <StackPanel Margin="0,8,0,0">
                                             <ItemsControl ItemsSource="{Binding Captures}" ItemTemplate="{StaticResource CaptureRow}" />
-                                            <Button Classes="small" Content="Add variable" Command="{Binding Captures.AddCommand}" />
+                                            <Button Classes="small" Content="{x:Static res:Strings.ApiClientView_AddVariable}" Command="{Binding Captures.AddCommand}" />
                                             <TextBlock Classes="info-label" Margin="0,8,0,0" TextWrapping="Wrap"
-                                                       Text="After a successful response, each value is saved in the environment chosen at the top, for {{name}} in other requests. A stream's answer is an array of messages, so start the path with [0]. Saved values are kept in environments.json." />
+                                                       Text="{x:Static res:Strings.ApiClientView_AfterASuccessfulResponseEachValueIs}" />
                                         </StackPanel>
                                     </ScrollViewer>
                                 </TabItem>
-                                <TabItem Header="Last sent">
+                                <TabItem Header="{x:Static res:Strings.ApiClientView_LastSent}">
                                     <ContentControl Content="{Binding}" ContentTemplate="{StaticResource LastSentView}" />
                                 </TabItem>
-                                <TabItem Header="Settings">
+                                <TabItem Header="{x:Static res:Strings.ApiClientView_Settings}">
                                     <StackPanel Margin="0,8,0,0" Spacing="12">
-                                        <CheckBox Content="Accept any TLS certificate (for local servers with self-signed ones)" IsChecked="{Binding AcceptAnyCertificate}" />
+                                        <CheckBox Content="{x:Static res:Strings.ApiClientView_AcceptAnyTLSCertificateForLocal}" IsChecked="{Binding AcceptAnyCertificate}" />
                                         <StackPanel Orientation="Horizontal" Spacing="8">
-                                            <TextBlock Classes="info-label" Text="Deadline" VerticalAlignment="Center" />
+                                            <TextBlock Classes="info-label" Text="{x:Static res:Strings.ApiClientView_Deadline}" VerticalAlignment="Center" />
                                             <NumericUpDown Value="{Binding TimeoutSeconds}" Minimum="1" Maximum="3600" Increment="5" FormatString="0" Width="120" />
-                                            <TextBlock Classes="info-label" Text="seconds" VerticalAlignment="Center" />
+                                            <TextBlock Classes="info-label" Text="{x:Static res:Strings.ApiClientView_Seconds}" VerticalAlignment="Center" />
                                         </StackPanel>
                                     </StackPanel>
                                 </TabItem>
@@ -424,7 +437,7 @@
                     <!-- The response -->
                     <Border Grid.Row="2" Classes="card" Padding="16">
                         <Panel>
-                            <TextBlock Classes="info-label" Text="Send the request to see the response here." IsVisible="{Binding !HasResponse}" />
+                            <TextBlock Classes="info-label" Text="{x:Static res:Strings.ApiClientView_SendTheRequestToSeeThe}" IsVisible="{Binding !HasResponse}" />
                             <ProgressBar IsIndeterminate="True" VerticalAlignment="Top" IsVisible="{Binding IsSending}" />
                             <DockPanel IsVisible="{Binding HasResponse}">
                                 <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="16">
@@ -437,20 +450,20 @@
                                         <Run Text="·" />
                                         <Run Text="{Binding Response.Size, FallbackValue=''}" />
                                     </TextBlock>
-                                    <Button Grid.Column="2" Classes="small" Content="Copy body" Command="{Binding CopyBodyCommand}" />
+                                    <Button Grid.Column="2" Classes="small" Content="{x:Static res:Strings.ApiClientView_CopyBody}" Command="{Binding CopyBodyCommand}" />
                                 </Grid>
                                 <TextBlock DockPanel.Dock="Top" Classes="info-label" Margin="0,8,0,0" TextWrapping="Wrap" Text="{Binding SavedVariables}"
                                            IsVisible="{Binding SavedVariables, Converter={x:Static ObjectConverters.IsNotNull}}" />
                                 <TabControl Margin="0,8,0,0">
-                                    <TabItem Header="Body">
+                                    <TabItem Header="{x:Static res:Strings.ApiClientView_Body}">
                                         <TextBox Classes="code response" Margin="0,8,0,0" IsReadOnly="True" Text="{Binding Response.Body, FallbackValue=''}" />
                                     </TabItem>
-                                    <TabItem Header="Headers">
+                                    <TabItem Header="{x:Static res:Strings.ApiClientView_Headers}">
                                         <ScrollViewer>
                                             <ItemsControl Margin="0,8,0,0" ItemsSource="{Binding Response.Headers, FallbackValue={x:Null}}" ItemTemplate="{StaticResource HeaderRow}" />
                                         </ScrollViewer>
                                     </TabItem>
-                                    <TabItem Header="Trailers" IsVisible="{Binding Response.HasTrailers, FallbackValue=False}">
+                                    <TabItem Header="{x:Static res:Strings.ApiClientView_Trailers}" IsVisible="{Binding Response.HasTrailers, FallbackValue=False}">
                                         <ScrollViewer>
                                             <ItemsControl Margin="0,8,0,0" ItemsSource="{Binding Response.Trailers, FallbackValue={x:Null}}" ItemTemplate="{StaticResource HeaderRow}" />
                                         </ScrollViewer>

@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.TopicDashboards.Resources"
              xmlns:vm="using:Joktan.TopicDashboards.ViewModels"
              xmlns:views="using:Joktan.TopicDashboards.Views"
              xmlns:c="using:Joktan.TopicDashboards.Controls"
@@ -48,47 +49,47 @@
                                                  Classes.failed="{Binding IsFailed}" />
                                         <TextBlock Classes="table-cell" VerticalAlignment="Center" Text="{Binding Name}" />
                                         <TextBlock Classes="info-label" VerticalAlignment="Center" Text="{Binding StateText}" />
-                                        <Button Classes="small" Content="Connect" Command="{Binding ConnectCommand}" IsVisible="{Binding CanEdit}" />
+                                        <Button Classes="small" Content="{x:Static res:Strings.DashboardTabView_Connect}" Command="{Binding ConnectCommand}" IsVisible="{Binding CanEdit}" />
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <Button Grid.Column="1" Classes="accent" Content="Add graph" Command="{Binding AddGraphCommand}"
-                                ToolTip.Tip="Subscribe to a topic and choose how to draw it" />
-                        <ToggleButton Grid.Column="2" Content="Edit layout" IsChecked="{Binding IsArranging}"
-                                      ToolTip.Tip="Move, resize, edit and remove the graphs" />
-                        <ToggleButton Grid.Column="3" Content="Format" IsChecked="{Binding IsFormatting}"
-                                      ToolTip.Tip="Name this dashboard, and set its columns, row height, spacing and background" />
+                        <Button Grid.Column="1" Classes="accent" Content="{x:Static res:Strings.DashboardTabView_AddGraph}" Command="{Binding AddGraphCommand}"
+                                ToolTip.Tip="{x:Static res:Strings.DashboardTabView_SubscribeToATopicAndChoose}" />
+                        <ToggleButton Grid.Column="2" Content="{x:Static res:Strings.DashboardTabView_EditLayout}" IsChecked="{Binding IsArranging}"
+                                      ToolTip.Tip="{x:Static res:Strings.DashboardTabView_MoveResizeEditAndRemoveThe}" />
+                        <ToggleButton Grid.Column="3" Content="{x:Static res:Strings.DashboardTabView_Format}" IsChecked="{Binding IsFormatting}"
+                                      ToolTip.Tip="{x:Static res:Strings.DashboardTabView_NameThisDashboardAndSetIts}" />
                     </Grid>
 
                     <!-- Asked by the tab's remove button -->
                     <StackPanel Orientation="Horizontal" Spacing="8" IsVisible="{Binding IsConfirmingRemove}">
                         <TextBlock Classes="info-label" VerticalAlignment="Center" Text="{Binding RemoveQuestion}" />
-                        <Button Content="Remove" Command="{Binding RemoveCommand}" />
-                        <Button Content="Keep" Command="{Binding KeepDashboardCommand}" />
+                        <Button Content="{x:Static res:Strings.DashboardTabView_Remove}" Command="{Binding RemoveCommand}" />
+                        <Button Content="{x:Static res:Strings.DashboardTabView_Keep}" Command="{Binding KeepDashboardCommand}" />
                     </StackPanel>
 
                     <!-- Format -->
                     <StackPanel Spacing="12" IsVisible="{Binding IsFormatting}">
                         <Grid ColumnDefinitions="2*,Auto,2*,2*" ColumnSpacing="16">
                             <StackPanel>
-                                <TextBlock Classes="field-label" Text="Dashboard name" />
-                                <TextBox Text="{Binding Name}" PlaceholderText="Shown on the tab" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.DashboardTabView_DashboardName}" />
+                                <TextBox Text="{Binding Name}" PlaceholderText="{x:Static res:Strings.DashboardTabView_ShownOnTheTab}" />
                             </StackPanel>
                             <StackPanel Grid.Column="1">
-                                <TextBlock Classes="field-label" Text="Columns" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.DashboardTabView_Columns}" />
                                 <ComboBox ItemsSource="{x:Static vm:DashboardTabViewModel.ColumnChoices}"
                                           SelectedItem="{Binding Columns}" MinWidth="80" />
                             </StackPanel>
                             <StackPanel Grid.Column="2">
-                                <TextBlock Classes="field-label" Text="Row height" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.DashboardTabView_RowHeight}" />
                                 <Slider Minimum="{Binding MinRowHeight}" Maximum="{Binding MaxRowHeight}"
                                         TickFrequency="20" IsSnapToTickEnabled="True"
                                         Value="{Binding RowHeight}"
                                         ToolTip.Tip="{Binding RowHeight}" />
                             </StackPanel>
                             <StackPanel Grid.Column="3">
-                                <TextBlock Classes="field-label" Text="Space between graphs" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.DashboardTabView_SpaceBetweenGraphs}" />
                                 <Slider Minimum="0" Maximum="{Binding MaxGap}"
                                         TickFrequency="4" IsSnapToTickEnabled="True"
                                         Value="{Binding Gap}"
@@ -96,7 +97,7 @@
                             </StackPanel>
                         </Grid>
                         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
-                            <TextBlock Classes="field-label" Margin="0" VerticalAlignment="Center" Text="Background" />
+                            <TextBlock Classes="field-label" Margin="0" VerticalAlignment="Center" Text="{x:Static res:Strings.DashboardTabView_Background}" />
                             <ItemsControl Grid.Column="1" ItemsSource="{x:Static vm:DashboardTabViewModel.Palette}" VerticalAlignment="Center">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -114,9 +115,9 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                            <Button Grid.Column="2" Classes="small" Content="Default" VerticalAlignment="Center"
+                            <Button Grid.Column="2" Classes="small" Content="{x:Static res:Strings.DashboardTabView_Default}" VerticalAlignment="Center"
                                     Command="{Binding PickBackgroundCommand}" CommandParameter=""
-                                    ToolTip.Tip="Use the theme's colour" />
+                                    ToolTip.Tip="{x:Static res:Strings.DashboardTabView_UseTheThemeSColour}" />
                         </Grid>
                     </StackPanel>
                 </StackPanel>
@@ -127,7 +128,7 @@
                     <Border Classes="card" IsVisible="{Binding HasNoGraphs}" VerticalAlignment="Top">
                         <TextBlock Classes="info-label"
                                    TextWrapping="Wrap"
-                                   Text="No graphs yet. Press Add graph and subscribe to a topic, or select a topic in the Topic Explorer and press Add to dashboard." />
+                                   Text="{x:Static res:Strings.DashboardTabView_NoGraphsYetPressAddGraph}" />
                     </Border>
 
                     <ItemsControl x:Name="GraphList" Classes="graphs" ItemsSource="{Binding Graphs}">
@@ -152,24 +153,24 @@
                                                     Cursor="SizeAll"
                                                     Background="{DynamicResource HoverBrush}"
                                                     IsVisible="{Binding #Root.((vm:DashboardTabViewModel)DataContext).IsArranging}"
-                                                    ToolTip.Tip="Drag onto another graph to move it there"
+                                                    ToolTip.Tip="{x:Static res:Strings.DashboardTabView_DragOntoAnotherGraphToMove}"
                                                     PointerPressed="OnMovePressed"
                                                     PointerMoved="OnMoveMoved"
                                                     PointerReleased="OnMoveReleased"
                                                     PointerCaptureLost="OnMoveCaptureLost">
                                                 <Panel>
                                                     <WrapPanel HorizontalAlignment="Left" IsVisible="{Binding !IsConfirmingRemove}">
-                                                        <Button Classes="small" Margin="0,0,4,0" Content="‹" Command="{Binding MoveEarlierCommand}" ToolTip.Tip="Move earlier" />
-                                                        <Button Classes="small" Margin="0,0,8,0" Content="›" Command="{Binding MoveLaterCommand}" ToolTip.Tip="Move later" />
-                                                        <Button Classes="small" Margin="0,0,4,0" Content="Edit" Command="{Binding EditCommand}" ToolTip.Tip="Change this graph's name, values and format" />
-                                                        <Button Classes="small" Margin="0,0,4,0" Content="Details" Command="{Binding ToggleDetailsCommand}" ToolTip.Tip="Say what has arrived for this graph, and why any of it was not used" />
-                                                        <Button Classes="small" Margin="0,0,4,0" Content="Forget" Command="{Binding ForgetCommand}" IsVisible="{Binding HasCell}" ToolTip.Tip="Remove this value's graph, until it is seen again" />
-                                                        <Button Classes="small" Content="Remove" Command="{Binding AskRemoveCommand}" />
+                                                        <Button Classes="small" Margin="0,0,4,0" Content="‹" Command="{Binding MoveEarlierCommand}" ToolTip.Tip="{x:Static res:Strings.DashboardTabView_MoveEarlier}" />
+                                                        <Button Classes="small" Margin="0,0,8,0" Content="›" Command="{Binding MoveLaterCommand}" ToolTip.Tip="{x:Static res:Strings.DashboardTabView_MoveLater}" />
+                                                        <Button Classes="small" Margin="0,0,4,0" Content="{x:Static res:Strings.DashboardTabView_Edit}" Command="{Binding EditCommand}" ToolTip.Tip="{x:Static res:Strings.DashboardTabView_ChangeThisGraphSNameValues}" />
+                                                        <Button Classes="small" Margin="0,0,4,0" Content="{x:Static res:Strings.DashboardTabView_Details}" Command="{Binding ToggleDetailsCommand}" ToolTip.Tip="{x:Static res:Strings.DashboardTabView_SayWhatHasArrivedForThis}" />
+                                                        <Button Classes="small" Margin="0,0,4,0" Content="{x:Static res:Strings.DashboardTabView_Forget}" Command="{Binding ForgetCommand}" IsVisible="{Binding HasCell}" ToolTip.Tip="{x:Static res:Strings.DashboardTabView_RemoveThisValueSGraphUntil}" />
+                                                        <Button Classes="small" Content="{x:Static res:Strings.DashboardTabView_Remove}" Command="{Binding AskRemoveCommand}" />
                                                     </WrapPanel>
                                                     <WrapPanel HorizontalAlignment="Left" IsVisible="{Binding IsConfirmingRemove}">
                                                         <TextBlock Classes="info-label" VerticalAlignment="Center" Margin="0,0,8,0" Text="{Binding RemoveQuestion}" />
-                                                        <Button Classes="small" Margin="0,0,4,0" Content="Remove" Command="{Binding RemoveCommand}" />
-                                                        <Button Classes="small" Content="Keep" Command="{Binding KeepGraphCommand}" />
+                                                        <Button Classes="small" Margin="0,0,4,0" Content="{x:Static res:Strings.DashboardTabView_Remove}" Command="{Binding RemoveCommand}" />
+                                                        <Button Classes="small" Content="{x:Static res:Strings.DashboardTabView_Keep}" Command="{Binding KeepGraphCommand}" />
                                                     </WrapPanel>
                                                 </Panel>
                                             </Border>
@@ -184,7 +185,7 @@
                                                 Cursor="BottomRightCorner"
                                                 Background="{DynamicResource AccentBrush}"
                                                 IsVisible="{Binding #Root.((vm:DashboardTabViewModel)DataContext).IsArranging}"
-                                                ToolTip.Tip="Drag to make this graph wider, narrower, taller or shorter"
+                                                ToolTip.Tip="{x:Static res:Strings.DashboardTabView_DragToMakeThisGraphWider}"
                                                 PointerPressed="OnResizePressed"
                                                 PointerMoved="OnResizeMoved"
                                                 PointerReleased="OnResizeReleased" />

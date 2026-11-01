@@ -4,6 +4,7 @@ using System.Linq;
 using Avalonia;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Joktan.Core.ViewModels;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt.ViewModels;
 
@@ -14,7 +15,7 @@ namespace Joktan.Mqtt.ViewModels;
 /// </summary>
 public partial class MessageGroupViewModel : ViewModelBase
 {
-    public const string UngroupedName = "Ungrouped";
+    public static string UngroupedName => Strings.MessageGroup_Ungrouped;
 
     private const double IndentPerLevel = 20;
 
@@ -72,8 +73,8 @@ public partial class MessageGroupViewModel : ViewModelBase
             var rows = AllRows.ToList();
             var switchable = rows.Count(r => r.CanSwitch);
             var on = rows.Count(r => r.IsOn);
-            var count = rows.Count == 1 ? "1 message" : $"{rows.Count} messages";
-            return switchable == 0 ? count : $"{count}, {on} on";
+            var count = rows.Count == 1 ? Strings.MessageGroup_1Message : string.Format(Strings.MessageGroup_Messages, rows.Count);
+            return switchable == 0 ? count : string.Format(Strings.MessageGroup_On, count, on);
         }
     }
 

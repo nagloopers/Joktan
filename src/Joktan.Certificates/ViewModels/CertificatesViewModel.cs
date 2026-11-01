@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Joktan.Certificates.Resources;
 using Joktan.Core.ViewModels;
 
 namespace Joktan.Certificates.ViewModels;
@@ -22,7 +23,7 @@ public partial class CertificatesViewModel : PageViewModel
 
     /// <param name="usedBy">Names the MQTT clients that use a certificate.</param>
     public CertificatesViewModel(CertificateStore store, Func<StoredCertificate, List<string>> usedBy)
-        : base("Certificates", "Dev Tools / Certificates")
+        : base(Strings.Certificates_Certificates, Strings.Certificates_DevToolsCertificates)
     {
         _store = store;
         _usedBy = usedBy;
@@ -66,10 +67,10 @@ public partial class CertificatesViewModel : PageViewModel
             var below = count switch
             {
                 0 => "",
-                1 => " and the 1 certificate it signed",
-                _ => $" and the {count} certificates below it",
+                1 => Strings.Certificates_AndThe1CertificateItSigned,
+                _ => string.Format(Strings.Certificates_AndTheCertificatesBelowIt, count),
             };
-            return $"Delete {Selected.Name}{below}, with their private keys? This cannot be undone.";
+            return string.Format(Strings.Certificates_DeleteWithTheirPrivateKeysThis, Selected.Name, below);
         }
     }
 
@@ -120,7 +121,7 @@ public partial class CertificatesViewModel : PageViewModel
 
         var editor = new NewCertificateViewModel(_store, null);
         if (await EditNewCertificate(editor) && editor.Created is { } created)
-            Show(created, $"Made the root CA {created.DisplayName}");
+            Show(created, string.Format(Strings.Certificates_MadeTheRootCA, created.DisplayName));
     }
 
     private bool CanIssue => Selected?.IsAuthority == true;
@@ -139,7 +140,7 @@ public partial class CertificatesViewModel : PageViewModel
 
         var editor = new NewCertificateViewModel(_store, Selected.Entry, kind);
         if (await EditNewCertificate(editor) && editor.Created is { } created)
-            Show(created, $"Made {created.DisplayName}, signed by {Selected?.Name}");
+            Show(created, string.Format(Strings.Certificates_MadeSignedBy, created.DisplayName, Selected?.Name));
     }
 
     private bool CanExport => Selected?.Entry.Certificate is not null;
@@ -154,7 +155,7 @@ public partial class CertificatesViewModel : PageViewModel
         if (await EditExport(editor))
         {
             Error = null;
-            Message = $"Wrote {string.Join(", ", editor.Written.Select(Path.GetFileName))} to {Path.GetDirectoryName(editor.Written[0])}";
+            Message = string.Format(Strings.Certificates_WroteTo, string.Join(", ", editor.Written.Select(Path.GetFileName)), Path.GetDirectoryName(editor.Written[0]));
         }
     }
 
@@ -174,7 +175,7 @@ public partial class CertificatesViewModel : PageViewModel
         Selected = null;
         Refresh();
         Error = null;
-        Message = removed.Count == 1 ? $"Deleted {removed[0].DisplayName}" : $"Deleted {removed[0].DisplayName} and {removed.Count - 1} more";
+        Message = removed.Count == 1 ? string.Format(Strings.Certificates_Deleted, removed[0].DisplayName) : string.Format(Strings.Certificates_DeletedAndMore, removed[0].DisplayName, removed.Count - 1);
     }
 
     [RelayCommand]
@@ -235,5 +236,5 @@ public partial class CertificatesViewModel : PageViewModel
 /// </summary>
 public sealed record CertificateChoice(string Id, string Name, string Path, string KeyPath, string? IssuerName, string AuthorityPath = "")
 {
-    public override string ToString() => IssuerName is null ? Name : $"{Name} (signed by {IssuerName})";
+    public override string ToString() => IssuerName is null ? Name : string.Format(Strings.CertificateChoice_SignedBy, Name, IssuerName);
 }

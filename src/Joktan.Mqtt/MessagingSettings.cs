@@ -1,6 +1,7 @@
 using System.IO;
 using System.Linq;
 using Joktan.Core;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt;
 
@@ -39,8 +40,8 @@ public sealed class MessagingSettings
     public static string? CheckName(string name)
     {
         if (name.Length > MaxDisplayNameLength)
-            return $"The name must be at most {MaxDisplayNameLength} characters";
-        return name.All(IsNameCharacter) ? null : "The name may use lowercase letters, digits, _ and -, with no spaces";
+            return string.Format(Strings.MessagingSettings_TheNameMustBeAtMost, MaxDisplayNameLength);
+        return name.All(IsNameCharacter) ? null : Strings.MessagingSettings_TheNameMayUseLowercaseLetters;
     }
 
     /// <summary>Makes a name from elsewhere fit the rule, so that nobody can look unlike a name in a list.</summary>

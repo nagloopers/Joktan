@@ -1,5 +1,6 @@
 using System;
 using Avalonia.Controls;
+using Joktan.Core.Resources;
 
 namespace Joktan.Core.Controls;
 
@@ -8,8 +9,8 @@ public sealed class HelpButton : Button
 {
     public HelpButton()
     {
-        Content = "Help";
-        ToolTip.SetTip(this, "Open help for what is on screen (F1)");
+        Content = Strings.HelpButton_Help;
+        ToolTip.SetTip(this, Strings.HelpButton_OpenHelpForWhatIsOn);
     }
 
     protected override Type StyleKeyOverride => typeof(Button);

@@ -7,6 +7,7 @@ using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 using Joktan.Core;
 using Joktan.Core.Controls;
+using Joktan.Help.Resources;
 using Joktan.Help.ViewModels;
 
 namespace Joktan.Help.Views;
@@ -62,7 +63,7 @@ public partial class HelpWindow : Window
         {
             var maximized = WindowState == WindowState.Maximized;
             MaximizeIcon.Data = maximized ? Icons.WindowRestore : Icons.WindowMaximize;
-            ToolTip.SetTip(MaximizeButton, maximized ? "Restore" : "Maximise");
+            ToolTip.SetTip(MaximizeButton, maximized ? Strings.HelpWindow_Restore : Strings.HelpWindow_Maximise);
         }
     }
 

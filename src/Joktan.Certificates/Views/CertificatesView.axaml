@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Certificates.Resources"
              xmlns:vm="using:Joktan.Certificates.ViewModels"
              xmlns:certs="using:Joktan.Certificates"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -17,10 +18,10 @@
                 </StackPanel>
                 <Button Grid.Column="1"
                         Classes="accent"
-                        Content="New root CA"
+                        Content="{x:Static res:Strings.CertificatesView_NewRootCA}"
                         VerticalAlignment="Center"
                         Command="{Binding NewAuthorityCommand}"
-                        ToolTip.Tip="Make a certificate authority that signs itself. Select it afterwards to sign server and client certificates with it." />
+                        ToolTip.Tip="{x:Static res:Strings.CertificatesView_MakeACertificateAuthorityThatSigns}" />
             </Grid>
         </Border>
 
@@ -39,15 +40,15 @@
             <Border Classes="card" Padding="8">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Top" Margin="12,8,12,8">
-                        <TextBlock Classes="card-title" Text="Authorities and certificates" />
+                        <TextBlock Classes="card-title" Text="{x:Static res:Strings.CertificatesView_AuthoritiesAndCertificates}" />
                         <TextBlock Classes="card-subtitle" Margin="0,6,0,0"
-                                   Text="Each certificate sits below the CA that signed it." />
+                                   Text="{x:Static res:Strings.CertificatesView_EachCertificateSitsBelowTheCA}" />
                     </StackPanel>
                     <Panel>
                         <TextBlock Classes="info-label"
                                    Margin="12"
                                    TextWrapping="Wrap"
-                                   Text="No certificates yet. Start with New root CA, then select it and make a server certificate for the broker and a client certificate for each client."
+                                   Text="{x:Static res:Strings.CertificatesView_NoCertificatesYetStartWithNew}"
                                    IsVisible="{Binding IsEmpty}" />
                         <TreeView ItemsSource="{Binding Roots}" SelectedItem="{Binding Selected}">
                             <TreeView.Styles>
@@ -81,7 +82,7 @@
 
                     <Border Classes="card" IsVisible="{Binding !HasSelection}">
                         <TextBlock Classes="info-label" TextWrapping="Wrap"
-                                   Text="Select a CA or certificate to see it, sign more certificates with a CA, or export the files for a broker or client." />
+                                   Text="{x:Static res:Strings.CertificatesView_SelectACAOrCertificateTo}" />
                     </Border>
 
                     <!-- Selected certificate -->
@@ -103,10 +104,10 @@
                                     </StackPanel>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Top">
-                                    <Button Content="Export" Command="{Binding ExportCommand}"
-                                            ToolTip.Tip="Write the certificate, and its key and CA if wanted, to a folder for a broker or client" />
-                                    <Button Content="Delete" Command="{Binding DeleteCommand}"
-                                            ToolTip.Tip="Delete it, and everything it signed, with their keys" />
+                                    <Button Content="{x:Static res:Strings.CertificatesView_Export}" Command="{Binding ExportCommand}"
+                                            ToolTip.Tip="{x:Static res:Strings.CertificatesView_WriteTheCertificateAndItsKey}" />
+                                    <Button Content="{x:Static res:Strings.CertificatesView_Delete}" Command="{Binding DeleteCommand}"
+                                            ToolTip.Tip="{x:Static res:Strings.CertificatesView_DeleteItAndEverythingItSigned}" />
                                 </StackPanel>
                             </Grid>
 
@@ -119,49 +120,49 @@
                                 <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
                                     <TextBlock Classes="table-cell" TextWrapping="Wrap" Text="{Binding DeleteText}" />
                                     <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                                        <Button Content="Cancel" Command="{Binding CancelDeleteCommand}" />
-                                        <Button Classes="accent" Content="Delete" Command="{Binding ConfirmDeleteCommand}" />
+                                        <Button Content="{x:Static res:Strings.CertificatesView_Cancel}" Command="{Binding CancelDeleteCommand}" />
+                                        <Button Classes="accent" Content="{x:Static res:Strings.CertificatesView_Delete}" Command="{Binding ConfirmDeleteCommand}" />
                                     </StackPanel>
                                 </Grid>
                             </Border>
 
                             <!-- Sign more with a CA -->
                             <StackPanel Spacing="8" IsVisible="{Binding Selected.IsAuthority, FallbackValue=False}">
-                                <TextBlock Classes="field-label" Text="Sign a new certificate with this CA" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.CertificatesView_SignANewCertificateWithThis}" />
                                 <StackPanel Orientation="Horizontal" Spacing="8">
-                                    <Button Content="Server certificate"
+                                    <Button Content="{x:Static res:Strings.CertificatesView_ServerCertificate}"
                                             Command="{Binding IssueCommand}"
                                             CommandParameter="{x:Static certs:CertificateKind.Server}"
-                                            ToolTip.Tip="For a broker: the certificate it shows to clients" />
-                                    <Button Content="Client certificate"
+                                            ToolTip.Tip="{x:Static res:Strings.CertificatesView_ForABrokerTheCertificateIt}" />
+                                    <Button Content="{x:Static res:Strings.CertificatesView_ClientCertificate}"
                                             Command="{Binding IssueCommand}"
                                             CommandParameter="{x:Static certs:CertificateKind.Client}"
-                                            ToolTip.Tip="For an MQTT client to prove who it is to a broker that asks (mutual TLS)" />
-                                    <Button Content="Intermediate CA"
+                                            ToolTip.Tip="{x:Static res:Strings.CertificatesView_ForAnMQTTClientToProve}" />
+                                    <Button Content="{x:Static res:Strings.CertificatesView_IntermediateCA}"
                                             Command="{Binding IssueCommand}"
                                             CommandParameter="{x:Static certs:CertificateKind.IntermediateAuthority}"
-                                            ToolTip.Tip="A CA signed by this one, which can sign certificates of its own" />
+                                            ToolTip.Tip="{x:Static res:Strings.CertificatesView_ACASignedByThisOne}" />
                                 </StackPanel>
                             </StackPanel>
 
                             <StackPanel>
-                                <TextBlock Classes="field-label" Text="Name in the list" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.CertificatesView_NameInTheList}" />
                                 <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                                     <TextBox Text="{Binding RenameText}" />
-                                    <Button Grid.Column="1" Content="Rename" Command="{Binding RenameCommand}" />
+                                    <Button Grid.Column="1" Content="{x:Static res:Strings.CertificatesView_Rename}" Command="{Binding RenameCommand}" />
                                 </Grid>
                             </StackPanel>
 
                             <StackPanel>
                                 <Border Classes="info-row">
                                     <Grid ColumnDefinitions="150,*">
-                                        <TextBlock Classes="info-label" Text="Subject" />
+                                        <TextBlock Classes="info-label" Text="{x:Static res:Strings.CertificatesView_Subject}" />
                                         <SelectableTextBlock Grid.Column="1" Classes="info-value" TextWrapping="Wrap" Text="{Binding Selected.Subject}" />
                                     </Grid>
                                 </Border>
                                 <Border Classes="info-row">
                                     <Grid ColumnDefinitions="150,*">
-                                        <TextBlock Classes="info-label" Text="Signed by" />
+                                        <TextBlock Classes="info-label" Text="{x:Static res:Strings.CertificatesView_SignedBy}" />
                                         <StackPanel Grid.Column="1" Margin="16,0,0,0">
                                             <TextBlock Classes="table-cell" Text="{Binding Selected.IssuerName}" />
                                             <SelectableTextBlock FontSize="{DynamicResource SecondaryFontSize}" Foreground="{DynamicResource TextMutedBrush}" TextWrapping="Wrap" Text="{Binding Selected.IssuerSubject}" />
@@ -170,49 +171,49 @@
                                 </Border>
                                 <Border Classes="info-row">
                                     <Grid ColumnDefinitions="150,*">
-                                        <TextBlock Classes="info-label" Text="Valid" />
+                                        <TextBlock Classes="info-label" Text="{x:Static res:Strings.CertificatesView_Valid}" />
                                         <TextBlock Grid.Column="1" Classes="info-value">
                                             <Run Text="{Binding Selected.ValidFrom}" />
-                                            <Run Text="to" Foreground="{DynamicResource TextMutedBrush}" />
+                                            <Run Text="{x:Static res:Strings.CertificatesView_To}" Foreground="{DynamicResource TextMutedBrush}" />
                                             <Run Text="{Binding Selected.ValidUntil}" />
                                         </TextBlock>
                                     </Grid>
                                 </Border>
                                 <Border Classes="info-row">
                                     <Grid ColumnDefinitions="150,*">
-                                        <TextBlock Classes="info-label" Text="Used for" />
+                                        <TextBlock Classes="info-label" Text="{x:Static res:Strings.CertificatesView_UsedFor}" />
                                         <TextBlock Grid.Column="1" Classes="info-value" Text="{Binding Selected.Usage}" />
                                     </Grid>
                                 </Border>
                                 <Border Classes="info-row" IsVisible="{Binding !Selected.IsAuthority, FallbackValue=False}">
                                     <Grid ColumnDefinitions="150,*">
-                                        <TextBlock Classes="info-label" Text="Alternative names" />
+                                        <TextBlock Classes="info-label" Text="{x:Static res:Strings.CertificatesView_AlternativeNames}" />
                                         <SelectableTextBlock Grid.Column="1" Classes="info-value" TextWrapping="Wrap" Text="{Binding Selected.AlternativeNames}" />
                                     </Grid>
                                 </Border>
                                 <Border Classes="info-row">
                                     <Grid ColumnDefinitions="150,*">
-                                        <TextBlock Classes="info-label" Text="Key" />
+                                        <TextBlock Classes="info-label" Text="{x:Static res:Strings.CertificatesView_Key}" />
                                         <TextBlock Grid.Column="1" Classes="info-value" Text="{Binding Selected.KeyText}" />
                                     </Grid>
                                 </Border>
                                 <Border Classes="info-row">
                                     <Grid ColumnDefinitions="150,*">
-                                        <TextBlock Classes="info-label" Text="Serial number" />
+                                        <TextBlock Classes="info-label" Text="{x:Static res:Strings.CertificatesView_SerialNumber}" />
                                         <SelectableTextBlock Grid.Column="1" Classes="info-value code" Text="{Binding Selected.SerialNumber}" />
                                     </Grid>
                                 </Border>
                                 <Border Classes="info-row">
                                     <Grid ColumnDefinitions="150,*">
-                                        <TextBlock Classes="info-label" Text="SHA-256 fingerprint" />
+                                        <TextBlock Classes="info-label" Text="{x:Static res:Strings.CertificatesView_SHA256Fingerprint}" />
                                         <SelectableTextBlock Grid.Column="1" Classes="info-value code" TextWrapping="Wrap" Text="{Binding Selected.Fingerprint}" />
                                     </Grid>
                                 </Border>
                                 <Border Classes="info-row">
                                     <Grid ColumnDefinitions="150,*">
-                                        <TextBlock Classes="info-label" Text="Used by" />
+                                        <TextBlock Classes="info-label" Text="{x:Static res:Strings.CertificatesView_UsedBy}" />
                                         <TextBlock Grid.Column="1" Classes="info-value" TextWrapping="Wrap" Text="{Binding Selected.UsedBy}"
-                                                   ToolTip.Tip="MQTT clients whose TLS settings use one of its files" />
+                                                   ToolTip.Tip="{x:Static res:Strings.CertificatesView_MQTTClientsWhoseTLSSettingsUse}" />
                                     </Grid>
                                 </Border>
                             </StackPanel>
@@ -220,23 +221,23 @@
                             <!-- Files -->
                             <StackPanel Spacing="8">
                                 <Grid ColumnDefinitions="*,Auto">
-                                    <TextBlock Classes="card-title" Text="Files" VerticalAlignment="Center" />
-                                    <Button Grid.Column="1" Classes="small" Content="Open folder" Click="OnOpenFolderClick" />
+                                    <TextBlock Classes="card-title" Text="{x:Static res:Strings.CertificatesView_Files}" VerticalAlignment="Center" />
+                                    <Button Grid.Column="1" Classes="small" Content="{x:Static res:Strings.CertificatesView_OpenFolder}" Click="OnOpenFolderClick" />
                                 </Grid>
                                 <StackPanel>
-                                    <TextBlock Classes="field-label" Text="Certificate" />
+                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.CertificatesView_Certificate}" />
                                     <TextBox Classes="code" IsReadOnly="True" Text="{Binding Selected.CertificatePath, Mode=OneWay}" />
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBlock Classes="field-label" Text="Private key (not encrypted)" />
+                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.CertificatesView_PrivateKeyNotEncrypted}" />
                                     <TextBox Classes="code" IsReadOnly="True" Text="{Binding Selected.KeyPath, Mode=OneWay}" />
                                 </StackPanel>
                                 <StackPanel IsVisible="{Binding Selected.IsNotRoot, FallbackValue=False}">
-                                    <TextBlock Classes="field-label" Text="Certificate and intermediate CAs, for a broker's certfile" />
+                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.CertificatesView_CertificateAndIntermediateCAsForA}" />
                                     <TextBox Classes="code" IsReadOnly="True" Text="{Binding Selected.ChainPath, Mode=OneWay}" />
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBlock Classes="field-label" Text="CA certificates to trust it by, for a cafile" />
+                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.CertificatesView_CACertificatesToTrustItBy}" />
                                     <TextBox Classes="code" IsReadOnly="True" Text="{Binding Selected.AuthorityPath, Mode=OneWay}" />
                                 </StackPanel>
                             </StackPanel>
@@ -244,11 +245,11 @@
                     </Border>
 
                     <TextBlock Classes="info-label" TextWrapping="Wrap">
-                        <Run Text="Each certificate is made in the folder chosen for it; the list is kept in" />
+                        <Run Text="{x:Static res:Strings.CertificatesView_EachCertificateIsMadeInThe}" />
                         <Run FontFamily="{DynamicResource CodeFontFamily}" Text="{Binding IndexPath, Mode=OneWay}" />
-                        <Run Text=". Private keys are stored unencrypted; on Linux and macOS only you can read them. " />
-                        <Run Text="Anyone with a CA's key can make certificates that clients and brokers trusting the CA accept. " />
-                        <Run Text="What a new certificate is filled in with is set on Settings / Certificate Defaults." />
+                        <Run Text="{x:Static res:Strings.CertificatesView_PrivateKeysAreStoredUnencryptedOn}" />
+                        <Run Text="{x:Static res:Strings.CertificatesView_AnyoneWithACASKey}" />
+                        <Run Text="{x:Static res:Strings.CertificatesView_WhatANewCertificateIsFilled}" />
                     </TextBlock>
                 </StackPanel>
             </ScrollViewer>

@@ -4,6 +4,7 @@ using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Core.ViewModels;
+using Joktan.TopicDashboards.Resources;
 
 namespace Joktan.TopicDashboards.ViewModels;
 
@@ -76,7 +77,7 @@ public partial class GraphCardViewModel : ViewModelBase
 
     public bool HasHiddenLines => HiddenLines > 0;
 
-    public string HiddenLinesText => $"and {HiddenLines} more";
+    public string HiddenLinesText => string.Format(Strings.GraphCard_AndMore, HiddenLines);
 
     /// <summary>This graph is being dragged to another place.</summary>
     [ObservableProperty]
@@ -92,7 +93,7 @@ public partial class GraphCardViewModel : ViewModelBase
 
     /// <summary>What it says when removing it, as that takes all those made from the same saved graph.</summary>
     [ObservableProperty]
-    public partial string RemoveQuestion { get; set; } = "Remove this graph?";
+    public partial string RemoveQuestion { get; set; } = Strings.GraphCard_RemoveThisGraph;
 
     /// <summary>Whether it says how it has been doing.</summary>
     [ObservableProperty]
@@ -301,7 +302,7 @@ public partial class GraphCardViewModel : ViewModelBase
     private string Details()
     {
         var health = DescribeHealth?.Invoke() ?? "";
-        var lines = HiddenLines > 0 ? $"Series: {Series.Count} of {Series.Count + HiddenLines} shown" : $"Series: {Series.Count}";
+        var lines = HiddenLines > 0 ? string.Format(Strings.GraphCard_SeriesOfShown, Series.Count, Series.Count + HiddenLines) : string.Format(Strings.GraphCard_Series, Series.Count);
         return $"{health}\n{lines}";
     }
 

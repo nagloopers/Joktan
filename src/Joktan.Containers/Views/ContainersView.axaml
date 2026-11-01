@@ -1,6 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Containers.Resources"
              xmlns:vm="using:Joktan.Containers.ViewModels"
+             xmlns:containers="using:Joktan.Containers"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="900"
@@ -22,8 +24,8 @@
                     <Run Text="{Binding Activity}" />
                     <Run Text="…" />
                 </TextBlock>
-                <Button Classes="small" Content="Cancel" Command="{Binding CancelCommand}"
-                        ToolTip.Tip="Stop the command. Containers it already changed stay as they are." />
+                <Button Classes="small" Content="{x:Static res:Strings.ContainersView_Cancel}" Command="{Binding CancelCommand}"
+                        ToolTip.Tip="{x:Static res:Strings.ContainersView_StopTheCommandContainersItAlready}" />
             </StackPanel>
             <TextBlock Classes="error" TextWrapping="Wrap"
                        Text="{Binding Error}"
@@ -39,22 +41,22 @@
                     <DockPanel>
                         <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto">
                             <StackPanel>
-                                <TextBlock Classes="card-title" Text="Services" />
+                                <TextBlock Classes="card-title" Text="{x:Static res:Strings.ContainersView_Services}" />
                                 <TextBlock Classes="card-subtitle" Text="{Binding Summary}" />
                             </StackPanel>
-                            <Button Grid.Column="1" Classes="small" Content="Refresh" VerticalAlignment="Top"
+                            <Button Grid.Column="1" Classes="small" Content="{x:Static res:Strings.ContainersView_Refresh}" VerticalAlignment="Top"
                                     Command="{Binding RefreshCommand}"
-                                    ToolTip.Tip="Check the containers now, and look for Docker and Podman again. They are checked every 5 seconds while this page is shown." />
+                                    ToolTip.Tip="{x:Static res:Strings.ContainersView_CheckTheContainersNowAndLook}" />
                         </Grid>
 
                         <TextBlock DockPanel.Dock="Top" Classes="info-label" Margin="0,8,0,0" TextWrapping="Wrap" IsVisible="{Binding !HasProjects}"
-                                   Text="No compose files yet. Add one under Compose files." />
+                                   Text="{x:Static res:Strings.ContainersView_NoComposeFilesYetAddOne}" />
 
                         <Grid DockPanel.Dock="Top" ColumnDefinitions="150,1.1*,*,100,150" ColumnSpacing="12" Margin="0,8,0,10" IsVisible="{Binding HasProjects}">
-                            <TextBlock Classes="table-header" Text="Service" />
-                            <TextBlock Grid.Column="1" Classes="table-header" Text="Container" />
-                            <TextBlock Grid.Column="2" Classes="table-header" Text="Status" />
-                            <TextBlock Grid.Column="3" Classes="table-header" Text="Ports" />
+                            <TextBlock Classes="table-header" Text="{x:Static res:Strings.ContainersView_Service}" />
+                            <TextBlock Grid.Column="1" Classes="table-header" Text="{x:Static res:Strings.ContainersView_Container}" />
+                            <TextBlock Grid.Column="2" Classes="table-header" Text="{x:Static res:Strings.ContainersView_Status}" />
+                            <TextBlock Grid.Column="3" Classes="table-header" Text="{x:Static res:Strings.ContainersView_Ports}" />
                         </Grid>
                         <ScrollViewer x:Name="ServicesScroll">
                             <ItemsControl ItemsSource="{Binding Projects}">
@@ -64,40 +66,40 @@
                                             <!-- The file, and commands for all its services -->
                                             <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
                                                 <Button Classes="small" Content="{Binding ExpandText}" Command="{Binding ToggleExpandedCommand}"
-                                                        VerticalAlignment="Center" ToolTip.Tip="Show or hide its services" />
+                                                        VerticalAlignment="Center" ToolTip.Tip="{x:Static res:Strings.ContainersView_ShowOrHideItsServices}" />
                                                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                                     <TextBlock Classes="table-cell" FontWeight="SemiBold" Text="{Binding Name}" />
                                                     <TextBlock Classes="info-label" FontSize="{DynamicResource TinyFontSize}" TextTrimming="CharacterEllipsis"
                                                                Text="{Binding Details}" ToolTip.Tip="{Binding File}" />
                                                 </StackPanel>
                                                 <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
-                                                    <Button Classes="small accent" Content="Start" Command="{Binding UpCommand}"
-                                                            ToolTip.Tip="compose up -d: create the containers if needed, building images where the file says so, and start them" />
-                                                    <Button Classes="small" Content="Stop" Command="{Binding StopCommand}"
-                                                            ToolTip.Tip="compose stop: stop the containers and keep them, to start again later" />
-                                                    <Button Classes="small" Content="Restart" Command="{Binding RestartCommand}"
-                                                            ToolTip.Tip="compose restart: stop and start the containers without recreating them" />
-                                                    <Button Classes="small" Content="Down" Command="{Binding DownCommand}"
-                                                            ToolTip.Tip="compose down: stop and remove the containers and their network. Volumes are kept." />
-                                                    <Button Classes="small" Content="More" ToolTip.Tip="More commands for every service in this file">
+                                                    <Button Classes="small accent" Content="{x:Static res:Strings.ContainersView_Start}" Command="{Binding UpCommand}"
+                                                            ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposeUpDCreateTheContainers}" />
+                                                    <Button Classes="small" Content="{x:Static res:Strings.ContainersView_Stop}" Command="{Binding StopCommand}"
+                                                            ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposeStopStopTheContainersAnd}" />
+                                                    <Button Classes="small" Content="{x:Static res:Strings.ContainersView_Restart}" Command="{Binding RestartCommand}"
+                                                            ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposeRestartStopAndStartThe}" />
+                                                    <Button Classes="small" Content="{x:Static res:Strings.ContainersView_Down}" Command="{Binding DownCommand}"
+                                                            ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposeDownStopAndRemoveThe}" />
+                                                    <Button Classes="small" Content="{x:Static res:Strings.ContainersView_More}" ToolTip.Tip="{x:Static res:Strings.ContainersView_MoreCommandsForEveryServiceIn}">
                                                         <Button.Flyout>
                                                             <MenuFlyout Placement="BottomEdgeAlignedRight">
-                                                                <MenuItem Header="Recreate" Command="{Binding RecreateCommand}"
-                                                                          ToolTip.Tip="compose up -d --force-recreate: make new containers even when nothing changed, and start them" />
-                                                                <MenuItem Header="Rebuild and start" Command="{Binding RebuildCommand}"
-                                                                          ToolTip.Tip="compose up -d --build: build the images again, then recreate and start the containers" />
+                                                                <MenuItem Header="{x:Static res:Strings.ContainersView_Recreate}" Command="{Binding RecreateCommand}"
+                                                                          ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposeUpDForceRecreateMake}" />
+                                                                <MenuItem Header="{x:Static res:Strings.ContainersView_RebuildAndStart}" Command="{Binding RebuildCommand}"
+                                                                          ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposeUpDBuildBuildThe}" />
                                                                 <Separator />
-                                                                <MenuItem Header="Pull images" Command="{Binding PullCommand}"
-                                                                          ToolTip.Tip="compose pull --ignore-buildable: fetch the latest images; images built from the file are left out" />
-                                                                <MenuItem Header="Build images" Command="{Binding BuildCommand}"
-                                                                          ToolTip.Tip="compose build: build the images without starting anything" />
+                                                                <MenuItem Header="{x:Static res:Strings.ContainersView_PullImages}" Command="{Binding PullCommand}"
+                                                                          ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposePullIgnoreBuildableFetchThe}" />
+                                                                <MenuItem Header="{x:Static res:Strings.ContainersView_BuildImages}" Command="{Binding BuildCommand}"
+                                                                          ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposeBuildBuildTheImagesWithout}" />
                                                                 <Separator />
-                                                                <MenuItem Header="Pause" Command="{Binding PauseCommand}" ToolTip.Tip="compose pause: freeze the running containers" />
-                                                                <MenuItem Header="Resume" Command="{Binding UnpauseCommand}" ToolTip.Tip="unpause: let the paused containers run again" />
-                                                                <MenuItem Header="Kill" Command="{Binding KillCommand}" ToolTip.Tip="compose kill: stop the containers at once, without letting them shut down" />
+                                                                <MenuItem Header="{x:Static res:Strings.ContainersView_Pause}" Command="{Binding PauseCommand}" ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposePauseFreezeTheRunningContainers}" />
+                                                                <MenuItem Header="{x:Static res:Strings.ContainersView_Resume}" Command="{Binding UnpauseCommand}" ToolTip.Tip="{x:Static res:Strings.ContainersView_UnpauseLetThePausedContainersRun}" />
+                                                                <MenuItem Header="{x:Static res:Strings.ContainersView_Kill}" Command="{Binding KillCommand}" ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposeKillStopTheContainersAt}" />
                                                                 <Separator />
-                                                                <MenuItem Header="Down and remove volumes…" Command="{Binding DownWithVolumesCommand}"
-                                                                          ToolTip.Tip="compose down --volumes: as Down, and delete the volumes and what is in them" />
+                                                                <MenuItem Header="{x:Static res:Strings.ContainersView_DownAndRemoveVolumes}" Command="{Binding DownWithVolumesCommand}"
+                                                                          ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposeDownVolumesAsDownAnd}" />
                                                             </MenuFlyout>
                                                         </Button.Flyout>
                                                     </Button>
@@ -114,8 +116,8 @@
                                                 <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
                                                     <TextBlock Classes="table-cell" TextWrapping="Wrap" Text="{Binding DownWithVolumesText}" />
                                                     <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                                                        <Button Content="Cancel" Command="{Binding CancelDownWithVolumesCommand}" />
-                                                        <Button Classes="accent" Content="Delete volumes" Command="{Binding ConfirmDownWithVolumesCommand}" />
+                                                        <Button Content="{x:Static res:Strings.ContainersView_Cancel}" Command="{Binding CancelDownWithVolumesCommand}" />
+                                                        <Button Classes="accent" Content="{x:Static res:Strings.ContainersView_DeleteVolumes}" Command="{Binding ConfirmDownWithVolumesCommand}" />
                                                     </StackPanel>
                                                 </Grid>
                                             </Border>
@@ -141,50 +143,50 @@
                                                                 <TextBlock Grid.Column="2" Classes="table-cell" Text="{Binding Status}" ToolTip.Tip="{Binding Status}" />
                                                                 <TextBlock Grid.Column="3" Classes="table-cell" Text="{Binding Ports}" ToolTip.Tip="{Binding Ports}" />
                                                                 <StackPanel Grid.Column="4" Orientation="Horizontal" Spacing="4" HorizontalAlignment="Right">
-                                                                    <Button Classes="small" Content="Start"
+                                                                    <Button Classes="small" Content="{x:Static res:Strings.ContainersView_Start}"
                                                                             IsVisible="{Binding CanStart}"
                                                                             Command="{Binding Project.UpCommand}"
                                                                             CommandParameter="{Binding Service}"
-                                                                            ToolTip.Tip="compose up -d for this service" />
-                                                                    <Button Classes="small" Content="Resume"
+                                                                            ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposeUpDForThisService}" />
+                                                                    <Button Classes="small" Content="{x:Static res:Strings.ContainersView_Resume}"
                                                                             IsVisible="{Binding IsPaused}"
                                                                             Command="{Binding Project.UnpauseCommand}"
                                                                             CommandParameter="{Binding Service}"
-                                                                            ToolTip.Tip="unpause: let it run again" />
-                                                                    <Button Classes="small" Content="Stop"
+                                                                            ToolTip.Tip="{x:Static res:Strings.ContainersView_UnpauseLetItRunAgain}" />
+                                                                    <Button Classes="small" Content="{x:Static res:Strings.ContainersView_Stop}"
                                                                             IsVisible="{Binding IsRunning}"
                                                                             Command="{Binding Project.StopCommand}"
                                                                             CommandParameter="{Binding Service}"
-                                                                            ToolTip.Tip="compose stop for this service" />
-                                                                    <Button Classes="small" Content="Restart"
+                                                                            ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposeStopForThisService}" />
+                                                                    <Button Classes="small" Content="{x:Static res:Strings.ContainersView_Restart}"
                                                                             IsVisible="{Binding IsRunning}"
                                                                             Command="{Binding Project.RestartCommand}"
                                                                             CommandParameter="{Binding Service}"
-                                                                            ToolTip.Tip="compose restart for this service" />
-                                                                    <Button Classes="small" Content="⋯" ToolTip.Tip="More for this service">
+                                                                            ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposeRestartForThisService}" />
+                                                                    <Button Classes="small" Content="⋯" ToolTip.Tip="{x:Static res:Strings.ContainersView_MoreForThisService}">
                                                                         <Button.Flyout>
                                                                             <MenuFlyout Placement="BottomEdgeAlignedRight">
-                                                                                <MenuItem Header="Show its logs" Command="{Binding Project.ShowServiceLogsCommand}" CommandParameter="{Binding Service}" />
-                                                                                <MenuItem Header="Open a shell in a terminal" Command="{Binding Project.OpenShellCommand}" CommandParameter="{Binding Service}"
+                                                                                <MenuItem Header="{x:Static res:Strings.ContainersView_ShowItsLogs}" Command="{Binding Project.ShowServiceLogsCommand}" CommandParameter="{Binding Service}" />
+                                                                                <MenuItem Header="{x:Static res:Strings.ContainersView_OpenAShellInATerminal}" Command="{Binding Project.OpenShellCommand}" CommandParameter="{Binding Service}"
                                                                                           IsEnabled="{Binding IsRunning}"
-                                                                                          ToolTip.Tip="exec -it with sh inside the running container" />
-                                                                                <MenuItem Header="Copy the container name" Click="OnCopyContainerNameClick" IsEnabled="{Binding HasContainer}" />
+                                                                                          ToolTip.Tip="{x:Static res:Strings.ContainersView_ExecItWithShInsideThe}" />
+                                                                                <MenuItem Header="{x:Static res:Strings.ContainersView_CopyTheContainerName}" Click="OnCopyContainerNameClick" IsEnabled="{Binding HasContainer}" />
                                                                                 <Separator />
-                                                                                <MenuItem Header="Recreate" Command="{Binding Project.RecreateCommand}" CommandParameter="{Binding Service}"
-                                                                                          ToolTip.Tip="compose up -d --force-recreate: a new container even when nothing changed" />
-                                                                                <MenuItem Header="Rebuild and start" Command="{Binding Project.RebuildCommand}" CommandParameter="{Binding Service}"
-                                                                                          ToolTip.Tip="compose up -d --build: build its image again, then recreate and start it" />
-                                                                                <MenuItem Header="Pull image" Command="{Binding Project.PullCommand}" CommandParameter="{Binding Service}"
-                                                                                          ToolTip.Tip="compose pull --ignore-buildable: fetch the latest image, unless it is built from the file" />
+                                                                                <MenuItem Header="{x:Static res:Strings.ContainersView_Recreate}" Command="{Binding Project.RecreateCommand}" CommandParameter="{Binding Service}"
+                                                                                          ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposeUpDForceRecreateA}" />
+                                                                                <MenuItem Header="{x:Static res:Strings.ContainersView_RebuildAndStart}" Command="{Binding Project.RebuildCommand}" CommandParameter="{Binding Service}"
+                                                                                          ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposeUpDBuildBuildIts}" />
+                                                                                <MenuItem Header="{x:Static res:Strings.ContainersView_PullImage}" Command="{Binding Project.PullCommand}" CommandParameter="{Binding Service}"
+                                                                                          ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposePullIgnoreBuildableFetchTheLatest}" />
                                                                                 <Separator />
-                                                                                <MenuItem Header="Pause" Command="{Binding Project.PauseCommand}" CommandParameter="{Binding Service}"
-                                                                                          IsVisible="{Binding IsRunning}" ToolTip.Tip="compose pause: freeze it" />
-                                                                                <MenuItem Header="Resume" Command="{Binding Project.UnpauseCommand}" CommandParameter="{Binding Service}"
-                                                                                          IsVisible="{Binding IsPaused}" ToolTip.Tip="unpause: let it run again" />
-                                                                                <MenuItem Header="Kill" Command="{Binding Project.KillCommand}" CommandParameter="{Binding Service}"
-                                                                                          IsVisible="{Binding IsRunning}" ToolTip.Tip="compose kill: stop it at once, without letting it shut down" />
-                                                                                <MenuItem Header="Remove container" Command="{Binding Project.RemoveContainerCommand}" CommandParameter="{Binding Service}"
-                                                                                          IsVisible="{Binding HasContainer}" ToolTip.Tip="compose rm --stop --force: stop and remove it; Start makes it again" />
+                                                                                <MenuItem Header="{x:Static res:Strings.ContainersView_Pause}" Command="{Binding Project.PauseCommand}" CommandParameter="{Binding Service}"
+                                                                                          IsVisible="{Binding IsRunning}" ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposePauseFreezeIt}" />
+                                                                                <MenuItem Header="{x:Static res:Strings.ContainersView_Resume}" Command="{Binding Project.UnpauseCommand}" CommandParameter="{Binding Service}"
+                                                                                          IsVisible="{Binding IsPaused}" ToolTip.Tip="{x:Static res:Strings.ContainersView_UnpauseLetItRunAgain}" />
+                                                                                <MenuItem Header="{x:Static res:Strings.ContainersView_Kill}" Command="{Binding Project.KillCommand}" CommandParameter="{Binding Service}"
+                                                                                          IsVisible="{Binding IsRunning}" ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposeKillStopItAtOnce}" />
+                                                                                <MenuItem Header="{x:Static res:Strings.ContainersView_RemoveContainer}" Command="{Binding Project.RemoveContainerCommand}" CommandParameter="{Binding Service}"
+                                                                                          IsVisible="{Binding HasContainer}" ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposeRmStopForceStopAnd}" />
                                                                             </MenuFlyout>
                                                                         </Button.Flyout>
                                                                     </Button>
@@ -206,9 +208,9 @@
                 <Border Grid.Column="2" Classes="card">
                     <StackPanel Spacing="12">
                         <StackPanel>
-                            <TextBlock Classes="card-title" Text="Compose files" />
+                            <TextBlock Classes="card-title" Text="{x:Static res:Strings.ContainersView_ComposeFiles}" />
                             <TextBlock Classes="card-subtitle"
-                                       Text="Each file is its own project. Commands run from the file's folder, so its .env is read. Saved as you change them." />
+                                       Text="{x:Static res:Strings.ContainersView_EachFileIsItsOwnProject}" />
                         </StackPanel>
                         <StackPanel Spacing="6">
                             <ItemsControl ItemsSource="{Binding Projects}">
@@ -217,22 +219,28 @@
                                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8" Margin="0,0,0,6">
                                             <TextBlock Classes="code" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
                                                        Text="{Binding File}" ToolTip.Tip="{Binding File}" />
-                                            <Button Grid.Column="1" Classes="small" Content="Remove" Command="{Binding RemoveCommand}"
-                                                    ToolTip.Tip="Stop showing this file. Its containers are left as they are." />
+                                            <Button Grid.Column="1" Classes="small" Content="{x:Static res:Strings.ContainersView_Remove}" Command="{Binding RemoveCommand}"
+                                                    ToolTip.Tip="{x:Static res:Strings.ContainersView_StopShowingThisFileItsContainers}" />
                                         </Grid>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                             <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
-                                <TextBox Classes="code" Text="{Binding NewComposeFile}" PlaceholderText="Path of a compose file" />
-                                <Button Grid.Column="1" Content="Add" Command="{Binding AddTypedCommand}" />
-                                <Button Grid.Column="2" Content="Browse" Command="{Binding BrowseCommand}" />
+                                <TextBox Classes="code" Text="{Binding NewComposeFile}" PlaceholderText="{x:Static res:Strings.ContainersView_PathOfAComposeFile}" />
+                                <Button Grid.Column="1" Content="{x:Static res:Strings.ContainersView_Add}" Command="{Binding AddTypedCommand}" />
+                                <Button Grid.Column="2" Content="{x:Static res:Strings.ContainersView_Browse}" Command="{Binding BrowseCommand}" />
                             </Grid>
                         </StackPanel>
                         <StackPanel>
-                            <TextBlock Classes="field-label" Text="Engine" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.ContainersView_Engine}" />
                             <ComboBox ItemsSource="{Binding Engines}" SelectedItem="{Binding SelectedEngine}" HorizontalAlignment="Stretch"
-                                      ToolTip.Tip="Auto uses Docker when its engine is running and Podman otherwise" />
+                                      ToolTip.Tip="{x:Static res:Strings.ContainersView_AutoUsesDockerWhenItsEngine}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate x:DataType="containers:ContainerEngine">
+                                        <TextBlock Text="{Binding Converter={x:Static containers:ContainerEngineText.ContainerEngineConverter}}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                             <TextBlock Classes="info-label" Margin="0,6,0,0" TextWrapping="Wrap"
                                        Text="{Binding EngineText}"
                                        IsVisible="{Binding EngineText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
@@ -247,16 +255,16 @@
                 <!-- Collapsed, all that is left of them -->
                 <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="8" Margin="16,8" IsVisible="{Binding !IsLogPanelOpen}">
                     <Button Classes="small" Content="▸" Command="{Binding ToggleLogPanelCommand}" VerticalAlignment="Center"
-                            ToolTip.Tip="Show the logs and command output" />
-                    <TextBlock Grid.Column="1" Classes="table-cell" FontWeight="SemiBold" VerticalAlignment="Center" Text="Logs and command output" />
+                            ToolTip.Tip="{x:Static res:Strings.ContainersView_ShowTheLogsAndCommandOutput}" />
+                    <TextBlock Grid.Column="1" Classes="table-cell" FontWeight="SemiBold" VerticalAlignment="Center" Text="{x:Static res:Strings.ContainersView_LogsAndCommandOutput}" />
                     <TextBlock Grid.Column="2" Classes="info-label" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
-                               Text="The logs keep coming while collapsed."
+                               Text="{x:Static res:Strings.ContainersView_TheLogsKeepComingWhileCollapsed}"
                                IsVisible="{Binding IsFollowingLogs}" />
                 </Grid>
                 <Button Classes="small" Content="▾" Command="{Binding ToggleLogPanelCommand}"
                         HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,8,16,0" ZIndex="1"
                         IsVisible="{Binding IsLogPanelOpen}"
-                        ToolTip.Tip="Collapse the logs and command output, to leave more room for the services" />
+                        ToolTip.Tip="{x:Static res:Strings.ContainersView_CollapseTheLogsAndCommandOutput}" />
                 <TabControl Name="BottomTabs" Padding="16,8,16,16" IsVisible="{Binding IsLogPanelOpen}">
                     <TabControl.Styles>
                         <Style Selector="TabItem">
@@ -265,13 +273,13 @@
                             <Setter Property="Padding" Value="16,0" />
                         </Style>
                     </TabControl.Styles>
-                    <TabItem Header="Logs">
+                    <TabItem Header="{x:Static res:Strings.ContainersView_Logs}">
                         <DockPanel>
                             <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto" ColumnSpacing="12" Margin="0,8,0,8">
                                 <Button Classes="accent" Content="{Binding LogsButtonText}" Command="{Binding ToggleLogsCommand}" MinWidth="96"
-                                        ToolTip.Tip="compose logs --follow: show what the containers write, as they write it" />
+                                        ToolTip.Tip="{x:Static res:Strings.ContainersView_ComposeLogsFollowShowWhatThe}" />
                                 <ComboBox Grid.Column="1" ItemsSource="{Binding LogChoices}" SelectedItem="{Binding SelectedLog}" MinWidth="220"
-                                          ToolTip.Tip="Whose logs to show: one file's services, or one of them">
+                                          ToolTip.Tip="{x:Static res:Strings.ContainersView_WhoseLogsToShowOneFile}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate x:DataType="vm:ComposeLogChoice">
                                             <TextBlock>
@@ -283,16 +291,16 @@
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
                                 <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
-                                    <TextBlock Classes="info-label" VerticalAlignment="Center" Text="Last" />
+                                    <TextBlock Classes="info-label" VerticalAlignment="Center" Text="{x:Static res:Strings.ContainersView_Last}" />
                                     <NumericUpDown Value="{Binding TailLines}" Minimum="0" Maximum="5000" Increment="100" FormatString="0" Width="120"
-                                                   ToolTip.Tip="How many earlier lines of each container's log to show when the logs start" />
-                                    <TextBlock Classes="info-label" VerticalAlignment="Center" Text="lines" />
+                                                   ToolTip.Tip="{x:Static res:Strings.ContainersView_HowManyEarlierLinesOfEach}" />
+                                    <TextBlock Classes="info-label" VerticalAlignment="Center" Text="{x:Static res:Strings.ContainersView_Lines}" />
                                 </StackPanel>
-                                <CheckBox Grid.Column="3" Content="Timestamps" IsChecked="{Binding ShowTimestamps}" />
-                                <CheckBox Grid.Column="5" Content="Keep newest in view" IsChecked="{Binding AutoScroll}" />
-                                <Button Grid.Column="6" Classes="small" Content="Copy" Click="OnCopyLogsClick" VerticalAlignment="Center"
-                                        ToolTip.Tip="Copy the lines shown" />
-                                <Button Grid.Column="7" Classes="small" Content="Clear" Command="{Binding ClearLogsCommand}" VerticalAlignment="Center" />
+                                <CheckBox Grid.Column="3" Content="{x:Static res:Strings.ContainersView_Timestamps}" IsChecked="{Binding ShowTimestamps}" />
+                                <CheckBox Grid.Column="5" Content="{x:Static res:Strings.ContainersView_KeepNewestInView}" IsChecked="{Binding AutoScroll}" />
+                                <Button Grid.Column="6" Classes="small" Content="{x:Static res:Strings.ContainersView_Copy}" Click="OnCopyLogsClick" VerticalAlignment="Center"
+                                        ToolTip.Tip="{x:Static res:Strings.ContainersView_CopyTheLinesShown}" />
+                                <Button Grid.Column="7" Classes="small" Content="{x:Static res:Strings.ContainersView_Clear}" Command="{Binding ClearLogsCommand}" VerticalAlignment="Center" />
                             </Grid>
                             <ListBox x:Name="LogList" Classes="log console" ItemsSource="{Binding LogLines}">
                                 <ListBox.ItemTemplate>
@@ -303,13 +311,13 @@
                             </ListBox>
                         </DockPanel>
                     </TabItem>
-                    <TabItem Header="Command output">
+                    <TabItem Header="{x:Static res:Strings.ContainersView_CommandOutput}">
                         <DockPanel>
                             <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="12" Margin="0,8,0,8">
                                 <TextBlock Classes="info-label" VerticalAlignment="Center" TextWrapping="Wrap"
-                                           Text="What Start, Stop, Restart and Down wrote, after each file's name and command line." />
-                                <Button Grid.Column="1" Classes="small" Content="Copy" Click="OnCopyOutputClick" />
-                                <Button Grid.Column="2" Classes="small" Content="Clear" Command="{Binding ClearOutputCommand}" />
+                                           Text="{x:Static res:Strings.ContainersView_WhatStartStopRestartAndDown}" />
+                                <Button Grid.Column="1" Classes="small" Content="{x:Static res:Strings.ContainersView_Copy}" Click="OnCopyOutputClick" />
+                                <Button Grid.Column="2" Classes="small" Content="{x:Static res:Strings.ContainersView_Clear}" Command="{Binding ClearOutputCommand}" />
                             </Grid>
                             <ListBox x:Name="OutputList" Classes="log console" ItemsSource="{Binding Output}">
                                 <ListBox.ItemTemplate>

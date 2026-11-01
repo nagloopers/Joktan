@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NoteNode_Untitled" xml:space="preserve">
+    <value>Untitled</value>
+  </data>
+  <data name="NotesView_AFolderThatAlreadyHoldsNotes" xml:space="preserve">
+    <value>A folder that already holds notes is opened as it is. Otherwise the notes open now are copied into it, and the originals are left where they are. A shared or synced folder works too.</value>
+  </data>
+  <data name="NotesView_AddAPageAtTheTop" xml:space="preserve">
+    <value>Add a page at the top level</value>
+  </data>
+  <data name="NotesView_AddAPageBelowTheSelected" xml:space="preserve">
+    <value>Add a page below the selected one</value>
+  </data>
+  <data name="NotesView_Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="NotesView_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="NotesView_ChangeTheTitleAndTheMarkdown" xml:space="preserve">
+    <value>Change the title and the Markdown (Ctrl+E or ⌘E)</value>
+  </data>
+  <data name="NotesView_ChooseTheFolderForNotes" xml:space="preserve">
+    <value>Choose the folder for notes</value>
+  </data>
+  <data name="NotesView_ChooseWhereTheNotesAreKept" xml:space="preserve">
+    <value>Choose where the notes are kept</value>
+  </data>
+  <data name="NotesView_Default" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="NotesView_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="NotesView_DeleteThePageAndThePages" xml:space="preserve">
+    <value>Delete the page and the pages below it</value>
+  </data>
+  <data name="NotesView_Done" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="NotesView_Down" xml:space="preserve">
+    <value>Down</value>
+  </data>
+  <data name="NotesView_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="NotesView_FillInJoktanSOwnNotes" xml:space="preserve">
+    <value>Fill in Joktan's own notes folder</value>
+  </data>
+  <data name="NotesView_Folder" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="NotesView_GoBackToReadingThePage" xml:space="preserve">
+    <value>Go back to reading the page (Ctrl+E or ⌘E). Changes are already saved.</value>
+  </data>
+  <data name="NotesView_Indent" xml:space="preserve">
+    <value>Indent</value>
+  </data>
+  <data name="NotesView_MakeThePageAChildOf" xml:space="preserve">
+    <value>Make the page a child of the page above it</value>
+  </data>
+  <data name="NotesView_MoveThePageAboveTheOne" xml:space="preserve">
+    <value>Move the page above the one before it</value>
+  </data>
+  <data name="NotesView_MoveThePageBelowTheOne" xml:space="preserve">
+    <value>Move the page below the one after it</value>
+  </data>
+  <data name="NotesView_MoveThePageOutOfIts" xml:space="preserve">
+    <value>Move the page out of its parent, to just after it</value>
+  </data>
+  <data name="NotesView_NewChildPage" xml:space="preserve">
+    <value>New child page</value>
+  </data>
+  <data name="NotesView_NewPage" xml:space="preserve">
+    <value>New page</value>
+  </data>
+  <data name="NotesView_NoPagesYetStartWithNew" xml:space="preserve">
+    <value>No pages yet. Start with New page.</value>
+  </data>
+  <data name="NotesView_NotesFolder" xml:space="preserve">
+    <value>Notes folder</value>
+  </data>
+  <data name="NotesView_NothingOnThisPageYetChoose" xml:space="preserve">
+    <value>Nothing on this page yet. Choose Edit to write it.</value>
+  </data>
+  <data name="NotesView_Outdent" xml:space="preserve">
+    <value>Outdent</value>
+  </data>
+  <data name="NotesView_Pages" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="NotesView_SavedAsYouTypeOneMarkdown" xml:space="preserve">
+    <value>Saved as you type, one Markdown file per page, in</value>
+  </data>
+  <data name="NotesView_SelectAPageToReadOr" xml:space="preserve">
+    <value>Select a page to read or edit it, or make one with New page.</value>
+  </data>
+  <data name="NotesView_Untitled" xml:space="preserve">
+    <value>Untitled</value>
+  </data>
+  <data name="NotesView_Up" xml:space="preserve">
+    <value>Up</value>
+  </data>
+  <data name="NotesView_UseFolder" xml:space="preserve">
+    <value>Use folder</value>
+  </data>
+  <data name="NotesView_WriteInMarkdownHeadingBoldList" xml:space="preserve">
+    <value>Write in Markdown: # Heading, **bold**, - list item, [link](https://…)</value>
+  </data>
+  <data name="Notes_AndThePageBelowIt" xml:space="preserve">
+    <value> and the page below it</value>
+  </data>
+  <data name="Notes_AndThePagesBelowIt" xml:space="preserve">
+    <value> and the {0} pages below it</value>
+    <comment>{0}: below</comment>
+  </data>
+  <data name="Notes_CouldNotCopyTheNotesTo" xml:space="preserve">
+    <value>Could not copy the notes to {0}: {1}</value>
+    <comment>{0}: folder, {1}: e.Message</comment>
+  </data>
+  <data name="Notes_CouldNotWrite" xml:space="preserve">
+    <value>Could not write {0}: {1}</value>
+    <comment>{0}: path, {1}: e.Message</comment>
+  </data>
+  <data name="Notes_DeleteThisCannotBeUndone" xml:space="preserve">
+    <value>Delete {0}{1}? This cannot be undone.</value>
+    <comment>{0}: Selected.DisplayTitle, {1}: rest</comment>
+  </data>
+  <data name="Notes_GiveTheWholePathOfThe" xml:space="preserve">
+    <value>Give the whole path of the folder, such as one picked with Browse.</value>
+  </data>
+  <data name="Notes_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="Notes_NotesEachPageIsWrittenIn" xml:space="preserve">
+    <value># Notes
+
+Each page is written in **Markdown** and shown formatted beside the text. Pages can sit below other pages: use **New child page**, or **Indent** to move a page below the one above it.
+
+## What you can write
+
+- *Italic*, **bold**, ~~struck out~~ and `code`
+- [Links](https://commonmark.org/help/) and &lt;https://example.com&gt;
+- [x] Task lists
+- [ ] Numbered lists, quotes, tables and code blocks
+
+&gt; A quote
+
+| Shortcut | Does |
+| --- | ---: |
+| `# ` | Heading |
+| `- ` | List item |
+
+```
+code block
+```</value>
+  </data>
+  <data name="Notes_OpenedTheNotesAlreadyIn" xml:space="preserve">
+    <value>Opened the notes already in {0}.</value>
+    <comment>{0}: folder</comment>
+  </data>
+  <data name="Notes_TheNotesWereCopiedToThe" xml:space="preserve">
+    <value>The notes were copied to {0}. The originals are still in {1}.</value>
+    <comment>{0}: folder, {1}: previous</comment>
+  </data>
+  <data name="Notes_Welcome" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+</root>

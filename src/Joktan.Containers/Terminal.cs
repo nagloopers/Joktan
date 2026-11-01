@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Joktan.Containers.Resources;
 
 namespace Joktan.Containers;
 
@@ -29,7 +30,7 @@ public static class Terminal
             var terminal = new[] { "x-terminal-emulator", "gnome-terminal", "konsole", "xterm" }
                 .FirstOrDefault(t => (Environment.GetEnvironmentVariable("PATH") ?? "")
                     .Split(Path.PathSeparator).Any(folder => File.Exists(Path.Combine(folder, t))))
-                ?? throw new PlatformNotSupportedException("No terminal was found.");
+                ?? throw new PlatformNotSupportedException(Strings.Terminal_NoTerminalWasFound);
             Start(terminal, terminal == "gnome-terminal" ? ["--", executable, .. arguments] : ["-e", executable, .. arguments]);
         }
     }

@@ -1,0 +1,1642 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ActivityEntry_Bytes" xml:space="preserve">
+    <value>{0:N0} bytes</value>
+    <comment>{0}: payloadLength</comment>
+  </data>
+  <data name="ActivityEntry_BytesGzippedUnzipped" xml:space="preserve">
+    <value>{0:N0} bytes gzipped ({1:N0} unzipped)</value>
+    <comment>{0}: payloadLength, {1}: bodyLength</comment>
+  </data>
+  <data name="ActivityEntry_Failed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="AlertSeverity_Critical" xml:space="preserve">
+    <value>Critical</value>
+  </data>
+  <data name="AlertSeverity_Info" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="AlertSeverity_Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="ArrayRule_Array" xml:space="preserve">
+    <value>Array {0}: {1}</value>
+    <comment>{0}: path, {1}: problem.Replace("\"min\"", Strings.ArrayRule_TheNumber).Replace("\"max\"", Strings.ArrayRule_TheLargestNumber)</comment>
+  </data>
+  <data name="ArrayRule_ArrayTheMustBeAWhole" xml:space="preserve">
+    <value>Array {0}: the {1} must be a whole number</value>
+    <comment>{0}: path, {1}: name</comment>
+  </data>
+  <data name="ArrayRule_EveryArraySizeNeedsAnArray" xml:space="preserve">
+    <value>Every array size needs an array path</value>
+  </data>
+  <data name="ArrayRule_LargestNumberOfItems" xml:space="preserve">
+    <value>largest number of items</value>
+  </data>
+  <data name="ArrayRule_NumberOfItems" xml:space="preserve">
+    <value>number of items</value>
+  </data>
+  <data name="ArrayRule_TheLargestNumber" xml:space="preserve">
+    <value>the largest number</value>
+  </data>
+  <data name="ArrayRule_TheNumber" xml:space="preserve">
+    <value>the number</value>
+  </data>
+  <data name="CertificateLoader_AndCannotBeUsedTogether" xml:space="preserve">
+    <value>{0} and {1} cannot be used together: {2}</value>
+    <comment>{0}: name, {1}: keyName, {2}: e.Message</comment>
+  </data>
+  <data name="CertificateLoader_CACertificate" xml:space="preserve">
+    <value>CA certificate</value>
+  </data>
+  <data name="CertificateLoader_CannotBeOpenedIfItHas" xml:space="preserve">
+    <value>{0} cannot be opened; if it has a password, enter it</value>
+    <comment>{0}: name</comment>
+  </data>
+  <data name="CertificateLoader_CannotBeOpenedThePasswordIs" xml:space="preserve">
+    <value>{0} cannot be opened: the password is wrong or the file is damaged ({1})</value>
+    <comment>{0}: name, {1}: e.Message</comment>
+  </data>
+  <data name="CertificateLoader_CannotBeUsedItNeedsA" xml:space="preserve">
+    <value>{0} cannot be used: it needs a PEM certificate and its private key, or choose the key file separately ({1})</value>
+    <comment>{0}: name, {1}: e.Message</comment>
+  </data>
+  <data name="CertificateLoader_ClientCertificate" xml:space="preserve">
+    <value>client certificate</value>
+  </data>
+  <data name="CertificateLoader_HasNoPrivateKeySoIt" xml:space="preserve">
+    <value>{0} has no private key, so it cannot be used as a client certificate</value>
+    <comment>{0}: name</comment>
+  </data>
+  <data name="CertificateLoader_ItHasExpiredOrIsNot" xml:space="preserve">
+    <value>it has expired or is not valid yet</value>
+  </data>
+  <data name="CertificateLoader_ItIsNotSignedByThe" xml:space="preserve">
+    <value>it is not signed by the CA certificate</value>
+  </data>
+  <data name="CertificateLoader_ItsChainCouldNotBeChecked" xml:space="preserve">
+    <value>its chain could not be checked</value>
+  </data>
+  <data name="CertificateLoader_OrItsKeyCannotBeRead" xml:space="preserve">
+    <value>{0} or its key cannot be read: {1}</value>
+    <comment>{0}: name, {1}: e.Message</comment>
+  </data>
+  <data name="CertificateLoader_PrivateKey" xml:space="preserve">
+    <value>private key</value>
+  </data>
+  <data name="CertificateLoader_TheCACertificateCannotBeRead" xml:space="preserve">
+    <value>The CA certificate {0} cannot be read: {1}</value>
+    <comment>{0}: Path.GetFileName(file), {1}: e.Message</comment>
+  </data>
+  <data name="CertificateLoader_TheCACertificateHoldsNoCertificate" xml:space="preserve">
+    <value>The CA certificate {0} holds no certificate</value>
+    <comment>{0}: Path.GetFileName(file)</comment>
+  </data>
+  <data name="CertificateLoader_TheClientCertificateExpiredOn" xml:space="preserve">
+    <value>The client certificate expired on {0:yyyy-MM-dd}</value>
+    <comment>{0}: certificate.NotAfter</comment>
+  </data>
+  <data name="CertificateLoader_TheClientCertificateIsNotValid" xml:space="preserve">
+    <value>The client certificate is not valid until {0:yyyy-MM-dd}</value>
+    <comment>{0}: certificate.NotBefore</comment>
+  </data>
+  <data name="CertificateLoader_TheFileDoesNotExist" xml:space="preserve">
+    <value>The {0} file {1} does not exist</value>
+    <comment>{0}: what, {1}: file</comment>
+  </data>
+  <data name="CertificateLoader_ThePrivateKeyInCannotBe" xml:space="preserve">
+    <value>The private key in {0} cannot be opened: the password is wrong</value>
+    <comment>{0}: keyName</comment>
+  </data>
+  <data name="CertificateLoader_ThePrivateKeyInIsEncrypted" xml:space="preserve">
+    <value>The private key in {0} is encrypted; enter its password</value>
+    <comment>{0}: Path.GetFileName(keyFile)</comment>
+  </data>
+  <data name="ChatRow_To" xml:space="preserve">
+    <value>to @{0}</value>
+    <comment>{0}: to</comment>
+  </data>
+  <data name="ChatRow_ToYou" xml:space="preserve">
+    <value>to you</value>
+  </data>
+  <data name="ClientProfile_EnterANameForTheClient" xml:space="preserve">
+    <value>Enter a name for the client</value>
+  </data>
+  <data name="ClientProfile_TheNameMayUseLettersDigits" xml:space="preserve">
+    <value>The name may use letters, digits, spaces, _, - and .</value>
+  </data>
+  <data name="ClientProfile_TheNameMustNotBeLonger" xml:space="preserve">
+    <value>The name must not be longer than {0} characters</value>
+    <comment>{0}: MaxNameLength</comment>
+  </data>
+  <data name="ClientProfile_ThereIsAlreadyAClientCalled" xml:space="preserve">
+    <value>There is already a client called {0}</value>
+    <comment>{0}: name</comment>
+  </data>
+  <data name="ClientSettingsWindow_ACAMadeOnDevTools" xml:space="preserve">
+    <value>A CA made on Dev Tools / Certificates. When saved, its file, with any CAs above it, is copied into this client's folder of certificates and used from there.</value>
+  </data>
+  <data name="ClientSettingsWindow_AClientCertificateMadeOnDev" xml:space="preserve">
+    <value>A client certificate made on Dev Tools / Certificates. Its key is filled in, and its CA too when none is chosen. When saved, they are copied into this client's folder of certificates and used from there.</value>
+  </data>
+  <data name="ClientSettingsWindow_APEMCertificateOrAPFX" xml:space="preserve">
+    <value>A PEM certificate, or a PFX/P12 file</value>
+  </data>
+  <data name="ClientSettingsWindow_AcceptAnyBrokerCertificateTestingOnly" xml:space="preserve">
+    <value>Accept any broker certificate (testing only)</value>
+  </data>
+  <data name="ClientSettingsWindow_Appearance" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="ClientSettingsWindow_Broker" xml:space="preserve">
+    <value>Broker</value>
+  </data>
+  <data name="ClientSettingsWindow_Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="ClientSettingsWindow_CACertificateOptional" xml:space="preserve">
+    <value>CA certificate (optional)</value>
+  </data>
+  <data name="ClientSettingsWindow_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ClientSettingsWindow_Certificates" xml:space="preserve">
+    <value>Certificates</value>
+  </data>
+  <data name="ClientSettingsWindow_ChooseACA" xml:space="preserve">
+    <value>Choose a CA</value>
+  </data>
+  <data name="ClientSettingsWindow_ChooseAClientCertificate" xml:space="preserve">
+    <value>Choose a client certificate</value>
+  </data>
+  <data name="ClientSettingsWindow_ChooseTheCACertificate" xml:space="preserve">
+    <value>Choose the CA certificate</value>
+  </data>
+  <data name="ClientSettingsWindow_ChooseTheClientCertificate" xml:space="preserve">
+    <value>Choose the client certificate</value>
+  </data>
+  <data name="ClientSettingsWindow_ChooseThePrivateKey" xml:space="preserve">
+    <value>Choose the private key</value>
+  </data>
+  <data name="ClientSettingsWindow_Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="ClientSettingsWindow_ClientCertificateOptionalForMutualTLS" xml:space="preserve">
+    <value>Client certificate (optional, for mutual TLS)</value>
+  </data>
+  <data name="ClientSettingsWindow_ClientID" xml:space="preserve">
+    <value>Client ID</value>
+  </data>
+  <data name="ClientSettingsWindow_ColoursForThisClientSTab" xml:space="preserve">
+    <value>Colours for this client's tab and the page behind its cards, on the MQTT page and in the topic explorer. Pick one, type a colour such as #3BB001, or leave it empty for the default. The default text is white on a tab with a fill.</value>
+  </data>
+  <data name="ClientSettingsWindow_Default" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="ClientSettingsWindow_EmptyToMakeOneUp" xml:space="preserve">
+    <value>Empty to make one up</value>
+  </data>
+  <data name="ClientSettingsWindow_EmptyToTrustTheAuthoritiesThis" xml:space="preserve">
+    <value>Empty to trust the authorities this computer trusts</value>
+  </data>
+  <data name="ClientSettingsWindow_EmptyWhenTheKeyIsIn" xml:space="preserve">
+    <value>Empty when the key is in the certificate file</value>
+  </data>
+  <data name="ClientSettingsWindow_EncryptsTheConnectionAndChecksThe" xml:space="preserve">
+    <value>Encrypts the connection and checks the broker's certificate. Add a client certificate when the broker asks the client to prove who it is (mutual TLS).</value>
+  </data>
+  <data name="ClientSettingsWindow_Host" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="ClientSettingsWindow_IPAddressOrHostName" xml:space="preserve">
+    <value>IP address or host name</value>
+  </data>
+  <data name="ClientSettingsWindow_KeyPasswordOptional" xml:space="preserve">
+    <value>Key password (optional)</value>
+  </data>
+  <data name="ClientSettingsWindow_MQTTClient" xml:space="preserve">
+    <value>MQTT client</value>
+  </data>
+  <data name="ClientSettingsWindow_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ClientSettingsWindow_NeitherWhoSignedTheBrokerS" xml:space="preserve">
+    <value>Neither who signed the broker's certificate nor its host name is checked, so the connection is encrypted but the broker is not verified.</value>
+  </data>
+  <data name="ClientSettingsWindow_OpensAPFXP12FileOr" xml:space="preserve">
+    <value>Opens a PFX/P12 file or an encrypted private key. It is kept in the system's credential store after a successful connection.</value>
+  </data>
+  <data name="ClientSettingsWindow_OrACAFromCertificates" xml:space="preserve">
+    <value>Or a CA from Certificates:</value>
+  </data>
+  <data name="ClientSettingsWindow_OrOneFromCertificates" xml:space="preserve">
+    <value>Or one from Certificates:</value>
+  </data>
+  <data name="ClientSettingsWindow_PageBackground" xml:space="preserve">
+    <value>Page background</value>
+  </data>
+  <data name="ClientSettingsWindow_PasswordOptional" xml:space="preserve">
+    <value>Password (optional)</value>
+  </data>
+  <data name="ClientSettingsWindow_PlantAShownOnTheClient" xml:space="preserve">
+    <value>plant-a, shown on the client's tab</value>
+  </data>
+  <data name="ClientSettingsWindow_Port" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="ClientSettingsWindow_Preview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="ClientSettingsWindow_PrivateKey" xml:space="preserve">
+    <value>Private key</value>
+  </data>
+  <data name="ClientSettingsWindow_PrivateKeys" xml:space="preserve">
+    <value>Private keys</value>
+  </data>
+  <data name="ClientSettingsWindow_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ClientSettingsWindow_TLS" xml:space="preserve">
+    <value>TLS</value>
+  </data>
+  <data name="ClientSettingsWindow_TabFill" xml:space="preserve">
+    <value>Tab fill</value>
+  </data>
+  <data name="ClientSettingsWindow_TabText" xml:space="preserve">
+    <value>Tab text</value>
+  </data>
+  <data name="ClientSettingsWindow_TheCertificateThatSignedTheBroker" xml:space="preserve">
+    <value>The certificate that signed the broker's, as PEM or DER. Choose it for a broker with a certificate of its own making.</value>
+  </data>
+  <data name="ClientSettingsWindow_Theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="ClientSettingsWindow_UseTLS" xml:space="preserve">
+    <value>Use TLS</value>
+  </data>
+  <data name="ClientSettingsWindow_UseTheThemeSColour" xml:space="preserve">
+    <value>Use the theme's colour</value>
+  </data>
+  <data name="ClientSettingsWindow_UsernameOptional" xml:space="preserve">
+    <value>Username (optional)</value>
+  </data>
+  <data name="ClientSettingsWindow_White" xml:space="preserve">
+    <value>White</value>
+  </data>
+  <data name="ClientSettings_AColourMustBeLike3BB001" xml:space="preserve">
+    <value>A colour must be like #3BB001, or empty for the theme's own</value>
+  </data>
+  <data name="ClientSettings_APasswordIsOnlySentWith" xml:space="preserve">
+    <value>A password is only sent with a username</value>
+  </data>
+  <data name="ClientSettings_CA" xml:space="preserve">
+    <value>CA: {0}</value>
+    <comment>{0}: authorities[0].GetNameInfo(System.Security.Cryptography.X509Certificates.X509NameType.SimpleName, false)</comment>
+  </data>
+  <data name="ClientSettings_CACertificates" xml:space="preserve">
+    <value>CA: {0} certificates</value>
+    <comment>{0}: authorities.Count</comment>
+  </data>
+  <data name="ClientSettings_ChooseTheClientCertificateThatGoes" xml:space="preserve">
+    <value>Choose the client certificate that goes with the private key</value>
+  </data>
+  <data name="ClientSettings_Client" xml:space="preserve">
+    <value>Client {0}</value>
+    <comment>{0}: Name</comment>
+  </data>
+  <data name="ClientSettings_ClientCertificateValidUntil" xml:space="preserve">
+    <value>Client certificate: {0}, valid until {1:yyyy-MM-dd}</value>
+    <comment>{0}: subject, {1}: client.NotAfter</comment>
+  </data>
+  <data name="ClientSettings_EnterTheBrokerSHostName" xml:space="preserve">
+    <value>Enter the broker's host name or IP address, without spaces</value>
+  </data>
+  <data name="ClientSettings_NewClient" xml:space="preserve">
+    <value>New client</value>
+  </data>
+  <data name="ClientSettings_TheClientIDMustNotContain" xml:space="preserve">
+    <value>The client ID must not contain spaces</value>
+  </data>
+  <data name="ClientSettings_ThePortMustBeAWhole" xml:space="preserve">
+    <value>The port must be a whole number from 1 to 65535</value>
+  </data>
+  <data name="ConnectionState_Connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="ConnectionState_Connecting" xml:space="preserve">
+    <value>Connecting</value>
+  </data>
+  <data name="ConnectionState_Disconnected" xml:space="preserve">
+    <value>Disconnected</value>
+  </data>
+  <data name="ConnectionState_Failed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="ConnectionState_Reconnecting" xml:space="preserve">
+    <value>Reconnecting</value>
+  </data>
+  <data name="FieldRule_AllowedValuesSeparatedByCommas" xml:space="preserve">
+    <value>Allowed values, separated by commas</value>
+  </data>
+  <data name="FieldRule_Counter" xml:space="preserve">
+    <value>Counter</value>
+  </data>
+  <data name="FieldRule_Decimals" xml:space="preserve">
+    <value>decimals</value>
+  </data>
+  <data name="FieldRule_EachInTurn" xml:space="preserve">
+    <value>Each in turn</value>
+  </data>
+  <data name="FieldRule_EveryVaryingFieldNeedsAField" xml:space="preserve">
+    <value>Every varying field needs a field path</value>
+  </data>
+  <data name="FieldRule_Field" xml:space="preserve">
+    <value>Field {0}: {1}</value>
+    <comment>{0}: path, {1}: problem.Replace("\"", "")</comment>
+  </data>
+  <data name="FieldRule_FieldListAtLeastOneAllowed" xml:space="preserve">
+    <value>Field {0}: list at least one allowed value</value>
+    <comment>{0}: path</comment>
+  </data>
+  <data name="FieldRule_FieldTheMustBeANumber" xml:space="preserve">
+    <value>Field {0}: the {1} must be a number</value>
+    <comment>{0}: path, {1}: name</comment>
+  </data>
+  <data name="FieldRule_FieldTheMustBeAWhole" xml:space="preserve">
+    <value>Field {0}: the {1} must be a whole number</value>
+    <comment>{0}: path, {1}: name</comment>
+  </data>
+  <data name="FieldRule_FieldTheValueIsNotValid" xml:space="preserve">
+    <value>Field {0}: the value is not valid JSON</value>
+    <comment>{0}: path</comment>
+  </data>
+  <data name="FieldRule_FixedValue" xml:space="preserve">
+    <value>Fixed value</value>
+  </data>
+  <data name="FieldRule_FromAList" xml:space="preserve">
+    <value>From a list</value>
+  </data>
+  <data name="FieldRule_ISOTimestamp" xml:space="preserve">
+    <value>ISO timestamp</value>
+  </data>
+  <data name="FieldRule_Maximum" xml:space="preserve">
+    <value>maximum</value>
+  </data>
+  <data name="FieldRule_Minimum" xml:space="preserve">
+    <value>minimum</value>
+  </data>
+  <data name="FieldRule_Null" xml:space="preserve">
+    <value>Null</value>
+  </data>
+  <data name="FieldRule_Number" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="FieldRule_OneOfAtRandom" xml:space="preserve">
+    <value>One of, at random</value>
+  </data>
+  <data name="FieldRule_RandomInteger" xml:space="preserve">
+    <value>Random integer</value>
+  </data>
+  <data name="FieldRule_RandomNumber" xml:space="preserve">
+    <value>Random number</value>
+  </data>
+  <data name="FieldRule_Start" xml:space="preserve">
+    <value>start</value>
+  </data>
+  <data name="FieldRule_Step" xml:space="preserve">
+    <value>step</value>
+  </data>
+  <data name="FieldRule_Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="FieldRule_TrueOrFalse" xml:space="preserve">
+    <value>True or false</value>
+  </data>
+  <data name="FieldRule_UnixTimeMilliseconds" xml:space="preserve">
+    <value>Unix time (milliseconds)</value>
+  </data>
+  <data name="FieldRule_UnixTimeSeconds" xml:space="preserve">
+    <value>Unix time (seconds)</value>
+  </data>
+  <data name="FieldRule_ValuesSeparatedByCommas" xml:space="preserve">
+    <value>Values, separated by commas</value>
+  </data>
+  <data name="FolderMessageRow_GiveTheMessageAScheduleWith" xml:space="preserve">
+    <value>Give the message a schedule with Edit to switch it on</value>
+  </data>
+  <data name="FolderMessageRow_Invalid" xml:space="preserve">
+    <value>Invalid: {0}</value>
+    <comment>{0}: Message.Error</comment>
+  </data>
+  <data name="FolderMessageRow_NoSchedule" xml:space="preserve">
+    <value>No schedule</value>
+  </data>
+  <data name="FolderMessageRow_SendThisMessageOnItsSchedule" xml:space="preserve">
+    <value>Send this message on its schedule</value>
+  </data>
+  <data name="FolderMessageRow_ThisMessageCannotBeSent" xml:space="preserve">
+    <value>This message cannot be sent</value>
+  </data>
+  <data name="FolderMessageRow_WaitingForConnection" xml:space="preserve">
+    <value>Waiting for connection</value>
+  </data>
+  <data name="FolderMessageState_Finished" xml:space="preserve">
+    <value>Finished</value>
+  </data>
+  <data name="FolderMessageState_Invalid" xml:space="preserve">
+    <value>Invalid</value>
+  </data>
+  <data name="FolderMessageState_Manual" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="FolderMessageState_Missed" xml:space="preserve">
+    <value>Missed</value>
+  </data>
+  <data name="FolderMessageState_Off" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="FolderMessageState_Scheduled" xml:space="preserve">
+    <value>Scheduled</value>
+  </data>
+  <data name="FolderMessageState_Waiting" xml:space="preserve">
+    <value>Waiting</value>
+  </data>
+  <data name="FolderPublisher_NoConnection" xml:space="preserve">
+    <value>No connection</value>
+  </data>
+  <data name="FolderPublisher_Sent" xml:space="preserve">
+    <value>Sent</value>
+  </data>
+  <data name="FolderPublisher_Skipped" xml:space="preserve">
+    <value>Skipped</value>
+  </data>
+  <data name="FolderPublisher_TheFolderCannotBeRead" xml:space="preserve">
+    <value>The folder cannot be read: {0}</value>
+    <comment>{0}: e.Message</comment>
+  </data>
+  <data name="FolderPublisher_TheFolderDoesNotExist" xml:space="preserve">
+    <value>The folder does not exist</value>
+  </data>
+  <data name="FolderPublisher_Topic" xml:space="preserve">
+    <value>Topic {0}: {1}</value>
+    <comment>{0}: topic, {1}: topicError</comment>
+  </data>
+  <data name="FolderPublisher_UnknownError" xml:space="preserve">
+    <value>Unknown error</value>
+  </data>
+  <data name="FolderScanner_CannotBeATopicFieldName" xml:space="preserve">
+    <value>"{0}" cannot be a topic field name; use letters, digits, _, - and .</value>
+    <comment>{0}: badName.Path</comment>
+  </data>
+  <data name="FolderScanner_CannotBeRead" xml:space="preserve">
+    <value>Cannot be read: {0}</value>
+    <comment>{0}: e.Message</comment>
+  </data>
+  <data name="FolderScanner_NotInsideATopicFolderAnd" xml:space="preserve">
+    <value>Not inside a topic folder, and the settings set no topic</value>
+  </data>
+  <data name="FolderScanner_NotValidJSON" xml:space="preserve">
+    <value>Not valid JSON</value>
+  </data>
+  <data name="FolderScanner_SettingsFileCannotBeRead" xml:space="preserve">
+    <value>Settings file cannot be read: {0}</value>
+    <comment>{0}: e.Message</comment>
+  </data>
+  <data name="FolderScanner_SettingsFileIsNotValid" xml:space="preserve">
+    <value>Settings file is not valid: {0}</value>
+    <comment>{0}: e.Message</comment>
+  </data>
+  <data name="FolderScanner_SettingsNameAFieldThatIs" xml:space="preserve">
+    <value>Settings name a field that is not in the body: {0}</value>
+    <comment>{0}: missing</comment>
+  </data>
+  <data name="FolderScanner_TheFileHoldsNoJSONValue" xml:space="preserve">
+    <value>The file holds no JSON value</value>
+  </data>
+  <data name="InboxAlertsPanel_Alerts" xml:space="preserve">
+    <value>Alerts</value>
+  </data>
+  <data name="InboxAlertsPanel_Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="InboxAlertsPanel_ClearThisListOnThisComputer" xml:space="preserve">
+    <value>Clear this list on this computer</value>
+  </data>
+  <data name="InboxAlertsPanel_NoAlerts" xml:space="preserve">
+    <value>No alerts</value>
+  </data>
+  <data name="InboxAlertsPanel_Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="InboxAlertsPanel_SendAnAlertToEveryone" xml:space="preserve">
+    <value>Send an alert to everyone</value>
+  </data>
+  <data name="InboxAlertsPanel_ShowOnlyOneLevel" xml:space="preserve">
+    <value>Show only one level</value>
+  </data>
+  <data name="InboxAlertsPanel_TheLevelOfTheAlert" xml:space="preserve">
+    <value>The level of the alert</value>
+  </data>
+  <data name="InboxConnectionBar_Connect" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="InboxConnectionBar_Server" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="InboxConnectionBar_SetUpTheServerUnderSettings" xml:space="preserve">
+    <value>Set up the server under Settings / Alerts and Messages</value>
+  </data>
+  <data name="InboxMessagesPanel_AnswerThisPersonOnly" xml:space="preserve">
+    <value>Answer this person only</value>
+  </data>
+  <data name="InboxMessagesPanel_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="InboxMessagesPanel_Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="InboxMessagesPanel_ClearThisListOnThisComputer" xml:space="preserve">
+    <value>Clear this list on this computer. Nothing changes for anyone else.</value>
+  </data>
+  <data name="InboxMessagesPanel_Messages" xml:space="preserve">
+    <value>Messages</value>
+  </data>
+  <data name="InboxMessagesPanel_NoMessagesYet" xml:space="preserve">
+    <value>No messages yet</value>
+  </data>
+  <data name="InboxMessagesPanel_Reply" xml:space="preserve">
+    <value>Reply</value>
+  </data>
+  <data name="InboxMessagesPanel_Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="InboxMessagesPanel_ToEveryoneOrNameForOne" xml:space="preserve">
+    <value>To everyone, or @name for one person</value>
+  </data>
+  <data name="Inbox_Alerts" xml:space="preserve">
+    <value>Alerts</value>
+  </data>
+  <data name="Inbox_AlertsUnread" xml:space="preserve">
+    <value>Alerts: {0} unread</value>
+    <comment>{0}: UnreadAlerts</comment>
+  </data>
+  <data name="Inbox_AllLevels" xml:space="preserve">
+    <value>All levels</value>
+  </data>
+  <data name="Inbox_ChooseADisplayNameUnderSettings" xml:space="preserve">
+    <value>Choose a display name under Settings / Alerts and Messages first, so that they can answer</value>
+  </data>
+  <data name="Inbox_IsNotANameSoThis" xml:space="preserve">
+    <value>@{0} is not a name, so this was not sent</value>
+    <comment>{0}: name</comment>
+  </data>
+  <data name="Inbox_Messages" xml:space="preserve">
+    <value>Messages</value>
+  </data>
+  <data name="Inbox_MessagesUnread" xml:space="preserve">
+    <value>Messages: {0} unread</value>
+    <comment>{0}: UnreadMessages</comment>
+  </data>
+  <data name="Inbox_NobodyCalledHasBeenSeenOn" xml:space="preserve">
+    <value>Nobody called @{0} has been seen on this server, so this was not sent</value>
+    <comment>{0}: name</comment>
+  </data>
+  <data name="Inbox_ReplyingTo" xml:space="preserve">
+    <value>Replying to @{0}: {1}</value>
+    <comment>{0}: row.Name, {1}: Clip(row.Text)</comment>
+  </data>
+  <data name="Inbox_TheAlertCouldNotBeSent" xml:space="preserve">
+    <value>The alert could not be sent</value>
+  </data>
+  <data name="Inbox_TheMessageCouldNotBeSent" xml:space="preserve">
+    <value>The message could not be sent</value>
+  </data>
+  <data name="Inbox_WriteSomethingAfter" xml:space="preserve">
+    <value>Write something after @{0}</value>
+    <comment>{0}: name</comment>
+  </data>
+  <data name="MessageGroup_1Message" xml:space="preserve">
+    <value>1 message</value>
+  </data>
+  <data name="MessageGroup_Messages" xml:space="preserve">
+    <value>{0} messages</value>
+    <comment>{0}: rows.Count</comment>
+  </data>
+  <data name="MessageGroup_On" xml:space="preserve">
+    <value>{0}, {1} on</value>
+    <comment>{0}: count, {1}: on</comment>
+  </data>
+  <data name="MessageGroup_Ungrouped" xml:space="preserve">
+    <value>Ungrouped</value>
+  </data>
+  <data name="MessageSchedule_DailyAt" xml:space="preserve">
+    <value>Daily at {0}, {1}</value>
+    <comment>{0}: times, {1}: DescribeDays()</comment>
+  </data>
+  <data name="MessageSchedule_Every" xml:space="preserve">
+    <value>Every {0}</value>
+    <comment>{0}: unit.TrimEnd('s')</comment>
+  </data>
+  <data name="MessageSchedule_Every2" xml:space="preserve">
+    <value>Every {0} {1}</value>
+    <comment>{0}: Every, {1}: unit</comment>
+  </data>
+  <data name="MessageSchedule_EveryDay" xml:space="preserve">
+    <value>every day</value>
+  </data>
+  <data name="MessageSchedule_Manual" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="MessageSchedule_MonFri" xml:space="preserve">
+    <value>Mon–Fri</value>
+  </data>
+  <data name="MessageSchedule_OnceAt" xml:space="preserve">
+    <value>Once at {0:yyyy-MM-dd HH:mm:ss}</value>
+    <comment>{0}: At</comment>
+  </data>
+  <data name="MessageSchedule_Times" xml:space="preserve">
+    <value>{0}, {1} times</value>
+    <comment>{0}: text, {1}: max</comment>
+  </data>
+  <data name="MessageSchedule_UnitHour" xml:space="preserve">
+    <value>hour</value>
+  </data>
+  <data name="MessageSchedule_UnitHours" xml:space="preserve">
+    <value>hours</value>
+  </data>
+  <data name="MessageSchedule_UnitMinute" xml:space="preserve">
+    <value>minute</value>
+  </data>
+  <data name="MessageSchedule_UnitMinutes" xml:space="preserve">
+    <value>minutes</value>
+  </data>
+  <data name="MessageSchedule_UnitSecond" xml:space="preserve">
+    <value>second</value>
+  </data>
+  <data name="MessageSchedule_UnitSeconds" xml:space="preserve">
+    <value>seconds</value>
+  </data>
+  <data name="MessageSettingsWindow_AddArray" xml:space="preserve">
+    <value>Add array</value>
+  </data>
+  <data name="MessageSettingsWindow_AddField" xml:space="preserve">
+    <value>Add field</value>
+  </data>
+  <data name="MessageSettingsWindow_AddTopicField" xml:space="preserve">
+    <value>Add topic field</value>
+  </data>
+  <data name="MessageSettingsWindow_Array" xml:space="preserve">
+    <value>Array</value>
+  </data>
+  <data name="MessageSettingsWindow_ArraySizes" xml:space="preserve">
+    <value>Array sizes</value>
+  </data>
+  <data name="MessageSettingsWindow_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="MessageSettingsWindow_CompressTheBodyWithGzipBefore" xml:space="preserve">
+    <value>Compress the body with gzip before it is sent</value>
+  </data>
+  <data name="MessageSettingsWindow_DateAndTimeLocal" xml:space="preserve">
+    <value>Date and time (local)</value>
+  </data>
+  <data name="MessageSettingsWindow_DatesAndTimesAreLocalWritten" xml:space="preserve">
+    <value>Dates and times are local, written like 2026-11-02 08:30:00.</value>
+  </data>
+  <data name="MessageSettingsWindow_Decimals" xml:space="preserve">
+    <value>Decimals</value>
+  </data>
+  <data name="MessageSettingsWindow_Delivery" xml:space="preserve">
+    <value>Delivery</value>
+  </data>
+  <data name="MessageSettingsWindow_EndOptional" xml:space="preserve">
+    <value>End (optional)</value>
+  </data>
+  <data name="MessageSettingsWindow_Every" xml:space="preserve">
+    <value>Every</value>
+  </data>
+  <data name="MessageSettingsWindow_Field" xml:space="preserve">
+    <value>Field</value>
+  </data>
+  <data name="MessageSettingsWindow_FieldsOfTheBodyThatGet" xml:space="preserve">
+    <value>Fields of the body that get a new value on every send, or a fixed value of your choosing. Name a field by its path, such as ts or sensor.value. Use [*] for every item of an array, as in readings[*].ts.</value>
+  </data>
+  <data name="MessageSettingsWindow_Fixed" xml:space="preserve">
+    <value>Fixed</value>
+  </data>
+  <data name="MessageSettingsWindow_Fri" xml:space="preserve">
+    <value>Fri</value>
+  </data>
+  <data name="MessageSettingsWindow_GroupOptional" xml:space="preserve">
+    <value>Group (optional)</value>
+  </data>
+  <data name="MessageSettingsWindow_Gzip" xml:space="preserve">
+    <value>Gzip</value>
+  </data>
+  <data name="MessageSettingsWindow_Hours" xml:space="preserve">
+    <value>Hours</value>
+  </data>
+  <data name="MessageSettingsWindow_Items" xml:space="preserve">
+    <value>Items</value>
+  </data>
+  <data name="MessageSettingsWindow_LeaveEmptyToSendToThe" xml:space="preserve">
+    <value>Leave empty to send to the folder path. Write {folder} for the folder path, and {name} for a part that changes on every send, then add a topic field called name below.</value>
+  </data>
+  <data name="MessageSettingsWindow_ManualOnlyWhenIPressSend" xml:space="preserve">
+    <value>Manual: only when I press Send now</value>
+  </data>
+  <data name="MessageSettingsWindow_Maximum" xml:space="preserve">
+    <value>Maximum</value>
+  </data>
+  <data name="MessageSettingsWindow_MaximumSendsOptional" xml:space="preserve">
+    <value>Maximum sends (optional)</value>
+  </data>
+  <data name="MessageSettingsWindow_MessageSettings" xml:space="preserve">
+    <value>Message settings</value>
+  </data>
+  <data name="MessageSettingsWindow_Minimum" xml:space="preserve">
+    <value>Minimum</value>
+  </data>
+  <data name="MessageSettingsWindow_Minutes" xml:space="preserve">
+    <value>Minutes</value>
+  </data>
+  <data name="MessageSettingsWindow_Mon" xml:space="preserve">
+    <value>Mon</value>
+  </data>
+  <data name="MessageSettingsWindow_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="MessageSettingsWindow_NewValue" xml:space="preserve">
+    <value>New value</value>
+  </data>
+  <data name="MessageSettingsWindow_NoArraySizesArraysAreSent" xml:space="preserve">
+    <value>No array sizes: arrays are sent with the items in the file.</value>
+  </data>
+  <data name="MessageSettingsWindow_NoEnd" xml:space="preserve">
+    <value>No end</value>
+  </data>
+  <data name="MessageSettingsWindow_NoLimit" xml:space="preserve">
+    <value>No limit</value>
+  </data>
+  <data name="MessageSettingsWindow_NoTopicFieldsEverySendGoes" xml:space="preserve">
+    <value>No topic fields: every send goes to the same topic.</value>
+  </data>
+  <data name="MessageSettingsWindow_NoVaryingFields" xml:space="preserve">
+    <value>No varying fields.</value>
+  </data>
+  <data name="MessageSettingsWindow_OnceAtADateAndTime" xml:space="preserve">
+    <value>Once: at a date and time</value>
+  </data>
+  <data name="MessageSettingsWindow_OpenClosed42" xml:space="preserve">
+    <value>open, closed, 42</value>
+  </data>
+  <data name="MessageSettingsWindow_PartsOfTheTopicWrittenAs" xml:space="preserve">
+    <value>Parts of the topic, written as {name}, that get a new value on every send. Each in turn sends to every value in the list one after the other.</value>
+  </data>
+  <data name="MessageSettingsWindow_PlantLine1MakesLine1" xml:space="preserve">
+    <value>Plant/Line 1 makes Line 1 a sub-group of Plant</value>
+  </data>
+  <data name="MessageSettingsWindow_Preview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="MessageSettingsWindow_QoS" xml:space="preserve">
+    <value>QoS</value>
+  </data>
+  <data name="MessageSettingsWindow_RecurringAtAFixedInterval" xml:space="preserve">
+    <value>Recurring: at a fixed interval</value>
+  </data>
+  <data name="MessageSettingsWindow_RecurringDailyAtSetTimes" xml:space="preserve">
+    <value>Recurring: daily at set times</value>
+  </data>
+  <data name="MessageSettingsWindow_Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="MessageSettingsWindow_Retain" xml:space="preserve">
+    <value>Retain</value>
+  </data>
+  <data name="MessageSettingsWindow_Sat" xml:space="preserve">
+    <value>Sat</value>
+  </data>
+  <data name="MessageSettingsWindow_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="MessageSettingsWindow_Schedule" xml:space="preserve">
+    <value>Schedule</value>
+  </data>
+  <data name="MessageSettingsWindow_Seconds" xml:space="preserve">
+    <value>Seconds</value>
+  </data>
+  <data name="MessageSettingsWindow_SendAnArrayWithASet" xml:space="preserve">
+    <value>Send an array with a set number of items. The items in the file are repeated in turn to fill it. Give a largest number too for a random size on every send.</value>
+  </data>
+  <data name="MessageSettingsWindow_SentOnItsScheduleWhileThe" xml:space="preserve">
+    <value>Sent on its schedule while the broker is connected. The same as the switch in the list.</value>
+  </data>
+  <data name="MessageSettingsWindow_Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="MessageSettingsWindow_StartOptional" xml:space="preserve">
+    <value>Start (optional)</value>
+  </data>
+  <data name="MessageSettingsWindow_Step" xml:space="preserve">
+    <value>Step</value>
+  </data>
+  <data name="MessageSettingsWindow_Sun" xml:space="preserve">
+    <value>Sun</value>
+  </data>
+  <data name="MessageSettingsWindow_SwitchedOn" xml:space="preserve">
+    <value>Switched on</value>
+  </data>
+  <data name="MessageSettingsWindow_TheTopicAndBodyAsThey" xml:space="preserve">
+    <value>The topic and body as they would be sent now.</value>
+  </data>
+  <data name="MessageSettingsWindow_Thu" xml:space="preserve">
+    <value>Thu</value>
+  </data>
+  <data name="MessageSettingsWindow_TimesOfDaySeparatedByCommas" xml:space="preserve">
+    <value>Times of day, separated by commas</value>
+  </data>
+  <data name="MessageSettingsWindow_TopicFields" xml:space="preserve">
+    <value>Topic fields</value>
+  </data>
+  <data name="MessageSettingsWindow_TopicOptional" xml:space="preserve">
+    <value>Topic (optional)</value>
+  </data>
+  <data name="MessageSettingsWindow_Tue" xml:space="preserve">
+    <value>Tue</value>
+  </data>
+  <data name="MessageSettingsWindow_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="MessageSettingsWindow_Unit" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="MessageSettingsWindow_UpToOptional" xml:space="preserve">
+    <value>Up to (optional)</value>
+  </data>
+  <data name="MessageSettingsWindow_Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="MessageSettingsWindow_VaryingFields" xml:space="preserve">
+    <value>Varying fields</value>
+  </data>
+  <data name="MessageSettingsWindow_Wed" xml:space="preserve">
+    <value>Wed</value>
+  </data>
+  <data name="MessageSettingsWindow_WhenTheRunStarts" xml:space="preserve">
+    <value>When the run starts</value>
+  </data>
+  <data name="MessageSettingsWindow_WhenToSend" xml:space="preserve">
+    <value>When to send</value>
+  </data>
+  <data name="MessageSettings_ADailyScheduleNeedsAtLeast" xml:space="preserve">
+    <value>a "daily" schedule needs at least one time</value>
+  </data>
+  <data name="MessageSettings_ADailyScheduleNeedsAtLeastOne" xml:space="preserve">
+    <value>a "daily" schedule needs at least one day</value>
+  </data>
+  <data name="MessageSettings_AOnceScheduleNeedsAt" xml:space="preserve">
+    <value>a "once" schedule needs "at"</value>
+  </data>
+  <data name="MessageSettings_AnIntervalScheduleNeedsEvery" xml:space="preserve">
+    <value>an "interval" schedule needs "every"</value>
+  </data>
+  <data name="MessageSettings_Array" xml:space="preserve">
+    <value>array "{0}": {1}</value>
+    <comment>{0}: path, {1}: problem</comment>
+  </data>
+  <data name="MessageSettings_ArrayIsListedMoreThanOnce" xml:space="preserve">
+    <value>Array {0} is listed more than once</value>
+    <comment>{0}: repeated.Key</comment>
+  </data>
+  <data name="MessageSettings_ArrayMustBeAnObjectWith" xml:space="preserve">
+    <value>array "{0}" must be an object with "count", or "min" and "max"</value>
+    <comment>{0}: path</comment>
+  </data>
+  <data name="MessageSettings_ArrayNeedsCountOrMinAnd" xml:space="preserve">
+    <value>array "{0}" needs "count", or "min" and "max"</value>
+    <comment>{0}: path</comment>
+  </data>
+  <data name="MessageSettings_ArraysMustBeAnObject" xml:space="preserve">
+    <value>"arrays" must be an object</value>
+  </data>
+  <data name="MessageSettings_CannotBeATopicFieldName" xml:space="preserve">
+    <value>{0} cannot be a topic field name; use letters, digits, _, - and .</value>
+    <comment>{0}: badName.Path</comment>
+  </data>
+  <data name="MessageSettings_ChooseAtLeastOneDay" xml:space="preserve">
+    <value>Choose at least one day</value>
+  </data>
+  <data name="MessageSettings_DateAndTime" xml:space="preserve">
+    <value>date and time</value>
+  </data>
+  <data name="MessageSettings_DecimalsMustBeFrom0To" xml:space="preserve">
+    <value>"decimals" must be from 0 to 15</value>
+  </data>
+  <data name="MessageSettings_End" xml:space="preserve">
+    <value>end</value>
+  </data>
+  <data name="MessageSettings_EnterAtLeastOneTimeOf" xml:space="preserve">
+    <value>Enter at least one time of day, for example 08:00, 12:30</value>
+  </data>
+  <data name="MessageSettings_EnterTheDateAndTimeTo" xml:space="preserve">
+    <value>Enter the date and time to send at, for example {0}</value>
+    <comment>{0}: DateExample</comment>
+  </data>
+  <data name="MessageSettings_EveryMustBe1OrMore" xml:space="preserve">
+    <value>"every" must be 1 or more</value>
+  </data>
+  <data name="MessageSettings_Field" xml:space="preserve">
+    <value>field</value>
+  </data>
+  <data name="MessageSettings_FieldIsListedMoreThanOnce" xml:space="preserve">
+    <value>Field {0} is listed more than once</value>
+    <comment>{0}: duplicate.Key</comment>
+  </data>
+  <data name="MessageSettings_FieldIsNotInTheMessage" xml:space="preserve">
+    <value>Field {0} is not in the message body</value>
+    <comment>{0}: missing</comment>
+  </data>
+  <data name="MessageSettings_IsNotADateAndTime" xml:space="preserve">
+    <value>"{0}" is not a date and time such as 2026-11-02T08:30:00</value>
+    <comment>{0}: text</comment>
+  </data>
+  <data name="MessageSettings_IsNotADaySuchAs" xml:space="preserve">
+    <value>"{0}" is not a day such as mon</value>
+    <comment>{0}: d</comment>
+  </data>
+  <data name="MessageSettings_IsNotATimeOfDay" xml:space="preserve">
+    <value>"{0}" is not a time of day such as 08:30</value>
+    <comment>{0}: t</comment>
+  </data>
+  <data name="MessageSettings_IsNotATimeOfDaySuch" xml:space="preserve">
+    <value>{0} is not a time of day such as 08:30</value>
+    <comment>{0}: t</comment>
+  </data>
+  <data name="MessageSettings_IsNotAValid" xml:space="preserve">
+    <value>"{0}" is not a valid "{1}"</value>
+    <comment>{0}: text, {1}: key</comment>
+  </data>
+  <data name="MessageSettings_ItIsNotValidJSONOr" xml:space="preserve">
+    <value>it is not valid JSON or a value has the wrong type</value>
+  </data>
+  <data name="MessageSettings_ItMustBeAJSONObject" xml:space="preserve">
+    <value>it must be a JSON object</value>
+  </data>
+  <data name="MessageSettings_MaxSendsMustBe1OrMore" xml:space="preserve">
+    <value>"maxSends" must be 1 or more</value>
+  </data>
+  <data name="MessageSettings_MinMustNotBeGreaterThan" xml:space="preserve">
+    <value>"min" must not be greater than "max"</value>
+  </data>
+  <data name="MessageSettings_MustBeAnObject" xml:space="preserve">
+    <value>"{0}" must be an object</value>
+    <comment>{0}: key</comment>
+  </data>
+  <data name="MessageSettings_MustBeAnObjectWithA" xml:space="preserve">
+    <value>{0} "{1}" must be an object with a "type"</value>
+    <comment>{0}: label, {1}: path</comment>
+  </data>
+  <data name="MessageSettings_NeedsAType" xml:space="preserve">
+    <value>{0} "{1}" needs a "type"</value>
+    <comment>{0}: label, {1}: path</comment>
+  </data>
+  <data name="MessageSettings_NeedsAValue" xml:space="preserve">
+    <value>{0} "{1}" needs a "value"</value>
+    <comment>{0}: label, {1}: path</comment>
+  </data>
+  <data name="MessageSettings_QosMustBe01Or" xml:space="preserve">
+    <value>"qos" must be 0, 1 or 2</value>
+  </data>
+  <data name="MessageSettings_RequiredTheFileIsNotInside" xml:space="preserve">
+    <value>Required: the file is not inside a topic folder</value>
+  </data>
+  <data name="MessageSettings_ScheduleMustBeAnObject" xml:space="preserve">
+    <value>"schedule" must be an object</value>
+  </data>
+  <data name="MessageSettings_Start" xml:space="preserve">
+    <value>start</value>
+  </data>
+  <data name="MessageSettings_TheEndMustNotBeBefore" xml:space="preserve">
+    <value>The end must not be before the start</value>
+  </data>
+  <data name="MessageSettings_TheFileIsNotInsideA" xml:space="preserve">
+    <value>The file is not inside a topic folder, so enter a topic</value>
+  </data>
+  <data name="MessageSettings_TheFolderPath" xml:space="preserve">
+    <value>{0} (the folder path)</value>
+    <comment>{0}: _message.Folder</comment>
+  </data>
+  <data name="MessageSettings_TheIntervalMustBeAWhole" xml:space="preserve">
+    <value>The interval must be a whole number, 1 or more</value>
+  </data>
+  <data name="MessageSettings_TheIsNotADateAnd" xml:space="preserve">
+    <value>The {0} is not a date and time such as {1}</value>
+    <comment>{0}: name, {1}: DateExample</comment>
+  </data>
+  <data name="MessageSettings_TheMaximumNumberOfSendsMust" xml:space="preserve">
+    <value>The maximum number of sends must be a whole number, 1 or more</value>
+  </data>
+  <data name="MessageSettings_TheNumberOfItemsMustNot" xml:space="preserve">
+    <value>the number of items must not be negative</value>
+  </data>
+  <data name="MessageSettings_TheNumberOfItemsMustNotBe" xml:space="preserve">
+    <value>the number of items must not be more than {0:N0}</value>
+    <comment>{0}: ArrayRule.Limit</comment>
+  </data>
+  <data name="MessageSettings_TopicField" xml:space="preserve">
+    <value>topic field</value>
+  </data>
+  <data name="MessageSettings_TopicFieldIsListedMoreThan" xml:space="preserve">
+    <value>Topic field {0} is listed more than once</value>
+    <comment>{0}: twice.Key</comment>
+  </data>
+  <data name="MessageSettings_ValueMustBeOneOfValues" xml:space="preserve">
+    <value>"value" must be one of "values"</value>
+  </data>
+  <data name="MessageSettings_ValuesMustListAtLeastOne" xml:space="preserve">
+    <value>"values" must list at least one value</value>
+  </data>
+  <data name="MessagingSettings_TheNameMayUseLowercaseLetters" xml:space="preserve">
+    <value>The name may use lowercase letters, digits, _ and -, with no spaces</value>
+  </data>
+  <data name="MessagingSettings_TheNameMustBeAtMost" xml:space="preserve">
+    <value>The name must be at most {0} characters</value>
+    <comment>{0}: MaxDisplayNameLength</comment>
+  </data>
+  <data name="MessagingView_ChangeTheServerLoginAndCertificates" xml:space="preserve">
+    <value>Change the server, login and certificates. Disconnect first.</value>
+  </data>
+  <data name="MessagingView_ChooseAPicture" xml:space="preserve">
+    <value>Choose a picture</value>
+  </data>
+  <data name="MessagingView_ChoosePicture" xml:space="preserve">
+    <value>Choose picture</value>
+  </data>
+  <data name="MessagingView_ClientID" xml:space="preserve">
+    <value>Client ID</value>
+  </data>
+  <data name="MessagingView_Connect" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="MessagingView_ConnectToThisServerWhenJoktan" xml:space="preserve">
+    <value>Connect to this server when Joktan starts</value>
+  </data>
+  <data name="MessagingView_ConnectWhenJoktanStarts" xml:space="preserve">
+    <value>Connect when Joktan starts</value>
+  </data>
+  <data name="MessagingView_DisplayName" xml:space="preserve">
+    <value>Display name</value>
+  </data>
+  <data name="MessagingView_EditServer" xml:space="preserve">
+    <value>Edit server</value>
+  </data>
+  <data name="MessagingView_GivesTheServerATabOf" xml:space="preserve">
+    <value>Gives the server a tab of its own on the MQTT and Topic Explorer pages, to see and send what goes through it.</value>
+  </data>
+  <data name="MessagingView_ItTriesAgainUpTo3" xml:space="preserve">
+    <value>It tries again up to 3 times if it cannot connect. Alerts and messages only arrive while connected; those sent at any other time are not received.</value>
+  </data>
+  <data name="MessagingView_KeepsASmallSquareCopyCut" xml:space="preserve">
+    <value>Keeps a small square copy, cut from the middle of the picture. The file you choose is left as it is.</value>
+  </data>
+  <data name="MessagingView_Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="MessagingView_OthersWriteToYouWithAnd" xml:space="preserve">
+    <value>Others write to you with @ and this name. Lowercase letters, digits, _ and -, with no spaces, and at most 15 characters.</value>
+  </data>
+  <data name="MessagingView_Pictures" xml:space="preserve">
+    <value>Pictures</value>
+  </data>
+  <data name="MessagingView_RemovePicture" xml:space="preserve">
+    <value>Remove picture</value>
+  </data>
+  <data name="MessagingView_Security" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="MessagingView_Server" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="MessagingView_ShowThisServerOnTheMQTT" xml:space="preserve">
+    <value>Show this server on the MQTT and Topic Explorer pages</value>
+  </data>
+  <data name="MessagingView_ShowUnderDevToolsBrokers" xml:space="preserve">
+    <value>Show under Dev Tools / Brokers</value>
+  </data>
+  <data name="MessagingView_TheMQTTServerThatAlertsAnd" xml:space="preserve">
+    <value>The MQTT server that alerts and messages go through. It is set up like a client on the MQTT page, but is kept apart from them.</value>
+  </data>
+  <data name="MessagingView_TheNameAndPictureForYour" xml:space="preserve">
+    <value>The name and picture for your messages.</value>
+  </data>
+  <data name="MessagingView_TopicPrefix" xml:space="preserve">
+    <value>Topic prefix</value>
+  </data>
+  <data name="MessagingView_WhatTheTopicsOfAlertsAnd" xml:space="preserve">
+    <value>What the topics of alerts and messages start with. Everyone with the same prefix on this server shares them.</value>
+  </data>
+  <data name="MessagingView_You" xml:space="preserve">
+    <value>You</value>
+  </data>
+  <data name="MessagingWire_Alert" xml:space="preserve">
+    <value>Alert</value>
+  </data>
+  <data name="Messaging_AlertsAndMessages" xml:space="preserve">
+    <value>Alerts and Messages</value>
+  </data>
+  <data name="Messaging_CouldNotRemoveThePicture" xml:space="preserve">
+    <value>Could not remove the picture: {0}</value>
+    <comment>{0}: e.Message</comment>
+  </data>
+  <data name="Messaging_CouldNotUse" xml:space="preserve">
+    <value>Could not use {0}: {1}</value>
+    <comment>{0}: Path.GetFileName(path), {1}: e.Message</comment>
+  </data>
+  <data name="Messaging_EnterWhatTheTopicsStartWith" xml:space="preserve">
+    <value>Enter what the topics start with, for example joktan</value>
+  </data>
+  <data name="Messaging_IsNotAPictureThatCan" xml:space="preserve">
+    <value>{0} is not a picture that can be read</value>
+    <comment>{0}: Path.GetFileName(path)</comment>
+  </data>
+  <data name="Messaging_SettingsAlertsAndMessages" xml:space="preserve">
+    <value>Settings / Alerts and Messages</value>
+  </data>
+  <data name="Messaging_SomeoneElseOnThisServerIs" xml:space="preserve">
+    <value>Someone else on this server is called {0}. Messages to @{1} would reach you both.</value>
+    <comment>{0}: DisplayName.Trim(), {1}: DisplayName.Trim()</comment>
+  </data>
+  <data name="MqttClientView_Activity" xml:space="preserve">
+    <value>Activity</value>
+  </data>
+  <data name="MqttClientView_Body" xml:space="preserve">
+    <value>Body</value>
+  </data>
+  <data name="MqttClientView_BodyThatWasSentBeforeAny" xml:space="preserve">
+    <value>Body that was sent, before any gzipping</value>
+  </data>
+  <data name="MqttClientView_Broker" xml:space="preserve">
+    <value>Broker</value>
+  </data>
+  <data name="MqttClientView_ChangeTheBrokerLoginAndCertificates" xml:space="preserve">
+    <value>Change the broker, login and certificates. Disconnect first.</value>
+  </data>
+  <data name="MqttClientView_ChooseFolder" xml:space="preserve">
+    <value>Choose folder</value>
+  </data>
+  <data name="MqttClientView_ChooseTheFolderThatHoldsThe" xml:space="preserve">
+    <value>Choose the folder that holds the messages</value>
+  </data>
+  <data name="MqttClientView_Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="MqttClientView_ClientID" xml:space="preserve">
+    <value>Client ID</value>
+  </data>
+  <data name="MqttClientView_CompressTheBodyWithGzipBefore" xml:space="preserve">
+    <value>Compress the body with gzip before it is sent</value>
+  </data>
+  <data name="MqttClientView_Connect" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="MqttClientView_Detail" xml:space="preserve">
+    <value>Detail</value>
+  </data>
+  <data name="MqttClientView_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="MqttClientView_EditClient" xml:space="preserve">
+    <value>Edit client</value>
+  </data>
+  <data name="MqttClientView_Event" xml:space="preserve">
+    <value>Event</value>
+  </data>
+  <data name="MqttClientView_EveryJsonFileBelowTheFolder" xml:space="preserve">
+    <value>Every .json file below the folder is a message. The folder path is the topic, unless its settings give another, and the file is the body. A message that is switched on is sent on its schedule while this client is connected.</value>
+  </data>
+  <data name="MqttClientView_File" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="MqttClientView_FolderMessages" xml:space="preserve">
+    <value>Folder messages</value>
+  </data>
+  <data name="MqttClientView_Gzip" xml:space="preserve">
+    <value>Gzip</value>
+  </data>
+  <data name="MqttClientView_LastSent" xml:space="preserve">
+    <value>Last sent</value>
+  </data>
+  <data name="MqttClientView_Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="MqttClientView_ManualMessage" xml:space="preserve">
+    <value>Manual message</value>
+  </data>
+  <data name="MqttClientView_NextSend" xml:space="preserve">
+    <value>Next send</value>
+  </data>
+  <data name="MqttClientView_NothingHasHappenedYet" xml:space="preserve">
+    <value>Nothing has happened yet.</value>
+  </data>
+  <data name="MqttClientView_On" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="MqttClientView_QoS" xml:space="preserve">
+    <value>QoS</value>
+  </data>
+  <data name="MqttClientView_RemoveClient" xml:space="preserve">
+    <value>Remove client</value>
+  </data>
+  <data name="MqttClientView_RemoveThisClientAndItsTab" xml:space="preserve">
+    <value>Remove this client and its tab. Disconnect first. The last client and the alerts and messages server cannot be removed.</value>
+  </data>
+  <data name="MqttClientView_Rescan" xml:space="preserve">
+    <value>Rescan</value>
+  </data>
+  <data name="MqttClientView_Retain" xml:space="preserve">
+    <value>Retain</value>
+  </data>
+  <data name="MqttClientView_Schedule" xml:space="preserve">
+    <value>Schedule</value>
+  </data>
+  <data name="MqttClientView_Security" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="MqttClientView_Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="MqttClientView_SendNow" xml:space="preserve">
+    <value>Send now</value>
+  </data>
+  <data name="MqttClientView_SendOneMessageTypedInBy" xml:space="preserve">
+    <value>Send one message typed in by hand.</value>
+  </data>
+  <data name="MqttClientView_Sent" xml:space="preserve">
+    <value>Sent</value>
+  </data>
+  <data name="MqttClientView_ShowOrHideTheActivityIt" xml:space="preserve">
+    <value>Show or hide the activity. It keeps being recorded.</value>
+  </data>
+  <data name="MqttClientView_ShowOrHideTheBrokerS" xml:space="preserve">
+    <value>Show or hide the broker's details. Its state and Connect stay.</value>
+  </data>
+  <data name="MqttClientView_ShowOrHideTheManualMessage" xml:space="preserve">
+    <value>Show or hide the manual message</value>
+  </data>
+  <data name="MqttClientView_ShowOrHideTheMessagesThose" xml:space="preserve">
+    <value>Show or hide the messages. Those switched on keep being sent.</value>
+  </data>
+  <data name="MqttClientView_Source" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="MqttClientView_State" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="MqttClientView_SwitchEveryMessageInThisGroup" xml:space="preserve">
+    <value>Switch every message in this group and its sub-groups on or off</value>
+  </data>
+  <data name="MqttClientView_TheMostRecent500EventsFrom" xml:space="preserve">
+    <value>The most recent 500 events from this session, newest first.</value>
+  </data>
+  <data name="MqttClientView_Time" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="MqttClientView_Topic" xml:space="preserve">
+    <value>Topic</value>
+  </data>
+  <data name="MqttClientView_WhereThisClientConnectsToEverything" xml:space="preserve">
+    <value>Where this client connects to. Everything on this tab is sent through it.</value>
+  </data>
+  <data name="MqttClient_Anonymous" xml:space="preserve">
+    <value>Anonymous</value>
+  </data>
+  <data name="MqttClient_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="MqttClient_ClientCertificate" xml:space="preserve">
+    <value>Client certificate {0}. </value>
+    <comment>{0}: Path.GetFileName(Profile.ClientCertificate.Trim())</comment>
+  </data>
+  <data name="MqttClient_Connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="MqttClient_Disconnect" xml:space="preserve">
+    <value>Disconnect</value>
+  </data>
+  <data name="MqttClient_Disconnected" xml:space="preserve">
+    <value>Disconnected</value>
+  </data>
+  <data name="MqttClient_Invalid" xml:space="preserve">
+    <value>, {0} invalid</value>
+    <comment>{0}: invalid</comment>
+  </data>
+  <data name="MqttClient_Manual" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="MqttClient_MessagesSwitchedOn" xml:space="preserve">
+    <value>{0} messages, {1} switched on</value>
+    <comment>{0}: Rows.Count, {1}: on</comment>
+  </data>
+  <data name="MqttClient_MutualTLS" xml:space="preserve">
+    <value>Mutual TLS</value>
+  </data>
+  <data name="MqttClient_NoFolderChosen" xml:space="preserve">
+    <value>No folder chosen</value>
+  </data>
+  <data name="MqttClient_NoJsonFilesFoundInThis" xml:space="preserve">
+    <value>No .json files found in this folder.</value>
+  </data>
+  <data name="MqttClient_NoTLS" xml:space="preserve">
+    <value>No TLS</value>
+  </data>
+  <data name="MqttClient_NotEncrypted" xml:space="preserve">
+    <value>Not encrypted</value>
+  </data>
+  <data name="MqttClient_ReadingTheFolder" xml:space="preserve">
+    <value>Reading the folder…</value>
+  </data>
+  <data name="MqttClient_Reconnecting" xml:space="preserve">
+    <value>Reconnecting</value>
+  </data>
+  <data name="MqttClient_Sent" xml:space="preserve">
+    <value>Sent</value>
+  </data>
+  <data name="MqttClient_SettingsNotSaved" xml:space="preserve">
+    <value>Settings not saved: {0}</value>
+    <comment>{0}: e.Message</comment>
+  </data>
+  <data name="MqttClient_TheBrokerSCertificateIsNot" xml:space="preserve">
+    <value>The broker's certificate is not checked.</value>
+  </data>
+  <data name="MqttClient_TheBrokerSCertificateMustBe" xml:space="preserve">
+    <value>The broker's certificate must be signed by {0}.</value>
+    <comment>{0}: Path.GetFileName(Profile.CaCertificate.Trim())</comment>
+  </data>
+  <data name="MqttClient_TheBrokerSCertificateMustBeTrusted" xml:space="preserve">
+    <value>The broker's certificate must be trusted by this computer.</value>
+  </data>
+  <data name="MqttClient_TheConnectionWasLost" xml:space="preserve">
+    <value>The connection was lost</value>
+  </data>
+  <data name="MqttClient_UnknownError" xml:space="preserve">
+    <value>Unknown error</value>
+  </data>
+  <data name="MqttConnection_BadUsernameOrPassword" xml:space="preserve">
+    <value>Bad username or password</value>
+  </data>
+  <data name="MqttConnection_CouldNotConnect" xml:space="preserve">
+    <value>Could not connect: {0}</value>
+    <comment>{0}: cause.Message</comment>
+  </data>
+  <data name="MqttConnection_CouldNotConnectCheckThatThe" xml:space="preserve">
+    <value>Could not connect: {0}. Check that the broker accepts the client certificate</value>
+    <comment>{0}: cause.Message</comment>
+  </data>
+  <data name="MqttConnection_ItIsNotSignedByAn" xml:space="preserve">
+    <value>it is not signed by an authority this computer trusts; choose the CA certificate that signed it</value>
+  </data>
+  <data name="MqttConnection_ItWasNotIssuedForThis" xml:space="preserve">
+    <value>it was not issued for this host name</value>
+  </data>
+  <data name="MqttConnection_NoAnswerFromTheBrokerWithin" xml:space="preserve">
+    <value>No answer from the broker within 10 seconds</value>
+  </data>
+  <data name="MqttConnection_NotAuthorized" xml:space="preserve">
+    <value>Not authorized</value>
+  </data>
+  <data name="MqttConnection_NotConnected" xml:space="preserve">
+    <value>Not connected</value>
+  </data>
+  <data name="MqttConnection_TheBrokerDoesNotSupportThis" xml:space="preserve">
+    <value>The broker does not support this MQTT version</value>
+  </data>
+  <data name="MqttConnection_TheBrokerIsUnavailable" xml:space="preserve">
+    <value>The broker is unavailable</value>
+  </data>
+  <data name="MqttConnection_TheBrokerRefusedTheConnection" xml:space="preserve">
+    <value>The broker refused the connection: {0}</value>
+    <comment>{0}: code</comment>
+  </data>
+  <data name="MqttConnection_TheBrokerRefusedTheFilter" xml:space="preserve">
+    <value>The broker refused the filter {0}</value>
+    <comment>{0}: filter</comment>
+  </data>
+  <data name="MqttConnection_TheBrokerRejectedTheClientID" xml:space="preserve">
+    <value>The broker rejected the client ID</value>
+  </data>
+  <data name="MqttConnection_TheBrokerSCertificateWasRefused" xml:space="preserve">
+    <value>The broker's certificate was refused: {0}</value>
+    <comment>{0}: rejected</comment>
+  </data>
+  <data name="MqttConnection_TheBrokerSentNoCertificate" xml:space="preserve">
+    <value>the broker sent no certificate</value>
+  </data>
+  <data name="MqttConnection_TheTLSHandshakeFailedCheckThat" xml:space="preserve">
+    <value>The TLS handshake failed: {0}. Check that the broker accepts the client certificate</value>
+    <comment>{0}: reason</comment>
+  </data>
+  <data name="MqttConnection_TheTLSHandshakeFailedIfThe" xml:space="preserve">
+    <value>The TLS handshake failed: {0}. If the broker asks for a client certificate, choose one</value>
+    <comment>{0}: reason</comment>
+  </data>
+  <data name="MqttView_AddAClientWithABroker" xml:space="preserve">
+    <value>Add a client with a broker of its own. Each client has its own tab, folder and activity log.</value>
+  </data>
+  <data name="MqttView_AddClient" xml:space="preserve">
+    <value>Add client</value>
+  </data>
+  <data name="Mqtt_Client" xml:space="preserve">
+    <value>client {0}</value>
+    <comment>{0}: i</comment>
+  </data>
+  <data name="Mqtt_DevToolsBrokersMQTT" xml:space="preserve">
+    <value>Dev Tools / Brokers / MQTT</value>
+  </data>
+  <data name="Mqtt_MQTT" xml:space="preserve">
+    <value>MQTT</value>
+  </data>
+  <data name="PayloadPath_DependsOnTheOrderOfThe" xml:space="preserve">
+    <value>[{0}] depends on the order of the array. Choose the item by a field, such as [sensor={1}]</value>
+    <comment>{0}: selector, {1}: selector</comment>
+  </data>
+  <data name="PayloadPath_HasAWithNo" xml:space="preserve">
+    <value>{0} has a [ with no ]</value>
+    <comment>{0}: Text</comment>
+  </data>
+  <data name="PayloadPath_HasAWithNo2" xml:space="preserve">
+    <value>{0} has a {{ with no }}</value>
+    <comment>{0}: Text</comment>
+  </data>
+  <data name="PayloadPath_IsNotAKeyOf" xml:space="preserve">
+    <value>{{{0}}} is not a key of {1}</value>
+    <comment>{0}: link, {1}: pattern.Text</comment>
+  </data>
+  <data name="PayloadPath_IsNotUnderstoodUseAPosition" xml:space="preserve">
+    <value>[{0}] is not understood. Use a position, *, or a field and its value, such as [sensor=temperature]</value>
+    <comment>{0}: selector</comment>
+  </data>
+  <data name="PayloadPath_MustBeTheIndexOfA" xml:space="preserve">
+    <value>{{{0}}} must be the index of a wildcard in {1}, counting from 0</value>
+    <comment>{0}: link, {1}: pattern.Text</comment>
+  </data>
+  <data name="ReceivedMessage_BinaryBytes" xml:space="preserve">
+    <value>(binary, {0:N0} bytes) {1}</value>
+    <comment>{0}: Payload.Length, {1}: spaced.ToString().TrimEnd()</comment>
+  </data>
+  <data name="ReceivedMessage_Bytes" xml:space="preserve">
+    <value>{0:N0} bytes</value>
+    <comment>{0}: Payload.Length</comment>
+  </data>
+  <data name="ReceivedMessage_BytesUnzipped" xml:space="preserve">
+    <value>{0:N0} bytes ({1:N0} unzipped)</value>
+    <comment>{0}: ReceivedSize, {1}: Payload.Length</comment>
+  </data>
+  <data name="ReceivedMessage_Empty" xml:space="preserve">
+    <value>(empty)</value>
+  </data>
+  <data name="ReceivedMessage_ItIs" xml:space="preserve">
+    <value>it is</value>
+  </data>
+  <data name="ReceivedMessage_ItIsNotANumberOr" xml:space="preserve">
+    <value>it is not a number or JSON</value>
+  </data>
+  <data name="ReceivedMessage_ItLooksLikeGzipButCould" xml:space="preserve">
+    <value>it looks like gzip, but could not be unzipped</value>
+  </data>
+  <data name="ReceivedMessage_ItUnzippedTo" xml:space="preserve">
+    <value>it unzipped to</value>
+  </data>
+  <data name="ReceivedMessage_KBOverTheKBLimit" xml:space="preserve">
+    <value>{0} {1:N0} KB, over the {2:N0} KB limit</value>
+    <comment>{0}: (IsGzipped ? Strings.ReceivedMessage_ItUnzippedTo : Strings.ReceivedMessage_ItIs), {1}: Payload.Length / 1024, {2}: JsonNumbers.MaxPayloadBytes / 1024</comment>
+  </data>
+  <data name="TabColors_Amber" xml:space="preserve">
+    <value>Amber</value>
+  </data>
+  <data name="TabColors_Blue" xml:space="preserve">
+    <value>Blue</value>
+  </data>
+  <data name="TabColors_Blush" xml:space="preserve">
+    <value>Blush</value>
+  </data>
+  <data name="TabColors_Green" xml:space="preserve">
+    <value>Green</value>
+  </data>
+  <data name="TabColors_Grey" xml:space="preserve">
+    <value>Grey</value>
+  </data>
+  <data name="TabColors_Lavender" xml:space="preserve">
+    <value>Lavender</value>
+  </data>
+  <data name="TabColors_Leaf" xml:space="preserve">
+    <value>Leaf</value>
+  </data>
+  <data name="TabColors_Mint" xml:space="preserve">
+    <value>Mint</value>
+  </data>
+  <data name="TabColors_Navy" xml:space="preserve">
+    <value>Navy</value>
+  </data>
+  <data name="TabColors_Pink" xml:space="preserve">
+    <value>Pink</value>
+  </data>
+  <data name="TabColors_Purple" xml:space="preserve">
+    <value>Purple</value>
+  </data>
+  <data name="TabColors_Red" xml:space="preserve">
+    <value>Red</value>
+  </data>
+  <data name="TabColors_Rose" xml:space="preserve">
+    <value>Rose</value>
+  </data>
+  <data name="TabColors_Sand" xml:space="preserve">
+    <value>Sand</value>
+  </data>
+  <data name="TabColors_Sky" xml:space="preserve">
+    <value>Sky</value>
+  </data>
+  <data name="TabColors_Teal" xml:space="preserve">
+    <value>Teal</value>
+  </data>
+  <data name="TabColors_White" xml:space="preserve">
+    <value>White</value>
+  </data>
+  <data name="TopicPattern_InAKeyMustBeA" xml:space="preserve">
+    <value>In {0}, a key must be a whole level. Write \{{ for a real brace</value>
+    <comment>{0}: level</comment>
+  </data>
+  <data name="TopicPattern_IsUsedTwiceInTheTopic" xml:space="preserve">
+    <value>{{{0}}} is used twice in the topic</value>
+    <comment>{0}: name</comment>
+  </data>
+  <data name="TopicPattern_NeedsANameThatStartsWith" xml:space="preserve">
+    <value>{0} needs a name that starts with a letter, such as {{line}}</value>
+    <comment>{0}: level</comment>
+  </data>
+  <data name="TopicPattern_TheTopicIsEmpty" xml:space="preserve">
+    <value>The topic is empty</value>
+  </data>
+  <data name="TopicRules_ATopicMayNotContainOr" xml:space="preserve">
+    <value>A topic may not contain + or #</value>
+  </data>
+  <data name="TopicRules_InMustBeAWholeLevel" xml:space="preserve">
+    <value>In {0}, + must be a whole level</value>
+    <comment>{0}: filter</comment>
+  </data>
+  <data name="TopicRules_InMustBeTheWholeLast" xml:space="preserve">
+    <value>In {0}, # must be the whole last level</value>
+    <comment>{0}: filter</comment>
+  </data>
+  <data name="TopicRules_TheFilterIsEmpty" xml:space="preserve">
+    <value>The filter is empty</value>
+  </data>
+  <data name="TopicRules_TheFilterIsLongerThan65" xml:space="preserve">
+    <value>The filter is longer than 65,535 bytes</value>
+  </data>
+  <data name="TopicRules_TheTopicIsEmpty" xml:space="preserve">
+    <value>The topic is empty</value>
+  </data>
+  <data name="TopicRules_TheTopicIsLongerThan65" xml:space="preserve">
+    <value>The topic is longer than 65,535 bytes</value>
+  </data>
+  <data name="TopicTemplate_FolderCanOnlyBeUsedIn" xml:space="preserve">
+    <value>{folder} can only be used in a topic set in the settings, for a message inside a folder</value>
+  </data>
+  <data name="TopicTemplate_TheTopicIsEmpty" xml:space="preserve">
+    <value>The topic is empty</value>
+  </data>
+  <data name="TopicTemplate_TopicFieldIsNotUsedIn" xml:space="preserve">
+    <value>Topic field {0} is not used in the topic; write it as {{{1}}}</value>
+    <comment>{0}: unused.Path, {1}: unused.Path</comment>
+  </data>
+  <data name="TopicTemplate_TopicPartHasNoTopicField" xml:space="preserve">
+    <value>Topic part {{{0}}} has no topic field</value>
+    <comment>{0}: unfilled</comment>
+  </data>
+  <data name="VaryingFields_ArrayIsEmptyInTheFile" xml:space="preserve">
+    <value>Array {0} is empty in the file, so it has no item to repeat</value>
+    <comment>{0}: rule.Path</comment>
+  </data>
+  <data name="VaryingFields_ArrayIsNotInTheBody" xml:space="preserve">
+    <value>Array {0} is not in the body</value>
+    <comment>{0}: rule.Path</comment>
+  </data>
+  <data name="VaryingFields_IsNotAnArray" xml:space="preserve">
+    <value>{0} is not an array</value>
+    <comment>{0}: rule.Path</comment>
+  </data>
+</root>

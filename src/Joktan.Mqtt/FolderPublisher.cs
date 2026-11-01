@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Joktan.Core;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt;
 
@@ -45,11 +46,11 @@ public sealed class FolderPublisher
         {
             return Directory.Exists(folder)
                 ? new FolderScan(FolderScanner.Scan(folder), null)
-                : new FolderScan([], "The folder does not exist");
+                : new FolderScan([], Strings.FolderPublisher_TheFolderDoesNotExist);
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
-            return new FolderScan([], $"The folder cannot be read: {e.Message}");
+            return new FolderScan([], string.Format(Strings.FolderPublisher_TheFolderCannotBeRead, e.Message));
         }
     }
 
@@ -138,7 +139,7 @@ public sealed class FolderPublisher
             else
             {
                 MqttMetrics.RecordSkipped();
-                _log(new ActivityEntry(now, "Skipped", message.Topic, message.FileName, "No connection"));
+                _log(new ActivityEntry(now, Strings.FolderPublisher_Skipped, message.Topic, message.FileName, Strings.FolderPublisher_NoConnection));
             }
 
             Advance(message, due, now, sent);
@@ -221,19 +222,19 @@ public sealed class FolderPublisher
         // A topic field can produce a value that is not allowed in a topic, such as "+".
         var topic = TopicTemplate.Resolve(message.Topic, settings.TopicFields, message.Counters, stamp);
         var (ok, error) = TopicRules.Validate(topic) is { } topicError
-            ? (false, $"Topic {topic}: {topicError}")
+            ? (false, string.Format(Strings.FolderPublisher_Topic, topic, topicError))
             : await _connection.PublishAsync(topic, payload, settings.Qos, settings.Retain);
         if (ok)
         {
             message.LastSent = now;
             message.SentCount++;
             MqttMetrics.RecordSent(manual: false);
-            _log(new ActivityEntry(now, "Sent", topic, message.FileName, ActivityEntry.SizeDetail(bytes.Length, payload.Length, settings.Gzip), body));
+            _log(new ActivityEntry(now, Strings.FolderPublisher_Sent, topic, message.FileName, ActivityEntry.SizeDetail(bytes.Length, payload.Length, settings.Gzip), body));
         }
         else
         {
             MqttMetrics.RecordFailed();
-            _log(new ActivityEntry(now, "Failed", topic, message.FileName, error ?? "Unknown error"));
+            _log(new ActivityEntry(now, ActivityEntry.FailedEvent, topic, message.FileName, error ?? Strings.FolderPublisher_UnknownError));
         }
     }
 

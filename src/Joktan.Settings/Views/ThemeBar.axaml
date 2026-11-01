@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Settings.Resources"
              xmlns:vm="using:Joktan.Settings.ViewModels"
              x:Class="Joktan.Settings.Views.ThemeBar"
              x:DataType="vm:ThemeBarViewModel">
@@ -8,17 +9,17 @@
         <StackPanel Spacing="8">
             <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto" ColumnSpacing="8">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock Classes="field-label" Text="Theme" />
+                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.ThemeBar_Theme}" />
                     <TextBlock Classes="card-title" Margin="0" TextTrimming="CharacterEllipsis" Text="{Binding Status}" />
                 </StackPanel>
-                <Button Grid.Column="1" Classes="small" Content="Save" Command="{Binding SaveCommand}" />
-                <Button Grid.Column="2" Classes="small" Content="Discard" Command="{Binding DiscardCommand}" />
-                <TextBox Grid.Column="3" Width="180" Margin="16,0,0,0" PlaceholderText="New theme name" Text="{Binding NewName}" />
-                <Button Grid.Column="4" Classes="small" Content="Save as new" Command="{Binding SaveAsNewCommand}" />
+                <Button Grid.Column="1" Classes="small" Content="{x:Static res:Strings.ThemeBar_Save}" Command="{Binding SaveCommand}" />
+                <Button Grid.Column="2" Classes="small" Content="{x:Static res:Strings.ThemeBar_Discard}" Command="{Binding DiscardCommand}" />
+                <TextBox Grid.Column="3" Width="180" Margin="16,0,0,0" PlaceholderText="{x:Static res:Strings.ThemeBar_NewThemeName}" Text="{Binding NewName}" />
+                <Button Grid.Column="4" Classes="small" Content="{x:Static res:Strings.ThemeBar_SaveAsNew}" Command="{Binding SaveAsNewCommand}" />
             </Grid>
             <TextBlock Classes="card-subtitle" Margin="0"
                        IsVisible="{Binding ShowBuiltInHint}"
-                       Text="This theme comes with Joktan and stays as it is. Save the changes as a new theme to keep them." />
+                       Text="{x:Static res:Strings.ThemeBar_ThisThemeComesWithJoktanAnd}" />
             <TextBlock Classes="error" Margin="0" TextWrapping="Wrap"
                        IsVisible="{Binding Error, Converter={x:Static ObjectConverters.IsNotNull}}"
                        Text="{Binding Error}" />

@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Joktan.Core.ViewModels;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt.ViewModels;
 
@@ -37,18 +38,18 @@ public partial class ArrayRuleViewModel : ViewModelBase
     {
         var path = Path.Trim();
         if (path.Length == 0)
-            throw new FormatException("Every array size needs an array path");
+            throw new FormatException(Strings.ArrayRule_EveryArraySizeNeedsAnArray);
 
-        var min = Whole(Items, "number of items");
-        var max = MaxItems.Trim().Length == 0 ? min : Whole(MaxItems, "largest number of items");
+        var min = Whole(Items, Strings.ArrayRule_NumberOfItems);
+        var max = MaxItems.Trim().Length == 0 ? min : Whole(MaxItems, Strings.ArrayRule_LargestNumberOfItems);
         var rule = new ArrayRule(path, min, max);
         if (MessageSettings.CheckArray(rule) is { } problem)
-            throw new FormatException($"Array {path}: {problem.Replace("\"min\"", "the number").Replace("\"max\"", "the largest number")}");
+            throw new FormatException(string.Format(Strings.ArrayRule_Array, path, problem.Replace("\"min\"", Strings.ArrayRule_TheNumber).Replace("\"max\"", Strings.ArrayRule_TheLargestNumber)));
         return rule;
 
         int Whole(string text, string name)
             => int.TryParse(text.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var value)
                 ? value
-                : throw new FormatException($"Array {path}: the {name} must be a whole number");
+                : throw new FormatException(string.Format(Strings.ArrayRule_ArrayTheMustBeAWhole, path, name));
     }
 }

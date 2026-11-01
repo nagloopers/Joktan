@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Settings.Resources"
              xmlns:vm="using:Joktan.Settings.ViewModels"
              xmlns:views="using:Joktan.Settings.Views"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -46,7 +47,7 @@
                                                     <TextBlock Grid.Column="2" VerticalAlignment="Center"
                                                                FontSize="{Binding SampleSize}"
                                                                TextTrimming="CharacterEllipsis"
-                                                               Text="Sample text" />
+                                                               Text="{x:Static res:Strings.TextSizesView_SampleText}" />
                                                 </Grid>
                                             </Border>
                                         </DataTemplate>

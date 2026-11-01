@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Core.ViewModels;
 using Joktan.Settings.Backup;
+using Joktan.Settings.Resources;
 
 namespace Joktan.Settings.ViewModels;
 
@@ -57,7 +58,7 @@ public partial class FolderRowViewModel : ViewModelBase
     public bool HasSomethingToBackUp => !HasNoFolder;
 
     /// <summary>The path shown when it cannot be changed here.</summary>
-    public string CurrentText => Source.CurrentPath() is { Length: > 0 } path ? path : "No folder chosen";
+    public string CurrentText => Source.CurrentPath() is { Length: > 0 } path ? path : Strings.FolderRow_NoFolderChosen;
 
     [ObservableProperty]
     public partial string PathText { get; set; } = "";
@@ -145,7 +146,7 @@ public partial class FolderRowViewModel : ViewModelBase
         }
         else if ((path = BackupPlanner.WholePath(text)) is null)
         {
-            Problem = "Give the whole path of the folder, such as one picked with Browse.";
+            Problem = Strings.FolderRow_GiveTheWholePathOfThe;
             return;
         }
 
@@ -174,8 +175,8 @@ public partial class RestoreRowViewModel(ManifestItem item, string target) : Vie
     public string Name => Item.Name;
 
     public string Detail { get; } = item.FileCount == 0
-        ? "Nothing of this is in the backup"
-        : $"{item.FileCount} {(item.FileCount == 1 ? "file" : "files")}, goes to {target}";
+        ? Strings.RestoreRow_NothingOfThisIsInThe
+        : string.Format(Strings.RestoreRow_GoesTo, item.FileCount, (item.FileCount == 1 ? Strings.RestoreRow_File : Strings.RestoreRow_Files), target);
 
     public bool HasFiles => Item.FileCount > 0;
 
@@ -201,7 +202,7 @@ public partial class BackupViewModel : PageViewModel
     /// <param name="flush">Writes everything not yet on disk, so that a backup holds what is on screen.</param>
     /// <param name="restart">Closes the app and starts it again, which is when a restore happens.</param>
     public BackupViewModel(Func<IReadOnlyList<FolderSource>> sources, BackupSettings settings, Func<Task> flush, Action restart, string appVersion = "")
-        : base("Folders and Backup", "Settings / Folders and Backup")
+        : base(Strings.Backup_FoldersAndBackup, Strings.Backup_SettingsFoldersAndBackup)
     {
         _sources = sources;
         _settings = settings;
@@ -284,7 +285,7 @@ public partial class BackupViewModel : PageViewModel
     [ObservableProperty]
     public partial bool IsConfirmingRestore { get; private set; }
 
-    public string ConfirmText => $"This replaces {string.Join(", ", RestoreRows.Where(r => r.IsChosen).Select(r => r.Name))} with what is in the backup, removing anything made since. What is there now is zipped first, and Joktan restarts.";
+    public string ConfirmText => string.Format(Strings.Backup_ThisReplacesWithWhatIsIn, string.Join(", ", RestoreRows.Where(r => r.IsChosen).Select(r => r.Name)));
 
     /// <summary>Shows where every folder is now. Called whenever the page is opened, as they change elsewhere.</summary>
     public void Refresh()
@@ -383,7 +384,7 @@ public partial class BackupViewModel : PageViewModel
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
-            Error = $"Could not read {_settings.EffectiveFolder}: {e.Message}";
+            Error = string.Format(Strings.Backup_CouldNotRead, _settings.EffectiveFolder, e.Message);
         }
 
         if (!Backups.Select(b => b.Path).SequenceEqual(found.Select(b => b.Path)))
@@ -400,7 +401,7 @@ public partial class BackupViewModel : PageViewModel
     {
         if (BackupPlanner.WholePath(BackupFolderText) is not { } folder)
         {
-            Error = "Give the whole path of the backup folder, such as one picked with Browse.";
+            Error = Strings.Backup_GiveTheWholePathOfThe;
             return false;
         }
 
@@ -437,7 +438,7 @@ public partial class BackupViewModel : PageViewModel
         var items = AllRows.Where(r => r.CanBackUp && r.IsIncluded).Select(r => r.Source.Item!()).OfType<BackupItem>().ToList();
         if (items.Count == 0)
         {
-            Error = "Nothing is switched on to back up.";
+            Error = Strings.Backup_NothingIsSwitchedOnToBack;
             return;
         }
 
@@ -456,7 +457,7 @@ public partial class BackupViewModel : PageViewModel
                 return made;
             });
 
-            Status = $"Backed up {result.FileCount} {(result.FileCount == 1 ? "file" : "files")} to {result.Path}.";
+            Status = string.Format(Strings.Backup_BackedUpTo, result.FileCount, (result.FileCount == 1 ? Strings.Backup_File : Strings.Backup_Files), result.Path);
             foreach (var skipped in result.Skipped)
                 Skipped.Add(skipped);
             OnPropertyChanged(nameof(HasSkipped));
@@ -497,12 +498,12 @@ public partial class BackupViewModel : PageViewModel
                 var first = roots.FirstOrDefault();
                 var target = first is null ? "" : now?.Roots.FirstOrDefault(r => r.Key == first.Key)?.Path is { Length: > 0 } here ? here : first.Path;
                 if (roots.Count > 1)
-                    target = $"{target} and {roots.Count - 1} more";
+                    target = string.Format(Strings.Backup_AndMore, target, roots.Count - 1);
                 RestoreRows.Add(new RestoreRowViewModel(item, target));
             }
 
             RestorePath = path;
-            RestoreSummary = $"Made {manifest.Created:yyyy-MM-dd HH:mm}{(manifest.AppVersion.Length > 0 ? $" by Joktan {manifest.AppVersion}" : "")}.";
+            RestoreSummary = string.Format(Strings.Backup_Made, manifest.Created, (manifest.AppVersion.Length > 0 ? string.Format(Strings.Backup_ByJoktan, manifest.AppVersion) : ""));
         }
         catch (BackupException e)
         {
@@ -516,7 +517,7 @@ public partial class BackupViewModel : PageViewModel
         RestoreError = null;
         if (!RestoreRows.Any(r => r.IsChosen))
         {
-            RestoreError = "Nothing is switched on to restore.";
+            RestoreError = Strings.Backup_NothingIsSwitchedOnToRestore;
             return;
         }
 
@@ -569,12 +570,12 @@ public partial class BackupViewModel : PageViewModel
             });
 
             plan.Save();
-            Status = "Restarting to restore…";
+            Status = Strings.Backup_RestartingToRestore;
             Restart();
         }
         catch (Exception e) when (e is BackupException or IOException or UnauthorizedAccessException)
         {
-            RestoreError = $"Nothing was changed. {e.Message}";
+            RestoreError = string.Format(Strings.Backup_NothingWasChanged, e.Message);
         }
         finally
         {
@@ -587,10 +588,10 @@ public partial class BackupViewModel : PageViewModel
 
     private void ShowOutcome(RestoreOutcome outcome)
     {
-        var safety = outcome.SafetyPath.Length > 0 ? $" What was there before is in {outcome.SafetyPath}." : "";
+        var safety = outcome.SafetyPath.Length > 0 ? string.Format(Strings.Backup_WhatWasThereBeforeIsIn, outcome.SafetyPath) : "";
         if (outcome.Error is { } error)
-            Error = $"The restore did not finish: {error}{safety}";
+            Error = string.Format(Strings.Backup_TheRestoreDidNotFinish, error, safety);
         else
-            Status = $"Restored {string.Join(", ", outcome.Restored)} from {Path.GetFileName(outcome.ZipPath)}.{safety}";
+            Status = string.Format(Strings.Backup_RestoredFrom, string.Join(", ", outcome.Restored), Path.GetFileName(outcome.ZipPath), safety);
     }
 }

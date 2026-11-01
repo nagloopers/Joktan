@@ -6,6 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Joktan.Certificates.Resources;
 using Joktan.Core.ViewModels;
 
 namespace Joktan.Certificates.ViewModels;
@@ -55,11 +56,11 @@ public partial class NewCertificateViewModel : ViewModelBase
         Revalidate();
     }
 
-    public string Title => _issuer is null ? "New root CA" : $"New certificate signed by {_issuer.DisplayName}";
+    public string Title => _issuer is null ? Strings.NewCertificate_NewRootCA : string.Format(Strings.NewCertificate_NewCertificateSignedBy, _issuer.DisplayName);
 
     public string IssuerText => _issuer is null
-        ? "Itself. A root CA is the top of a chain; clients and brokers trust it by its certificate."
-        : $"{_issuer.DisplayName} ({_issuer.Kind.Text()}), valid until {_issuer.Certificate?.NotAfter:yyyy-MM-dd}";
+        ? Strings.NewCertificate_ItselfARootCAIsThe
+        : string.Format(Strings.NewCertificate_ValidUntil, _issuer.DisplayName, _issuer.Kind.Text(), _issuer.Certificate?.NotAfter);
 
     public IReadOnlyList<Choice<CertificateKind>> Kinds { get; }
 
@@ -139,23 +140,23 @@ public partial class NewCertificateViewModel : ViewModelBase
             if (ValidUntil is not { } until)
                 return "";
             var days = (until.Date - DateTime.Today).Days;
-            var text = days == 1 ? "1 day from today" : $"{days} days from today";
-            return LastDate is { } last && until.Date == last ? $"{text}, the day {_issuer!.DisplayName} expires" : text;
+            var text = days == 1 ? Strings.NewCertificate_1DayFromToday : string.Format(Strings.NewCertificate_DaysFromToday, days);
+            return LastDate is { } last && until.Date == last ? string.Format(Strings.NewCertificate_TheDayExpires, text, _issuer!.DisplayName) : text;
         }
     }
 
     public bool ShowAlternativeNames => !SelectedKind.Value.IsAuthority();
 
     public string AlternativeNamesHint => SelectedKind.Value == CertificateKind.Server
-        ? "The host names and IP addresses clients connect to the broker by, separated by commas. Clients check the broker's address against these, not against the common name."
-        : "Optional. Host names, IP addresses or email addresses, separated by commas.";
+        ? Strings.NewCertificate_TheHostNamesAndIPAddresses
+        : Strings.NewCertificate_OptionalHostNamesIPAddressesOr;
 
     public string KindHint => SelectedKind.Value switch
     {
-        CertificateKind.RootAuthority => "Signs itself and then the certificates below it.",
-        CertificateKind.IntermediateAuthority => "A CA signed by this one, which can sign certificates of its own.",
-        CertificateKind.Server => "The certificate a broker shows to clients.",
-        _ => "The certificate a client shows to a broker that asks for one (mutual TLS).",
+        CertificateKind.RootAuthority => Strings.NewCertificate_SignsItselfAndThenTheCertificates,
+        CertificateKind.IntermediateAuthority => Strings.NewCertificate_ACASignedByThisOne,
+        CertificateKind.Server => Strings.NewCertificate_TheCertificateABrokerShowsTo,
+        _ => Strings.NewCertificate_TheCertificateAClientShowsTo,
     };
 
     private bool CanSave => Error is null;
@@ -259,7 +260,7 @@ public partial class NewCertificateViewModel : ViewModelBase
     {
         Error = Check();
         FolderPreview = CertificateStore.CheckFolder(Folder) is null
-            ? $"Its files go in {_store.FolderFor(Folder, ToSpec().Name)}"
+            ? string.Format(Strings.NewCertificate_ItsFilesGoIn, _store.FolderFor(Folder, ToSpec().Name))
             : "";
     }
 
@@ -278,13 +279,13 @@ public partial class NewCertificateViewModel : ViewModelBase
         if (CertificateSpec.ParseAlternativeNames(spec.AlternativeNames, out var names) is { } namesError)
             return namesError;
         if (spec.Kind == CertificateKind.Server && names.Count == 0)
-            return "Enter at least one host name or IP address the broker is reached by";
+            return Strings.NewCertificate_EnterAtLeastOneHostName;
         if (ValidUntil is not { } until)
-            return "Choose the expiry date";
+            return Strings.NewCertificate_ChooseTheExpiryDate;
         if (until.Date < FirstDate)
-            return "The expiry date must be after today";
+            return Strings.NewCertificate_TheExpiryDateMustBeAfter;
         if (LastDate is { } last && until.Date > last)
-            return $"The expiry date cannot be after {last:yyyy-MM-dd}, when {_issuer!.DisplayName} expires";
+            return string.Format(Strings.NewCertificate_TheExpiryDateCannotBeAfter, last, _issuer!.DisplayName);
         return null;
     }
 

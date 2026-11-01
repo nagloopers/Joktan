@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ClientExplorerPanel_AddToDashboard" xml:space="preserve">
+    <value>Add to dashboard</value>
+  </data>
+  <data name="ClientExplorerPanel_AddedToSeeDashboardMQTTDashboards" xml:space="preserve">
+    <value>Added to {0}. See Dashboard / MQTT Dashboards.</value>
+    <comment>{0}: dashboard</comment>
+  </data>
+  <data name="ClientExplorerPanel_Automatic" xml:space="preserve">
+    <value>Automatic</value>
+  </data>
+  <data name="ClientExplorerPanel_Body" xml:space="preserve">
+    <value>Body</value>
+  </data>
+  <data name="ClientExplorerPanel_ChooseAGraphForThisTopic" xml:space="preserve">
+    <value>Choose a graph for this topic's numbers, name it and put it on a dashboard</value>
+  </data>
+  <data name="ClientExplorerPanel_ChooseValues" xml:space="preserve">
+    <value>Choose values</value>
+  </data>
+  <data name="ClientExplorerPanel_ChooseWhichNumbersInThePayload" xml:space="preserve">
+    <value>Choose which numbers in the payload are drawn</value>
+  </data>
+  <data name="ClientExplorerPanel_Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="ClientExplorerPanel_ClearRetainedValue" xml:space="preserve">
+    <value>Clear retained value</value>
+  </data>
+  <data name="ClientExplorerPanel_CompressTheBodyWithGzipBefore" xml:space="preserve">
+    <value>Compress the body with gzip before it is sent</value>
+  </data>
+  <data name="ClientExplorerPanel_Connect" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="ClientExplorerPanel_ConnectsThisClientToTheBroker" xml:space="preserve">
+    <value>Connects this client to the broker set for it on the MQTT page</value>
+  </data>
+  <data name="ClientExplorerPanel_Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="ClientExplorerPanel_DrawWhateverIsChangingAgain" xml:space="preserve">
+    <value>Draw whatever is changing again</value>
+  </data>
+  <data name="ClientExplorerPanel_Gzip" xml:space="preserve">
+    <value>Gzip</value>
+  </data>
+  <data name="ClientExplorerPanel_Gzipped" xml:space="preserve">
+    <value>Gzipped</value>
+  </data>
+  <data name="ClientExplorerPanel_History" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="ClientExplorerPanel_NoMessageHasBeenReceivedOn" xml:space="preserve">
+    <value>No message has been received on this exact topic; it only groups the topics below it.</value>
+  </data>
+  <data name="ClientExplorerPanel_NoMessagesYetTopicsAppearHere" xml:space="preserve">
+    <value>No messages yet. Topics appear here as messages arrive.</value>
+  </data>
+  <data name="ClientExplorerPanel_Pause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="ClientExplorerPanel_Publish" xml:space="preserve">
+    <value>Publish</value>
+  </data>
+  <data name="ClientExplorerPanel_QoS" xml:space="preserve">
+    <value>QoS</value>
+  </data>
+  <data name="ClientExplorerPanel_Received" xml:space="preserve">
+    <value>Received</value>
+  </data>
+  <data name="ClientExplorerPanel_RecentValues" xml:space="preserve">
+    <value>Recent values</value>
+  </data>
+  <data name="ClientExplorerPanel_RemovesTheSelectedTopicSStored" xml:space="preserve">
+    <value>Removes the selected topic's stored value from the broker</value>
+  </data>
+  <data name="ClientExplorerPanel_Retain" xml:space="preserve">
+    <value>Retain</value>
+  </data>
+  <data name="ClientExplorerPanel_Retained" xml:space="preserve">
+    <value>Retained</value>
+  </data>
+  <data name="ClientExplorerPanel_SearchTopics" xml:space="preserve">
+    <value>Search topics</value>
+  </data>
+  <data name="ClientExplorerPanel_SelectATopicToSeeIts" xml:space="preserve">
+    <value>Select a topic to see its value and history.</value>
+  </data>
+  <data name="ClientExplorerPanel_SendAMessageSelectingATopic" xml:space="preserve">
+    <value>Send a message. Selecting a topic fills it in here.</value>
+  </data>
+  <data name="ClientExplorerPanel_Size" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="ClientExplorerPanel_SubscribeToTheFiltersInThe" xml:space="preserve">
+    <value>Subscribe to the filters in the box, or unsubscribe from them</value>
+  </data>
+  <data name="ClientExplorerPanel_TheLast100MessagesOnThis" xml:space="preserve">
+    <value>The last 100 messages on this topic, newest first. Select one to see it above.</value>
+  </data>
+  <data name="ClientExplorerPanel_TheLatestMessageArrivedGzippedAnd" xml:space="preserve">
+    <value>The latest message arrived gzipped and is shown unzipped</value>
+  </data>
+  <data name="ClientExplorerPanel_Topic" xml:space="preserve">
+    <value>Topic</value>
+  </data>
+  <data name="ClientExplorerPanel_TopicFiltersSeparatedByCommasFor" xml:space="preserve">
+    <value>Topic filters, separated by commas, for example #, $SYS/#</value>
+  </data>
+  <data name="ClientExplorerPanel_TopicFiltersToSubscribeToSeparated" xml:space="preserve">
+    <value>Topic filters to subscribe to, separated by commas</value>
+  </data>
+  <data name="ClientExplorerPanel_Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="ClientExplorerPanel_WhilePausedMessagesThatArriveAre" xml:space="preserve">
+    <value>While paused, messages that arrive are discarded</value>
+  </data>
+  <data name="ClientExplorerPanel_YesWhenThePayloadArrivedGzipped" xml:space="preserve">
+    <value>Yes when the payload arrived gzipped; the value below is unzipped</value>
+  </data>
+  <data name="ClientExplorer_1Message" xml:space="preserve">
+    <value>1 message</value>
+  </data>
+  <data name="ClientExplorer_1Topic" xml:space="preserve">
+    <value>1 topic</value>
+  </data>
+  <data name="ClientExplorer_EnterAtLeastOneTopicFilter" xml:space="preserve">
+    <value>Enter at least one topic filter, for example #</value>
+  </data>
+  <data name="ClientExplorer_Messages" xml:space="preserve">
+    <value>{0:N0} messages</value>
+    <comment>{0}: _messageCount</comment>
+  </data>
+  <data name="ClientExplorer_NotSent" xml:space="preserve">
+    <value>Not sent: {0}</value>
+    <comment>{0}: error</comment>
+  </data>
+  <data name="ClientExplorer_SentToAt" xml:space="preserve">
+    <value>Sent to {0} at {1:HH:mm:ss}</value>
+    <comment>{0}: topic, {1}: DateTime.Now</comment>
+  </data>
+  <data name="ClientExplorer_Subscribe" xml:space="preserve">
+    <value>Subscribe</value>
+  </data>
+  <data name="ClientExplorer_Topics" xml:space="preserve">
+    <value>{0:N0} topics</value>
+    <comment>{0}: _topicCount</comment>
+  </data>
+  <data name="ClientExplorer_Unsubscribe" xml:space="preserve">
+    <value>Unsubscribe</value>
+  </data>
+  <data name="FieldChoice_Array" xml:space="preserve">
+    <value>array</value>
+  </data>
+  <data name="FieldChoice_Item" xml:space="preserve">
+    <value>item</value>
+  </data>
+  <data name="FieldChoice_TheWholePayload" xml:space="preserve">
+    <value>The whole payload</value>
+  </data>
+  <data name="FieldChoice_Value" xml:space="preserve">
+    <value>value</value>
+  </data>
+  <data name="TopicExplorerPanel_BackToMainWindow" xml:space="preserve">
+    <value>Back to main window</value>
+  </data>
+  <data name="TopicExplorerPanel_OpenInOwnWindow" xml:space="preserve">
+    <value>Open in own window</value>
+  </data>
+  <data name="TopicExplorerView_BackToMainWindow" xml:space="preserve">
+    <value>Back to main window</value>
+  </data>
+  <data name="TopicExplorerView_ItKeepsRunningWhileYouUse" xml:space="preserve">
+    <value>It keeps running while you use the rest of the app.</value>
+  </data>
+  <data name="TopicExplorerView_TheTopicExplorerIsOpenIn" xml:space="preserve">
+    <value>The topic explorer is open in its own window</value>
+  </data>
+  <data name="TopicExplorerWindow_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="TopicExplorerWindow_Maximise" xml:space="preserve">
+    <value>Maximise</value>
+  </data>
+  <data name="TopicExplorerWindow_Minimise" xml:space="preserve">
+    <value>Minimise</value>
+  </data>
+  <data name="TopicExplorerWindow_Restore" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="TopicExplorerWindow_TopicExplorer" xml:space="preserve">
+    <value>Topic Explorer</value>
+  </data>
+  <data name="TopicExplorerWindow_TopicExplorerJoktan" xml:space="preserve">
+    <value>Topic Explorer · Joktan</value>
+  </data>
+  <data name="TopicExplorer_DevToolsBrokersTopicExplorer" xml:space="preserve">
+    <value>Dev Tools / Brokers / Topic Explorer</value>
+  </data>
+  <data name="TopicExplorer_TopicExplorer" xml:space="preserve">
+    <value>Topic Explorer</value>
+  </data>
+  <data name="TopicNode_1Message" xml:space="preserve">
+    <value>1 message</value>
+  </data>
+  <data name="TopicNode_1Topic" xml:space="preserve">
+    <value>1 topic</value>
+  </data>
+  <data name="TopicNode_EmptyLevel" xml:space="preserve">
+    <value>(empty level)</value>
+  </data>
+  <data name="TopicNode_Messages" xml:space="preserve">
+    <value>({0:N0} messages)</value>
+    <comment>{0}: MessageCount</comment>
+  </data>
+  <data name="TopicNode_Messages2" xml:space="preserve">
+    <value>{0:N0} messages</value>
+    <comment>{0}: SubtreeMessages</comment>
+  </data>
+  <data name="TopicNode_MoreNotShown" xml:space="preserve">
+    <value>{0:N0} more not shown</value>
+    <comment>{0}: MoreTrends</comment>
+  </data>
+  <data name="TopicNode_Topics" xml:space="preserve">
+    <value>{0:N0} topics</value>
+    <comment>{0}: TopicCount</comment>
+  </data>
+</root>

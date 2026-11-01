@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Core;
 using Joktan.Core.ViewModels;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt.ViewModels;
 
@@ -25,7 +26,7 @@ public partial class MessagingViewModel : PageViewModel
     private readonly InboxViewModel _inbox;
 
     public MessagingViewModel(MqttViewModel mqtt, InboxViewModel inbox)
-        : base("Alerts and Messages", "Settings / Alerts and Messages")
+        : base(Strings.Messaging_AlertsAndMessages, Strings.Messaging_SettingsAlertsAndMessages)
     {
         _mqtt = mqtt;
         _inbox = inbox;
@@ -74,7 +75,7 @@ public partial class MessagingViewModel : PageViewModel
     public partial string TopicPrefix { get; set; } = "";
 
     /// <summary>Why the prefix typed in cannot be used. The one before stays in use until it can.</summary>
-    public string? TopicPrefixError => TopicPrefix.Trim().Length == 0 ? "Enter what the topics start with, for example joktan" : TopicRules.Validate(TopicPrefix.Trim());
+    public string? TopicPrefixError => TopicPrefix.Trim().Length == 0 ? Strings.Messaging_EnterWhatTheTopicsStartWith : TopicRules.Validate(TopicPrefix.Trim());
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(AvatarInitial), nameof(DisplayNameError), nameof(DisplayNameWarning))]
@@ -92,7 +93,7 @@ public partial class MessagingViewModel : PageViewModel
 
     /// <summary>Says when someone else on the server has the name typed in.</summary>
     public string? DisplayNameWarning => DisplayNameError is null && _inbox.IsNameTaken(DisplayName.Trim())
-        ? $"Someone else on this server is called {DisplayName.Trim()}. Messages to @{DisplayName.Trim()} would reach you both."
+        ? string.Format(Strings.Messaging_SomeoneElseOnThisServerIs, DisplayName.Trim(), DisplayName.Trim())
         : null;
 
     /// <summary>What stands in for a picture: the first letter of the name.</summary>
@@ -146,11 +147,11 @@ public partial class MessagingViewModel : PageViewModel
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
-            AvatarError = $"Could not use {Path.GetFileName(path)}: {e.Message}";
+            AvatarError = string.Format(Strings.Messaging_CouldNotUse, Path.GetFileName(path), e.Message);
         }
         catch (Exception e) when (e is ArgumentException or InvalidOperationException)
         {
-            AvatarError = $"{Path.GetFileName(path)} is not a picture that can be read";
+            AvatarError = string.Format(Strings.Messaging_IsNotAPictureThatCan, Path.GetFileName(path));
         }
     }
 
@@ -168,7 +169,7 @@ public partial class MessagingViewModel : PageViewModel
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
-            AvatarError = $"Could not remove the picture: {e.Message}";
+            AvatarError = string.Format(Strings.Messaging_CouldNotRemoveThePicture, e.Message);
         }
     }
 

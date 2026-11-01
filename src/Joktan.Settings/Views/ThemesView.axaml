@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Settings.Resources"
              xmlns:vm="using:Joktan.Settings.ViewModels"
              xmlns:views="using:Joktan.Settings.Views"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -21,18 +22,18 @@
         <ScrollViewer>
             <Border Classes="card" Margin="24" VerticalAlignment="Top">
                 <StackPanel>
-                    <TextBlock Classes="card-title" Text="Choose a theme" />
+                    <TextBlock Classes="card-title" Text="{x:Static res:Strings.ThemesView_ChooseATheme}" />
                     <TextBlock Classes="card-subtitle"
-                               Text="A theme holds all the colours, fonts and text sizes. Change them on the Colours, Fonts and Text Sizes pages. To choose another theme, first save or discard any changes." />
+                               Text="{x:Static res:Strings.ThemesView_AThemeHoldsAllTheColours}" />
                     <ItemsControl ItemsSource="{Binding Rows}" IsEnabled="{Binding CanChoose}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="vm:ThemeRowViewModel">
                                 <Border Classes="table-row">
                                     <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="16">
-                                        <RadioButton GroupName="Theme" Content="{Binding Name}" IsChecked="{Binding IsCurrent}" />
+                                        <RadioButton GroupName="Theme" Content="{Binding DisplayName}" IsChecked="{Binding IsCurrent}" />
                                         <TextBlock Grid.Column="1" Classes="info-label" VerticalAlignment="Center" Text="{Binding Kind}" />
                                         <Button Grid.Column="2" Classes="small" Width="64"
-                                                Content="Delete"
+                                                Content="{x:Static res:Strings.ThemesView_Delete}"
                                                 IsEnabled="{Binding CanDelete}"
                                                 Command="{Binding DeleteCommand}" />
                                     </Grid>

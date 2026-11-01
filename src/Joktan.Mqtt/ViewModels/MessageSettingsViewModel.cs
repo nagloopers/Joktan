@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Core;
 using Joktan.Core.ViewModels;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt.ViewModels;
 
@@ -86,8 +87,8 @@ public partial class MessageSettingsViewModel : ViewModelBase
     public ObservableCollection<FieldRuleViewModel> TopicFields { get; } = [];
 
     public string TopicPlaceholder => _message.Folder.Length == 0
-        ? "Required: the file is not inside a topic folder"
-        : $"{_message.Folder} (the folder path)";
+        ? Strings.MessageSettings_RequiredTheFileIsNotInside
+        : string.Format(Strings.MessageSettings_TheFolderPath, _message.Folder);
 
     /// <summary>The {name} parts of the topic, offered as topic field names.</summary>
     [ObservableProperty]
@@ -313,13 +314,13 @@ public partial class MessageSettingsViewModel : ViewModelBase
 
         var duplicate = fields.GroupBy(f => f.Path).FirstOrDefault(g => g.Count() > 1);
         if (duplicate is not null)
-            throw new FormatException($"Field {duplicate.Key} is listed more than once");
+            throw new FormatException(string.Format(Strings.MessageSettings_FieldIsListedMoreThanOnce, duplicate.Key));
         if (_message.Body is not null && VaryingFields.FindMissing(_message.Body, fields) is { } missing)
-            throw new FormatException($"Field {missing} is not in the message body");
+            throw new FormatException(string.Format(Strings.MessageSettings_FieldIsNotInTheMessage, missing));
 
         var arrays = Arrays.Select(a => a.ToRule()).ToList();
         if (arrays.GroupBy(a => a.Path).FirstOrDefault(g => g.Count() > 1) is { } repeated)
-            throw new FormatException($"Array {repeated.Key} is listed more than once");
+            throw new FormatException(string.Format(Strings.MessageSettings_ArrayIsListedMoreThanOnce, repeated.Key));
         if (_message.Body is not null
             && arrays.Select(a => VaryingFields.CheckArray(_message.Body, a)).FirstOrDefault(e => e is not null) is { } arrayError)
             throw new FormatException(arrayError);
@@ -328,11 +329,11 @@ public partial class MessageSettingsViewModel : ViewModelBase
         var topic = (Topic ?? "").Trim();
         var effective = TopicTemplate.Effective(_message.Folder, topic);
         if (topicFields.GroupBy(f => f.Path).FirstOrDefault(g => g.Count() > 1) is { } twice)
-            throw new FormatException($"Topic field {twice.Key} is listed more than once");
+            throw new FormatException(string.Format(Strings.MessageSettings_TopicFieldIsListedMoreThan, twice.Key));
         if (topicFields.FirstOrDefault(f => !TopicTemplate.IsValidName(f.Path)) is { } badName)
-            throw new FormatException($"{badName.Path} cannot be a topic field name; use letters, digits, _, - and .");
+            throw new FormatException(string.Format(Strings.MessageSettings_CannotBeATopicFieldName, badName.Path));
         if (effective.Length == 0)
-            throw new FormatException("The file is not inside a topic folder, so enter a topic");
+            throw new FormatException(Strings.MessageSettings_TheFileIsNotInsideA);
         if (TopicTemplate.Check(effective, topicFields) is { } topicError)
             throw new FormatException(topicError);
 
@@ -359,26 +360,26 @@ public partial class MessageSettingsViewModel : ViewModelBase
                 return new MessageSchedule
                 {
                     Type = ScheduleType.Once,
-                    At = ParseDate(OnceAt, "date and time")
-                         ?? throw new FormatException($"Enter the date and time to send at, for example {DateExample}"),
+                    At = ParseDate(OnceAt, Strings.MessageSettings_DateAndTime)
+                         ?? throw new FormatException(string.Format(Strings.MessageSettings_EnterTheDateAndTimeTo, DateExample)),
                 };
 
             case ScheduleType.Interval:
                 if (!int.TryParse(Every.Trim(), NumberStyles.None, CultureInfo.InvariantCulture, out var every) || every < 1)
-                    throw new FormatException("The interval must be a whole number, 1 or more");
+                    throw new FormatException(Strings.MessageSettings_TheIntervalMustBeAWhole);
 
                 int? maxSends = null;
                 if (MaxSends.Trim().Length > 0)
                 {
                     if (!int.TryParse(MaxSends.Trim(), NumberStyles.None, CultureInfo.InvariantCulture, out var max) || max < 1)
-                        throw new FormatException("The maximum number of sends must be a whole number, 1 or more");
+                        throw new FormatException(Strings.MessageSettings_TheMaximumNumberOfSendsMust);
                     maxSends = max;
                 }
 
-                var start = ParseDate(IntervalStart, "start");
-                var end = ParseDate(IntervalEnd, "end");
+                var start = ParseDate(IntervalStart, Strings.MessageSettings_Start);
+                var end = ParseDate(IntervalEnd, Strings.MessageSettings_End);
                 if (start > end)
-                    throw new FormatException("The end must not be before the start");
+                    throw new FormatException(Strings.MessageSettings_TheEndMustNotBeBefore);
 
                 return new MessageSchedule
                 {
@@ -395,11 +396,11 @@ public partial class MessageSettingsViewModel : ViewModelBase
                     .Select(t => TimeOnly.TryParseExact(t, ["HH:mm", "H:mm", "HH:mm:ss"], CultureInfo.InvariantCulture,
                         DateTimeStyles.None, out var time)
                         ? time
-                        : throw new FormatException($"{t} is not a time of day such as 08:30"))
+                        : throw new FormatException(string.Format(Strings.MessageSettings_IsNotATimeOfDaySuch, t)))
                     .Distinct()
                     .ToArray();
                 if (times.Length == 0)
-                    throw new FormatException("Enter at least one time of day, for example 08:00, 12:30");
+                    throw new FormatException(Strings.MessageSettings_EnterAtLeastOneTimeOf);
 
                 (bool Chosen, DayOfWeek Day)[] week =
                 [
@@ -409,7 +410,7 @@ public partial class MessageSettingsViewModel : ViewModelBase
                 ];
                 var days = week.Where(d => d.Chosen).Select(d => d.Day).ToArray();
                 if (days.Length == 0)
-                    throw new FormatException("Choose at least one day");
+                    throw new FormatException(Strings.MessageSettings_ChooseAtLeastOneDay);
 
                 return new MessageSchedule { Type = ScheduleType.Daily, Times = times, Days = days };
 
@@ -428,6 +429,6 @@ public partial class MessageSettingsViewModel : ViewModelBase
 
         return DateTime.TryParse(text.Trim(), CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var value)
             ? value
-            : throw new FormatException($"The {name} is not a date and time such as {DateExample}");
+            : throw new FormatException(string.Format(Strings.MessageSettings_TheIsNotADateAnd, name, DateExample));
     }
 }

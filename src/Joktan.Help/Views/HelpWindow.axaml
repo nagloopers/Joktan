@@ -1,5 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:res="using:Joktan.Help.Resources"
         xmlns:vm="using:Joktan.Help.ViewModels"
         xmlns:core="using:Joktan.Core"
         xmlns:controls="using:Joktan.Core.Controls"
@@ -12,7 +13,7 @@
         WindowDecorations="BorderOnly"
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaTitleBarHeightHint="0"
-        Title="Help · Joktan">
+        Title="{x:Static res:Strings.HelpWindow_HelpJoktan}">
 
     <Window.Styles>
         <Style Selector="ListBoxItem">
@@ -37,25 +38,25 @@
                 <Button Classes="small"
                         Margin="0,0,12,0"
                         VerticalAlignment="Center"
-                        Content="Back"
+                        Content="{x:Static res:Strings.HelpWindow_Back}"
                         Command="{Binding GoBackCommand}"
-                        ToolTip.Tip="Go back to the topic read before this one" />
+                        ToolTip.Tip="{x:Static res:Strings.HelpWindow_GoBackToTheTopicRead}" />
 
                 <TextBlock Grid.Column="1"
                            VerticalAlignment="Center"
                            FontWeight="SemiBold"
                            Foreground="{DynamicResource TextBrush}"
-                           Text="Help" />
+                           Text="{x:Static res:Strings.HelpWindow_Help}" />
 
                 <!-- Window controls, in place of the system title bar -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="2" Margin="20,0,0,0">
-                    <Button Classes="window-button" ToolTip.Tip="Minimise" Click="OnMinimizeClick">
+                    <Button Classes="window-button" ToolTip.Tip="{x:Static res:Strings.HelpWindow_Minimise}" Click="OnMinimizeClick">
                         <PathIcon Data="{x:Static core:Icons.WindowMinimize}" />
                     </Button>
-                    <Button Classes="window-button" ToolTip.Tip="Maximise" Name="MaximizeButton" Click="OnMaximizeClick">
+                    <Button Classes="window-button" ToolTip.Tip="{x:Static res:Strings.HelpWindow_Maximise}" Name="MaximizeButton" Click="OnMaximizeClick">
                         <PathIcon Name="MaximizeIcon" Data="{x:Static core:Icons.WindowMaximize}" />
                     </Button>
-                    <Button Classes="window-button close" ToolTip.Tip="Close" Click="OnCloseClick">
+                    <Button Classes="window-button close" ToolTip.Tip="{x:Static res:Strings.HelpWindow_Close}" Click="OnCloseClick">
                         <PathIcon Data="{x:Static core:Icons.WindowClose}" />
                     </Button>
                 </StackPanel>
@@ -70,10 +71,10 @@
                     <TextBox DockPanel.Dock="Top"
                              Margin="4,4,4,8"
                              Text="{Binding SearchText}"
-                             PlaceholderText="Search help" />
+                             PlaceholderText="{x:Static res:Strings.HelpWindow_SearchHelp}" />
                     <Panel>
                         <TextBlock Classes="info-label" Margin="12" TextWrapping="Wrap"
-                                   Text="No topic mentions that."
+                                   Text="{x:Static res:Strings.HelpWindow_NoTopicMentionsThat}"
                                    IsVisible="{Binding HasNoMatches}" />
                         <ListBox Background="Transparent"
                                  ItemsSource="{Binding VisibleTopics}"

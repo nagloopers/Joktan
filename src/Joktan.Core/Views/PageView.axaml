@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Core.Resources"
              xmlns:vm="using:Joktan.Core.ViewModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -17,7 +18,7 @@
 
         <ScrollViewer>
             <Border Classes="card" Margin="24" MinHeight="240" VerticalAlignment="Top">
-                <TextBlock Text="Page content goes here."
+                <TextBlock Text="{x:Static res:Strings.PageView_PageContentGoesHere}"
                            Foreground="{DynamicResource TextMutedBrush}"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center" />

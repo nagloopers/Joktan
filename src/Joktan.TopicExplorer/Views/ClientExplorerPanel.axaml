@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.TopicExplorer.Resources"
              xmlns:vm="using:Joktan.TopicExplorer.ViewModels"
              xmlns:mqtt="using:Joktan.Mqtt"
              xmlns:c="using:Joktan.Core.Controls"
@@ -33,10 +34,10 @@
                     </TextBlock>
                     <Panel Grid.Column="2">
                         <Button Classes="accent"
-                                Content="Connect"
+                                Content="{x:Static res:Strings.ClientExplorerPanel_Connect}"
                                 Command="{Binding Client.ConnectCommand}"
                                 IsVisible="{Binding Client.CanEdit}"
-                                ToolTip.Tip="Connects this client to the broker set for it on the MQTT page" />
+                                ToolTip.Tip="{x:Static res:Strings.ClientExplorerPanel_ConnectsThisClientToTheBroker}" />
                         <Button Content="{Binding Client.DisconnectText}"
                                 Command="{Binding Client.DisconnectCommand}"
                                 IsVisible="{Binding Client.ShowDisconnect}" />
@@ -45,19 +46,19 @@
 
                 <Grid ColumnDefinitions="*,Auto,*,Auto,Auto" ColumnSpacing="12">
                     <TextBox Text="{Binding Filters}"
-                             PlaceholderText="Topic filters, separated by commas, for example #, $SYS/#"
-                             ToolTip.Tip="Topic filters to subscribe to, separated by commas" />
+                             PlaceholderText="{x:Static res:Strings.ClientExplorerPanel_TopicFiltersSeparatedByCommasFor}"
+                             ToolTip.Tip="{x:Static res:Strings.ClientExplorerPanel_TopicFiltersToSubscribeToSeparated}" />
                     <Button Grid.Column="1"
                             MinWidth="110"
                             Content="{Binding SubscribeText}"
                             Command="{Binding ToggleSubscriptionCommand}"
-                            ToolTip.Tip="Subscribe to the filters in the box, or unsubscribe from them" />
-                    <TextBox Grid.Column="2" Text="{Binding Search}" PlaceholderText="Search topics" />
+                            ToolTip.Tip="{x:Static res:Strings.ClientExplorerPanel_SubscribeToTheFiltersInThe}" />
+                    <TextBox Grid.Column="2" Text="{Binding Search}" PlaceholderText="{x:Static res:Strings.ClientExplorerPanel_SearchTopics}" />
                     <ToggleButton Grid.Column="3"
-                                  Content="Pause"
+                                  Content="{x:Static res:Strings.ClientExplorerPanel_Pause}"
                                   IsChecked="{Binding IsPaused}"
-                                  ToolTip.Tip="While paused, messages that arrive are discarded" />
-                    <Button Grid.Column="4" Content="Clear" Command="{Binding ClearCommand}" />
+                                  ToolTip.Tip="{x:Static res:Strings.ClientExplorerPanel_WhilePausedMessagesThatArriveAre}" />
+                    <Button Grid.Column="4" Content="{x:Static res:Strings.ClientExplorerPanel_Clear}" Command="{Binding ClearCommand}" />
                 </Grid>
 
                 <TextBlock Classes="error"
@@ -75,7 +76,7 @@
                     <TextBlock Classes="info-label"
                                Margin="12"
                                TextWrapping="Wrap"
-                               Text="No messages yet. Topics appear here as messages arrive."
+                               Text="{x:Static res:Strings.ClientExplorerPanel_NoMessagesYetTopicsAppearHere}"
                                IsVisible="{Binding !Roots.Count}" />
                     <TreeView ItemsSource="{Binding Roots}" SelectedItem="{Binding SelectedNode}"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -96,7 +97,7 @@
                                     <TextBlock Grid.Column="1" Classes="info-label" VerticalAlignment="Center" Text="{Binding Info}" />
                                     <TextBlock Grid.Column="2" Classes="info-label" VerticalAlignment="Center" Text="{Binding LastMessage.GzipTag}"
                                                IsVisible="{Binding LastMessage.IsGzipped, FallbackValue=False}"
-                                               ToolTip.Tip="The latest message arrived gzipped and is shown unzipped" />
+                                               ToolTip.Tip="{x:Static res:Strings.ClientExplorerPanel_TheLatestMessageArrivedGzippedAnd}" />
                                     <TextBlock Grid.Column="3" Classes="code" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
                                                Text="{Binding Preview}" ToolTip.Tip="{Binding Preview}" />
                                 </Grid>
@@ -113,20 +114,20 @@
                 <StackPanel Spacing="16">
 
                     <Border Classes="card" IsVisible="{Binding !HasSelection}">
-                        <TextBlock Classes="info-label" TextWrapping="Wrap" Text="Select a topic to see its value and history." />
+                        <TextBlock Classes="info-label" TextWrapping="Wrap" Text="{x:Static res:Strings.ClientExplorerPanel_SelectATopicToSeeIts}" />
                     </Border>
 
                     <Border Classes="card" IsVisible="{Binding HasSelection}">
                         <StackPanel Spacing="12">
-                            <TextBlock Classes="card-title" Text="Topic" />
+                            <TextBlock Classes="card-title" Text="{x:Static res:Strings.ClientExplorerPanel_Topic}" />
                             <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
                                 <TextBox Classes="code" IsReadOnly="True" Text="{Binding SelectedNode.FullTopic, Mode=OneWay}" />
-                                <Button Grid.Column="1" Content="Copy" Click="OnCopyTopicClick" />
+                                <Button Grid.Column="1" Content="{x:Static res:Strings.ClientExplorerPanel_Copy}" Click="OnCopyTopicClick" />
                                 <Button Grid.Column="2"
-                                        Content="Add to dashboard"
+                                        Content="{x:Static res:Strings.ClientExplorerPanel_AddToDashboard}"
                                         Click="OnAddToDashboardClick"
                                         IsVisible="{Binding SelectedNode.HasNumbers, FallbackValue=False}"
-                                        ToolTip.Tip="Choose a graph for this topic's numbers, name it and put it on a dashboard" />
+                                        ToolTip.Tip="{x:Static res:Strings.ClientExplorerPanel_ChooseAGraphForThisTopic}" />
                             </Grid>
                             <TextBlock Classes="info-label"
                                        TextWrapping="Wrap"
@@ -135,45 +136,45 @@
 
                             <TextBlock Classes="info-label"
                                        TextWrapping="Wrap"
-                                       Text="No message has been received on this exact topic; it only groups the topics below it."
+                                       Text="{x:Static res:Strings.ClientExplorerPanel_NoMessageHasBeenReceivedOn}"
                                        IsVisible="{Binding !HasShownMessage}" />
 
                             <StackPanel Spacing="12" IsVisible="{Binding HasShownMessage}">
                                 <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*" ColumnSpacing="12">
                                     <StackPanel>
-                                        <TextBlock Classes="field-label" Text="Received" />
+                                        <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientExplorerPanel_Received}" />
                                         <TextBlock Classes="table-cell" Text="{Binding ShownMessage.TimeText}" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="1">
-                                        <TextBlock Classes="field-label" Text="QoS" />
+                                        <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientExplorerPanel_QoS}" />
                                         <TextBlock Classes="table-cell" Text="{Binding ShownMessage.Qos}" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="2">
-                                        <TextBlock Classes="field-label" Text="Retained" />
+                                        <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientExplorerPanel_Retained}" />
                                         <TextBlock Classes="table-cell"
                                                    Text="{Binding ShownMessage.Retain, Converter={x:Static c:YesNoConverter.Instance}}" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="3">
-                                        <TextBlock Classes="field-label" Text="Gzipped" />
+                                        <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientExplorerPanel_Gzipped}" />
                                         <TextBlock Classes="table-cell"
                                                    Text="{Binding ShownMessage.IsGzipped, Converter={x:Static c:YesNoConverter.Instance}}"
-                                                   ToolTip.Tip="Yes when the payload arrived gzipped; the value below is unzipped" />
+                                                   ToolTip.Tip="{x:Static res:Strings.ClientExplorerPanel_YesWhenThePayloadArrivedGzipped}" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="4">
-                                        <TextBlock Classes="field-label" Text="Size" />
+                                        <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientExplorerPanel_Size}" />
                                         <TextBlock Classes="table-cell" TextWrapping="Wrap" Text="{Binding ShownMessage.SizeText}" />
                                     </StackPanel>
                                 </Grid>
 
                                 <StackPanel Spacing="4" IsVisible="{Binding SelectedNode.HasNumbers}">
                                     <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
-                                        <TextBlock Classes="field-label" VerticalAlignment="Center" Text="Recent values" />
-                                        <Button Grid.Column="1" Classes="small" Content="Automatic"
-                                                ToolTip.Tip="Draw whatever is changing again"
+                                        <TextBlock Classes="field-label" VerticalAlignment="Center" Text="{x:Static res:Strings.ClientExplorerPanel_RecentValues}" />
+                                        <Button Grid.Column="1" Classes="small" Content="{x:Static res:Strings.ClientExplorerPanel_Automatic}"
+                                                ToolTip.Tip="{x:Static res:Strings.ClientExplorerPanel_DrawWhateverIsChangingAgain}"
                                                 IsVisible="{Binding SelectedNode.IsChosenByUser}"
                                                 Command="{Binding SelectedNode.UseAutomaticCommand}" />
-                                        <ToggleButton Grid.Column="2" Classes="small" Content="Choose values"
-                                                      ToolTip.Tip="Choose which numbers in the payload are drawn"
+                                        <ToggleButton Grid.Column="2" Classes="small" Content="{x:Static res:Strings.ClientExplorerPanel_ChooseValues}"
+                                                      ToolTip.Tip="{x:Static res:Strings.ClientExplorerPanel_ChooseWhichNumbersInThePayload}"
                                                       IsChecked="{Binding SelectedNode.IsChoosing}" />
                                     </Grid>
                                     <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Padding="8,4" IsVisible="{Binding SelectedNode.IsChoosing}">
@@ -226,7 +227,7 @@
                                 </StackPanel>
 
                                 <StackPanel>
-                                    <TextBlock Classes="field-label" Text="Value" />
+                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientExplorerPanel_Value}" />
                                     <TextBox Classes="code"
                                              IsReadOnly="True"
                                              AcceptsReturn="True"
@@ -242,8 +243,8 @@
                     <Border Classes="card" IsVisible="{Binding HasShownMessage}">
                         <StackPanel Spacing="8">
                             <StackPanel>
-                                <TextBlock Classes="card-title" Text="History" />
-                                <TextBlock Classes="card-subtitle" Text="The last 100 messages on this topic, newest first. Select one to see it above." />
+                                <TextBlock Classes="card-title" Text="{x:Static res:Strings.ClientExplorerPanel_History}" />
+                                <TextBlock Classes="card-subtitle" Text="{x:Static res:Strings.ClientExplorerPanel_TheLast100MessagesOnThis}" />
                             </StackPanel>
                             <ListBox Classes="log"
                                      ItemsSource="{Binding SelectedNode.History}"
@@ -265,39 +266,39 @@
                     <Border Classes="card">
                         <StackPanel Spacing="12">
                             <StackPanel>
-                                <TextBlock Classes="card-title" Text="Publish" />
-                                <TextBlock Classes="card-subtitle" Text="Send a message. Selecting a topic fills it in here." />
+                                <TextBlock Classes="card-title" Text="{x:Static res:Strings.ClientExplorerPanel_Publish}" />
+                                <TextBlock Classes="card-subtitle" Text="{x:Static res:Strings.ClientExplorerPanel_SendAMessageSelectingATopic}" />
                             </StackPanel>
                             <StackPanel>
-                                <TextBlock Classes="field-label" Text="Topic" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientExplorerPanel_Topic}" />
                                 <TextBox Text="{Binding PublishTopic}" />
                                 <TextBlock Classes="error"
                                            Text="{Binding PublishTopicError}"
                                            IsVisible="{Binding PublishTopicError, Converter={x:Static ObjectConverters.IsNotNull}}" />
                             </StackPanel>
                             <StackPanel>
-                                <TextBlock Classes="field-label" Text="Body" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientExplorerPanel_Body}" />
                                 <TextBox Classes="code" AcceptsReturn="True" Height="90" Text="{Binding PublishBody}" />
                             </StackPanel>
                             <WrapPanel>
                                 <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,0,16,8">
-                                    <TextBlock Classes="field-label" Text="QoS" VerticalAlignment="Center" Margin="0" />
+                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.ClientExplorerPanel_QoS}" VerticalAlignment="Center" Margin="0" />
                                     <ComboBox SelectedIndex="{Binding PublishQos}" MinWidth="70">
                                         <ComboBoxItem Content="0" />
                                         <ComboBoxItem Content="1" />
                                         <ComboBoxItem Content="2" />
                                     </ComboBox>
                                 </StackPanel>
-                                <CheckBox Content="Retain" IsChecked="{Binding PublishRetain}" Margin="0,0,16,8" />
-                                <CheckBox Content="Gzip"
+                                <CheckBox Content="{x:Static res:Strings.ClientExplorerPanel_Retain}" IsChecked="{Binding PublishRetain}" Margin="0,0,16,8" />
+                                <CheckBox Content="{x:Static res:Strings.ClientExplorerPanel_Gzip}"
                                           IsChecked="{Binding PublishGzip}"
                                           Margin="0,0,16,8"
-                                          ToolTip.Tip="Compress the body with gzip before it is sent" />
-                                <Button Classes="accent" Content="Publish" Command="{Binding PublishCommand}" Margin="0,0,8,8" />
-                                <Button Content="Clear retained value"
+                                          ToolTip.Tip="{x:Static res:Strings.ClientExplorerPanel_CompressTheBodyWithGzipBefore}" />
+                                <Button Classes="accent" Content="{x:Static res:Strings.ClientExplorerPanel_Publish}" Command="{Binding PublishCommand}" Margin="0,0,8,8" />
+                                <Button Content="{x:Static res:Strings.ClientExplorerPanel_ClearRetainedValue}"
                                         Command="{Binding ClearRetainedCommand}"
                                         Margin="0,0,0,8"
-                                        ToolTip.Tip="Removes the selected topic's stored value from the broker" />
+                                        ToolTip.Tip="{x:Static res:Strings.ClientExplorerPanel_RemovesTheSelectedTopicSStored}" />
                             </WrapPanel>
                             <TextBlock Classes="info-label"
                                        TextWrapping="Wrap"

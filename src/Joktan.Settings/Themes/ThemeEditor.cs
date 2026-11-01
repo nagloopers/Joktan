@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Joktan.Settings.Resources;
 
 namespace Joktan.Settings.Themes;
 
@@ -17,6 +18,16 @@ public sealed partial class ThemeEditor : ObservableObject
 {
     /// <summary>The choice that shows Light or Dark according to the operating system.</summary>
     public const string FollowSystem = "Follow system";
+
+    /// <summary>What a theme is called on screen. Its name is what is saved, so those that come with Joktan keep theirs in every language.</summary>
+    public static string DisplayName(string name) => name switch
+    {
+        FollowSystem => Strings.ThemeEditor_FollowSystem,
+        BuiltInThemes.LightName => Strings.ThemeEditor_Light,
+        BuiltInThemes.DarkName => Strings.ThemeEditor_Dark,
+        BuiltInThemes.GreenDarkName => Strings.ThemeEditor_GreenDark,
+        _ => name,
+    };
 
     private readonly IReadOnlyList<Theme> _builtIn;
     private readonly ThemeResources _resources;
@@ -184,11 +195,11 @@ public sealed partial class ThemeEditor : ObservableObject
     {
         name = name?.Trim();
         if (string.IsNullOrEmpty(name))
-            return "Give the theme a name";
+            return Strings.ThemeEditor_GiveTheThemeAName;
 
         return name.Equals(FollowSystem, StringComparison.OrdinalIgnoreCase)
                || taken.Any(t => t.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
-            ? "There is already a theme with that name"
+            ? Strings.ThemeEditor_ThereIsAlreadyAThemeWith
             : null;
     }
 

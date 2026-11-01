@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Mqtt.Resources"
              xmlns:vm="using:Joktan.Mqtt.ViewModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -23,34 +24,34 @@
                     <StackPanel Spacing="12">
                         <Grid ColumnDefinitions="*,Auto">
                             <StackPanel>
-                                <TextBlock Classes="card-title" Text="Server" />
+                                <TextBlock Classes="card-title" Text="{x:Static res:Strings.MessagingView_Server}" />
                                 <TextBlock Classes="card-subtitle"
                                            TextWrapping="Wrap"
-                                           Text="The MQTT server that alerts and messages go through. It is set up like a client on the MQTT page, but is kept apart from them." />
+                                           Text="{x:Static res:Strings.MessagingView_TheMQTTServerThatAlertsAnd}" />
                             </StackPanel>
                             <Button Grid.Column="1"
                                     Margin="16,0,0,0"
                                     VerticalAlignment="Top"
-                                    Content="Edit server"
+                                    Content="{x:Static res:Strings.MessagingView_EditServer}"
                                     Command="{Binding Client.EditClientCommand}"
-                                    ToolTip.Tip="Change the server, login and certificates. Disconnect first." />
+                                    ToolTip.Tip="{x:Static res:Strings.MessagingView_ChangeTheServerLoginAndCertificates}" />
                         </Grid>
 
                         <Grid ColumnDefinitions="2*,*,1.4*,*" ColumnSpacing="16">
                             <StackPanel>
-                                <TextBlock Classes="field-label" Text="Server" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessagingView_Server}" />
                                 <TextBlock Classes="table-cell" Text="{Binding Client.Address}" ToolTip.Tip="{Binding Client.Address}" />
                             </StackPanel>
                             <StackPanel Grid.Column="1">
-                                <TextBlock Classes="field-label" Text="Login" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessagingView_Login}" />
                                 <TextBlock Classes="table-cell" Text="{Binding Client.Login}" />
                             </StackPanel>
                             <StackPanel Grid.Column="2">
-                                <TextBlock Classes="field-label" Text="Client ID" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessagingView_ClientID}" />
                                 <TextBlock Classes="table-cell" Text="{Binding Client.ClientId}" />
                             </StackPanel>
                             <StackPanel Grid.Column="3">
-                                <TextBlock Classes="field-label" Text="Security" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessagingView_Security}" />
                                 <TextBlock Classes="table-cell" Text="{Binding Client.Security}" ToolTip.Tip="{Binding Client.SecurityDetail}" />
                             </StackPanel>
                         </Grid>
@@ -68,7 +69,7 @@
                                        Text="{Binding Client.StateText}" />
                             <Panel Grid.Column="2">
                                 <Button Classes="accent"
-                                        Content="Connect"
+                                        Content="{x:Static res:Strings.MessagingView_Connect}"
                                         Command="{Binding Client.ConnectCommand}"
                                         IsVisible="{Binding Client.CanEdit}" />
                                 <Button Content="{Binding Client.DisconnectText}"
@@ -83,39 +84,39 @@
 
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16">
                             <StackPanel>
-                                <TextBlock Classes="field-label" Text="Connect when Joktan starts" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessagingView_ConnectWhenJoktanStarts}" />
                                 <TextBlock Classes="info-label"
                                            TextWrapping="Wrap"
-                                           Text="It tries again up to 3 times if it cannot connect. Alerts and messages only arrive while connected; those sent at any other time are not received." />
+                                           Text="{x:Static res:Strings.MessagingView_ItTriesAgainUpTo3}" />
                             </StackPanel>
                             <ToggleSwitch Grid.Column="1"
                                           Classes="compact"
                                           VerticalAlignment="Center"
                                           IsChecked="{Binding ConnectOnStart}"
-                                          ToolTip.Tip="Connect to this server when Joktan starts" />
+                                          ToolTip.Tip="{x:Static res:Strings.MessagingView_ConnectToThisServerWhenJoktan}" />
                         </Grid>
 
                         <StackPanel>
-                            <TextBlock Classes="field-label" Text="Topic prefix" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessagingView_TopicPrefix}" />
                             <TextBox Classes="code" Text="{Binding TopicPrefix}" Width="360" HorizontalAlignment="Left" />
                             <TextBlock Classes="info-label" Margin="0,6,0,0" TextWrapping="Wrap"
-                                       Text="What the topics of alerts and messages start with. Everyone with the same prefix on this server shares them." />
+                                       Text="{x:Static res:Strings.MessagingView_WhatTheTopicsOfAlertsAnd}" />
                             <TextBlock Classes="error" TextWrapping="Wrap" Text="{Binding TopicPrefixError}"
                                        IsVisible="{Binding TopicPrefixError, Converter={x:Static ObjectConverters.IsNotNull}}" />
                         </StackPanel>
 
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16">
                             <StackPanel>
-                                <TextBlock Classes="field-label" Text="Show under Dev Tools / Brokers" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessagingView_ShowUnderDevToolsBrokers}" />
                                 <TextBlock Classes="info-label"
                                            TextWrapping="Wrap"
-                                           Text="Gives the server a tab of its own on the MQTT and Topic Explorer pages, to see and send what goes through it." />
+                                           Text="{x:Static res:Strings.MessagingView_GivesTheServerATabOf}" />
                             </StackPanel>
                             <ToggleSwitch Grid.Column="1"
                                           Classes="compact"
                                           VerticalAlignment="Center"
                                           IsChecked="{Binding ShowInBrokers}"
-                                          ToolTip.Tip="Show this server on the MQTT and Topic Explorer pages" />
+                                          ToolTip.Tip="{x:Static res:Strings.MessagingView_ShowThisServerOnTheMQTT}" />
                         </Grid>
                     </StackPanel>
                 </Border>
@@ -124,8 +125,8 @@
                 <Border Classes="card">
                     <StackPanel Spacing="12">
                         <StackPanel>
-                            <TextBlock Classes="card-title" Text="You" />
-                            <TextBlock Classes="card-subtitle" Text="The name and picture for your messages." />
+                            <TextBlock Classes="card-title" Text="{x:Static res:Strings.MessagingView_You}" />
+                            <TextBlock Classes="card-subtitle" Text="{x:Static res:Strings.MessagingView_TheNameAndPictureForYour}" />
                         </StackPanel>
 
                         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="16">
@@ -143,19 +144,19 @@
 
                             <StackPanel Grid.Column="1" Spacing="12">
                                 <StackPanel>
-                                    <TextBlock Classes="field-label" Text="Display name" />
+                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessagingView_DisplayName}" />
                                     <TextBox Text="{Binding DisplayName}" MaxLength="{Binding MaxDisplayNameLength}" Width="360" HorizontalAlignment="Left" PlaceholderText="ada" />
                                     <TextBlock Classes="info-label" Margin="0,6,0,0" TextWrapping="Wrap"
-                                               Text="Others write to you with @ and this name. Lowercase letters, digits, _ and -, with no spaces, and at most 15 characters." />
+                                               Text="{x:Static res:Strings.MessagingView_OthersWriteToYouWithAnd}" />
                                     <TextBlock Classes="error" TextWrapping="Wrap" Text="{Binding DisplayNameError}"
                                                IsVisible="{Binding DisplayNameError, Converter={x:Static ObjectConverters.IsNotNull}}" />
                                     <TextBlock Classes="info-label" Margin="0,6,0,0" TextWrapping="Wrap" Text="{Binding DisplayNameWarning}"
                                                IsVisible="{Binding DisplayNameWarning, Converter={x:Static ObjectConverters.IsNotNull}}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Spacing="8">
-                                    <Button Content="Choose picture" Command="{Binding ChooseAvatarCommand}"
-                                            ToolTip.Tip="Keeps a small square copy, cut from the middle of the picture. The file you choose is left as it is." />
-                                    <Button Content="Remove picture" Command="{Binding RemoveAvatarCommand}" />
+                                    <Button Content="{x:Static res:Strings.MessagingView_ChoosePicture}" Command="{Binding ChooseAvatarCommand}"
+                                            ToolTip.Tip="{x:Static res:Strings.MessagingView_KeepsASmallSquareCopyCut}" />
+                                    <Button Content="{x:Static res:Strings.MessagingView_RemovePicture}" Command="{Binding RemoveAvatarCommand}" />
                                 </StackPanel>
                                 <TextBlock Classes="error"
                                            TextWrapping="Wrap"

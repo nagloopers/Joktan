@@ -1,5 +1,6 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Resources"
              x:Class="Joktan.App"
              xmlns:local="using:Joktan"
              Name="Joktan"
@@ -9,8 +10,8 @@
     <!-- The application menu on macOS. Name above is what that menu and its items are titled with. -->
     <NativeMenu.Menu>
         <NativeMenu>
-            <NativeMenuItem Header="About Joktan" Click="OnAboutClick" />
-            <NativeMenuItem Header="Joktan Help" Click="OnHelpClick" />
+            <NativeMenuItem Header="{x:Static res:Strings.App_AboutJoktan}" Click="OnAboutClick" />
+            <NativeMenuItem Header="{x:Static res:Strings.App_JoktanHelp}" Click="OnHelpClick" />
         </NativeMenu>
     </NativeMenu.Menu>
 

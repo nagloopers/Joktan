@@ -11,6 +11,7 @@ using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using Grpc.Core;
 using Grpc.Net.Client;
+using Joktan.Api.Resources;
 
 namespace Joktan.Api;
 
@@ -24,11 +25,11 @@ public static class GrpcCaller
     {
         var address = variables.Apply(request.Address.Trim());
         if (address.Length == 0)
-            throw new InvalidOperationException("Enter the server's address, such as https://localhost:5001.");
+            throw new InvalidOperationException(Strings.GrpcCaller_EnterTheServerSAddressSuch);
         if (!address.Contains("://", StringComparison.Ordinal))
             address = "http://" + address;
         if (!Uri.TryCreate(address, UriKind.Absolute, out var uri) || (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps))
-            throw new InvalidOperationException($"{address} is not an http or https address.");
+            throw new InvalidOperationException(string.Format(Strings.GrpcCaller_IsNotAnHttpOrHttps, address));
 
         var handler = new SocketsHttpHandler { EnableMultipleHttp2Connections = true };
         if (request.AcceptAnyCertificate)
@@ -67,7 +68,7 @@ public static class GrpcCaller
         }
         catch (JsonException e)
         {
-            throw new ProtoJsonException($"The message is not valid JSON: {e.Message}");
+            throw new ProtoJsonException(string.Format(Strings.GrpcCaller_TheMessageIsNotValidJSON, e.Message));
         }
 
         using (document)
@@ -76,7 +77,7 @@ public static class GrpcCaller
             if (root.ValueKind == JsonValueKind.Array)
             {
                 if (!method.IsClientStreaming && root.GetArrayLength() != 1)
-                    throw new ProtoJsonException($"{method.Name} takes one message; write it as a JSON object.");
+                    throw new ProtoJsonException(string.Format(Strings.GrpcCaller_TakesOneMessageWriteItAs, method.Name));
                 return root.EnumerateArray().Select(m => ProtoJson.Encode(m, method.InputType, types)).ToList();
             }
 
@@ -168,7 +169,7 @@ public static class GrpcCaller
         }
         catch (OperationCanceledException) when (cancel.IsCancellationRequested)
         {
-            return new ApiResponse { Status = "Cancelled", Elapsed = stopwatch.Elapsed, Body = Body() };
+            return new ApiResponse { Status = Strings.GrpcCaller_Cancelled, Elapsed = stopwatch.Elapsed, Body = Body() };
         }
         catch (Exception e) when (e is ProtoJsonException or InvalidOperationException or FormatException or HttpRequestException)
         {

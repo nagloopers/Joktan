@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Joktan.Settings.Resources;
 
 namespace Joktan.Settings.Backup;
 
@@ -31,7 +32,7 @@ public sealed class FolderSource
     public Func<string, Task<FolderChange>>? Change { get; init; }
 
     /// <summary>What the button that changes it says.</summary>
-    public string ChangeText { get; init; } = "Use folder";
+    public string ChangeText { get; init; } = Strings.FolderSource_UseFolder;
 
     /// <summary>Something wrong with it found at start-up, shown on its row. Applying a folder then always goes ahead, to put it right.</summary>
     public string? StartProblem { get; init; }
@@ -105,7 +106,7 @@ public static class BackupPlanner
 
         var source = Path.GetFullPath(from).TrimEnd(Path.DirectorySeparatorChar);
         if (Path.GetFullPath(to).StartsWith(source + Path.DirectorySeparatorChar, StringComparison.Ordinal))
-            throw new IOException($"{to} is inside {from}");
+            throw new IOException(string.Format(Strings.BackupPlanner_IsInside, to, from));
 
         var copied = false;
         foreach (var file in Directory.EnumerateFiles(source, "*", SearchOption.AllDirectories))

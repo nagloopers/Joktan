@@ -7,6 +7,7 @@ using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Joktan.Api.Resources;
 using Joktan.Api.ViewModels;
 
 namespace Joktan.Api.Views;
@@ -43,12 +44,12 @@ public partial class ApiClientView : UserControl
             return [];
 
         IEnumerable<IStorageItem> picked = folders
-            ? await top.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions { Title = "Choose a folder", AllowMultiple = false })
+            ? await top.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions { Title = Strings.ApiClientView_ChooseAFolder, AllowMultiple = false })
             : await top.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
-                Title = "Choose .proto files",
+                Title = Strings.ApiClientView_ChooseProtoFiles,
                 AllowMultiple = true,
-                FileTypeFilter = [new FilePickerFileType("Protocol Buffers") { Patterns = ["*.proto"] }],
+                FileTypeFilter = [new FilePickerFileType(Strings.ApiClientView_ProtocolBuffers) { Patterns = ["*.proto"] }],
             });
         return picked.Select(i => i.TryGetLocalPath()).OfType<string>().ToList();
     }

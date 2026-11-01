@@ -1,3 +1,5 @@
+using Joktan.Certificates.Resources;
+
 namespace Joktan.Certificates;
 
 /// <summary>What a certificate is for.</summary>
@@ -32,10 +34,10 @@ public static class CertificateKinds
 
     public static string Text(this CertificateKind kind) => kind switch
     {
-        CertificateKind.RootAuthority => "Root CA",
-        CertificateKind.IntermediateAuthority => "Intermediate CA",
-        CertificateKind.Server => "Server",
-        CertificateKind.Client => "Client",
+        CertificateKind.RootAuthority => Strings.CertificateKinds_RootCA,
+        CertificateKind.IntermediateAuthority => Strings.CertificateKinds_IntermediateCA,
+        CertificateKind.Server => Strings.CertificateKinds_Server,
+        CertificateKind.Client => Strings.CertificateKinds_Client,
         _ => kind.ToString(),
     };
 

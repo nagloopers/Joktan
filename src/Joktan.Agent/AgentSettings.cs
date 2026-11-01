@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Joktan.Agent.Resources;
 using Joktan.Core;
 
 namespace Joktan.Agent;
@@ -40,12 +41,12 @@ public sealed class AgentPrompt
     /// <summary>The prompts Joktan starts with, which can be removed like any other.</summary>
     public static ObservableCollection<AgentPrompt> Predefined() =>
     [
-        new() { Name = "What can you do?", Text = "What can you do in Joktan? Give me a short list, with an example of each." },
-        new() { Name = "Summarise the alerts", Text = "Summarise the latest alerts and messages, most important first." },
-        new() { Name = "Note the alerts", Text = "Make a note of today's alerts." },
-        new() { Name = "Check the certificates", Text = "List the certificates that have expired or expire within 30 days." },
-        new() { Name = "Check the MQTT clients", Text = "Which MQTT clients are connected, and which are not?" },
-        new() { Name = "Check the containers", Text = "Which containers are running, and do any look unwell?" },
+        new() { Name = Strings.AgentPrompt_WhatCanYouDo, Text = Strings.AgentPrompt_WhatCanYouDoInJoktan },
+        new() { Name = Strings.AgentPrompt_SummariseTheAlerts, Text = Strings.AgentPrompt_SummariseTheLatestAlertsAndMessages },
+        new() { Name = Strings.AgentPrompt_NoteTheAlerts, Text = Strings.AgentPrompt_MakeANoteOfTodayS },
+        new() { Name = Strings.AgentPrompt_CheckTheCertificates, Text = Strings.AgentPrompt_ListTheCertificatesThatHaveExpired },
+        new() { Name = Strings.AgentPrompt_CheckTheMQTTClients, Text = Strings.AgentPrompt_WhichMQTTClientsAreConnectedAnd },
+        new() { Name = Strings.AgentPrompt_CheckTheContainers, Text = Strings.AgentPrompt_WhichContainersAreRunningAndDo },
     ];
 }
 

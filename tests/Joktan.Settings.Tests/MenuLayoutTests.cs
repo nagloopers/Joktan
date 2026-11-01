@@ -23,6 +23,18 @@ public class MenuLayoutApplyTests
     private static string[] Titles(ObservableCollection<NavItemViewModel> menu) => menu.Select(i => i.Title).ToArray();
 
     [Fact]
+    public void A_saved_layout_knows_an_entry_by_its_id_whatever_its_title_says()
+    {
+        var menu = new ObservableCollection<NavItemViewModel> { Item("A"), new("Notes", "Notizen") };
+
+        Apply(menu, Entry("Notes", shown: false), Entry("A"));
+
+        Assert.Equal(["Notizen", "A"], Titles(menu));
+        Assert.False(menu[0].IsShown);
+        Assert.Equal("Notes", MenuLayout.From(menu).Entries![0].Title);
+    }
+
+    [Fact]
     public void A_renamed_entry_keeps_its_place_and_stays_hidden()
     {
         var menu = new ObservableCollection<NavItemViewModel> { Item("A"), new("New") { FormerTitle = "Old" } };

@@ -10,6 +10,7 @@ using Joktan.Core;
 using Joktan.Mqtt.ViewModels;
 using Joktan.Notes.ViewModels;
 using Joktan.Passwords.ViewModels;
+using Joktan.Resources;
 using Joktan.Settings.Backup;
 using Joktan.TopicDashboards;
 using Joktan.TopicDashboards.ViewModels;
@@ -28,7 +29,7 @@ internal sealed class FolderSources(
     Func<Task> flush,
     Action restart)
 {
-    private const string PrivateKeysWarning = "This holds private keys, and a backup zip is not encrypted. Keep the zip somewhere safe.";
+    private static string PrivateKeysWarning => Strings.FolderSources_ThisHoldsPrivateKeysAndA;
 
     // Left out of the app settings. These first say where things are on this computer, which must stay as they are
     // because a restore puts things back where they are kept now. The rest are backed up on their own rows.
@@ -46,35 +47,35 @@ internal sealed class FolderSources(
             new()
             {
                 Id = "notes",
-                Name = "Notes",
+                Name = Strings.FolderSources_Notes,
                 CurrentPath = () => notes.Folder,
                 DefaultPath = notes.DefaultFolder,
                 Change = ChangeNotes,
-                Item = () => new BackupItem("notes", "Notes", [new BackupRoot("folder", notes.Folder)]),
+                Item = () => new BackupItem("notes", Strings.FolderSources_Notes, [new BackupRoot("folder", notes.Folder)]),
             },
             new()
             {
                 Id = "dashboards",
-                Name = "MQTT Dashboards",
+                Name = Strings.FolderSources_MQTTDashboards,
                 CurrentPath = () => dashboards.Folder,
                 DefaultPath = dashboards.DefaultFolder,
                 Change = ChangeDashboards,
-                Item = () => new BackupItem("dashboards", "MQTT Dashboards", [new BackupRoot("file", Path.Combine(dashboards.Folder, "dashboards.json"), IsFile: true)]),
+                Item = () => new BackupItem("dashboards", Strings.FolderSources_MQTTDashboards, [new BackupRoot("file", Path.Combine(dashboards.Folder, "dashboards.json"), IsFile: true)]),
             },
             new()
             {
                 Id = "api",
-                Name = "API requests",
+                Name = Strings.FolderSources_APIRequests,
                 CurrentPath = () => api.Folder,
                 DefaultPath = api.DefaultFolder,
                 Change = ChangeApi,
-                Item = () => new BackupItem("api", "API requests", [new BackupRoot("folder", api.Folder)]),
+                Item = () => new BackupItem("api", Strings.FolderSources_APIRequests, [new BackupRoot("folder", api.Folder)]),
             },
             new()
             {
                 Id = "certificates",
-                Name = "Certificates",
-                Hint = "Each new certificate can choose its own folder when it is made. Those are backed up with these.",
+                Name = Strings.FolderSources_Certificates,
+                Hint = Strings.FolderSources_EachNewCertificateCanChooseIts,
                 CurrentPath = () => certificates.Folder,
                 IncludedByDefault = false,
                 Warning = PrivateKeysWarning,
@@ -83,26 +84,26 @@ internal sealed class FolderSources(
             new()
             {
                 Id = "mqtt-certificates",
-                Name = "MQTT client certificates",
-                Hint = "Certificates copied for MQTT clients, one folder per client.",
+                Name = Strings.FolderSources_MQTTClientCertificates,
+                Hint = Strings.FolderSources_CertificatesCopiedForMQTTClientsOne,
                 CurrentPath = () => certificates.ClientFolder,
                 DefaultPath = certificates.DefaultClientFolder,
                 Change = ChangeClientCertificates,
                 IncludedByDefault = false,
                 Warning = PrivateKeysWarning,
-                Item = () => new BackupItem("mqtt-certificates", "MQTT client certificates", [new BackupRoot("folder", certificates.ClientFolder)]),
+                Item = () => new BackupItem("mqtt-certificates", Strings.FolderSources_MQTTClientCertificates, [new BackupRoot("folder", certificates.ClientFolder)]),
             },
             new()
             {
                 Id = "passwords",
-                Name = "Passwords",
+                Name = Strings.FolderSources_Passwords,
                 Hint = passwords.IsVault
-                    ? "The vault file, already encrypted with its master password. Moving it needs the vault unlocked, so it is done on the Passwords page."
-                    : $"The list of entries only. The passwords themselves are in {passwords.StorageText}, and are not in a backup.",
+                    ? Strings.FolderSources_TheVaultFileAlreadyEncryptedWith
+                    : string.Format(Strings.FolderSources_TheListOfEntriesOnlyThe, passwords.StorageText),
                 CurrentPath = () => passwords.StorageLocation,
                 OpenPage = openPasswords,
-                OpenPageText = "Open Passwords",
-                Item = () => new BackupItem("passwords", "Passwords", [new BackupRoot("file", passwords.StorageLocation, IsFile: true)]),
+                OpenPageText = Strings.FolderSources_OpenPasswords,
+                Item = () => new BackupItem("passwords", Strings.FolderSources_Passwords, [new BackupRoot("file", passwords.StorageLocation, IsFile: true)]),
             },
         };
 
@@ -113,14 +114,14 @@ internal sealed class FolderSources(
             {
                 Id = id,
                 Name = client.Name,
-                Hint = "Leave it empty for no folder.",
+                Hint = Strings.FolderSources_LeaveItEmptyForNoFolder,
                 IsMessageFolder = true,
                 CurrentPath = () => client.FolderPath ?? "",
                 AllowNone = true,
                 Change = path => ChangeMessages(client, path),
                 Item = () => string.IsNullOrEmpty(client.FolderPath)
                     ? null
-                    : new BackupItem(id, $"MQTT messages: {client.Name}", [new BackupRoot("folder", client.FolderPath)]),
+                    : new BackupItem(id, string.Format(Strings.FolderSources_MQTTMessages, client.Name), [new BackupRoot("folder", client.FolderPath)]),
             });
         }
 
@@ -174,7 +175,7 @@ internal sealed class FolderSources(
 
     private FolderSource SettingsSource()
     {
-        const string name = "App settings";
+        var name = Strings.FolderSources_AppSettings;
         const string id = "settings";
         if (DataFolder.IsSetByVariable)
         {
@@ -182,7 +183,7 @@ internal sealed class FolderSources(
             {
                 Id = id,
                 Name = name,
-                Hint = $"MQTT clients, the menu, themes and other settings. {DataFolder.Variable} sets this folder for this run, so it cannot be changed here.",
+                Hint = string.Format(Strings.FolderSources_MQTTClientsTheMenuThemesAnd, DataFolder.Variable),
                 CurrentPath = () => DataFolder.Path,
                 Item = SettingsItem,
             };
@@ -192,12 +193,12 @@ internal sealed class FolderSources(
         {
             Id = id,
             Name = name,
-            Hint = "MQTT clients, the menu, themes and other settings, and whatever else is kept in this folder. Joktan restarts to use a new one.",
+            Hint = Strings.FolderSources_MQTTClientsTheMenuThemesAndOther,
             CurrentPath = () => DataFolder.Path,
             DefaultPath = DataFolder.DefaultPath,
-            ChangeText = "Use folder and restart",
+            ChangeText = Strings.FolderSources_UseFolderAndRestart,
             StartProblem = DataFolder.MissingFolder is { } missing
-                ? $"{missing} could not be found, so Joktan is using its default folder for now. Connect it and restart Joktan, or choose another folder here."
+                ? string.Format(Strings.FolderSources_CouldNotBeFoundSoJoktan, missing)
                 : null,
             Change = path => DataFolderMove.ApplyAsync(path, DataFolder.Path, DataFolder.DefaultPath, flush, restart),
             Item = SettingsItem,
@@ -215,7 +216,7 @@ internal sealed class FolderSources(
             .Append(passwords.StorageLocation)
             .Concat(mqtt.Clients.Select(c => c.FolderPath).OfType<string>().Where(f => f.Length > 0))
             .ToList();
-        return new BackupItem("settings", "App settings", [new BackupRoot("folder", data, false, exclude)]);
+        return new BackupItem("settings", Strings.FolderSources_AppSettings, [new BackupRoot("folder", data, false, exclude)]);
     }
 
     private BackupItem CertificatesItem()
@@ -228,7 +229,7 @@ internal sealed class FolderSources(
         var inside = certificates.Folder.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
         foreach (var entry in certificates.Entries.Where(e => e.Location is { Length: > 0 } location && !location.StartsWith(inside, StringComparison.Ordinal)))
             roots.Add(new BackupRoot($"certificate-{entry.Id}", entry.Location!));
-        return new BackupItem("certificates", "Certificates", roots);
+        return new BackupItem("certificates", Strings.FolderSources_Certificates, roots);
     }
 
     private async Task<FolderChange> ChangeNotes(string path)
@@ -245,7 +246,7 @@ internal sealed class FolderSources(
         if (dashboards.CanStartEmpty)
         {
             dashboards.IsChoosingFolder = true;
-            return new FolderChange($"{dashboards.FolderMessage} That button is under Folder on the MQTT Dashboards page.");
+            return new FolderChange(string.Format(Strings.FolderSources_ThatButtonIsUnderFolderOn, dashboards.FolderMessage));
         }
 
         return new FolderChange(dashboards.FolderMessage, dashboards.Message);
@@ -268,12 +269,12 @@ internal sealed class FolderSources(
             defaults.ClientFolder = path == certificates.DefaultClientFolder ? "" : path;
             certificates.SaveDefaults(defaults);
             return Task.FromResult(new FolderChange(null, copied
-                ? $"The certificates were copied to {path}. The originals are still in {previous}."
-                : $"Certificates for MQTT clients now go to {path}."));
+                ? string.Format(Strings.FolderSources_TheCertificatesWereCopiedToThe, path, previous)
+                : string.Format(Strings.FolderSources_CertificatesForMQTTClientsNowGo, path)));
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
-            return Task.FromResult(new FolderChange($"Could not use {path}: {e.Message}"));
+            return Task.FromResult(new FolderChange(string.Format(Strings.FolderSources_CouldNotUse, path, e.Message)));
         }
     }
 
@@ -284,13 +285,13 @@ internal sealed class FolderSources(
         {
             var copied = path.Length > 0 && BackupPlanner.CopyIfEmpty(previous, path);
             client.UseFolder(path.Length > 0 ? path : null);
-            return Task.FromResult(new FolderChange(null, path.Length == 0 ? "This client no longer has a folder of messages."
-                : copied ? $"The messages were copied to {path}. The originals are still in {previous}."
-                : $"Opened the messages in {path}."));
+            return Task.FromResult(new FolderChange(null, path.Length == 0 ? Strings.FolderSources_ThisClientNoLongerHasA
+                : copied ? string.Format(Strings.FolderSources_TheMessagesWereCopiedToThe, path, previous)
+                : string.Format(Strings.FolderSources_OpenedTheMessagesIn, path)));
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
-            return Task.FromResult(new FolderChange($"Could not use {path}: {e.Message}"));
+            return Task.FromResult(new FolderChange(string.Format(Strings.FolderSources_CouldNotUse, path, e.Message)));
         }
     }
 }

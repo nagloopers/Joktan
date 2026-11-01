@@ -94,6 +94,9 @@ works offline.
 - To add a topic, add its file and a line in `HelpTopic.All`. To point a window at a topic, set
   `core:HelpContext.Topic` on the window and add a `HelpButton` to it, or `HelpTopic` on its menu entry in `MainViewModel`.
 
+A translation of a topic goes in `Topics/<language>/<id>.md`, and its title in the assembly's
+resources. See [Localization](../localization/spec.md).
+
 ## Implementation
 
 | Part             | File                                                                                  |

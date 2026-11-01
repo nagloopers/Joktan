@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
+using Joktan.Certificates.Resources;
 using Joktan.Core;
 
 namespace Joktan.Certificates;
@@ -144,9 +145,9 @@ public sealed class CertificateStore
         if (CertificateSpec.ParseAlternativeNames(spec.AlternativeNames, out var names) is { } namesError)
             throw new FormatException(namesError);
         if (spec.Kind == CertificateKind.Server && names.Count == 0)
-            throw new FormatException("A server certificate needs at least one host name or IP address");
+            throw new FormatException(Strings.CertificateStore_AServerCertificateNeedsAtLeast);
         if (spec.NotAfter <= DateTimeOffset.UtcNow)
-            throw new FormatException("The expiry date must be in the future");
+            throw new FormatException(Strings.CertificateStore_TheExpiryDateMustBeIn);
         if (CheckFolder(spec.Folder) is { } folderError)
             throw new FormatException(folderError);
 
@@ -154,11 +155,11 @@ public sealed class CertificateStore
         if (spec.Kind == CertificateKind.RootAuthority)
         {
             if (spec.IssuerId is not null)
-                throw new FormatException("A root CA signs itself, so it has no issuer");
+                throw new FormatException(Strings.CertificateStore_ARootCASignsItselfSo);
         }
         else
         {
-            issuer = Find(spec.IssuerId) ?? throw new FormatException("Choose the CA that signs the certificate");
+            issuer = Find(spec.IssuerId) ?? throw new FormatException(Strings.CertificateStore_ChooseTheCAThatSignsThe);
             if (!issuer.CanIssue)
                 throw new FormatException(WhyCannotIssue(issuer));
         }
@@ -177,7 +178,7 @@ public sealed class CertificateStore
         }
         catch (CryptographicException e)
         {
-            throw new FormatException($"The certificate cannot be made: {e.Message}", e);
+            throw new FormatException(string.Format(Strings.CertificateStore_TheCertificateCannotBeMade, e.Message), e);
         }
 
         var entry = new StoredCertificate
@@ -212,7 +213,7 @@ public sealed class CertificateStore
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
             TryDeleteFolder(folder);
-            throw new FormatException($"The certificate cannot be saved in {folder}: {e.Message}", e);
+            throw new FormatException(string.Format(Strings.CertificateStore_TheCertificateCannotBeSavedIn, folder, e.Message), e);
         }
         finally
         {
@@ -298,7 +299,7 @@ public sealed class CertificateStore
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
-            throw new FormatException($"The certificates cannot be copied to {folder}: {e.Message}", e);
+            throw new FormatException(string.Format(Strings.CertificateStore_TheCertificatesCannotBeCopiedTo, folder, e.Message), e);
         }
     }
 
@@ -309,9 +310,9 @@ public sealed class CertificateStore
         if (folder.Length == 0)
             return null;
         if (folder.IndexOfAny(Path.GetInvalidPathChars()) >= 0 || !Path.IsPathFullyQualified(folder))
-            return "Enter the folder's full path, or choose it with Browse";
+            return Strings.CertificateStore_EnterTheFolderSFullPath;
         if (File.Exists(folder))
-            return $"{folder} is a file, not a folder";
+            return string.Format(Strings.CertificateStore_IsAFileNotAFolder, folder);
         return null;
     }
 
@@ -361,14 +362,14 @@ public sealed class CertificateStore
     public static string WhyCannotIssue(StoredCertificate authority)
     {
         if (!authority.Kind.IsAuthority())
-            return $"{authority.DisplayName} is not a CA, so it cannot sign certificates";
+            return string.Format(Strings.CertificateStore_IsNotACASoIt, authority.DisplayName);
         if (authority.Problem is { } problem)
             return problem;
         if (authority.Certificate!.NotAfter <= DateTime.Now)
-            return $"{authority.DisplayName} expired on {authority.Certificate.NotAfter:yyyy-MM-dd}";
+            return string.Format(Strings.CertificateStore_ExpiredOn, authority.DisplayName, authority.Certificate.NotAfter);
         if (authority.Certificate.NotBefore > DateTime.Now)
-            return $"{authority.DisplayName} is not valid until {authority.Certificate.NotBefore:yyyy-MM-dd}";
-        return $"{authority.DisplayName} cannot sign certificates";
+            return string.Format(Strings.CertificateStore_IsNotValidUntil, authority.DisplayName, authority.Certificate.NotBefore);
+        return string.Format(Strings.CertificateStore_CannotSignCertificates, authority.DisplayName);
     }
 
     /// <summary>The files an export would write, by name.</summary>
@@ -391,18 +392,18 @@ public sealed class CertificateStore
     public List<string> Export(StoredCertificate entry, ExportOptions options)
     {
         if (entry.Certificate is null)
-            throw new FormatException(entry.Problem ?? "The certificate cannot be read");
+            throw new FormatException(entry.Problem ?? Strings.CertificateStore_TheCertificateCannotBeRead);
         if (options.BaseName.Trim().Length == 0 || options.BaseName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0 || options.BaseName.Contains('/'))
-            throw new FormatException("Enter a file name without a folder or extension, such as server");
+            throw new FormatException(Strings.CertificateStore_EnterAFileNameWithoutA);
         if (!Directory.Exists(options.Folder))
-            throw new FormatException($"The folder {options.Folder} does not exist");
+            throw new FormatException(string.Format(Strings.CertificateStore_TheFolderDoesNotExist, options.Folder));
         if ((options.IncludeKey || options.Pkcs12Password is not null) && !entry.HasKey)
-            throw new FormatException($"{entry.DisplayName} has no private key to export");
+            throw new FormatException(string.Format(Strings.CertificateStore_HasNoPrivateKeyToExport, entry.DisplayName));
 
         var names = ExportFileNames(entry, options);
         var paths = names.Select(n => Path.Combine(options.Folder, n)).ToList();
         if (!options.ReplaceExisting && paths.Where(File.Exists).Select(Path.GetFileName).ToList() is { Count: > 0 } existing)
-            throw new FormatException($"{string.Join(", ", existing)} {(existing.Count == 1 ? "is" : "are")} already in the folder. Choose another folder or name, or replace them");
+            throw new FormatException(string.Format(Strings.CertificateStore_AlreadyInTheFolderChooseAnother, string.Join(", ", existing), (existing.Count == 1 ? Strings.CertificateStore_Is : Strings.CertificateStore_Are)));
 
         try
         {
@@ -429,11 +430,11 @@ public sealed class CertificateStore
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
-            throw new FormatException($"The files cannot be written to {options.Folder}: {e.Message}", e);
+            throw new FormatException(string.Format(Strings.CertificateStore_TheFilesCannotBeWrittenTo, options.Folder, e.Message), e);
         }
         catch (CryptographicException e)
         {
-            throw new FormatException($"The PFX/P12 file cannot be made: {e.Message}", e);
+            throw new FormatException(string.Format(Strings.CertificateStore_ThePFXP12FileCannotBe, e.Message), e);
         }
 
         return paths;

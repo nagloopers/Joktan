@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Joktan.Agent.Resources;
 
 namespace Joktan.Agent.Clients;
 
@@ -132,7 +133,7 @@ public static class AgentProgram
             return null;
 
         lock (errors)
-            return errors.Count > 0 ? string.Join("\n", errors) : $"It stopped with exit code {process.ExitCode}.";
+            return errors.Count > 0 ? string.Join("\n", errors) : string.Format(Strings.AgentProgram_ItStoppedWithExitCode, process.ExitCode);
     }
 
     private static ProcessStartInfo NewStart(string program, string workingFolder)

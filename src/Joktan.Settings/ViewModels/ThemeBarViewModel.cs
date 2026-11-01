@@ -2,6 +2,7 @@ using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Core.ViewModels;
+using Joktan.Settings.Resources;
 using Joktan.Settings.Themes;
 
 namespace Joktan.Settings.ViewModels;
@@ -17,8 +18,8 @@ public partial class ThemeBarViewModel : ViewModelBase
 
     public ThemeEditor Editor { get; }
 
-    public string Status => (Editor.Current == ThemeEditor.FollowSystem ? $"{Editor.Draft.Name} (following the system)" : Editor.Current)
-                            + (Editor.IsDirty ? ": changes not saved" : "");
+    public string Status => (Editor.Current == ThemeEditor.FollowSystem ? string.Format(Strings.ThemeBar_FollowingTheSystem, ThemeEditor.DisplayName(Editor.Draft.Name)) : ThemeEditor.DisplayName(Editor.Current))
+                            + (Editor.IsDirty ? Strings.ThemeBar_ChangesNotSaved : "");
 
     /// <summary>Why Save is not offered, when the theme is one that comes with Joktan.</summary>
     public bool ShowBuiltInHint => Editor.IsDirty && !Editor.CanOverwrite;

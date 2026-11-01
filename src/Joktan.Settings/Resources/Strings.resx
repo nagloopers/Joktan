@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BackupArchive_CouldNotRead" xml:space="preserve">
+    <value>Could not read {0}: {1}</value>
+    <comment>{0}: Path.GetFileName(zipPath), {1}: e.Message</comment>
+  </data>
+  <data name="BackupArchive_CouldNotUnpack" xml:space="preserve">
+    <value>Could not unpack {0}: {1}</value>
+    <comment>{0}: Path.GetFileName(zipPath), {1}: e.Message</comment>
+  </data>
+  <data name="BackupArchive_CouldNotWrite" xml:space="preserve">
+    <value>Could not write {0}: {1}</value>
+    <comment>{0}: zipPath, {1}: e.Message</comment>
+  </data>
+  <data name="BackupArchive_IsDamaged" xml:space="preserve">
+    <value>{0} is damaged: {1}</value>
+    <comment>{0}: Path.GetFileName(zipPath), {1}: e.Message</comment>
+  </data>
+  <data name="BackupArchive_IsNotAJoktanBackup" xml:space="preserve">
+    <value>{0} is not a Joktan backup.</value>
+    <comment>{0}: Path.GetFileName(zipPath)</comment>
+  </data>
+  <data name="BackupArchive_NamesAFileOutsideItsFolder" xml:space="preserve">
+    <value>{0} names a file outside its folder: {1}</value>
+    <comment>{0}: Path.GetFileName(zipPath), {1}: entry.FullName</comment>
+  </data>
+  <data name="BackupArchive_NothingFoundAt" xml:space="preserve">
+    <value>{0}: nothing found at {1}</value>
+    <comment>{0}: item.Name, {1}: root.Path</comment>
+  </data>
+  <data name="BackupArchive_WasMadeByANewerJoktan" xml:space="preserve">
+    <value>{0} was made by a newer Joktan.</value>
+    <comment>{0}: Path.GetFileName(zipPath)</comment>
+  </data>
+  <data name="BackupPlanner_IsInside" xml:space="preserve">
+    <value>{0} is inside {1}</value>
+    <comment>{0}: to, {1}: from</comment>
+  </data>
+  <data name="BackupView_AFolderInYourDocuments" xml:space="preserve">
+    <value>A folder in your documents</value>
+  </data>
+  <data name="BackupView_BackUp" xml:space="preserve">
+    <value>Back up</value>
+  </data>
+  <data name="BackupView_BackUpNow" xml:space="preserve">
+    <value>Back up now</value>
+  </data>
+  <data name="BackupView_BackupFolder" xml:space="preserve">
+    <value>Backup folder</value>
+  </data>
+  <data name="BackupView_BackupsKept" xml:space="preserve">
+    <value>Backups kept</value>
+  </data>
+  <data name="BackupView_Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="BackupView_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="BackupView_ChooseABackupFromAnywhere" xml:space="preserve">
+    <value>Choose a backup from anywhere</value>
+  </data>
+  <data name="BackupView_ChooseABackupFromTheBackup" xml:space="preserve">
+    <value>Choose a backup from the backup folder</value>
+  </data>
+  <data name="BackupView_ChooseAFolder" xml:space="preserve">
+    <value>Choose a folder</value>
+  </data>
+  <data name="BackupView_ChooseAJoktanBackup" xml:space="preserve">
+    <value>Choose a Joktan backup</value>
+  </data>
+  <data name="BackupView_Default" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="BackupView_Folders" xml:space="preserve">
+    <value>Folders</value>
+  </data>
+  <data name="BackupView_MQTTMessages" xml:space="preserve">
+    <value>MQTT messages</value>
+  </data>
+  <data name="BackupView_NoFolderChosenSoThereIs" xml:space="preserve">
+    <value>No folder chosen, so there is nothing to back up.</value>
+  </data>
+  <data name="BackupView_OneRowForEachClientOn" xml:space="preserve">
+    <value>One row for each client on the MQTT page, with the folder of messages it sends. Rows follow the clients as they are added, renamed and removed.</value>
+  </data>
+  <data name="BackupView_PutsFoldersBackAsTheyWere" xml:space="preserve">
+    <value>Puts folders back as they were in a backup, in the places they are kept now. What is there now is zipped first, so a restore can be undone by restoring that zip. Joktan restarts to do it.</value>
+  </data>
+  <data name="BackupView_Restore" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="BackupView_RestoreAndRestart" xml:space="preserve">
+    <value>Restore and restart</value>
+  </data>
+  <data name="BackupView_TheOldestOfJoktanSBackups" xml:space="preserve">
+    <value>The oldest of Joktan's backups past this number are deleted after each backup</value>
+  </data>
+  <data name="BackupView_WhereJoktanKeepsThingsAndWhich" xml:space="preserve">
+    <value>Where Joktan keeps things, and which go in a backup. A folder that already holds data is opened as it is. Otherwise what is open now is copied there, and the originals stay where they are.</value>
+  </data>
+  <data name="BackupView_Working" xml:space="preserve">
+    <value>Working…</value>
+  </data>
+  <data name="BackupView_ZipFiles" xml:space="preserve">
+    <value>Zip files</value>
+  </data>
+  <data name="BackupView_ZipsTheFoldersSwitchedOnBelow" xml:space="preserve">
+    <value>Zips the folders switched on below into a dated file. Zips are not encrypted. Passwords kept in the system keychain, and MQTT passwords, are not in them.</value>
+  </data>
+  <data name="Backup_AndMore" xml:space="preserve">
+    <value>{0} and {1} more</value>
+    <comment>{0}: target, {1}: roots.Count - 1</comment>
+  </data>
+  <data name="Backup_BackedUpTo" xml:space="preserve">
+    <value>Backed up {0} {1} to {2}.</value>
+    <comment>{0}: result.FileCount, {1}: (result.FileCount == 1 ? Strings.Backup_File : Strings.Backup_Files), {2}: result.Path</comment>
+  </data>
+  <data name="Backup_ByJoktan" xml:space="preserve">
+    <value> by Joktan {0}</value>
+    <comment>{0}: manifest.AppVersion</comment>
+  </data>
+  <data name="Backup_CouldNotRead" xml:space="preserve">
+    <value>Could not read {0}: {1}</value>
+    <comment>{0}: _settings.EffectiveFolder, {1}: e.Message</comment>
+  </data>
+  <data name="Backup_File" xml:space="preserve">
+    <value>file</value>
+  </data>
+  <data name="Backup_Files" xml:space="preserve">
+    <value>files</value>
+  </data>
+  <data name="Backup_FoldersAndBackup" xml:space="preserve">
+    <value>Folders and Backup</value>
+  </data>
+  <data name="Backup_GiveTheWholePathOfThe" xml:space="preserve">
+    <value>Give the whole path of the backup folder, such as one picked with Browse.</value>
+  </data>
+  <data name="Backup_Made" xml:space="preserve">
+    <value>Made {0:yyyy-MM-dd HH:mm}{1}.</value>
+    <comment>{0}: manifest.Created, {1}: (manifest.AppVersion.Length &gt; 0 ? string.Format(Strings.Backup_ByJoktan, manifest.AppVersion) : "")</comment>
+  </data>
+  <data name="Backup_NothingIsSwitchedOnToBack" xml:space="preserve">
+    <value>Nothing is switched on to back up.</value>
+  </data>
+  <data name="Backup_NothingIsSwitchedOnToRestore" xml:space="preserve">
+    <value>Nothing is switched on to restore.</value>
+  </data>
+  <data name="Backup_NothingWasChanged" xml:space="preserve">
+    <value>Nothing was changed. {0}</value>
+    <comment>{0}: e.Message</comment>
+  </data>
+  <data name="Backup_RestartingToRestore" xml:space="preserve">
+    <value>Restarting to restore…</value>
+  </data>
+  <data name="Backup_RestoredFrom" xml:space="preserve">
+    <value>Restored {0} from {1}.{2}</value>
+    <comment>{0}: string.Join(", ", outcome.Restored), {1}: Path.GetFileName(outcome.ZipPath), {2}: safety</comment>
+  </data>
+  <data name="Backup_SettingsFoldersAndBackup" xml:space="preserve">
+    <value>Settings / Folders and Backup</value>
+  </data>
+  <data name="Backup_TheRestoreDidNotFinish" xml:space="preserve">
+    <value>The restore did not finish: {0}{1}</value>
+    <comment>{0}: error, {1}: safety</comment>
+  </data>
+  <data name="Backup_ThisReplacesWithWhatIsIn" xml:space="preserve">
+    <value>This replaces {0} with what is in the backup, removing anything made since. What is there now is zipped first, and Joktan restarts.</value>
+    <comment>{0}: string.Join(", ", RestoreRows.Where(r =&gt; r.IsChosen).Select(r =&gt; r.Name))</comment>
+  </data>
+  <data name="Backup_WhatWasThereBeforeIsIn" xml:space="preserve">
+    <value> What was there before is in {0}.</value>
+    <comment>{0}: outcome.SafetyPath</comment>
+  </data>
+  <data name="ColorsView_DarkControls" xml:space="preserve">
+    <value>Dark controls</value>
+  </data>
+  <data name="ColorsView_WhetherTextBoxesSwitchesAndOther" xml:space="preserve">
+    <value>Whether text boxes, switches and other controls take their look for a dark background.</value>
+  </data>
+  <data name="Colors_Colours" xml:space="preserve">
+    <value>Colours</value>
+  </data>
+  <data name="Colors_SettingsColours" xml:space="preserve">
+    <value>Settings / Colours</value>
+  </data>
+  <data name="DataFolderMove_CouldNotUse" xml:space="preserve">
+    <value>Could not use {0}: {1}</value>
+    <comment>{0}: to, {1}: e.Message</comment>
+  </data>
+  <data name="DataFolderMove_ItHoldsOtherFilesChooseAn" xml:space="preserve">
+    <value>It holds other files. Choose an empty folder, or one that already holds Joktan's settings.</value>
+  </data>
+  <data name="DataFolderMove_ItIsInsideTheFolderIn" xml:space="preserve">
+    <value>It is inside the folder in use. Choose one outside it.</value>
+  </data>
+  <data name="DataFolderMove_RestartingToOpenTheSettingsAlready" xml:space="preserve">
+    <value>Restarting to open the settings already in {0}.</value>
+    <comment>{0}: target</comment>
+  </data>
+  <data name="DataFolderMove_RestartingToUse" xml:space="preserve">
+    <value>Restarting to use {0}.</value>
+    <comment>{0}: target</comment>
+  </data>
+  <data name="DataFolderMove_RestartingToUseTheOriginalsAre" xml:space="preserve">
+    <value>Restarting to use {0}. The originals are still in {1}.</value>
+    <comment>{0}: target, {1}: source</comment>
+  </data>
+  <data name="FolderRow_GiveTheWholePathOfThe" xml:space="preserve">
+    <value>Give the whole path of the folder, such as one picked with Browse.</value>
+  </data>
+  <data name="FolderRow_NoFolderChosen" xml:space="preserve">
+    <value>No folder chosen</value>
+  </data>
+  <data name="FolderSource_UseFolder" xml:space="preserve">
+    <value>Use folder</value>
+  </data>
+  <data name="FontRow_InterComesWithJoktan" xml:space="preserve">
+    <value>Inter (comes with Joktan)</value>
+  </data>
+  <data name="FontRow_NotInstalled" xml:space="preserve">
+    <value>{0} (not installed)</value>
+    <comment>{0}: name</comment>
+  </data>
+  <data name="FontRow_SameAsTheInterface" xml:space="preserve">
+    <value>Same as the interface</value>
+  </data>
+  <data name="FontRow_TheSystemSMonospacedFont" xml:space="preserve">
+    <value>The system's monospaced font</value>
+  </data>
+  <data name="FontsView_Fonts" xml:space="preserve">
+    <value>Fonts</value>
+  </data>
+  <data name="FontsView_TheFontsAreTheOnesOn" xml:space="preserve">
+    <value>The fonts are the ones on this computer. A theme that names one another computer does not have uses Inter there instead.</value>
+  </data>
+  <data name="FontsView_TheQuickBrownFoxJumpsOver" xml:space="preserve">
+    <value>The quick brown fox jumps over the lazy dog 0123</value>
+  </data>
+  <data name="Fonts_Fonts" xml:space="preserve">
+    <value>Fonts</value>
+  </data>
+  <data name="Fonts_SettingsFonts" xml:space="preserve">
+    <value>Settings / Fonts</value>
+  </data>
+  <data name="MenuSettingsView_ChooseWhatTheMenuShowsAnd" xml:space="preserve">
+    <value>Choose what the menu shows and put it in the order you want. Hiding a feature only takes it off the menu: what it has running keeps running, and its data is kept. Settings and this page always stay.</value>
+  </data>
+  <data name="MenuSettingsView_Down" xml:space="preserve">
+    <value>Down</value>
+  </data>
+  <data name="MenuSettingsView_Menu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="MenuSettingsView_Up" xml:space="preserve">
+    <value>Up</value>
+  </data>
+  <data name="MenuSettings_Menu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="MenuSettings_SettingsMenu" xml:space="preserve">
+    <value>Settings / Menu</value>
+  </data>
+  <data name="PendingRestore_TheRestoreCouldNotBeStarted" xml:space="preserve">
+    <value>The restore could not be started: {0}</value>
+    <comment>{0}: e.Message</comment>
+  </data>
+  <data name="RestoreRow_File" xml:space="preserve">
+    <value>file</value>
+  </data>
+  <data name="RestoreRow_Files" xml:space="preserve">
+    <value>files</value>
+  </data>
+  <data name="RestoreRow_GoesTo" xml:space="preserve">
+    <value>{0} {1}, goes to {2}</value>
+    <comment>{0}: item.FileCount, {1}: (item.FileCount == 1 ? Strings.RestoreRow_File : Strings.RestoreRow_Files), {2}: target</comment>
+  </data>
+  <data name="RestoreRow_NothingOfThisIsInThe" xml:space="preserve">
+    <value>Nothing of this is in the backup</value>
+  </data>
+  <data name="SearchSettingsView_Alerts" xml:space="preserve">
+    <value>Alerts</value>
+  </data>
+  <data name="SearchSettingsView_ChooseWhatTheSearchBoxIn" xml:space="preserve">
+    <value>Choose what the search box in the top bar looks through. Switching an area off only leaves it out of the results: nothing in it changes.</value>
+  </data>
+  <data name="SearchSettingsView_Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="SearchSettingsView_Messages" xml:space="preserve">
+    <value>Messages</value>
+  </data>
+  <data name="SearchSettingsView_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="SearchSettingsView_Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SearchSettingsView_SearchTheAlertsKeptOnThis" xml:space="preserve">
+    <value>Search the alerts kept on this computer</value>
+  </data>
+  <data name="SearchSettingsView_SearchTheHelpTopics" xml:space="preserve">
+    <value>Search the help topics</value>
+  </data>
+  <data name="SearchSettingsView_SearchTheMessagesKeptOnThis" xml:space="preserve">
+    <value>Search the messages kept on this computer</value>
+  </data>
+  <data name="SearchSettingsView_SearchTheTitlesAndTextOf" xml:space="preserve">
+    <value>Search the titles and text of notes</value>
+  </data>
+  <data name="SearchSettings_Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SearchSettings_SettingsSearch" xml:space="preserve">
+    <value>Settings / Search</value>
+  </data>
+  <data name="TextSizesView_SampleText" xml:space="preserve">
+    <value>Sample text</value>
+  </data>
+  <data name="TextSizes_SettingsTextSizes" xml:space="preserve">
+    <value>Settings / Text Sizes</value>
+  </data>
+  <data name="TextSizes_TextSizes" xml:space="preserve">
+    <value>Text Sizes</value>
+  </data>
+  <data name="ThemeBar_ChangesNotSaved" xml:space="preserve">
+    <value>: changes not saved</value>
+  </data>
+  <data name="ThemeBar_Discard" xml:space="preserve">
+    <value>Discard</value>
+  </data>
+  <data name="ThemeBar_FollowingTheSystem" xml:space="preserve">
+    <value>{0} (following the system)</value>
+    <comment>{0}: Editor.Draft.Name</comment>
+  </data>
+  <data name="ThemeBar_NewThemeName" xml:space="preserve">
+    <value>New theme name</value>
+  </data>
+  <data name="ThemeBar_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ThemeBar_SaveAsNew" xml:space="preserve">
+    <value>Save as new</value>
+  </data>
+  <data name="ThemeBar_Theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="ThemeBar_ThisThemeComesWithJoktanAnd" xml:space="preserve">
+    <value>This theme comes with Joktan and stays as it is. Save the changes as a new theme to keep them.</value>
+  </data>
+  <data name="ThemeEditor_Dark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="ThemeEditor_FollowSystem" xml:space="preserve">
+    <value>Follow system</value>
+  </data>
+  <data name="ThemeEditor_GiveTheThemeAName" xml:space="preserve">
+    <value>Give the theme a name</value>
+  </data>
+  <data name="ThemeEditor_GreenDark" xml:space="preserve">
+    <value>Green Dark</value>
+  </data>
+  <data name="ThemeEditor_Light" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="ThemeEditor_ThereIsAlreadyAThemeWith" xml:space="preserve">
+    <value>There is already a theme with that name</value>
+  </data>
+  <data name="ThemeRow_BuiltIn" xml:space="preserve">
+    <value>Built in</value>
+  </data>
+  <data name="ThemeRow_Saved" xml:space="preserve">
+    <value>Saved</value>
+  </data>
+  <data name="ThemeTokens_Accent" xml:space="preserve">
+    <value>Accent</value>
+  </data>
+  <data name="ThemeTokens_AccentAndStatus" xml:space="preserve">
+    <value>Accent and status</value>
+  </data>
+  <data name="ThemeTokens_Agent" xml:space="preserve">
+    <value>Agent</value>
+  </data>
+  <data name="ThemeTokens_AppBackground" xml:space="preserve">
+    <value>App background</value>
+  </data>
+  <data name="ThemeTokens_Axis" xml:space="preserve">
+    <value>Axis</value>
+  </data>
+  <data name="ThemeTokens_Background" xml:space="preserve">
+    <value>Background</value>
+  </data>
+  <data name="ThemeTokens_BodyAndControls" xml:space="preserve">
+    <value>Body and controls</value>
+  </data>
+  <data name="ThemeTokens_Borders" xml:space="preserve">
+    <value>Borders</value>
+  </data>
+  <data name="ThemeTokens_Brand" xml:space="preserve">
+    <value>Brand</value>
+  </data>
+  <data name="ThemeTokens_BrandOnTheSplashScreen" xml:space="preserve">
+    <value>Brand on the splash screen</value>
+  </data>
+  <data name="ThemeTokens_Caption" xml:space="preserve">
+    <value>Caption</value>
+  </data>
+  <data name="ThemeTokens_CardTitle" xml:space="preserve">
+    <value>Card title</value>
+  </data>
+  <data name="ThemeTokens_CardsAndTopBar" xml:space="preserve">
+    <value>Cards and top bar</value>
+  </data>
+  <data name="ThemeTokens_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="ThemeTokens_CodeWithinFormattedText" xml:space="preserve">
+    <value>Code within formatted text</value>
+  </data>
+  <data name="ThemeTokens_Danger" xml:space="preserve">
+    <value>Danger</value>
+  </data>
+  <data name="ThemeTokens_DialogTitle" xml:space="preserve">
+    <value>Dialog title</value>
+  </data>
+  <data name="ThemeTokens_Divider" xml:space="preserve">
+    <value>Divider</value>
+  </data>
+  <data name="ThemeTokens_Entry" xml:space="preserve">
+    <value>Entry</value>
+  </data>
+  <data name="ThemeTokens_EntryUnderThePointer" xml:space="preserve">
+    <value>Entry under the pointer</value>
+  </data>
+  <data name="ThemeTokens_EntryWithinAGroup" xml:space="preserve">
+    <value>Entry within a group</value>
+  </data>
+  <data name="ThemeTokens_Fonts" xml:space="preserve">
+    <value>Fonts</value>
+  </data>
+  <data name="ThemeTokens_FormattedText" xml:space="preserve">
+    <value>Formatted text</value>
+  </data>
+  <data name="ThemeTokens_Graphs" xml:space="preserve">
+    <value>Graphs</value>
+  </data>
+  <data name="ThemeTokens_Heading1" xml:space="preserve">
+    <value>Heading 1</value>
+  </data>
+  <data name="ThemeTokens_Heading2" xml:space="preserve">
+    <value>Heading 2</value>
+  </data>
+  <data name="ThemeTokens_Heading3" xml:space="preserve">
+    <value>Heading 3</value>
+  </data>
+  <data name="ThemeTokens_Headings" xml:space="preserve">
+    <value>Headings</value>
+  </data>
+  <data name="ThemeTokens_Highlight" xml:space="preserve">
+    <value>Highlight</value>
+  </data>
+  <data name="ThemeTokens_Information" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="ThemeTokens_Interface" xml:space="preserve">
+    <value>Interface</value>
+  </data>
+  <data name="ThemeTokens_Label" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="ThemeTokens_Menu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="ThemeTokens_MutedText" xml:space="preserve">
+    <value>Muted text</value>
+  </data>
+  <data name="ThemeTokens_NoteEditor" xml:space="preserve">
+    <value>Note editor</value>
+  </data>
+  <data name="ThemeTokens_NoteTitle" xml:space="preserve">
+    <value>Note title</value>
+  </data>
+  <data name="ThemeTokens_PageHeader" xml:space="preserve">
+    <value>Page header</value>
+  </data>
+  <data name="ThemeTokens_PageTitle" xml:space="preserve">
+    <value>Page title</value>
+  </data>
+  <data name="ThemeTokens_Paragraph" xml:space="preserve">
+    <value>Paragraph</value>
+  </data>
+  <data name="ThemeTokens_Pink" xml:space="preserve">
+    <value>Pink</value>
+  </data>
+  <data name="ThemeTokens_PromptsButton" xml:space="preserve">
+    <value>Prompts button</value>
+  </data>
+  <data name="ThemeTokens_RequestMethod" xml:space="preserve">
+    <value>Request method</value>
+  </data>
+  <data name="ThemeTokens_Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="ThemeTokens_Secondary" xml:space="preserve">
+    <value>Secondary</value>
+  </data>
+  <data name="ThemeTokens_SectionTitle" xml:space="preserve">
+    <value>Section title</value>
+  </data>
+  <data name="ThemeTokens_SelectedEntry" xml:space="preserve">
+    <value>Selected entry</value>
+  </data>
+  <data name="ThemeTokens_SelectedTextAndBrand" xml:space="preserve">
+    <value>Selected text and brand</value>
+  </data>
+  <data name="ThemeTokens_Series1Blue" xml:space="preserve">
+    <value>Series 1 (Blue)</value>
+  </data>
+  <data name="ThemeTokens_Series2Orange" xml:space="preserve">
+    <value>Series 2 (Orange)</value>
+  </data>
+  <data name="ThemeTokens_Series3Aqua" xml:space="preserve">
+    <value>Series 3 (Aqua)</value>
+  </data>
+  <data name="ThemeTokens_Series4Yellow" xml:space="preserve">
+    <value>Series 4 (Yellow)</value>
+  </data>
+  <data name="ThemeTokens_Series5Magenta" xml:space="preserve">
+    <value>Series 5 (Magenta)</value>
+  </data>
+  <data name="ThemeTokens_Series6Green" xml:space="preserve">
+    <value>Series 6 (Green)</value>
+  </data>
+  <data name="ThemeTokens_Series7Violet" xml:space="preserve">
+    <value>Series 7 (Violet)</value>
+  </data>
+  <data name="ThemeTokens_Series8Red" xml:space="preserve">
+    <value>Series 8 (Red)</value>
+  </data>
+  <data name="ThemeTokens_Small" xml:space="preserve">
+    <value>Small</value>
+  </data>
+  <data name="ThemeTokens_Smallest" xml:space="preserve">
+    <value>Smallest</value>
+  </data>
+  <data name="ThemeTokens_Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="ThemeTokens_SurfacesAndText" xml:space="preserve">
+    <value>Surfaces and text</value>
+  </data>
+  <data name="ThemeTokens_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="ThemeTokens_Teal" xml:space="preserve">
+    <value>Teal</value>
+  </data>
+  <data name="ThemeTokens_Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="ThemeTokens_TextOnTheAccent" xml:space="preserve">
+    <value>Text on the accent</value>
+  </data>
+  <data name="ThemeTokens_TextOnTheHighlight" xml:space="preserve">
+    <value>Text on the highlight</value>
+  </data>
+  <data name="ThemeTokens_UnderThePointer" xml:space="preserve">
+    <value>Under the pointer</value>
+  </data>
+  <data name="ThemeTokens_ValueOnATile" xml:space="preserve">
+    <value>Value on a tile</value>
+  </data>
+  <data name="ThemeTokens_Violet" xml:space="preserve">
+    <value>Violet</value>
+  </data>
+  <data name="ThemeTokens_Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="ThemesView_AThemeHoldsAllTheColours" xml:space="preserve">
+    <value>A theme holds all the colours, fonts and text sizes. Change them on the Colours, Fonts and Text Sizes pages. To choose another theme, first save or discard any changes.</value>
+  </data>
+  <data name="ThemesView_ChooseATheme" xml:space="preserve">
+    <value>Choose a theme</value>
+  </data>
+  <data name="ThemesView_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Themes_SettingsThemes" xml:space="preserve">
+    <value>Settings / Themes</value>
+  </data>
+  <data name="Themes_Themes" xml:space="preserve">
+    <value>Themes</value>
+  </data>
+</root>

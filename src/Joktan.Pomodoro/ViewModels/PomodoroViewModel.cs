@@ -4,6 +4,7 @@ using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Core.ViewModels;
+using Joktan.Pomodoro.Resources;
 
 namespace Joktan.Pomodoro.ViewModels;
 
@@ -29,7 +30,7 @@ public partial class PomodoroViewModel : PageViewModel
     private TimeSpan _length;
     private int _focusesDone;
 
-    public PomodoroViewModel(PomodoroSettings settings) : base("Pomodoro", "Periods of focus with breaks between them")
+    public PomodoroViewModel(PomodoroSettings settings) : base(Strings.Pomodoro_Pomodoro, Strings.Pomodoro_PeriodsOfFocusWithBreaksBetween)
     {
         _settings = settings;
         _timer = new DispatcherTimer { Interval = TickInterval };
@@ -80,22 +81,22 @@ public partial class PomodoroViewModel : PageViewModel
 
     public string PhaseName => Phase switch
     {
-        PomodoroPhase.ShortBreak => "Short break",
-        PomodoroPhase.LongBreak => "Long break",
-        _ => $"Focus {Math.Min(_focusesDone + 1, FocusesBeforeLongBreak)} of {FocusesBeforeLongBreak}",
+        PomodoroPhase.ShortBreak => Strings.Pomodoro_ShortBreak,
+        PomodoroPhase.LongBreak => Strings.Pomodoro_LongBreak,
+        _ => string.Format(Strings.Pomodoro_FocusOf, Math.Min(_focusesDone + 1, FocusesBeforeLongBreak), FocusesBeforeLongBreak),
     };
 
-    public string StartPauseText => IsRunning ? "Pause" : IsPartway ? "Resume" : "Start";
+    public string StartPauseText => IsRunning ? Strings.Pomodoro_Pause : IsPartway ? Strings.Pomodoro_Resume : Strings.Pomodoro_Start;
 
-    public string TopBarTip => $"Pomodoro: {PhaseName}, {RemainingText} left";
+    public string TopBarTip => string.Format(Strings.Pomodoro_PomodoroLeft, PhaseName, RemainingText);
 
     public int DoneToday => _settings.DoneOn == Today ? _settings.DoneCount : 0;
 
     public string DoneTodayText => DoneToday switch
     {
-        0 => "No focus periods finished today",
-        1 => "1 focus period finished today",
-        var count => $"{count} focus periods finished today",
+        0 => Strings.Pomodoro_NoFocusPeriodsFinishedToday,
+        1 => Strings.Pomodoro_1FocusPeriodFinishedToday,
+        var count => string.Format(Strings.Pomodoro_FocusPeriodsFinishedToday, count),
     };
 
     public int FocusMinutes
@@ -232,14 +233,14 @@ public partial class PomodoroViewModel : PageViewModel
         {
             CountFocus();
             next = ++_focusesDone >= FocusesBeforeLongBreak ? PomodoroPhase.LongBreak : PomodoroPhase.ShortBreak;
-            message = next == PomodoroPhase.LongBreak ? "Focus is over. Time for a long break." : "Focus is over. Time for a short break.";
+            message = next == PomodoroPhase.LongBreak ? Strings.Pomodoro_FocusIsOverTimeForA : Strings.Pomodoro_FocusIsOverTimeForAShort;
         }
         else
         {
             if (Phase == PomodoroPhase.LongBreak)
                 _focusesDone = 0;
             next = PomodoroPhase.Focus;
-            message = "The break is over. Time to focus.";
+            message = Strings.Pomodoro_TheBreakIsOverTimeTo;
         }
 
         Enter(next);

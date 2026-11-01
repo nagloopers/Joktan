@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Joktan.Agent.Resources;
 using Joktan.Core;
 
 namespace Joktan.Agent.Clients;
@@ -160,9 +161,9 @@ public sealed class ClaudeCodeClient : AgentClient
 
     public override string ProgramName => "claude";
 
-    public override string ModelHint => "Such as sonnet or opus. Empty uses the client's default.";
+    public override string ModelHint => Strings.ClaudeCodeClient_SuchAsSonnetOrOpusEmpty;
 
-    public override string InstallHint => "Install it from https://claude.com/claude-code and sign in by running claude once in a terminal.";
+    public override string InstallHint => Strings.ClaudeCodeClient_InstallItFromHttpsClaudeCom;
 
     public override AgentLaunch Prepare(AgentTurn turn)
     {
@@ -195,7 +196,7 @@ public sealed class ClaudeCodeClient : AgentClient
                     output.Text(text);
                 break;
             case "result" when ChildOf(message, "is_error").ValueKind == JsonValueKind.True:
-                output.Problem(TextOf(message, "result") ?? TextOf(message, "subtype") ?? "Claude Code reported an error.");
+                output.Problem(TextOf(message, "result") ?? TextOf(message, "subtype") ?? Strings.ClaudeCodeClient_ClaudeCodeReportedAnError);
                 break;
         }
     }
@@ -213,9 +214,9 @@ public sealed class OpenCodeClient : AgentClient
 
     public override string ProgramName => "opencode";
 
-    public override string ModelHint => "As provider/model, such as lmstudio/qwen3. Empty uses the client's default.";
+    public override string ModelHint => Strings.OpenCodeClient_AsProviderModelSuchAsLmstudio;
 
-    public override string InstallHint => "Install it from https://opencode.ai and choose a provider with opencode auth.";
+    public override string InstallHint => Strings.OpenCodeClient_InstallItFromHttpsOpencodeAi;
 
     public override AgentLaunch Prepare(AgentTurn turn)
     {
@@ -266,7 +267,7 @@ public sealed class OpenCodeClient : AgentClient
                 break;
             case "error":
                 var error = ChildOf(message, "error");
-                output.Problem(TextOf(error, "message") ?? TextOf(ChildOf(error, "data"), "message") ?? "OpenCode reported an error.");
+                output.Problem(TextOf(error, "message") ?? TextOf(ChildOf(error, "data"), "message") ?? Strings.OpenCodeClient_OpenCodeReportedAnError);
                 break;
         }
     }
@@ -284,9 +285,9 @@ public sealed class CopilotClient : AgentClient
 
     public override string ProgramName => "copilot";
 
-    public override string ModelHint => "Such as auto. Empty uses the client's default.";
+    public override string ModelHint => Strings.CopilotClient_SuchAsAutoEmptyUsesThe;
 
-    public override string InstallHint => "Install it with npm install -g @github/copilot and sign in by running copilot once in a terminal.";
+    public override string InstallHint => Strings.CopilotClient_InstallItWithNpmInstallG;
 
     private bool _sawDelta;
 
@@ -331,7 +332,7 @@ public sealed class CopilotClient : AgentClient
                 _sawDelta = false;
                 break;
             case "session.error" or "error":
-                output.Problem(TextOf(data, "message") ?? TextOf(message, "message") ?? "Copilot reported an error.");
+                output.Problem(TextOf(data, "message") ?? TextOf(message, "message") ?? Strings.CopilotClient_CopilotReportedAnError);
                 break;
         }
     }
@@ -345,13 +346,13 @@ public sealed class CustomClient : AgentClient
 
     public override AgentClientKind Kind => AgentClientKind.Custom;
 
-    public override string DisplayName => "Custom command";
+    public override string DisplayName => Strings.CustomClient_CustomCommand;
 
     public override string ProgramName => "";
 
-    public override string ModelHint => "Fills in {model} in the arguments.";
+    public override string ModelHint => Strings.CustomClient_FillsInModelInTheArguments;
 
-    public override string InstallHint => "Give the whole path of the program.";
+    public override string InstallHint => Strings.CustomClient_GiveTheWholePathOfThe;
 
     public override AgentLaunch Prepare(AgentTurn turn)
     {

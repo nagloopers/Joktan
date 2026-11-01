@@ -1,5 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:res="using:Joktan.Resources"
         x:Class="Joktan.Views.SplashWindow"
         Icon="avares://Joktan.Core/Assets/joktan.ico"
         Width="480" Height="300"
@@ -21,7 +22,7 @@
             </StackPanel>
 
             <StackPanel Grid.Row="1" Spacing="8">
-                <TextBlock Name="StatusText" FontSize="{DynamicResource SmallFontSize}" Foreground="{DynamicResource SidebarTextBrush}" Text="Starting…" />
+                <TextBlock Name="StatusText" FontSize="{DynamicResource SmallFontSize}" Foreground="{DynamicResource SidebarTextBrush}" Text="{x:Static res:Strings.SplashWindow_Starting}" />
                 <ProgressBar IsIndeterminate="True" Height="3" MinHeight="3"
                              Foreground="{DynamicResource SidebarTextActiveBrush}"
                              Background="{DynamicResource SidebarActiveBrush}" />

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt;
 
@@ -13,11 +14,11 @@ public static class TopicRules
     public static string? Validate(string? topic)
     {
         if (string.IsNullOrEmpty(topic))
-            return "The topic is empty";
+            return Strings.TopicRules_TheTopicIsEmpty;
         if (topic.Contains('+') || topic.Contains('#'))
-            return "A topic may not contain + or #";
+            return Strings.TopicRules_ATopicMayNotContainOr;
         if (Encoding.UTF8.GetByteCount(topic) > MaxBytes)
-            return "The topic is longer than 65,535 bytes";
+            return Strings.TopicRules_TheTopicIsLongerThan65;
         return null;
     }
 
@@ -25,18 +26,18 @@ public static class TopicRules
     public static string? ValidateFilter(string? filter)
     {
         if (string.IsNullOrEmpty(filter))
-            return "The filter is empty";
+            return Strings.TopicRules_TheFilterIsEmpty;
         if (Encoding.UTF8.GetByteCount(filter) > MaxBytes)
-            return "The filter is longer than 65,535 bytes";
+            return Strings.TopicRules_TheFilterIsLongerThan65;
 
         var levels = filter.Split('/');
         for (var i = 0; i < levels.Length; i++)
         {
             var level = levels[i];
             if (level.Contains('#') && (level != "#" || i != levels.Length - 1))
-                return $"In {filter}, # must be the whole last level";
+                return string.Format(Strings.TopicRules_InMustBeTheWholeLast, filter);
             if (level.Contains('+') && level != "+")
-                return $"In {filter}, + must be a whole level";
+                return string.Format(Strings.TopicRules_InMustBeAWholeLevel, filter);
         }
 
         return null;

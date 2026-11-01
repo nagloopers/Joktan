@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Joktan.Api.Resources;
 using Joktan.Core;
 using Joktan.Core.ViewModels;
 
@@ -19,7 +20,7 @@ namespace Joktan.Api.ViewModels;
 /// </summary>
 public partial class ApiClientViewModel : PageViewModel
 {
-    public const string NoEnvironment = "No environment";
+    public static string NoEnvironment => Strings.ApiClient_NoEnvironment;
 
     private static readonly TimeSpan SaveDelay = TimeSpan.FromMilliseconds(500);
 
@@ -33,7 +34,7 @@ public partial class ApiClientViewModel : PageViewModel
     {
     }
 
-    public ApiClientViewModel(ApiWorkspace workspace) : base("API Client", "Dev Tools / API Client")
+    public ApiClientViewModel(ApiWorkspace workspace) : base(Strings.ApiClient_APIClient, Strings.ApiClient_DevToolsAPIClient)
     {
         Environments.CollectionChanged += (_, _) => OnPropertyChanged(nameof(HasEnvironments));
         _workspace = workspace;
@@ -110,7 +111,7 @@ public partial class ApiClientViewModel : PageViewModel
             if (Selected is not { IsFolder: true } folder)
                 return "";
             var count = folder.SelfAndDescendants().Count(n => n.IsRequest);
-            return count == 1 ? "1 request" : $"{count} requests";
+            return count == 1 ? Strings.ApiClient_1Request : string.Format(Strings.ApiClient_Requests, count);
         }
     }
 
@@ -129,7 +130,7 @@ public partial class ApiClientViewModel : PageViewModel
         {
             // A folder cannot go inside itself.
             var excluded = value.IsFolder ? value.SelfAndDescendants().ToHashSet() : [];
-            FolderChoices.Add(new ApiFolderChoice(_root, "(Top level)"));
+            FolderChoices.Add(new ApiFolderChoice(_root, Strings.ApiClient_TopLevel));
             foreach (var folder in _root.SelfAndDescendants().Where(n => n.IsFolder && n != _root && !excluded.Contains(n)))
                 FolderChoices.Add(new ApiFolderChoice(folder, new string(' ', 4 * folder.Ancestors().Count()) + folder.Name));
             EditFolder = FolderChoices.FirstOrDefault(c => c.Node == value.Parent);
@@ -174,7 +175,7 @@ public partial class ApiClientViewModel : PageViewModel
     {
         Request?.Save();
         var folder = TargetFolder();
-        var path = ApiWorkspace.FreePath(folder, kind == ApiKind.Rest ? "New request" : "New gRPC request", ApiWorkspace.RequestExtension);
+        var path = ApiWorkspace.FreePath(folder, kind == ApiKind.Rest ? Strings.ApiClient_NewRequest : Strings.ApiClient_NewGRPCRequest, ApiWorkspace.RequestExtension);
         var request = kind == ApiKind.Rest
             ? new ApiRequest { Url = "{{baseUrl}}/" }
             : new ApiRequest { Kind = ApiKind.Grpc, Address = "{{grpcAddress}}" };
@@ -186,7 +187,7 @@ public partial class ApiClientViewModel : PageViewModel
     private void NewFolder()
     {
         Request?.Save();
-        var path = ApiWorkspace.FreePath(TargetFolder(), "New folder", "");
+        var path = ApiWorkspace.FreePath(TargetFolder(), Strings.ApiClient_NewFolder, "");
         if (Run(() => Directory.CreateDirectory(path)))
             Reload(path);
     }
@@ -197,7 +198,7 @@ public partial class ApiClientViewModel : PageViewModel
         if (Selected is not { IsRequest: true } node)
             return;
         Request?.Save();
-        var path = ApiWorkspace.FreePath(Path.GetDirectoryName(node.Path)!, node.Name + " copy", ApiWorkspace.RequestExtension);
+        var path = ApiWorkspace.FreePath(Path.GetDirectoryName(node.Path)!, node.Name + Strings.ApiClient_Copy, ApiWorkspace.RequestExtension);
         if (Run(() => File.Copy(node.Path, path)))
             Reload(path);
     }
@@ -295,8 +296,8 @@ public partial class ApiClientViewModel : PageViewModel
 
     public string DeleteText => Selected switch
     {
-        { IsFolder: true } folder => $"Delete the folder {folder.Name} and the {FolderSummary} in it? The files are deleted.",
-        { } request => $"Delete {request.Name}? Its file is deleted.",
+        { IsFolder: true } folder => string.Format(Strings.ApiClient_DeleteTheFolderAndTheIn, folder.Name, FolderSummary),
+        { } request => string.Format(Strings.ApiClient_DeleteItsFileIsDeleted, request.Name),
         _ => "",
     };
 
@@ -377,9 +378,9 @@ public partial class ApiClientViewModel : PageViewModel
     [RelayCommand]
     private void NewEnvironment()
     {
-        var name = "Environment";
+        var name = Strings.ApiClient_Environment;
         for (var n = 2; Environments.Any(e => e.Name == name); n++)
-            name = $"Environment {n}";
+            name = string.Format(Strings.ApiClient_Environment2, n);
         var environment = new ApiEnvironmentViewModel(new ApiEnvironment
         {
             Name = name,
@@ -526,7 +527,7 @@ public partial class ApiClientViewModel : PageViewModel
             folder = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), folder[1..].TrimStart('/', '\\'));
         if (!Path.IsPathFullyQualified(folder))
         {
-            WorkspaceMessage = "Give the whole path of the folder, such as one picked with Browse.";
+            WorkspaceMessage = Strings.ApiClient_GiveTheWholePathOfThe;
             return;
         }
 
@@ -548,7 +549,7 @@ public partial class ApiClientViewModel : PageViewModel
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
-            WorkspaceMessage = $"Could not use {folder}: {e.Message}";
+            WorkspaceMessage = string.Format(Strings.ApiClient_CouldNotUse, folder, e.Message);
             return;
         }
 
@@ -557,8 +558,8 @@ public partial class ApiClientViewModel : PageViewModel
         Open(new ApiWorkspace(folder), null);
         IsChoosingWorkspace = false;
         Message = copied
-            ? $"The requests were copied to {folder}. The originals are still in {previous}."
-            : $"Opened the requests in {folder}.";
+            ? string.Format(Strings.ApiClient_TheRequestsWereCopiedToThe, folder, previous)
+            : string.Format(Strings.ApiClient_OpenedTheRequestsIn, folder);
     }
 
     private void Open(ApiWorkspace workspace, string? select)

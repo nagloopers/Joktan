@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Joktan.Core.ViewModels;
+using Joktan.Settings.Resources;
 using Joktan.Settings.Themes;
 
 namespace Joktan.Settings.ViewModels;
@@ -12,7 +13,7 @@ namespace Joktan.Settings.ViewModels;
 /// <summary>Changes the fonts of the theme being edited.</summary>
 public class FontsViewModel : PageViewModel
 {
-    public FontsViewModel(ThemeEditor editor, ThemeBarViewModel bar) : base("Fonts", "Settings / Fonts")
+    public FontsViewModel(ThemeEditor editor, ThemeBarViewModel bar) : base(Strings.Fonts_Fonts, Strings.Fonts_SettingsFonts)
     {
         Bar = bar;
 
@@ -89,7 +90,7 @@ public partial class FontRowViewModel : ViewModelBase
         _refreshing = true;
         // A theme can name a font this machine does not have. It is kept, and falls back when drawn.
         if (name.Length > 0 && !_installed.Contains(name))
-            Choices = [_default, new FontChoice(name, $"{name} (not installed)"), .. _installed.Select(n => new FontChoice(n, n))];
+            Choices = [_default, new FontChoice(name, string.Format(Strings.FontRow_NotInstalled, name)), .. _installed.Select(n => new FontChoice(n, n))];
         else if (Choices.Count != _installed.Count + 1)
             Choices = [_default, .. _installed.Select(n => new FontChoice(n, n))];
 
@@ -108,8 +109,8 @@ public partial class FontRowViewModel : ViewModelBase
 
     private static string DefaultLabel(string key) => key switch
     {
-        ThemeTokens.InterfaceFont => "Inter (comes with Joktan)",
-        ThemeTokens.CodeFont => "The system's monospaced font",
-        _ => "Same as the interface",
+        ThemeTokens.InterfaceFont => Strings.FontRow_InterComesWithJoktan,
+        ThemeTokens.CodeFont => Strings.FontRow_TheSystemSMonospacedFont,
+        _ => Strings.FontRow_SameAsTheInterface,
     };
 }

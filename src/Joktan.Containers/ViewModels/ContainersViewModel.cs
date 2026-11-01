@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Joktan.Containers.Resources;
 using Joktan.Core.ViewModels;
 
 namespace Joktan.Containers.ViewModels;
@@ -20,7 +21,7 @@ namespace Joktan.Containers.ViewModels;
 /// </summary>
 public partial class ContainersViewModel : PageViewModel
 {
-    public const string AllServices = "All services";
+    public static string AllServices => Strings.Containers_AllServices;
 
     private const int MaxLogLines = 5000;
     private const int MaxOutputLines = 1000;
@@ -43,7 +44,7 @@ public partial class ContainersViewModel : PageViewModel
     private DateTimeOffset? _logsEndedAt;
 
     public ContainersViewModel(string? dataFolder = null)
-        : base("Containers", "Dev Tools / Containers")
+        : base(Strings.Containers_Containers, Strings.Containers_DevToolsContainers)
     {
         _dataFolder = dataFolder;
         _settings = ComposeSettings.Load(dataFolder);
@@ -109,7 +110,7 @@ public partial class ContainersViewModel : PageViewModel
     [NotifyPropertyChangedFor(nameof(LogsButtonText))]
     public partial bool IsFollowingLogs { get; set; }
 
-    public string LogsButtonText => IsFollowingLogs ? "Stop" : "Show logs";
+    public string LogsButtonText => IsFollowingLogs ? Strings.Containers_Stop : Strings.Containers_ShowLogs;
 
     /// <summary>Whether the logs and command output are shown, rather than collapsed to a bar.</summary>
     [ObservableProperty]
@@ -186,7 +187,7 @@ public partial class ContainersViewModel : PageViewModel
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
-            Error = $"Could not save the settings: {e.Message}";
+            Error = string.Format(Strings.Containers_CouldNotSaveTheSettings, e.Message);
         }
     }
 
@@ -223,14 +224,14 @@ public partial class ContainersViewModel : PageViewModel
 
         if (!File.Exists(path))
         {
-            Error = $"{path} does not exist.";
+            Error = string.Format(Strings.Containers_DoesNotExist, path);
             return false;
         }
 
         var comparison = OperatingSystem.IsLinux() ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
         if (Projects.Any(p => string.Equals(p.File, path, comparison)))
         {
-            Error = $"{path} is already on the list.";
+            Error = string.Format(Strings.Containers_IsAlreadyOnTheList, path);
             return false;
         }
 
@@ -262,14 +263,14 @@ public partial class ContainersViewModel : PageViewModel
         SyncLogChoices();
         var total = Projects.Sum(p => p.Services.Count);
         var running = Projects.Sum(p => p.Services.Count(r => r.IsRunning));
-        Summary = !HasProjects || total == 0 ? "" : $"{running} of {total} running";
+        Summary = !HasProjects || total == 0 ? "" : string.Format(Strings.Containers_OfRunning, running, total);
 
         foreach (var project in Projects)
         {
             var same = Projects.FirstOrDefault(p => p != project && string.Equals(p.Name, project.Name, StringComparison.OrdinalIgnoreCase));
             project.NameWarning = same is null
                 ? null
-                : $"{same.File} has the same project name, so their containers are mixed up. Add a name: line at the top of one of the files.";
+                : string.Format(Strings.Containers_HasTheSameProjectNameSo, same.File);
         }
     }
 
@@ -387,7 +388,7 @@ public partial class ContainersViewModel : PageViewModel
         {
             _engine ??= ComposeTool.ResolveAsync(SelectedEngine, file);
             var tool = await _engine;
-            EngineText = $"{tool.EngineName} compose, with {tool.Executable}";
+            EngineText = string.Format(Strings.Containers_ComposeWith, tool.EngineName, tool.Executable);
             if (Error is not null && Error == _statusError)
                 Error = null;
             _statusError = null;
@@ -430,11 +431,11 @@ public partial class ContainersViewModel : PageViewModel
                 ? await tool.RunEngineAsync(arguments, AddOutput, _command.Token)
                 : await tool.RunAsync(arguments, AddOutput, _command.Token);
             if (exitCode != 0)
-                project.Error = $"{commandLine} failed with exit code {exitCode}. See the command output.";
+                project.Error = string.Format(Strings.Containers_FailedWithExitCodeSeeThe, commandLine, exitCode);
         }
         catch (OperationCanceledException)
         {
-            AddOutput("Cancelled.");
+            AddOutput(Strings.Containers_Cancelled);
         }
         catch (Exception e) when (e is InvalidOperationException or System.ComponentModel.Win32Exception)
         {
@@ -458,7 +459,7 @@ public partial class ContainersViewModel : PageViewModel
         if (SelectedLog is not { } choice)
         {
             _wantLogs = false;
-            Error = "Add a compose file to see its logs.";
+            Error = Strings.Containers_AddAComposeFileToSee;
             return;
         }
 
@@ -493,8 +494,8 @@ public partial class ContainersViewModel : PageViewModel
             if (_logs == cancel)
             {
                 _incomingLogs.Enqueue(exitCode == 0
-                    ? "── The logs ended because no container is running. They continue when one is started from this page."
-                    : $"── The logs stopped with exit code {exitCode}.");
+                    ? Strings.Containers_TheLogsEndedBecauseNoContainer
+                    : string.Format(Strings.Containers_TheLogsStoppedWithExitCode, exitCode));
             }
         }
         catch (OperationCanceledException)

@@ -5,6 +5,7 @@ using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Joktan.Core;
 using Joktan.Core.ViewModels;
+using Joktan.Dashboard.Resources;
 using Joktan.Dashboard.Telemetry;
 
 namespace Joktan.Dashboard.ViewModels;
@@ -15,22 +16,22 @@ public partial class DashboardViewModel : PageViewModel
 {
     private const string Missing = "–";
 
-    private readonly MetricTileViewModel _cpu = new("CPU usage", Icons.Cpu, hasMeter: true, hasTrend: true);
-    private readonly MetricTileViewModel _memory = new("Memory used", Icons.Memory, hasMeter: true, hasTrend: true);
-    private readonly MetricTileViewModel _disk = new("Disk used", Icons.Disk, hasMeter: true);
-    private readonly MetricTileViewModel _uptime = new("Uptime", Icons.Clock);
+    private readonly MetricTileViewModel _cpu = new(Strings.Dashboard_CPUUsage, Icons.Cpu, hasMeter: true, hasTrend: true);
+    private readonly MetricTileViewModel _memory = new(Strings.Dashboard_MemoryUsed, Icons.Memory, hasMeter: true, hasTrend: true);
+    private readonly MetricTileViewModel _disk = new(Strings.Dashboard_DiskUsed, Icons.Disk, hasMeter: true);
+    private readonly MetricTileViewModel _uptime = new(Strings.Dashboard_Uptime, Icons.Clock);
 
     public DashboardViewModel(MachineMonitor monitor)
-        : base("Overview", "Live metrics for this machine")
+        : base(Strings.Dashboard_Overview, Strings.Dashboard_LiveMetricsForThisMachine)
     {
         Tiles = [_cpu, _memory, _disk, _uptime];
         SystemInfo =
         [
-            new InfoRow("Machine name", Environment.MachineName),
-            new InfoRow("Operating system", RuntimeInformation.OSDescription),
-            new InfoRow("Architecture", RuntimeInformation.OSArchitecture.ToString()),
-            new InfoRow("Logical processors", Environment.ProcessorCount.ToString()),
-            new InfoRow(".NET runtime", Environment.Version.ToString()),
+            new InfoRow(Strings.Dashboard_MachineName, Environment.MachineName),
+            new InfoRow(Strings.Dashboard_OperatingSystem, RuntimeInformation.OSDescription),
+            new InfoRow(Strings.Dashboard_Architecture, RuntimeInformation.OSArchitecture.ToString()),
+            new InfoRow(Strings.Dashboard_LogicalProcessors, Environment.ProcessorCount.ToString()),
+            new InfoRow(Strings.Dashboard_NETRuntime, Environment.Version.ToString()),
         ];
 
         Apply(monitor.Latest);
@@ -42,7 +43,7 @@ public partial class DashboardViewModel : PageViewModel
     public IReadOnlyList<InfoRow> SystemInfo { get; }
 
     public string TelemetrySummary
-        => $"Exported over OTLP to {TelemetryHost.Endpoint} from the {MachineMetrics.MeterName} meter.";
+        => string.Format(Strings.Dashboard_ExportedOverOTLPToFromThe, TelemetryHost.Endpoint, MachineMetrics.MeterName);
 
     /// <summary>The instruments exported through OpenTelemetry, with their latest values.</summary>
     [ObservableProperty]
@@ -52,7 +53,7 @@ public partial class DashboardViewModel : PageViewModel
     {
         _cpu.Update(
             FormatPercent(s.CpuUtilization),
-            $"{Environment.ProcessorCount} logical processors",
+            string.Format(Strings.Dashboard_LogicalProcessors2, Environment.ProcessorCount),
             s.CpuUtilization);
         _memory.Update(
             FormatPercent(s.MemoryUtilization),
@@ -62,7 +63,7 @@ public partial class DashboardViewModel : PageViewModel
             FormatPercent(s.DiskUtilization),
             FormatUsage(s.DiskUsedBytes, s.DiskTotalBytes),
             s.DiskUtilization);
-        _uptime.Update(FormatDuration(s.Uptime), $"Started {DateTime.Now - s.Uptime:g}");
+        _uptime.Update(FormatDuration(s.Uptime), string.Format(Strings.Dashboard_Started, DateTime.Now - s.Uptime));
 
         ExportedMetrics =
         [
@@ -83,7 +84,7 @@ public partial class DashboardViewModel : PageViewModel
         => ratio is { } r ? $"{r * 100:0}%" : Missing;
 
     private static string FormatUsage(long? used, long? total)
-        => used is null || total is null ? "Not available" : $"{FormatBytes(used)} of {FormatBytes(total)}";
+        => used is null || total is null ? Strings.Dashboard_NotAvailable : string.Format(Strings.Dashboard_Of, FormatBytes(used), FormatBytes(total));
 
     private static string FormatBytes(long? bytes)
     {
@@ -92,7 +93,7 @@ public partial class DashboardViewModel : PageViewModel
 
         const double mb = 1024 * 1024;
         const double gb = mb * 1024;
-        return b >= gb ? $"{b / gb:0.0} GB" : $"{b / mb:0} MB";
+        return b >= gb ? string.Format(Strings.Dashboard_GB, b / gb) : string.Format(Strings.Dashboard_MB, b / mb);
     }
 
     private static string FormatDuration(TimeSpan t)

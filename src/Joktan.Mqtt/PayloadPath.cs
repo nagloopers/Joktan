@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt;
 
@@ -59,11 +60,11 @@ public sealed class PayloadPath
             if (int.TryParse(link, NumberStyles.None, CultureInfo.InvariantCulture, out var level))
             {
                 if (pattern.Keys.All(k => k.Level != level))
-                    return $"{{{link}}} must be the index of a wildcard in {pattern.Text}, counting from 0";
+                    return string.Format(Strings.PayloadPath_MustBeTheIndexOfA, link, pattern.Text);
             }
             else if (pattern.Keys.All(k => k.Name != link))
             {
-                return $"{{{link}}} is not a key of {pattern.Text}";
+                return string.Format(Strings.PayloadPath_IsNotAKeyOf, link, pattern.Text);
             }
         }
 
@@ -194,7 +195,7 @@ public sealed class PayloadPath
             {
                 var end = ClosingBracket(at);
                 if (end < 0)
-                    return $"{Text} has a [ with no ]";
+                    return string.Format(Strings.PayloadPath_HasAWithNo, Text);
 
                 if (ReadSelector(Text[(at + 1)..end]) is { } problem)
                     return problem;
@@ -204,7 +205,7 @@ public sealed class PayloadPath
             {
                 var end = Text.IndexOf('}', at);
                 if (end < 0)
-                    return $"{Text} has a {{ with no }}";
+                    return string.Format(Strings.PayloadPath_HasAWithNo2, Text);
 
                 _steps.Add(new NameStep(Text[(at + 1)..end], IsLink: true));
                 at = end + 1;
@@ -251,14 +252,14 @@ public sealed class PayloadPath
         }
 
         if (selector.StartsWith('{'))
-            return $"[{selector}] depends on the order of the array. Choose the item by a field, such as [sensor={selector}]";
+            return string.Format(Strings.PayloadPath_DependsOnTheOrderOfThe, selector, selector);
 
         var conditions = new List<Condition>();
         foreach (var part in SplitConditions(selector))
         {
             var equals = part.IndexOf('=');
             if (equals <= 0)
-                return $"[{selector}] is not understood. Use a position, *, or a field and its value, such as [sensor=temperature]";
+                return string.Format(Strings.PayloadPath_IsNotUnderstoodUseAPosition, selector);
 
             var field = part[..equals].Trim();
             var value = part[(equals + 1)..].Trim();

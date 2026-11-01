@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 using Joktan.Certificates;
 using Joktan.Core;
 using Joktan.Core.ViewModels;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt.ViewModels;
 
@@ -27,7 +28,7 @@ public partial class MqttViewModel : PageViewModel
     /// <param name="certificates">The certificates made on the Certificates page, offered in the client settings.</param>
     /// <param name="settings">The settings, if already read; otherwise they are read here.</param>
     public MqttViewModel(CertificateStore? certificates = null, MqttSettings? settings = null)
-        : base("MQTT", "Dev Tools / Brokers / MQTT")
+        : base(Strings.Mqtt_MQTT, Strings.Mqtt_DevToolsBrokersMQTT)
     {
         _certificates = certificates;
         _settings = settings ?? MqttSettings.Load();
@@ -219,8 +220,8 @@ public partial class MqttViewModel : PageViewModel
     {
         for (var i = Clients.Count + 1; ; i++)
         {
-            if (!AllClients.Any(c => c.Name.Equals($"client {i}", StringComparison.OrdinalIgnoreCase)))
-                return $"client {i}";
+            if (!AllClients.Any(c => c.Name.Equals(string.Format(Strings.Mqtt_Client, i), StringComparison.OrdinalIgnoreCase)))
+                return string.Format(Strings.Mqtt_Client, i);
         }
     }
 }

@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Notes.Resources"
              xmlns:vm="using:Joktan.Notes.ViewModels"
              xmlns:controls="using:Joktan.Core.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -21,13 +22,13 @@
                     <TextBlock Classes="page-subtitle" Text="{Binding Subtitle}" />
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                    <Button Content="Folder"
+                    <Button Content="{x:Static res:Strings.NotesView_Folder}"
                             Command="{Binding ToggleFolderCommand}"
-                            ToolTip.Tip="Choose where the notes are kept" />
+                            ToolTip.Tip="{x:Static res:Strings.NotesView_ChooseWhereTheNotesAreKept}" />
                     <Button Classes="accent"
-                            Content="New page"
+                            Content="{x:Static res:Strings.NotesView_NewPage}"
                             Command="{Binding NewPageCommand}"
-                            ToolTip.Tip="Add a page at the top level" />
+                            ToolTip.Tip="{x:Static res:Strings.NotesView_AddAPageAtTheTop}" />
                 </StackPanel>
             </Grid>
         </Border>
@@ -35,17 +36,17 @@
         <!-- Where the notes are kept -->
         <Border DockPanel.Dock="Top" Classes="card" Margin="24,16,24,0" IsVisible="{Binding IsChoosingFolder}">
             <StackPanel Spacing="8">
-                <TextBlock Classes="card-title" Text="Notes folder" />
+                <TextBlock Classes="card-title" Text="{x:Static res:Strings.NotesView_NotesFolder}" />
                 <TextBlock Classes="card-subtitle" Margin="0"
-                           Text="A folder that already holds notes is opened as it is. Otherwise the notes open now are copied into it, and the originals are left where they are. A shared or synced folder works too." />
+                           Text="{x:Static res:Strings.NotesView_AFolderThatAlreadyHoldsNotes}" />
                 <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                     <TextBox Classes="code" Text="{Binding FolderText}" PlaceholderText="{Binding DefaultFolder}" />
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
-                        <Button Content="Browse" Command="{Binding BrowseFolderCommand}" />
-                        <Button Content="Default" Command="{Binding UseDefaultFolderCommand}"
-                                ToolTip.Tip="Fill in Joktan's own notes folder" />
-                        <Button Content="Cancel" Command="{Binding ToggleFolderCommand}" />
-                        <Button Classes="accent" Content="Use folder" Command="{Binding ApplyFolderCommand}" />
+                        <Button Content="{x:Static res:Strings.NotesView_Browse}" Command="{Binding BrowseFolderCommand}" />
+                        <Button Content="{x:Static res:Strings.NotesView_Default}" Command="{Binding UseDefaultFolderCommand}"
+                                ToolTip.Tip="{x:Static res:Strings.NotesView_FillInJoktanSOwnNotes}" />
+                        <Button Content="{x:Static res:Strings.NotesView_Cancel}" Command="{Binding ToggleFolderCommand}" />
+                        <Button Classes="accent" Content="{x:Static res:Strings.NotesView_UseFolder}" Command="{Binding ApplyFolderCommand}" />
                     </StackPanel>
                 </Grid>
                 <TextBlock Classes="error" TextWrapping="Wrap"
@@ -68,26 +69,26 @@
             <Border Classes="card" Padding="8">
                 <DockPanel>
                     <Grid DockPanel.Dock="Top" Margin="12,8,12,8" ColumnDefinitions="*,Auto">
-                        <TextBlock Classes="card-title" Text="Pages" VerticalAlignment="Center" />
-                        <Button Grid.Column="1" Classes="small" Content="New child page"
+                        <TextBlock Classes="card-title" Text="{x:Static res:Strings.NotesView_Pages}" VerticalAlignment="Center" />
+                        <Button Grid.Column="1" Classes="small" Content="{x:Static res:Strings.NotesView_NewChildPage}"
                                 Command="{Binding NewChildPageCommand}"
-                                ToolTip.Tip="Add a page below the selected one" />
+                                ToolTip.Tip="{x:Static res:Strings.NotesView_AddAPageBelowTheSelected}" />
                     </Grid>
 
                     <WrapPanel DockPanel.Dock="Bottom" Margin="8,8,8,4" ItemSpacing="4" LineSpacing="4">
-                        <Button Classes="small" Content="Up" Command="{Binding MoveUpCommand}"
-                                ToolTip.Tip="Move the page above the one before it" />
-                        <Button Classes="small" Content="Down" Command="{Binding MoveDownCommand}"
-                                ToolTip.Tip="Move the page below the one after it" />
-                        <Button Classes="small" Content="Indent" Command="{Binding IndentCommand}"
-                                ToolTip.Tip="Make the page a child of the page above it" />
-                        <Button Classes="small" Content="Outdent" Command="{Binding OutdentCommand}"
-                                ToolTip.Tip="Move the page out of its parent, to just after it" />
+                        <Button Classes="small" Content="{x:Static res:Strings.NotesView_Up}" Command="{Binding MoveUpCommand}"
+                                ToolTip.Tip="{x:Static res:Strings.NotesView_MoveThePageAboveTheOne}" />
+                        <Button Classes="small" Content="{x:Static res:Strings.NotesView_Down}" Command="{Binding MoveDownCommand}"
+                                ToolTip.Tip="{x:Static res:Strings.NotesView_MoveThePageBelowTheOne}" />
+                        <Button Classes="small" Content="{x:Static res:Strings.NotesView_Indent}" Command="{Binding IndentCommand}"
+                                ToolTip.Tip="{x:Static res:Strings.NotesView_MakeThePageAChildOf}" />
+                        <Button Classes="small" Content="{x:Static res:Strings.NotesView_Outdent}" Command="{Binding OutdentCommand}"
+                                ToolTip.Tip="{x:Static res:Strings.NotesView_MoveThePageOutOfIts}" />
                     </WrapPanel>
 
                     <Panel>
                         <TextBlock Classes="info-label" Margin="12" TextWrapping="Wrap"
-                                   Text="No pages yet. Start with New page."
+                                   Text="{x:Static res:Strings.NotesView_NoPagesYetStartWithNew}"
                                    IsVisible="{Binding IsEmpty}" />
                         <TreeView ItemsSource="{Binding Roots}" SelectedItem="{Binding TreeSelection}">
                             <TreeView.Styles>
@@ -108,7 +109,7 @@
             <!-- The selected page -->
             <Border Grid.Column="2" Classes="card" IsVisible="{Binding !HasSelection}" VerticalAlignment="Top">
                 <TextBlock Classes="info-label" TextWrapping="Wrap"
-                           Text="Select a page to read or edit it, or make one with New page." />
+                           Text="{x:Static res:Strings.NotesView_SelectAPageToReadOr}" />
             </Border>
 
             <Border Grid.Column="2" Classes="card" IsVisible="{Binding HasSelection}">
@@ -116,7 +117,7 @@
                     <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" ColumnSpacing="16">
                         <StackPanel>
                             <!-- The title can be changed only while editing -->
-                            <TextBox Classes="note-title" Text="{Binding PageTitle}" PlaceholderText="Untitled"
+                            <TextBox Classes="note-title" Text="{Binding PageTitle}" PlaceholderText="{x:Static res:Strings.NotesView_Untitled}"
                                      IsVisible="{Binding IsEditing}" />
                             <TextBlock Classes="page-title" TextWrapping="Wrap"
                                        Text="{Binding Selected.DisplayTitle, FallbackValue=''}"
@@ -126,14 +127,14 @@
                                        IsVisible="{Binding Path, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
                         </StackPanel>
                         <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Top">
-                            <Button Classes="accent" Content="Edit" Command="{Binding EditCommand}"
+                            <Button Classes="accent" Content="{x:Static res:Strings.NotesView_Edit}" Command="{Binding EditCommand}"
                                     IsVisible="{Binding IsViewing}"
-                                    ToolTip.Tip="Change the title and the Markdown (Ctrl+E or ⌘E)" />
-                            <Button Classes="accent" Content="Done" Command="{Binding ViewCommand}"
+                                    ToolTip.Tip="{x:Static res:Strings.NotesView_ChangeTheTitleAndTheMarkdown}" />
+                            <Button Classes="accent" Content="{x:Static res:Strings.NotesView_Done}" Command="{Binding ViewCommand}"
                                     IsVisible="{Binding IsEditing}"
-                                    ToolTip.Tip="Go back to reading the page (Ctrl+E or ⌘E). Changes are already saved." />
-                            <Button Content="Delete" Command="{Binding DeleteCommand}"
-                                    ToolTip.Tip="Delete the page and the pages below it" />
+                                    ToolTip.Tip="{x:Static res:Strings.NotesView_GoBackToReadingThePage}" />
+                            <Button Content="{x:Static res:Strings.NotesView_Delete}" Command="{Binding DeleteCommand}"
+                                    ToolTip.Tip="{x:Static res:Strings.NotesView_DeleteThePageAndThePages}" />
                         </StackPanel>
                     </Grid>
 
@@ -143,15 +144,15 @@
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
                             <TextBlock Classes="table-cell" TextWrapping="Wrap" Text="{Binding DeleteText}" />
                             <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                                <Button Content="Cancel" Command="{Binding CancelDeleteCommand}" />
-                                <Button Classes="accent" Content="Delete" Command="{Binding ConfirmDeleteCommand}" />
+                                <Button Content="{x:Static res:Strings.NotesView_Cancel}" Command="{Binding CancelDeleteCommand}" />
+                                <Button Classes="accent" Content="{x:Static res:Strings.NotesView_Delete}" Command="{Binding ConfirmDeleteCommand}" />
                             </StackPanel>
                         </Grid>
                     </Border>
 
                     <TextBlock DockPanel.Dock="Bottom" Classes="info-label" Margin="0,12,0,0" TextWrapping="Wrap"
                                IsVisible="{Binding IsEditing}">
-                        <Run Text="Saved as you type, one Markdown file per page, in" />
+                        <Run Text="{x:Static res:Strings.NotesView_SavedAsYouTypeOneMarkdown}" />
                         <Run FontFamily="{DynamicResource CodeFontFamily}" Text="{Binding Folder, Mode=OneWay}" />
                     </TextBlock>
 
@@ -160,14 +161,14 @@
                         <TextBox Classes="code note-editor"
                                  IsVisible="{Binding IsEditing}"
                                  Text="{Binding Text}"
-                                 PlaceholderText="Write in Markdown: # Heading, **bold**, - list item, [link](https://…)" />
+                                 PlaceholderText="{x:Static res:Strings.NotesView_WriteInMarkdownHeadingBoldList}" />
                         <Border Classes="note-preview"
                                 Classes.editing="{Binding IsEditing}"
                                 Grid.Column="{Binding PreviewColumn}"
                                 Grid.ColumnSpan="{Binding PreviewColumnSpan}">
                             <Panel>
                                 <TextBlock Classes="info-label" TextWrapping="Wrap"
-                                           Text="Nothing on this page yet. Choose Edit to write it."
+                                           Text="{x:Static res:Strings.NotesView_NothingOnThisPageYetChoose}"
                                            IsVisible="{Binding IsEmptyView}" />
                                 <ScrollViewer>
                                     <controls:MarkdownView Markdown="{Binding Text}" HighlightWords="{Binding HighlightWords}" />

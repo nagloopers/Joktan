@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Avalonia.Data.Converters;
+using Joktan.Api.Resources;
 
 namespace Joktan.Api;
 
@@ -26,6 +28,33 @@ public enum ApiAuthKind
     None,
     Bearer,
     Basic,
+}
+
+public static class ApiKindText
+{
+    /// <summary>What a ApiBodyKind is called on screen.</summary>
+    public static string Text(this ApiBodyKind value) => value switch
+    {
+        ApiBodyKind.None => Strings.ApiBodyKind_None,
+        ApiBodyKind.Json => Strings.ApiBodyKind_Json,
+        ApiBodyKind.Text => Strings.ApiBodyKind_Text,
+        ApiBodyKind.Xml => Strings.ApiBodyKind_Xml,
+        ApiBodyKind.Form => Strings.ApiBodyKind_Form,
+        _ => value.ToString(),
+    };
+
+    public static readonly FuncValueConverter<ApiBodyKind, string> ApiBodyKindConverter = new(value => value.Text());
+
+    /// <summary>What a ApiAuthKind is called on screen.</summary>
+    public static string Text(this ApiAuthKind value) => value switch
+    {
+        ApiAuthKind.None => Strings.ApiAuthKind_None,
+        ApiAuthKind.Bearer => Strings.ApiAuthKind_Bearer,
+        ApiAuthKind.Basic => Strings.ApiAuthKind_Basic,
+        _ => value.ToString(),
+    };
+
+    public static readonly FuncValueConverter<ApiAuthKind, string> ApiAuthKindConverter = new(value => value.Text());
 }
 
 [JsonConverter(typeof(JsonStringEnumConverter<GrpcSchemaSource>))]

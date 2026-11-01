@@ -11,6 +11,7 @@ using CommunityToolkit.Mvvm.Input;
 using Joktan.Core.ViewModels;
 using Joktan.Mqtt;
 using Joktan.Mqtt.ViewModels;
+using Joktan.TopicDashboards.Resources;
 
 namespace Joktan.TopicDashboards.ViewModels;
 
@@ -21,7 +22,7 @@ namespace Joktan.TopicDashboards.ViewModels;
 public partial class TopicDashboardsViewModel : PageViewModel
 {
     private const int MaxMessagesPerFlush = 5000;
-    private const string FirstDashboardName = "Main";
+    private static string FirstDashboardName => Strings.TopicDashboards_Main;
     private const int MaxRoutes = 10_000;
 
     /// <summary>The most series the app keeps, as a key that differs on every message would otherwise fill the memory.</summary>
@@ -36,7 +37,7 @@ public partial class TopicDashboardsViewModel : PageViewModel
     private DashboardStore _store;
 
     public TopicDashboardsViewModel(MqttViewModel mqtt, DashboardStore? store = null)
-        : base("MQTT Dashboards", "Dashboard / MQTT Dashboards")
+        : base(Strings.TopicDashboards_MQTTDashboards, Strings.TopicDashboards_DashboardMQTTDashboards)
     {
         Mqtt = mqtt;
         _store = store ?? DashboardStore.Load();
@@ -68,7 +69,7 @@ public partial class TopicDashboardsViewModel : PageViewModel
     public partial bool IsEditing { get; set; }
 
     /// <summary>The mode the button beside Add goes to.</summary>
-    public string EditModeText => IsEditing ? "View" : "Edit";
+    public string EditModeText => IsEditing ? Strings.TopicDashboards_View : Strings.TopicDashboards_Edit;
 
     /// <summary>Why a subscription failed, or null.</summary>
     [ObservableProperty]
@@ -132,17 +133,17 @@ public partial class TopicDashboardsViewModel : PageViewModel
     public string? StatusOf(GraphCardViewModel card)
     {
         if (FindClient(card.Profile.Client) is not { } client)
-            return $"There is no MQTT client called {card.Profile.Client}";
+            return string.Format(Strings.TopicDashboards_ThereIsNoMQTTClientCalled, card.Profile.Client);
         if (card.HasReadings)
             return null;
         if (SourceFor(card.Profile).Health.Problem is { } problem)
-            return $"Messages are arriving, but {problem}";
+            return string.Format(Strings.TopicDashboards_MessagesAreArrivingBut, problem);
 
         var topics = card.Profile.Topics.ToList();
-        var source = topics.Count == 1 ? topics[0] : $"its {topics.Count} topics";
+        var source = topics.Count == 1 ? topics[0] : string.Format(Strings.TopicDashboards_ItsTopics, topics.Count);
         return client.IsConnected
-            ? $"Waiting for a message on {source}"
-            : $"Connect {client.Name} to receive {source}";
+            ? string.Format(Strings.TopicDashboards_WaitingForAMessageOn, source)
+            : string.Format(Strings.TopicDashboards_ConnectToReceive, client.Name, source);
     }
 
     public void AddGraph(DashboardTabViewModel dashboard)
@@ -346,7 +347,7 @@ public partial class TopicDashboardsViewModel : PageViewModel
             folder = System.IO.Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), folder[1..].TrimStart('/', '\\'));
         if (!System.IO.Path.IsPathFullyQualified(folder))
         {
-            FolderMessage = "Give the whole path of the folder, such as one picked with Browse.";
+            FolderMessage = Strings.TopicDashboards_GiveTheWholePathOfThe;
             return;
         }
 
@@ -362,7 +363,7 @@ public partial class TopicDashboardsViewModel : PageViewModel
         // Still no dashboards there, so nothing is written: they may be on their way back.
         if (!DashboardStore.HasDashboards(folder) && !_store.MayCopyTo(folder))
         {
-            FolderMessage = $"There are still no dashboards in {folder}, so nothing was written to it. Bring the folder back and try again, or choose another. If they are gone for good, Start empty here makes a new file.";
+            FolderMessage = string.Format(Strings.TopicDashboards_ThereAreStillNoDashboardsIn, folder);
             CanStartEmpty = true;
             return;
         }
@@ -376,14 +377,14 @@ public partial class TopicDashboardsViewModel : PageViewModel
             DashboardStore.SaveChosenFolder(folder);
             Open(DashboardStore.Load(folder));
             GraphsChanged(save: false);
-            Message = $"Opened the dashboards already in {folder}.";
+            Message = string.Format(Strings.TopicDashboards_OpenedTheDashboardsAlreadyIn, folder);
         }
         else
         {
             if (!await CopyToFolderAsync(folder))
                 return;
 
-            Message = $"The dashboards were copied to {folder}. The originals are still in {previous}.";
+            Message = string.Format(Strings.TopicDashboards_TheDashboardsWereCopiedToThe, folder, previous);
         }
 
         IsChoosingFolder = false;
@@ -397,14 +398,14 @@ public partial class TopicDashboardsViewModel : PageViewModel
         CanStartEmpty = false;
         if (DashboardStore.HasDashboards(Folder))
         {
-            FolderMessage = $"Dashboards have appeared in {Folder}. Press Use folder to open them.";
+            FolderMessage = string.Format(Strings.TopicDashboards_DashboardsHaveAppearedInPressUse, Folder);
             return;
         }
 
         if (!await CopyToFolderAsync(Folder))
             return;
 
-        Message = $"Started empty in {Folder}.";
+        Message = string.Format(Strings.TopicDashboards_StartedEmptyIn, Folder);
         IsChoosingFolder = false;
     }
 
@@ -417,7 +418,7 @@ public partial class TopicDashboardsViewModel : PageViewModel
         }
         catch (Exception e) when (e is System.IO.IOException or UnauthorizedAccessException)
         {
-            FolderMessage = $"Could not copy the dashboards to {folder}: {e.Message}";
+            FolderMessage = string.Format(Strings.TopicDashboards_CouldNotCopyTheDashboardsTo, folder, e.Message);
             return false;
         }
 
@@ -456,11 +457,11 @@ public partial class TopicDashboardsViewModel : PageViewModel
     }
 
     private string? UnavailableMessage() => _store.IsUnavailable
-        ? $"The dashboards in {Folder} cannot be read or are not there, so changes are not being saved. Bring the folder back and press Folder, then Use folder, or choose another."
+        ? string.Format(Strings.TopicDashboards_TheDashboardsInCannotBeRead, Folder)
         : null;
 
     private void OnWriteFailed(string path, Exception e)
-        => Dispatcher.UIThread.Post(() => SaveError = $"Could not write {path}: {e.Message}");
+        => Dispatcher.UIThread.Post(() => SaveError = string.Format(Strings.TopicDashboards_CouldNotWrite, path, e.Message));
 
     private void GraphsChanged(bool save)
     {
@@ -508,7 +509,7 @@ public partial class TopicDashboardsViewModel : PageViewModel
     {
         for (var i = Dashboards.Count + 1; ; i++)
         {
-            var name = $"Dashboard {i}";
+            var name = string.Format(Strings.TopicDashboards_Dashboard, i);
             if (Dashboards.All(d => !d.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
                 return name;
         }
@@ -637,11 +638,11 @@ public partial class TopicDashboardsViewModel : PageViewModel
             source.Data.ForgetIdle(start);
             count += source.Data.Count;
             if (source.OverLimit is { } limit)
-                warning ??= $"{graph.Name} is leaving some values out, as {limit}.";
+                warning ??= string.Format(Strings.TopicDashboards_IsLeavingSomeValuesOutAs, graph.Name, limit);
         }
 
         _seriesCount = count;
-        LimitWarning = count >= MaxSeries ? $"New values are waiting, as the app already has {MaxSeries} series. Remove a graph, or use Only on a key." : warning;
+        LimitWarning = count >= MaxSeries ? string.Format(Strings.TopicDashboards_NewValuesAreWaitingAsThe, MaxSeries) : warning;
 
         foreach (var dashboard in Dashboards)
         {

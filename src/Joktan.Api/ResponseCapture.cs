@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using Joktan.Api.Resources;
 
 namespace Joktan.Api;
 
@@ -26,7 +27,7 @@ public static partial class ResponseCapture
 
         if (response.IsCutShort)
         {
-            problems.Add($"The body is too big to save from, so {string.Join(", ", wanted.Select(c => c.Name))} did not change.");
+            problems.Add(string.Format(Strings.ResponseCapture_TheBodyIsTooBigTo, string.Join(", ", wanted.Select(c => c.Name))));
             return (values, problems);
         }
 
@@ -36,7 +37,7 @@ public static partial class ResponseCapture
             if (Find(response.Body, document, path, out var problem) is { } value)
                 values.Add(new ApiPair { Name = name, Value = value });
             else
-                problems.Add($"{name} did not change: {problem}");
+                problems.Add(string.Format(Strings.ResponseCapture_DidNotChange, name, problem));
         }
 
         return (values, problems);
@@ -60,13 +61,13 @@ public static partial class ResponseCapture
         if (path.Length == 0 || path == "$")
         {
             if (body.Length == 0)
-                problem = "the response has no body.";
+                problem = Strings.ResponseCapture_TheResponseHasNoBody;
             return body.Length == 0 ? null : document is null ? body : Text(document.RootElement);
         }
 
         if (document is null)
         {
-            problem = $"the body is not JSON, so it has no {path}.";
+            problem = string.Format(Strings.ResponseCapture_TheBodyIsNotJSONSo, path);
             return null;
         }
 
@@ -77,7 +78,7 @@ public static partial class ResponseCapture
             var step = Step().Match(path, at);
             if (!step.Success || step.Length == 0)
             {
-                problem = $"{path} is not a path; write it like data.items[0].id.";
+                problem = string.Format(Strings.ResponseCapture_IsNotAPathWriteIt, path);
                 return null;
             }
 
@@ -87,14 +88,14 @@ public static partial class ResponseCapture
                 : TryProperty(element, step.Groups[step.Groups[1].Success ? 1 : 3].Value, out element);
             if (!found)
             {
-                problem = $"the response has no {path}.";
+                problem = string.Format(Strings.ResponseCapture_TheResponseHasNo, path);
                 return null;
             }
         }
 
         if (element.ValueKind == JsonValueKind.Null)
         {
-            problem = $"{path} is null in the response.";
+            problem = string.Format(Strings.ResponseCapture_IsNullInTheResponse, path);
             return null;
         }
 

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutWindow_ACrossPlatformAdminApplicationBuilt" xml:space="preserve">
+    <value>A cross-platform admin application built with Avalonia UI and .NET.</value>
+  </data>
+  <data name="AboutWindow_AboutJoktan" xml:space="preserve">
+    <value>About Joktan</value>
+  </data>
+  <data name="AboutWindow_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="AboutWindow_ReleasedUnderTheMITLicence" xml:space="preserve">
+    <value>Released under the MIT licence.</value>
+  </data>
+  <data name="AboutWindow_Version" xml:space="preserve">
+    <value>Version {0}</value>
+    <comment>{0}: version.ToString(3)</comment>
+  </data>
+  <data name="App_AboutJoktan" xml:space="preserve">
+    <value>About Joktan</value>
+  </data>
+  <data name="App_JoktanHelp" xml:space="preserve">
+    <value>Joktan Help</value>
+  </data>
+  <data name="App_LoadingTelemetryCertificatesMQTTClientsAnd" xml:space="preserve">
+    <value>Loading telemetry, certificates, MQTT clients and notes…</value>
+  </data>
+  <data name="App_Opening" xml:space="preserve">
+    <value>Opening…</value>
+  </data>
+  <data name="FolderSources_APIRequests" xml:space="preserve">
+    <value>API requests</value>
+  </data>
+  <data name="FolderSources_AppSettings" xml:space="preserve">
+    <value>App settings</value>
+  </data>
+  <data name="FolderSources_Certificates" xml:space="preserve">
+    <value>Certificates</value>
+  </data>
+  <data name="FolderSources_CertificatesCopiedForMQTTClientsOne" xml:space="preserve">
+    <value>Certificates copied for MQTT clients, one folder per client.</value>
+  </data>
+  <data name="FolderSources_CertificatesForMQTTClientsNowGo" xml:space="preserve">
+    <value>Certificates for MQTT clients now go to {0}.</value>
+    <comment>{0}: path</comment>
+  </data>
+  <data name="FolderSources_CouldNotBeFoundSoJoktan" xml:space="preserve">
+    <value>{0} could not be found, so Joktan is using its default folder for now. Connect it and restart Joktan, or choose another folder here.</value>
+    <comment>{0}: missing</comment>
+  </data>
+  <data name="FolderSources_CouldNotUse" xml:space="preserve">
+    <value>Could not use {0}: {1}</value>
+    <comment>{0}: path, {1}: e.Message</comment>
+  </data>
+  <data name="FolderSources_EachNewCertificateCanChooseIts" xml:space="preserve">
+    <value>Each new certificate can choose its own folder when it is made. Those are backed up with these.</value>
+  </data>
+  <data name="FolderSources_LeaveItEmptyForNoFolder" xml:space="preserve">
+    <value>Leave it empty for no folder.</value>
+  </data>
+  <data name="FolderSources_MQTTClientCertificates" xml:space="preserve">
+    <value>MQTT client certificates</value>
+  </data>
+  <data name="FolderSources_MQTTClientsTheMenuThemesAnd" xml:space="preserve">
+    <value>MQTT clients, the menu, themes and other settings. {0} sets this folder for this run, so it cannot be changed here.</value>
+    <comment>{0}: DataFolder.Variable</comment>
+  </data>
+  <data name="FolderSources_MQTTClientsTheMenuThemesAndOther" xml:space="preserve">
+    <value>MQTT clients, the menu, themes and other settings, and whatever else is kept in this folder. Joktan restarts to use a new one.</value>
+  </data>
+  <data name="FolderSources_MQTTDashboards" xml:space="preserve">
+    <value>MQTT Dashboards</value>
+  </data>
+  <data name="FolderSources_MQTTMessages" xml:space="preserve">
+    <value>MQTT messages: {0}</value>
+    <comment>{0}: client.Name</comment>
+  </data>
+  <data name="FolderSources_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="FolderSources_OpenPasswords" xml:space="preserve">
+    <value>Open Passwords</value>
+  </data>
+  <data name="FolderSources_OpenedTheMessagesIn" xml:space="preserve">
+    <value>Opened the messages in {0}.</value>
+    <comment>{0}: path</comment>
+  </data>
+  <data name="FolderSources_Passwords" xml:space="preserve">
+    <value>Passwords</value>
+  </data>
+  <data name="FolderSources_ThatButtonIsUnderFolderOn" xml:space="preserve">
+    <value>{0} That button is under Folder on the MQTT Dashboards page.</value>
+    <comment>{0}: dashboards.FolderMessage</comment>
+  </data>
+  <data name="FolderSources_TheCertificatesWereCopiedToThe" xml:space="preserve">
+    <value>The certificates were copied to {0}. The originals are still in {1}.</value>
+    <comment>{0}: path, {1}: previous</comment>
+  </data>
+  <data name="FolderSources_TheListOfEntriesOnlyThe" xml:space="preserve">
+    <value>The list of entries only. The passwords themselves are in {0}, and are not in a backup.</value>
+    <comment>{0}: passwords.StorageText</comment>
+  </data>
+  <data name="FolderSources_TheMessagesWereCopiedToThe" xml:space="preserve">
+    <value>The messages were copied to {0}. The originals are still in {1}.</value>
+    <comment>{0}: path, {1}: previous</comment>
+  </data>
+  <data name="FolderSources_TheVaultFileAlreadyEncryptedWith" xml:space="preserve">
+    <value>The vault file, already encrypted with its master password. Moving it needs the vault unlocked, so it is done on the Passwords page.</value>
+  </data>
+  <data name="FolderSources_ThisClientNoLongerHasA" xml:space="preserve">
+    <value>This client no longer has a folder of messages.</value>
+  </data>
+  <data name="FolderSources_ThisHoldsPrivateKeysAndA" xml:space="preserve">
+    <value>This holds private keys, and a backup zip is not encrypted. Keep the zip somewhere safe.</value>
+  </data>
+  <data name="FolderSources_UseFolderAndRestart" xml:space="preserve">
+    <value>Use folder and restart</value>
+  </data>
+  <data name="MainWindow_Agent" xml:space="preserve">
+    <value>Agent</value>
+  </data>
+  <data name="MainWindow_ChooseWhatToSearch" xml:space="preserve">
+    <value>Choose what to search</value>
+  </data>
+  <data name="MainWindow_ClearTheSearch" xml:space="preserve">
+    <value>Clear the search</value>
+  </data>
+  <data name="MainWindow_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="MainWindow_EveryAreaOfSearchIsSwitched" xml:space="preserve">
+    <value>Every area of search is switched off.</value>
+  </data>
+  <data name="MainWindow_MAINMENU" xml:space="preserve">
+    <value>MAIN MENU</value>
+  </data>
+  <data name="MainWindow_Maximise" xml:space="preserve">
+    <value>Maximise</value>
+  </data>
+  <data name="MainWindow_Minimise" xml:space="preserve">
+    <value>Minimise</value>
+  </data>
+  <data name="MainWindow_NothingFound" xml:space="preserve">
+    <value>Nothing found.</value>
+  </data>
+  <data name="MainWindow_Restore" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="MainWindow_ToggleMenu" xml:space="preserve">
+    <value>Toggle menu</value>
+  </data>
+  <data name="Main_APIClient" xml:space="preserve">
+    <value>API Client</value>
+  </data>
+  <data name="Main_Agent" xml:space="preserve">
+    <value>Agent</value>
+  </data>
+  <data name="Main_Alerts" xml:space="preserve">
+    <value>alerts</value>
+  </data>
+  <data name="Main_AlertsAndMessages" xml:space="preserve">
+    <value>Alerts and Messages</value>
+  </data>
+  <data name="Main_Brokers" xml:space="preserve">
+    <value>Brokers</value>
+  </data>
+  <data name="Main_CertificateDefaults" xml:space="preserve">
+    <value>Certificate Defaults</value>
+  </data>
+  <data name="Main_Certificates" xml:space="preserve">
+    <value>Certificates</value>
+  </data>
+  <data name="Main_Colours" xml:space="preserve">
+    <value>Colours</value>
+  </data>
+  <data name="Main_Connectivity" xml:space="preserve">
+    <value>Connectivity</value>
+  </data>
+  <data name="Main_Containers" xml:space="preserve">
+    <value>Containers</value>
+  </data>
+  <data name="Main_Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="Main_DevTools" xml:space="preserve">
+    <value>Dev Tools</value>
+  </data>
+  <data name="Main_FoldersAndBackup" xml:space="preserve">
+    <value>Folders and Backup</value>
+  </data>
+  <data name="Main_Fonts" xml:space="preserve">
+    <value>Fonts</value>
+  </data>
+  <data name="Main_Help" xml:space="preserve">
+    <value>help</value>
+  </data>
+  <data name="Main_HelpGettingStartedF1" xml:space="preserve">
+    <value>Help: getting started (F1)</value>
+  </data>
+  <data name="Main_HelpOnF1" xml:space="preserve">
+    <value>Help on {0} (F1)</value>
+    <comment>{0}: page.Title</comment>
+  </data>
+  <data name="Main_MQTT" xml:space="preserve">
+    <value>MQTT</value>
+  </data>
+  <data name="Main_MQTTDashboards" xml:space="preserve">
+    <value>MQTT Dashboards</value>
+  </data>
+  <data name="Main_Menu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="Main_Messages" xml:space="preserve">
+    <value>messages</value>
+  </data>
+  <data name="Main_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="Main_Notes2" xml:space="preserve">
+    <value>notes</value>
+  </data>
+  <data name="Main_Overview" xml:space="preserve">
+    <value>Overview</value>
+  </data>
+  <data name="Main_Passwords" xml:space="preserve">
+    <value>Passwords</value>
+  </data>
+  <data name="Main_Pomodoro" xml:space="preserve">
+    <value>Pomodoro</value>
+  </data>
+  <data name="Main_Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Main_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Main_TextSizes" xml:space="preserve">
+    <value>Text Sizes</value>
+  </data>
+  <data name="Main_Themes" xml:space="preserve">
+    <value>Themes</value>
+  </data>
+  <data name="Main_TopicDashboards" xml:space="preserve">
+    <value>Topic Dashboards</value>
+  </data>
+  <data name="Main_TopicExplorer" xml:space="preserve">
+    <value>Topic Explorer</value>
+  </data>
+  <data name="Search_Search" xml:space="preserve">
+    <value>Search {0}...</value>
+    <comment>{0}: names[0]</comment>
+  </data>
+  <data name="Search_SearchAnd" xml:space="preserve">
+    <value>Search {0} and {1}...</value>
+    <comment>{0}: string.Join(", ", names.SkipLast(1)), {1}: names[^1]</comment>
+  </data>
+  <data name="Search_SearchIsSwitchedOff" xml:space="preserve">
+    <value>Search is switched off</value>
+  </data>
+  <data name="SplashWindow_Starting" xml:space="preserve">
+    <value>Starting…</value>
+  </data>
+  <data name="SplashWindow_Version" xml:space="preserve">
+    <value>Version {0}</value>
+    <comment>{0}: version.ToString(3)</comment>
+  </data>
+</root>

@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Settings.Resources"
              xmlns:vm="using:Joktan.Settings.ViewModels"
              xmlns:views="using:Joktan.Settings.Views"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -29,9 +30,9 @@
                 <Border Classes="card">
                     <Grid ColumnDefinitions="*,Auto">
                         <StackPanel>
-                            <TextBlock Classes="card-title" Text="Dark controls" />
+                            <TextBlock Classes="card-title" Text="{x:Static res:Strings.ColorsView_DarkControls}" />
                             <TextBlock Classes="card-subtitle" Margin="0" TextWrapping="Wrap"
-                                       Text="Whether text boxes, switches and other controls take their look for a dark background." />
+                                       Text="{x:Static res:Strings.ColorsView_WhetherTextBoxesSwitchesAndOther}" />
                         </StackPanel>
                         <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding IsDark}" />
                     </Grid>

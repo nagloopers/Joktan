@@ -1,5 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:res="using:Joktan.Mqtt.Resources"
         xmlns:help="using:Joktan.Core.Controls"
         xmlns:core="using:Joktan.Core"
         xmlns:vm="using:Joktan.Mqtt.ViewModels"
@@ -15,13 +16,13 @@
         Icon="avares://Joktan.Core/Assets/joktan.ico"
         WindowStartupLocation="CenterOwner"
         Background="{DynamicResource AppBackgroundBrush}"
-        Title="Message settings">
+        Title="{x:Static res:Strings.MessageSettingsWindow_MessageSettings}">
 
     <DockPanel>
         <Border DockPanel.Dock="Top" Classes="page-header">
             <Grid ColumnDefinitions="*,Auto">
                 <StackPanel>
-                    <TextBlock Classes="page-title" FontSize="{DynamicResource DialogTitleFontSize}" Text="Message settings" />
+                    <TextBlock Classes="page-title" FontSize="{DynamicResource DialogTitleFontSize}" Text="{x:Static res:Strings.MessageSettingsWindow_MessageSettings}" />
                     <TextBlock Classes="page-subtitle" Text="{Binding Title}" />
                 </StackPanel>
                 <help:HelpButton Grid.Column="1" VerticalAlignment="Center" />
@@ -36,8 +37,8 @@
                            Margin="0,0,16,0"
                            Text="{Binding Error}" />
                 <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
-                    <Button Content="Cancel" Command="{Binding CancelCommand}" IsCancel="True" />
-                    <Button Classes="accent" Content="Save" Command="{Binding SaveCommand}" />
+                    <Button Content="{x:Static res:Strings.MessageSettingsWindow_Cancel}" Command="{Binding CancelCommand}" IsCancel="True" />
+                    <Button Classes="accent" Content="{x:Static res:Strings.MessageSettingsWindow_Save}" Command="{Binding SaveCommand}" />
                 </StackPanel>
             </Grid>
         </Border>
@@ -48,41 +49,41 @@
                 <!-- Delivery -->
                 <Border Classes="card">
                     <StackPanel Spacing="12">
-                        <TextBlock Classes="card-title" Text="Delivery" />
+                        <TextBlock Classes="card-title" Text="{x:Static res:Strings.MessageSettingsWindow_Delivery}" />
                         <StackPanel>
-                            <TextBlock Classes="field-label" Text="Topic (optional)" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_TopicOptional}" />
                             <TextBox Classes="code" Text="{Binding Topic}" PlaceholderText="{Binding TopicPlaceholder}" />
                             <TextBlock Classes="info-label"
                                        Margin="0,6,0,0"
                                        TextWrapping="Wrap"
-                                       Text="Leave empty to send to the folder path. Write {folder} for the folder path, and {name} for a part that changes on every send, then add a topic field called name below." />
+                                       Text="{x:Static res:Strings.MessageSettingsWindow_LeaveEmptyToSendToThe}" />
                         </StackPanel>
                         <StackPanel>
-                            <TextBlock Classes="field-label" Text="Group (optional)" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_GroupOptional}" />
                             <AutoCompleteBox Text="{Binding Group}"
                                              ItemsSource="{Binding GroupNames}"
                                              FilterMode="Contains"
                                              MinimumPrefixLength="0"
-                                             PlaceholderText="Plant/Line 1 makes Line 1 a sub-group of Plant"
+                                             PlaceholderText="{x:Static res:Strings.MessageSettingsWindow_PlantLine1MakesLine1}"
                                              Width="420"
                                              HorizontalAlignment="Left" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Spacing="24">
-                            <CheckBox Content="Switched on"
+                            <CheckBox Content="{x:Static res:Strings.MessageSettingsWindow_SwitchedOn}"
                                       IsChecked="{Binding Enabled}"
-                                      ToolTip.Tip="Sent on its schedule while the broker is connected. The same as the switch in the list." />
+                                      ToolTip.Tip="{x:Static res:Strings.MessageSettingsWindow_SentOnItsScheduleWhileThe}" />
                             <StackPanel Orientation="Horizontal" Spacing="8">
-                                <TextBlock Classes="field-label" Text="QoS" VerticalAlignment="Center" Margin="0" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_QoS}" VerticalAlignment="Center" Margin="0" />
                                 <ComboBox SelectedIndex="{Binding QosIndex}" MinWidth="70">
                                     <ComboBoxItem Content="0" />
                                     <ComboBoxItem Content="1" />
                                     <ComboBoxItem Content="2" />
                                 </ComboBox>
                             </StackPanel>
-                            <CheckBox Content="Retain" IsChecked="{Binding Retain}" />
-                            <CheckBox Content="Gzip"
+                            <CheckBox Content="{x:Static res:Strings.MessageSettingsWindow_Retain}" IsChecked="{Binding Retain}" />
+                            <CheckBox Content="{x:Static res:Strings.MessageSettingsWindow_Gzip}"
                                       IsChecked="{Binding Gzip}"
-                                      ToolTip.Tip="Compress the body with gzip before it is sent" />
+                                      ToolTip.Tip="{x:Static res:Strings.MessageSettingsWindow_CompressTheBodyWithGzipBefore}" />
                         </StackPanel>
                     </StackPanel>
                 </Border>
@@ -92,14 +93,14 @@
                     <StackPanel Spacing="12">
                         <Grid ColumnDefinitions="*,Auto">
                             <StackPanel>
-                                <TextBlock Classes="card-title" Text="Topic fields" />
+                                <TextBlock Classes="card-title" Text="{x:Static res:Strings.MessageSettingsWindow_TopicFields}" />
                                 <TextBlock Classes="card-subtitle"
-                                           Text="Parts of the topic, written as {name}, that get a new value on every send. Each in turn sends to every value in the list one after the other." />
+                                           Text="{x:Static res:Strings.MessageSettingsWindow_PartsOfTheTopicWrittenAs}" />
                             </StackPanel>
-                            <Button Grid.Column="1" Content="Add topic field" VerticalAlignment="Top" Command="{Binding AddTopicFieldCommand}" />
+                            <Button Grid.Column="1" Content="{x:Static res:Strings.MessageSettingsWindow_AddTopicField}" VerticalAlignment="Top" Command="{Binding AddTopicFieldCommand}" />
                         </Grid>
 
-                        <TextBlock Classes="info-label" Text="No topic fields: every send goes to the same topic." IsVisible="{Binding !TopicFields.Count}" />
+                        <TextBlock Classes="info-label" Text="{x:Static res:Strings.MessageSettingsWindow_NoTopicFieldsEverySendGoes}" IsVisible="{Binding !TopicFields.Count}" />
 
                         <ItemsControl ItemsSource="{Binding TopicFields}">
                             <ItemsControl.ItemTemplate>
@@ -107,58 +108,58 @@
                                     <Border Classes="table-row">
                                         <Grid ColumnDefinitions="*,200,Auto" ColumnSpacing="12" RowDefinitions="Auto,Auto" RowSpacing="8">
                                             <StackPanel>
-                                                <TextBlock Classes="field-label" Text="Name" />
+                                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Name}" />
                                                 <AutoCompleteBox Text="{Binding Path}"
                                                                  ItemsSource="{Binding #Root.((vm:MessageSettingsViewModel)DataContext).TopicNames}"
                                                                  FilterMode="Contains"
                                                                  MinimumPrefixLength="0" />
                                             </StackPanel>
                                             <StackPanel Grid.Column="1">
-                                                <TextBlock Classes="field-label" Text="New value" />
+                                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_NewValue}" />
                                                 <ComboBox SelectedIndex="{Binding TypeIndex}"
                                                           ItemsSource="{x:Static vm:FieldRuleViewModel.TypeNames}"
                                                           HorizontalAlignment="Stretch" />
                                             </StackPanel>
                                             <Button Grid.Column="2"
                                                     Classes="small"
-                                                    Content="Remove"
+                                                    Content="{x:Static res:Strings.MessageSettingsWindow_Remove}"
                                                     VerticalAlignment="Bottom"
                                                     Command="{Binding #Root.((vm:MessageSettingsViewModel)DataContext).RemoveFieldCommand}"
                                                     CommandParameter="{Binding}" />
 
                                             <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="12">
                                                 <StackPanel IsVisible="{Binding ShowCounter}">
-                                                    <TextBlock Classes="field-label" Text="Start" />
+                                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Start}" />
                                                     <TextBox Text="{Binding Start}" Width="110" />
                                                 </StackPanel>
                                                 <StackPanel IsVisible="{Binding ShowCounter}">
-                                                    <TextBlock Classes="field-label" Text="Step" />
+                                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Step}" />
                                                     <TextBox Text="{Binding Step}" Width="110" />
                                                 </StackPanel>
                                                 <StackPanel IsVisible="{Binding ShowRange}">
-                                                    <TextBlock Classes="field-label" Text="Minimum" />
+                                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Minimum}" />
                                                     <TextBox Text="{Binding Min}" Width="110" />
                                                 </StackPanel>
                                                 <StackPanel IsVisible="{Binding ShowRange}">
-                                                    <TextBlock Classes="field-label" Text="Maximum" />
+                                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Maximum}" />
                                                     <TextBox Text="{Binding Max}" Width="110" />
                                                 </StackPanel>
                                                 <StackPanel IsVisible="{Binding ShowDecimals}">
-                                                    <TextBlock Classes="field-label" Text="Decimals" />
+                                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Decimals}" />
                                                     <TextBox Text="{Binding Decimals}" Width="90" />
                                                 </StackPanel>
                                                 <StackPanel IsVisible="{Binding ShowFixed}">
-                                                    <TextBlock Classes="field-label" Text="Type" />
+                                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Type}" />
                                                     <ComboBox SelectedIndex="{Binding ValueKindIndex}"
                                                               ItemsSource="{x:Static vm:FieldRuleViewModel.ValueKindNames}"
                                                               Width="150" />
                                                 </StackPanel>
                                                 <StackPanel IsVisible="{Binding ShowFixedText}">
-                                                    <TextBlock Classes="field-label" Text="Value" />
+                                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Value}" />
                                                     <TextBox Text="{Binding FixedText}" Width="320" PlaceholderText="{Binding FixedPlaceholder}" />
                                                 </StackPanel>
                                                 <StackPanel IsVisible="{Binding ShowFixedSwitch}">
-                                                    <TextBlock Classes="field-label" Text="Value" />
+                                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Value}" />
                                                     <ToggleSwitch IsChecked="{Binding FixedBool}" OnContent="true" OffContent="false" />
                                                 </StackPanel>
                                                 <StackPanel IsVisible="{Binding ShowValues}">
@@ -166,7 +167,7 @@
                                                     <TextBox Text="{Binding Values}" Width="320" PlaceholderText="sensor-01, sensor-02, sensor-03" />
                                                 </StackPanel>
                                                 <StackPanel IsVisible="{Binding ShowChoices}">
-                                                    <TextBlock Classes="field-label" Text="Value" />
+                                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Value}" />
                                                     <ComboBox ItemsSource="{Binding Choices}" SelectedItem="{Binding Choice}" MinWidth="150" />
                                                 </StackPanel>
                                             </StackPanel>
@@ -181,67 +182,67 @@
                 <!-- Schedule -->
                 <Border Classes="card">
                     <StackPanel Spacing="12">
-                        <TextBlock Classes="card-title" Text="Schedule" />
+                        <TextBlock Classes="card-title" Text="{x:Static res:Strings.MessageSettingsWindow_Schedule}" />
                         <StackPanel>
-                            <TextBlock Classes="field-label" Text="When to send" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_WhenToSend}" />
                             <ComboBox SelectedIndex="{Binding ScheduleTypeIndex}" MinWidth="260">
-                                <ComboBoxItem Content="Manual: only when I press Send now" />
-                                <ComboBoxItem Content="Once: at a date and time" />
-                                <ComboBoxItem Content="Recurring: at a fixed interval" />
-                                <ComboBoxItem Content="Recurring: daily at set times" />
+                                <ComboBoxItem Content="{x:Static res:Strings.MessageSettingsWindow_ManualOnlyWhenIPressSend}" />
+                                <ComboBoxItem Content="{x:Static res:Strings.MessageSettingsWindow_OnceAtADateAndTime}" />
+                                <ComboBoxItem Content="{x:Static res:Strings.MessageSettingsWindow_RecurringAtAFixedInterval}" />
+                                <ComboBoxItem Content="{x:Static res:Strings.MessageSettingsWindow_RecurringDailyAtSetTimes}" />
                             </ComboBox>
                         </StackPanel>
 
                         <StackPanel IsVisible="{Binding IsOnce}">
-                            <TextBlock Classes="field-label" Text="Date and time (local)" />
+                            <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_DateAndTimeLocal}" />
                             <TextBox Text="{Binding OnceAt}" PlaceholderText="2026-11-02 08:30:00" Width="260" HorizontalAlignment="Left" />
                         </StackPanel>
 
                         <StackPanel IsVisible="{Binding IsInterval}" Spacing="12">
                             <StackPanel Orientation="Horizontal" Spacing="8">
                                 <StackPanel>
-                                    <TextBlock Classes="field-label" Text="Every" />
+                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Every}" />
                                     <TextBox Text="{Binding Every}" Width="90" />
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBlock Classes="field-label" Text="Unit" />
+                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Unit}" />
                                     <ComboBox SelectedIndex="{Binding UnitIndex}" MinWidth="130">
-                                        <ComboBoxItem Content="Seconds" />
-                                        <ComboBoxItem Content="Minutes" />
-                                        <ComboBoxItem Content="Hours" />
+                                        <ComboBoxItem Content="{x:Static res:Strings.MessageSettingsWindow_Seconds}" />
+                                        <ComboBoxItem Content="{x:Static res:Strings.MessageSettingsWindow_Minutes}" />
+                                        <ComboBoxItem Content="{x:Static res:Strings.MessageSettingsWindow_Hours}" />
                                     </ComboBox>
                                 </StackPanel>
                             </StackPanel>
                             <Grid ColumnDefinitions="*,*,*" ColumnSpacing="16">
                                 <StackPanel>
-                                    <TextBlock Classes="field-label" Text="Start (optional)" />
-                                    <TextBox Text="{Binding IntervalStart}" PlaceholderText="When the run starts" />
+                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_StartOptional}" />
+                                    <TextBox Text="{Binding IntervalStart}" PlaceholderText="{x:Static res:Strings.MessageSettingsWindow_WhenTheRunStarts}" />
                                 </StackPanel>
                                 <StackPanel Grid.Column="1">
-                                    <TextBlock Classes="field-label" Text="End (optional)" />
-                                    <TextBox Text="{Binding IntervalEnd}" PlaceholderText="No end" />
+                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_EndOptional}" />
+                                    <TextBox Text="{Binding IntervalEnd}" PlaceholderText="{x:Static res:Strings.MessageSettingsWindow_NoEnd}" />
                                 </StackPanel>
                                 <StackPanel Grid.Column="2">
-                                    <TextBlock Classes="field-label" Text="Maximum sends (optional)" />
-                                    <TextBox Text="{Binding MaxSends}" PlaceholderText="No limit" />
+                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_MaximumSendsOptional}" />
+                                    <TextBox Text="{Binding MaxSends}" PlaceholderText="{x:Static res:Strings.MessageSettingsWindow_NoLimit}" />
                                 </StackPanel>
                             </Grid>
-                            <TextBlock Classes="info-label" Text="Dates and times are local, written like 2026-11-02 08:30:00." />
+                            <TextBlock Classes="info-label" Text="{x:Static res:Strings.MessageSettingsWindow_DatesAndTimesAreLocalWritten}" />
                         </StackPanel>
 
                         <StackPanel IsVisible="{Binding IsDaily}" Spacing="12">
                             <StackPanel>
-                                <TextBlock Classes="field-label" Text="Times of day, separated by commas" />
+                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_TimesOfDaySeparatedByCommas}" />
                                 <TextBox Text="{Binding DailyTimes}" PlaceholderText="08:00, 12:30" />
                             </StackPanel>
                             <WrapPanel>
-                                <CheckBox Content="Mon" IsChecked="{Binding Monday}" Margin="0,0,16,0" />
-                                <CheckBox Content="Tue" IsChecked="{Binding Tuesday}" Margin="0,0,16,0" />
-                                <CheckBox Content="Wed" IsChecked="{Binding Wednesday}" Margin="0,0,16,0" />
-                                <CheckBox Content="Thu" IsChecked="{Binding Thursday}" Margin="0,0,16,0" />
-                                <CheckBox Content="Fri" IsChecked="{Binding Friday}" Margin="0,0,16,0" />
-                                <CheckBox Content="Sat" IsChecked="{Binding Saturday}" Margin="0,0,16,0" />
-                                <CheckBox Content="Sun" IsChecked="{Binding Sunday}" />
+                                <CheckBox Content="{x:Static res:Strings.MessageSettingsWindow_Mon}" IsChecked="{Binding Monday}" Margin="0,0,16,0" />
+                                <CheckBox Content="{x:Static res:Strings.MessageSettingsWindow_Tue}" IsChecked="{Binding Tuesday}" Margin="0,0,16,0" />
+                                <CheckBox Content="{x:Static res:Strings.MessageSettingsWindow_Wed}" IsChecked="{Binding Wednesday}" Margin="0,0,16,0" />
+                                <CheckBox Content="{x:Static res:Strings.MessageSettingsWindow_Thu}" IsChecked="{Binding Thursday}" Margin="0,0,16,0" />
+                                <CheckBox Content="{x:Static res:Strings.MessageSettingsWindow_Fri}" IsChecked="{Binding Friday}" Margin="0,0,16,0" />
+                                <CheckBox Content="{x:Static res:Strings.MessageSettingsWindow_Sat}" IsChecked="{Binding Saturday}" Margin="0,0,16,0" />
+                                <CheckBox Content="{x:Static res:Strings.MessageSettingsWindow_Sun}" IsChecked="{Binding Sunday}" />
                             </WrapPanel>
                         </StackPanel>
                     </StackPanel>
@@ -252,14 +253,14 @@
                     <StackPanel Spacing="12">
                         <Grid ColumnDefinitions="*,Auto">
                             <StackPanel>
-                                <TextBlock Classes="card-title" Text="Array sizes" />
+                                <TextBlock Classes="card-title" Text="{x:Static res:Strings.MessageSettingsWindow_ArraySizes}" />
                                 <TextBlock Classes="card-subtitle"
-                                           Text="Send an array with a set number of items. The items in the file are repeated in turn to fill it. Give a largest number too for a random size on every send." />
+                                           Text="{x:Static res:Strings.MessageSettingsWindow_SendAnArrayWithASet}" />
                             </StackPanel>
-                            <Button Grid.Column="1" Content="Add array" VerticalAlignment="Top" Command="{Binding AddArrayCommand}" />
+                            <Button Grid.Column="1" Content="{x:Static res:Strings.MessageSettingsWindow_AddArray}" VerticalAlignment="Top" Command="{Binding AddArrayCommand}" />
                         </Grid>
 
-                        <TextBlock Classes="info-label" Text="No array sizes: arrays are sent with the items in the file." IsVisible="{Binding !Arrays.Count}" />
+                        <TextBlock Classes="info-label" Text="{x:Static res:Strings.MessageSettingsWindow_NoArraySizesArraysAreSent}" IsVisible="{Binding !Arrays.Count}" />
 
                         <ItemsControl ItemsSource="{Binding Arrays}">
                             <ItemsControl.ItemTemplate>
@@ -267,23 +268,23 @@
                                     <Border Classes="table-row">
                                         <Grid ColumnDefinitions="*,110,110,Auto" ColumnSpacing="12">
                                             <StackPanel>
-                                                <TextBlock Classes="field-label" Text="Array" />
+                                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Array}" />
                                                 <AutoCompleteBox Text="{Binding Path}"
                                                                  ItemsSource="{Binding #Root.((vm:MessageSettingsViewModel)DataContext).ArrayPaths}"
                                                                  FilterMode="Contains"
                                                                  MinimumPrefixLength="0" />
                                             </StackPanel>
                                             <StackPanel Grid.Column="1">
-                                                <TextBlock Classes="field-label" Text="Items" />
+                                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Items}" />
                                                 <TextBox Text="{Binding Items}" />
                                             </StackPanel>
                                             <StackPanel Grid.Column="2">
-                                                <TextBlock Classes="field-label" Text="Up to (optional)" />
-                                                <TextBox Text="{Binding MaxItems}" PlaceholderText="Fixed" />
+                                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_UpToOptional}" />
+                                                <TextBox Text="{Binding MaxItems}" PlaceholderText="{x:Static res:Strings.MessageSettingsWindow_Fixed}" />
                                             </StackPanel>
                                             <Button Grid.Column="3"
                                                     Classes="small"
-                                                    Content="Remove"
+                                                    Content="{x:Static res:Strings.MessageSettingsWindow_Remove}"
                                                     VerticalAlignment="Bottom"
                                                     Command="{Binding #Root.((vm:MessageSettingsViewModel)DataContext).RemoveArrayCommand}"
                                                     CommandParameter="{Binding}" />
@@ -300,14 +301,14 @@
                     <StackPanel Spacing="12">
                         <Grid ColumnDefinitions="*,Auto">
                             <StackPanel>
-                                <TextBlock Classes="card-title" Text="Varying fields" />
+                                <TextBlock Classes="card-title" Text="{x:Static res:Strings.MessageSettingsWindow_VaryingFields}" />
                                 <TextBlock Classes="card-subtitle"
-                                           Text="Fields of the body that get a new value on every send, or a fixed value of your choosing. Name a field by its path, such as ts or sensor.value. Use [*] for every item of an array, as in readings[*].ts." />
+                                           Text="{x:Static res:Strings.MessageSettingsWindow_FieldsOfTheBodyThatGet}" />
                             </StackPanel>
-                            <Button Grid.Column="1" Content="Add field" VerticalAlignment="Top" Command="{Binding AddFieldCommand}" />
+                            <Button Grid.Column="1" Content="{x:Static res:Strings.MessageSettingsWindow_AddField}" VerticalAlignment="Top" Command="{Binding AddFieldCommand}" />
                         </Grid>
 
-                        <TextBlock Classes="info-label" Text="No varying fields." IsVisible="{Binding !Fields.Count}" />
+                        <TextBlock Classes="info-label" Text="{x:Static res:Strings.MessageSettingsWindow_NoVaryingFields}" IsVisible="{Binding !Fields.Count}" />
 
                         <ItemsControl ItemsSource="{Binding Fields}">
                             <ItemsControl.ItemTemplate>
@@ -315,66 +316,66 @@
                                     <Border Classes="table-row">
                                         <Grid ColumnDefinitions="*,200,Auto" ColumnSpacing="12" RowDefinitions="Auto,Auto" RowSpacing="8">
                                             <StackPanel>
-                                                <TextBlock Classes="field-label" Text="Field" />
+                                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Field}" />
                                                 <AutoCompleteBox Text="{Binding Path}"
                                                                  ItemsSource="{Binding #Root.((vm:MessageSettingsViewModel)DataContext).BodyPaths}"
                                                                  FilterMode="Contains"
                                                                  MinimumPrefixLength="0" />
                                             </StackPanel>
                                             <StackPanel Grid.Column="1">
-                                                <TextBlock Classes="field-label" Text="New value" />
+                                                <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_NewValue}" />
                                                 <ComboBox SelectedIndex="{Binding TypeIndex}"
                                                           ItemsSource="{x:Static vm:FieldRuleViewModel.TypeNames}"
                                                           HorizontalAlignment="Stretch" />
                                             </StackPanel>
                                             <Button Grid.Column="2"
                                                     Classes="small"
-                                                    Content="Remove"
+                                                    Content="{x:Static res:Strings.MessageSettingsWindow_Remove}"
                                                     VerticalAlignment="Bottom"
                                                     Command="{Binding #Root.((vm:MessageSettingsViewModel)DataContext).RemoveFieldCommand}"
                                                     CommandParameter="{Binding}" />
 
                                             <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="12">
                                                 <StackPanel IsVisible="{Binding ShowCounter}">
-                                                    <TextBlock Classes="field-label" Text="Start" />
+                                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Start}" />
                                                     <TextBox Text="{Binding Start}" Width="110" />
                                                 </StackPanel>
                                                 <StackPanel IsVisible="{Binding ShowCounter}">
-                                                    <TextBlock Classes="field-label" Text="Step" />
+                                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Step}" />
                                                     <TextBox Text="{Binding Step}" Width="110" />
                                                 </StackPanel>
                                                 <StackPanel IsVisible="{Binding ShowRange}">
-                                                    <TextBlock Classes="field-label" Text="Minimum" />
+                                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Minimum}" />
                                                     <TextBox Text="{Binding Min}" Width="110" />
                                                 </StackPanel>
                                                 <StackPanel IsVisible="{Binding ShowRange}">
-                                                    <TextBlock Classes="field-label" Text="Maximum" />
+                                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Maximum}" />
                                                     <TextBox Text="{Binding Max}" Width="110" />
                                                 </StackPanel>
                                                 <StackPanel IsVisible="{Binding ShowDecimals}">
-                                                    <TextBlock Classes="field-label" Text="Decimals" />
+                                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Decimals}" />
                                                     <TextBox Text="{Binding Decimals}" Width="90" />
                                                 </StackPanel>
                                                 <StackPanel IsVisible="{Binding ShowFixed}">
-                                                    <TextBlock Classes="field-label" Text="Type" />
+                                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Type}" />
                                                     <ComboBox SelectedIndex="{Binding ValueKindIndex}"
                                                               ItemsSource="{x:Static vm:FieldRuleViewModel.ValueKindNames}"
                                                               Width="150" />
                                                 </StackPanel>
                                                 <StackPanel IsVisible="{Binding ShowFixedText}">
-                                                    <TextBlock Classes="field-label" Text="Value" />
+                                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Value}" />
                                                     <TextBox Text="{Binding FixedText}" Width="320" PlaceholderText="{Binding FixedPlaceholder}" />
                                                 </StackPanel>
                                                 <StackPanel IsVisible="{Binding ShowFixedSwitch}">
-                                                    <TextBlock Classes="field-label" Text="Value" />
+                                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Value}" />
                                                     <ToggleSwitch IsChecked="{Binding FixedBool}" OnContent="true" OffContent="false" />
                                                 </StackPanel>
                                                 <StackPanel IsVisible="{Binding ShowValues}">
                                                     <TextBlock Classes="field-label" Text="{Binding ValuesLabel}" />
-                                                    <TextBox Text="{Binding Values}" Width="320" PlaceholderText="open, closed, 42" />
+                                                    <TextBox Text="{Binding Values}" Width="320" PlaceholderText="{x:Static res:Strings.MessageSettingsWindow_OpenClosed42}" />
                                                 </StackPanel>
                                                 <StackPanel IsVisible="{Binding ShowChoices}">
-                                                    <TextBlock Classes="field-label" Text="Value" />
+                                                    <TextBlock Classes="field-label" Text="{x:Static res:Strings.MessageSettingsWindow_Value}" />
                                                     <ComboBox ItemsSource="{Binding Choices}" SelectedItem="{Binding Choice}" MinWidth="150" />
                                                 </StackPanel>
                                             </StackPanel>
@@ -390,8 +391,8 @@
                 <Border Classes="card">
                     <StackPanel Spacing="12">
                         <StackPanel>
-                            <TextBlock Classes="card-title" Text="Preview" />
-                            <TextBlock Classes="card-subtitle" Text="The topic and body as they would be sent now." />
+                            <TextBlock Classes="card-title" Text="{x:Static res:Strings.MessageSettingsWindow_Preview}" />
+                            <TextBlock Classes="card-subtitle" Text="{x:Static res:Strings.MessageSettingsWindow_TheTopicAndBodyAsThey}" />
                         </StackPanel>
                         <TextBox Classes="code" Text="{Binding TopicPreview, Mode=OneWay}" IsReadOnly="True" />
                         <TextBox Classes="code"

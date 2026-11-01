@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Joktan.Core;
+using Joktan.Mqtt.Resources;
 
 namespace Joktan.Mqtt;
 
@@ -120,11 +121,11 @@ public sealed record MessageSettings
         {
             var options = new JsonDocumentOptions { AllowTrailingCommas = true, CommentHandling = JsonCommentHandling.Skip, AllowDuplicateProperties = false };
             if (JsonNode.Parse(json, documentOptions: options) is not JsonObject root)
-                throw new FormatException("it must be a JSON object");
+                throw new FormatException(Strings.MessageSettings_ItMustBeAJSONObject);
 
             var qos = Int(root, "qos") ?? 0;
             if (qos is < 0 or > 2)
-                throw new FormatException("\"qos\" must be 0, 1 or 2");
+                throw new FormatException(Strings.MessageSettings_QosMustBe01Or);
 
             return new MessageSettings
             {
@@ -142,7 +143,7 @@ public sealed record MessageSettings
         }
         catch (Exception e) when (e is JsonException or InvalidOperationException)
         {
-            throw new FormatException("it is not valid JSON or a value has the wrong type", e);
+            throw new FormatException(Strings.MessageSettings_ItIsNotValidJSONOr, e);
         }
     }
 
@@ -224,7 +225,7 @@ public sealed record MessageSettings
     private static MessageSchedule ParseSchedule(JsonNode node)
     {
         if (node is not JsonObject o)
-            throw new FormatException("\"schedule\" must be an object");
+            throw new FormatException(Strings.MessageSettings_ScheduleMustBeAnObject);
 
         var type = Enum(o, "type", ScheduleType.Manual);
         switch (type)
@@ -233,16 +234,16 @@ public sealed record MessageSettings
                 return new MessageSchedule
                 {
                     Type = type,
-                    At = Date(o, "at") ?? throw new FormatException("a \"once\" schedule needs \"at\""),
+                    At = Date(o, "at") ?? throw new FormatException(Strings.MessageSettings_AOnceScheduleNeedsAt),
                 };
 
             case ScheduleType.Interval:
-                var every = Int(o, "every") ?? throw new FormatException("an \"interval\" schedule needs \"every\"");
+                var every = Int(o, "every") ?? throw new FormatException(Strings.MessageSettings_AnIntervalScheduleNeedsEvery);
                 if (every < 1)
-                    throw new FormatException("\"every\" must be 1 or more");
+                    throw new FormatException(Strings.MessageSettings_EveryMustBe1OrMore);
                 var max = Int(o, "maxSends");
                 if (max < 1)
-                    throw new FormatException("\"maxSends\" must be 1 or more");
+                    throw new FormatException(Strings.MessageSettings_MaxSendsMustBe1OrMore);
                 return new MessageSchedule
                 {
                     Type = type,
@@ -258,18 +259,18 @@ public sealed record MessageSettings
                     .Select(t => TimeOnly.TryParseExact(t?.GetValue<string>(), ["HH:mm", "H:mm", "HH:mm:ss"],
                         CultureInfo.InvariantCulture, DateTimeStyles.None, out var time)
                         ? time
-                        : throw new FormatException($"\"{t}\" is not a time of day such as 08:30"))
+                        : throw new FormatException(string.Format(Strings.MessageSettings_IsNotATimeOfDay, t)))
                     .ToArray();
                 var days = (o["days"] as JsonArray ?? [])
                     .Select(d => Array.IndexOf(DayNames, d?.GetValue<string>().ToLowerInvariant()) is >= 0 and var i
                         ? (DayOfWeek)i
-                        : throw new FormatException($"\"{d}\" is not a day such as mon"))
+                        : throw new FormatException(string.Format(Strings.MessageSettings_IsNotADaySuchAs, d)))
                     .Distinct()
                     .ToArray();
                 if (times.Length == 0)
-                    throw new FormatException("a \"daily\" schedule needs at least one time");
+                    throw new FormatException(Strings.MessageSettings_ADailyScheduleNeedsAtLeast);
                 if (days.Length == 0)
-                    throw new FormatException("a \"daily\" schedule needs at least one day");
+                    throw new FormatException(Strings.MessageSettings_ADailyScheduleNeedsAtLeastOne);
                 return new MessageSchedule { Type = type, Times = times, Days = days };
 
             default:
@@ -284,16 +285,16 @@ public sealed record MessageSettings
     private static List<FieldRule> ParseFields(JsonNode node, string key)
     {
         if (node is not JsonObject o)
-            throw new FormatException($"\"{key}\" must be an object");
+            throw new FormatException(string.Format(Strings.MessageSettings_MustBeAnObject, key));
 
-        var label = key == "topicFields" ? "topic field" : "field";
+        var label = key == "topicFields" ? Strings.MessageSettings_TopicField : Strings.MessageSettings_Field;
         var rules = new List<FieldRule>();
         foreach (var (path, value) in o)
         {
             if (value is not JsonObject f)
-                throw new FormatException($"{label} \"{path}\" must be an object with a \"type\"");
+                throw new FormatException(string.Format(Strings.MessageSettings_MustBeAnObjectWithA, label, path));
             if (f["type"] is null)
-                throw new FormatException($"{label} \"{path}\" needs a \"type\"");
+                throw new FormatException(string.Format(Strings.MessageSettings_NeedsAType, label, path));
 
             var rule = new FieldRule(path, Enum(f, "type", FieldType.Guid))
             {
@@ -307,7 +308,7 @@ public sealed record MessageSettings
             };
 
             if (rule.Type == FieldType.Fixed && !f.ContainsKey("value"))
-                throw new FormatException($"{label} \"{path}\" needs a \"value\"");
+                throw new FormatException(string.Format(Strings.MessageSettings_NeedsAValue, label, path));
 
             if (CheckRule(rule) is { } problem)
                 throw new FormatException($"{label} \"{path}\": {problem}");
@@ -320,23 +321,23 @@ public sealed record MessageSettings
     private static List<ArrayRule> ParseArrays(JsonNode node)
     {
         if (node is not JsonObject o)
-            throw new FormatException("\"arrays\" must be an object");
+            throw new FormatException(Strings.MessageSettings_ArraysMustBeAnObject);
 
         var rules = new List<ArrayRule>();
         foreach (var (path, value) in o)
         {
             if (value is not JsonObject a)
-                throw new FormatException($"array \"{path}\" must be an object with \"count\", or \"min\" and \"max\"");
+                throw new FormatException(string.Format(Strings.MessageSettings_ArrayMustBeAnObjectWith, path));
 
             var count = Int(a, "count");
             var min = Int(a, "min") ?? count;
             var max = Int(a, "max") ?? count;
             if (min is null || max is null)
-                throw new FormatException($"array \"{path}\" needs \"count\", or \"min\" and \"max\"");
+                throw new FormatException(string.Format(Strings.MessageSettings_ArrayNeedsCountOrMinAnd, path));
 
             var rule = new ArrayRule(path, min.Value, max.Value);
             if (CheckArray(rule) is { } problem)
-                throw new FormatException($"array \"{path}\": {problem}");
+                throw new FormatException(string.Format(Strings.MessageSettings_Array, path, problem));
             rules.Add(rule);
         }
 
@@ -345,22 +346,22 @@ public sealed record MessageSettings
 
     /// <summary>Returns what is wrong with an array rule's numbers, or null.</summary>
     public static string? CheckArray(ArrayRule rule)
-        => rule.Min < 0 ? "the number of items must not be negative"
-            : rule.Max > ArrayRule.Limit ? string.Create(CultureInfo.InvariantCulture, $"the number of items must not be more than {ArrayRule.Limit:N0}")
-            : rule.Min > rule.Max ? "\"min\" must not be greater than \"max\""
+        => rule.Min < 0 ? Strings.MessageSettings_TheNumberOfItemsMustNot
+            : rule.Max > ArrayRule.Limit ? string.Format(System.Globalization.CultureInfo.InvariantCulture, Strings.MessageSettings_TheNumberOfItemsMustNotBe, ArrayRule.Limit)
+            : rule.Min > rule.Max ? Strings.MessageSettings_MinMustNotBeGreaterThan
             : null;
 
     /// <summary>Returns what is wrong with a rule's settings, or null.</summary>
     public static string? CheckRule(FieldRule rule) => rule.Type switch
     {
         FieldType.RandomInteger or FieldType.RandomNumber when rule.Min > rule.Max
-            => "\"min\" must not be greater than \"max\"",
+            => Strings.MessageSettings_MinMustNotBeGreaterThan,
         FieldType.RandomNumber when rule.Decimals is < 0 or > 15
-            => "\"decimals\" must be from 0 to 15",
+            => Strings.MessageSettings_DecimalsMustBeFrom0To,
         FieldType.OneOf or FieldType.Cycle when rule.Values.Count == 0
-            => "\"values\" must list at least one value",
+            => Strings.MessageSettings_ValuesMustListAtLeastOne,
         FieldType.Fixed when rule.Values.Count > 0 && !rule.Values.Any(v => JsonNode.DeepEquals(v, rule.Value))
-            => "\"value\" must be one of \"values\"",
+            => Strings.MessageSettings_ValueMustBeOneOfValues,
         _ => null,
     };
 
@@ -413,7 +414,7 @@ public sealed record MessageSettings
         var text = node.GetValue<string>();
         return System.Enum.TryParse<T>(text, ignoreCase: true, out var value) && System.Enum.IsDefined(value)
             ? value
-            : throw new FormatException($"\"{text}\" is not a valid \"{key}\"");
+            : throw new FormatException(string.Format(Strings.MessageSettings_IsNotAValid, text, key));
     }
 
     private static DateTime? Date(JsonObject o, string key)
@@ -424,6 +425,6 @@ public sealed record MessageSettings
         var text = node.GetValue<string>();
         return DateTime.TryParse(text, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var value)
             ? value
-            : throw new FormatException($"\"{text}\" is not a date and time such as 2026-11-02T08:30:00");
+            : throw new FormatException(string.Format(Strings.MessageSettings_IsNotADateAndTime, text));
     }
 }

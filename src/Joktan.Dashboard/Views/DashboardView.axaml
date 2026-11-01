@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Dashboard.Resources"
              xmlns:vm="using:Joktan.Dashboard.ViewModels"
              xmlns:c="using:Joktan.Core.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -72,15 +73,15 @@
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="24">
                     <Border Classes="card" VerticalAlignment="Top">
                         <StackPanel>
-                            <TextBlock Classes="card-title" Text="System" />
-                            <TextBlock Classes="card-subtitle" Text="About this machine." />
+                            <TextBlock Classes="card-title" Text="{x:Static res:Strings.DashboardView_System}" />
+                            <TextBlock Classes="card-subtitle" Text="{x:Static res:Strings.DashboardView_AboutThisMachine}" />
                             <ItemsControl ItemsSource="{Binding SystemInfo}" />
                         </StackPanel>
                     </Border>
 
                     <Border Grid.Column="1" Classes="card" VerticalAlignment="Top">
                         <StackPanel>
-                            <TextBlock Classes="card-title" Text="OpenTelemetry metrics" />
+                            <TextBlock Classes="card-title" Text="{x:Static res:Strings.DashboardView_OpenTelemetryMetrics}" />
                             <TextBlock Classes="card-subtitle" Text="{Binding TelemetrySummary}" />
                             <ItemsControl ItemsSource="{Binding ExportedMetrics}" />
                         </StackPanel>

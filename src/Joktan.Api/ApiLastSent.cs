@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using Joktan.Api.Resources;
 using Joktan.Core;
 
 namespace Joktan.Api;
@@ -21,19 +22,19 @@ public sealed class ApiSentRequest
         if (Request.Kind == ApiKind.Rest)
         {
             lines.Add($"{Request.Method} {Request.Url}");
-            Add("Query", Request.Query);
-            Add("Header", Request.Headers);
+            Add(Strings.ApiSentRequest_Query, Request.Query);
+            Add(Strings.ApiSentRequest_Header, Request.Headers);
             if (Request.AuthKind != ApiAuthKind.None)
-                lines.Add($"Auth: {Request.AuthKind}");
+                lines.Add(string.Format(Strings.ApiSentRequest_Auth, Request.AuthKind));
             if (Request.BodyKind == ApiBodyKind.Form)
-                Add("Field", Request.Form);
+                Add(Strings.ApiSentRequest_Field, Request.Form);
             else if (Request.BodyKind != ApiBodyKind.None)
                 lines.AddRange(["", Request.Body]);
         }
         else
         {
-            lines.Add($"{Request.Service}/{Request.Rpc} at {Request.Address}");
-            Add("Metadata", Request.Metadata);
+            lines.Add(string.Format(Strings.ApiSentRequest_At, Request.Service, Request.Rpc, Request.Address));
+            Add(Strings.ApiSentRequest_Metadata, Request.Metadata);
             lines.AddRange(["", Request.Message]);
         }
 

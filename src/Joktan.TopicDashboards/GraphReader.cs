@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Joktan.Mqtt;
+using Joktan.TopicDashboards.Resources;
 
 namespace Joktan.TopicDashboards;
 
@@ -61,7 +62,7 @@ public sealed class GraphReader
             var rows = RowsOf(message, pattern, path, fromTopic);
             if (rows.Count == 0)
             {
-                problem ??= $"nothing at {(value.Path.Length > 0 ? value.Path : "the whole payload")}";
+                problem ??= string.Format(Strings.GraphReader_NothingAt, (value.Path.Length > 0 ? value.Path : Strings.GraphReader_TheWholePayload));
                 continue;
             }
 
@@ -69,7 +70,7 @@ public sealed class GraphReader
             {
                 if (KeysOf(message, fromTopic, row, out var missing) is not { } keys)
                 {
-                    problem ??= $"no value of {missing}";
+                    problem ??= string.Format(Strings.GraphReader_NoValueOf, missing);
                     continue;
                 }
 
@@ -186,7 +187,7 @@ public sealed class GraphSource
         {
             if (!Data.Has(reading.Topic, reading.Path, reading.Keys) && !_canAddSeries())
             {
-                refused = OverLimit = "there are too many series in the app";
+                refused = OverLimit = Strings.GraphSource_ThereAreTooManySeriesIn;
                 continue;
             }
 
@@ -245,13 +246,13 @@ public sealed class GraphSource
     {
         var cells = Profile.Seen.Select(s => new SeriesKeys(s)).ToList();
         if (Profile.TabKey is not { } tabKey)
-            return cells.Count >= GraphProfile.MaxGraphs ? $"it is already shown as {GraphProfile.MaxGraphs} graphs, the most for one graph" : null;
+            return cells.Count >= GraphProfile.MaxGraphs ? string.Format(Strings.GraphSource_ItIsAlreadyShownAsGraphs, GraphProfile.MaxGraphs) : null;
 
         var tabs = cells.Select(c => c[tabKey]).Distinct().ToList();
         if (!tabs.Contains(cell[tabKey]) && tabs.Count >= GraphProfile.MaxTabs)
-            return $"{tabKey} already has {GraphProfile.MaxTabs} tabs, the most for one key";
+            return string.Format(Strings.GraphSource_AlreadyHasTabsTheMostFor, tabKey, GraphProfile.MaxTabs);
         return cells.Count(c => c[tabKey] == cell[tabKey]) >= GraphProfile.MaxGraphs
-            ? $"it is already shown as {GraphProfile.MaxGraphs} graphs, the most for one graph"
+            ? string.Format(Strings.GraphSource_ItIsAlreadyShownAsGraphs, GraphProfile.MaxGraphs)
             : null;
     }
 }
@@ -296,7 +297,7 @@ public sealed class GraphHealth
     public string Describe(DateTime now)
     {
         if (LastMessage is not { } last)
-            return "No message has arrived since the app started.";
+            return Strings.GraphHealth_NoMessageHasArrivedSinceThe;
 
         var since = now.Ticks / TimeSpan.TicksPerSecond - Seconds;
         var recent = _buckets.Where(b => b.Second > since).ToList();
@@ -305,15 +306,15 @@ public sealed class GraphHealth
         var skipped = recent.Sum(b => b.Skipped);
         var lines = new List<string>
         {
-            $"Last message {Ago(now - last)}, on {LastTopic}",
-            $"Last minute: {matched} matched, {used} used, {skipped} skipped{(skipped > 0 && LastProblem is not null ? $": {LastProblem}" : "")}",
+            string.Format(Strings.GraphHealth_LastMessageOn, Ago(now - last), LastTopic),
+            string.Format(Strings.GraphHealth_LastMinuteMatchedUsedSkipped, matched, used, skipped, (skipped > 0 && LastProblem is not null ? $": {LastProblem}" : "")),
         };
         return string.Join('\n', lines);
     }
 
     private static string Ago(TimeSpan time)
-        => time.TotalSeconds < 1 ? "just now"
-            : time.TotalMinutes < 1 ? $"{(int)time.TotalSeconds}s ago"
-            : time.TotalHours < 1 ? $"{(int)time.TotalMinutes}m ago"
-            : $"{(int)time.TotalHours}h ago";
+        => time.TotalSeconds < 1 ? Strings.GraphHealth_JustNow
+            : time.TotalMinutes < 1 ? string.Format(Strings.GraphHealth_SAgo, (int)time.TotalSeconds)
+            : time.TotalHours < 1 ? string.Format(Strings.GraphHealth_MAgo, (int)time.TotalMinutes)
+            : string.Format(Strings.GraphHealth_HAgo, (int)time.TotalHours);
 }

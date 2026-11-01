@@ -4,6 +4,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 using Joktan.Core;
+using Joktan.TopicExplorer.Resources;
 
 namespace Joktan.TopicExplorer.Views;
 
@@ -21,7 +22,7 @@ public partial class TopicExplorerWindow : Window
         {
             var maximized = WindowState == WindowState.Maximized;
             MaximizeIcon.Data = maximized ? Icons.WindowRestore : Icons.WindowMaximize;
-            ToolTip.SetTip(MaximizeButton, maximized ? "Restore" : "Maximise");
+            ToolTip.SetTip(MaximizeButton, maximized ? Strings.TopicExplorerWindow_Restore : Strings.TopicExplorerWindow_Maximise);
         }
     }
 

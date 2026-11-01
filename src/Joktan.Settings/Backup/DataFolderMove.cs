@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Joktan.Core;
+using Joktan.Settings.Resources;
 
 namespace Joktan.Settings.Backup;
 
@@ -33,7 +34,7 @@ public static class DataFolderMove
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
-            return new FolderChange($"Could not use {to}: {e.Message}");
+            return new FolderChange(string.Format(Strings.DataFolderMove_CouldNotUse, to, e.Message));
         }
 
         restart();
@@ -50,11 +51,11 @@ public static class DataFolderMove
         if (target == source)
         {
             DataFolder.SaveChosen(target, defaultFolder);
-            return $"Restarting to use {target}.";
+            return string.Format(Strings.DataFolderMove_RestartingToUse, target);
         }
 
         if (target.StartsWith(source + Path.DirectorySeparatorChar, StringComparison.Ordinal))
-            throw new IOException("It is inside the folder in use. Choose one outside it.");
+            throw new IOException(Strings.DataFolderMove_ItIsInsideTheFolderIn);
 
         var folders = new List<string>();
         CreateFolders(target, folders);
@@ -62,19 +63,19 @@ public static class DataFolderMove
         {
             CheckWritable(target);
             DataFolder.SaveChosen(target, defaultFolder);
-            return $"Restarting to open the settings already in {target}.";
+            return string.Format(Strings.DataFolderMove_RestartingToOpenTheSettingsAlready, target);
         }
 
         // Dot files such as .DS_Store appear in a new folder by themselves, so they do not count.
         if (Directory.EnumerateFileSystemEntries(target).Any(entry => !Path.GetFileName(entry).StartsWith('.')))
-            throw new IOException("It holds other files. Choose an empty folder, or one that already holds Joktan's settings.");
+            throw new IOException(Strings.DataFolderMove_ItHoldsOtherFilesChooseAn);
 
         Copy(source, target, folders, () =>
         {
             RewritePaths(source, target);
             DataFolder.SaveChosen(target, defaultFolder);
         });
-        return $"Restarting to use {target}. The originals are still in {source}.";
+        return string.Format(Strings.DataFolderMove_RestartingToUseTheOriginalsAre, target, source);
     }
 
     private static void CheckWritable(string folder)

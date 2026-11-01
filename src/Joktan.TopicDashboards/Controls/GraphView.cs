@@ -7,6 +7,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Input;
 using Avalonia.Media;
+using Joktan.TopicDashboards.Resources;
 using Joktan.TopicDashboards.ViewModels;
 
 namespace Joktan.TopicDashboards.Controls;
@@ -319,7 +320,7 @@ public class GraphView : Control
         if (hovered >= 0 && _pointer is { } at)
         {
             var bar = bars[hovered];
-            var title = card.Series.Count == 1 ? bar.Label : "Latest";
+            var title = card.Series.Count == 1 ? bar.Label : Strings.GraphView_Latest;
             DrawTooltip(context, at, title, [(bar.Slot, $"{bar.Tip}: {card.Format(bar.Value)}")]);
         }
     }

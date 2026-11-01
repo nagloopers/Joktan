@@ -7,6 +7,7 @@ using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using Joktan.TopicDashboards.Resources;
 using Joktan.TopicDashboards.ViewModels;
 
 namespace Joktan.TopicDashboards.Views;
@@ -36,7 +37,7 @@ public partial class TopicDashboardsView : UserControl
 
         var folders = await top.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
         {
-            Title = "Choose the folder for dashboards",
+            Title = Strings.TopicDashboardsView_ChooseTheFolderForDashboards,
             AllowMultiple = false,
         });
         return folders.Count > 0 ? folders[0].TryGetLocalPath() : null;

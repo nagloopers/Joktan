@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Agent.Mcp;
+using Joktan.Agent.Resources;
 using Joktan.Core.ViewModels;
 
 namespace Joktan.Agent.ViewModels;
@@ -32,7 +33,7 @@ public sealed partial class ToolCallViewModel(McpTool tool, ToolCaller caller) :
 
     public string Description { get; } = tool.Description;
 
-    public string CallerText { get; } = caller == ToolCaller.Outside ? "outside client" : "";
+    public string CallerText { get; } = caller == ToolCaller.Outside ? Strings.ToolCall_OutsideClient : "";
 
     public bool IsFromOutside { get; } = caller == ToolCaller.Outside;
 
@@ -61,8 +62,8 @@ public sealed partial class ApprovalViewModel(McpTool tool, string details, Tool
     public string Name { get; } = tool.Name;
 
     public string Question { get; } = tool.Risk == ToolRisk.Secret
-        ? "Show this secret to the agent? It goes to the client's AI provider."
-        : caller == ToolCaller.Outside ? "A client outside the app asks to do this:" : "The agent asks to do this:";
+        ? Strings.Approval_ShowThisSecretToTheAgent
+        : caller == ToolCaller.Outside ? Strings.Approval_AClientOutsideTheAppAsks : Strings.Approval_TheAgentAsksToDoThis;
 
     public string Description { get; } = tool.Description;
 
@@ -85,17 +86,17 @@ public sealed partial class ApprovalViewModel(McpTool tool, string details, Tool
     public bool IsWaiting => Outcome is null;
 
     [RelayCommand]
-    private void Allow() => Finish(true, "Allowed");
+    private void Allow() => Finish(true, Strings.Approval_Allowed);
 
     [RelayCommand]
     private void AllowAlways()
     {
         Remembered = true;
-        Finish(true, "Allowed for this conversation");
+        Finish(true, Strings.Approval_AllowedForThisConversation);
     }
 
     [RelayCommand]
-    private void Deny() => Finish(false, "Declined");
+    private void Deny() => Finish(false, Strings.Approval_Declined);
 
     /// <summary>Takes the question back, when nobody answered or the turn was stopped.</summary>
     public void Withdraw(string outcome) => Finish(false, outcome);

@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Joktan.Core.ViewModels;
 using Joktan.Mqtt.ViewModels;
+using Joktan.TopicDashboards.Resources;
 
 namespace Joktan.TopicDashboards.ViewModels;
 
@@ -62,7 +63,7 @@ public partial class DashboardTabViewModel : ViewModelBase
     {
         get
         {
-            var name = Name.Trim() is { Length: > 0 } text ? text : "Untitled";
+            var name = Name.Trim() is { Length: > 0 } text ? text : Strings.DashboardTab_Untitled;
             if (TabKey is null || TabValue is null)
                 return name;
 
@@ -124,12 +125,12 @@ public partial class DashboardTabViewModel : ViewModelBase
             var count = Profile.Graphs.Count;
             var question = (tabs, count) switch
             {
-                (> 1, _) => $"Remove this dashboard and all {tabs} of its tabs?",
-                (_, 0) => "Remove this dashboard?",
-                (_, 1) => "Remove this dashboard and its graph?",
-                _ => $"Remove this dashboard and its {count} graphs?",
+                (> 1, _) => string.Format(Strings.DashboardTab_RemoveThisDashboardAndAllOf, tabs),
+                (_, 0) => Strings.DashboardTab_RemoveThisDashboard,
+                (_, 1) => Strings.DashboardTab_RemoveThisDashboardAndItsGraph,
+                _ => string.Format(Strings.DashboardTab_RemoveThisDashboardAndItsGraphs, count),
             };
-            return _page.Dashboards.Count > tabs ? question : $"{question} An empty one takes its place.";
+            return _page.Dashboards.Count > tabs ? question : string.Format(Strings.DashboardTab_AnEmptyOneTakesItsPlace, question);
         }
     }
 
@@ -348,7 +349,7 @@ public partial class DashboardTabViewModel : ViewModelBase
         card.RemoveAsked = c =>
         {
             var copies = Graphs.Count(g => g.Profile == c.Profile);
-            c.RemoveQuestion = copies > 1 ? $"Remove these {copies} graphs?" : "Remove this graph?";
+            c.RemoveQuestion = copies > 1 ? string.Format(Strings.DashboardTab_RemoveTheseGraphs, copies) : Strings.DashboardTab_RemoveThisGraph;
         };
         return card;
     }

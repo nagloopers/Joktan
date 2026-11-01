@@ -10,6 +10,7 @@ using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
+using Joktan.Containers.Resources;
 using Joktan.Containers.ViewModels;
 
 namespace Joktan.Containers.Views;
@@ -109,11 +110,11 @@ public partial class ContainersView : UserControl
 
         var files = await top.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
-            Title = "Choose compose files",
+            Title = Strings.ContainersView_ChooseComposeFiles,
             AllowMultiple = true,
             FileTypeFilter =
             [
-                new FilePickerFileType("Compose files") { Patterns = ["*.yml", "*.yaml"] },
+                new FilePickerFileType(Strings.ContainersView_ComposeFiles) { Patterns = ["*.yml", "*.yaml"] },
                 FilePickerFileTypes.All,
             ],
         });

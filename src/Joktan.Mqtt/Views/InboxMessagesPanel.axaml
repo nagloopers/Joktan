@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="using:Joktan.Mqtt.Resources"
              xmlns:vm="using:Joktan.Mqtt.ViewModels"
              xmlns:views="using:Joktan.Mqtt.Views"
              xmlns:controls="using:Joktan.Core.Controls"
@@ -14,9 +15,9 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" Spacing="8" Margin="0,0,0,8">
             <Grid ColumnDefinitions="*,Auto">
-                <TextBlock Classes="card-title" VerticalAlignment="Center" Text="Messages" />
-                <Button Grid.Column="1" Classes="small" Content="Clear" Command="{Binding ClearMessagesCommand}"
-                        ToolTip.Tip="Clear this list on this computer. Nothing changes for anyone else." />
+                <TextBlock Classes="card-title" VerticalAlignment="Center" Text="{x:Static res:Strings.InboxMessagesPanel_Messages}" />
+                <Button Grid.Column="1" Classes="small" Content="{x:Static res:Strings.InboxMessagesPanel_Clear}" Command="{Binding ClearMessagesCommand}"
+                        ToolTip.Tip="{x:Static res:Strings.InboxMessagesPanel_ClearThisListOnThisComputer}" />
             </Grid>
             <views:InboxConnectionBar />
         </StackPanel>
@@ -24,7 +25,7 @@
         <StackPanel DockPanel.Dock="Bottom" Spacing="4" Margin="0,8,0,0">
             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8" IsVisible="{Binding IsReplying}">
                 <TextBlock Classes="info-label" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Text="{Binding ReplyingText}" ToolTip.Tip="{Binding ReplyingText}" />
-                <Button Grid.Column="1" Classes="small" Content="Cancel" Command="{Binding CancelReplyCommand}" />
+                <Button Grid.Column="1" Classes="small" Content="{x:Static res:Strings.InboxMessagesPanel_Cancel}" Command="{Binding CancelReplyCommand}" />
             </Grid>
             <ItemsControl ItemsSource="{Binding Suggestions}" IsVisible="{Binding HasSuggestions}">
                 <ItemsControl.ItemsPanel>
@@ -41,19 +42,19 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                <TextBox x:Name="DraftBox" Text="{Binding Draft}" MaxLength="{Binding MaxMessageLength}" PlaceholderText="To everyone, or @name for one person" TextWrapping="Wrap" MaxHeight="100">
+                <TextBox x:Name="DraftBox" Text="{Binding Draft}" MaxLength="{Binding MaxMessageLength}" PlaceholderText="{x:Static res:Strings.InboxMessagesPanel_ToEveryoneOrNameForOne}" TextWrapping="Wrap" MaxHeight="100">
                     <TextBox.KeyBindings>
                         <KeyBinding Gesture="Enter" Command="{Binding SendCommand}" />
                     </TextBox.KeyBindings>
                 </TextBox>
-                <Button Grid.Column="1" Classes="accent" Content="Send" VerticalAlignment="Bottom" Command="{Binding SendCommand}" />
+                <Button Grid.Column="1" Classes="accent" Content="{x:Static res:Strings.InboxMessagesPanel_Send}" VerticalAlignment="Bottom" Command="{Binding SendCommand}" />
             </Grid>
             <TextBlock Classes="error" TextWrapping="Wrap" Text="{Binding SendError}"
                        IsVisible="{Binding SendError, Converter={x:Static ObjectConverters.IsNotNull}}" />
         </StackPanel>
 
         <Panel>
-            <TextBlock Classes="info-label" HorizontalAlignment="Center" VerticalAlignment="Center" Text="No messages yet" IsVisible="{Binding !HasMessages}" />
+            <TextBlock Classes="info-label" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{x:Static res:Strings.InboxMessagesPanel_NoMessagesYet}" IsVisible="{Binding !HasMessages}" />
             <ScrollViewer x:Name="Scroller">
                 <ItemsControl x:Name="MessageList" ItemsSource="{Binding Messages}">
                     <ItemsControl.ItemTemplate>
@@ -75,11 +76,11 @@
                                     </StackPanel>
                                     <TextBlock Classes="info-label" TextTrimming="CharacterEllipsis" Text="{Binding ReplyLine}" IsVisible="{Binding IsReply}" />
                                     <SelectableTextBlock Foreground="{DynamicResource TextBrush}" TextWrapping="Wrap" controls:TextHighlight.Source="{Binding Text}" controls:TextHighlight.Words="{Binding FoundWords}" />
-                                    <Button Classes="small" Content="Reply" HorizontalAlignment="Left" Margin="0,2,0,0"
+                                    <Button Classes="small" Content="{x:Static res:Strings.InboxMessagesPanel_Reply}" HorizontalAlignment="Left" Margin="0,2,0,0"
                                             IsVisible="{Binding CanReply}"
                                             Command="{Binding $parent[UserControl].((vm:InboxViewModel)DataContext).ReplyCommand}"
                                             CommandParameter="{Binding}"
-                                            ToolTip.Tip="Answer this person only" />
+                                            ToolTip.Tip="{x:Static res:Strings.InboxMessagesPanel_AnswerThisPersonOnly}" />
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
