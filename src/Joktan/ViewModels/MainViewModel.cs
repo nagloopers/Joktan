@@ -6,6 +6,9 @@ using System.Reflection;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Joktan.Agent;
+using Joktan.Agent.Tools;
+using Joktan.Agent.ViewModels;
 using Joktan.Api.ViewModels;
 using Joktan.Certificates;
 using Joktan.Certificates.ViewModels;
@@ -55,8 +58,9 @@ public partial class MainViewModel : ViewModelBase
     /// <param name="dashboards">The MQTT dashboards, if already read; otherwise they are read here.</param>
     /// <param name="menuLayout">The order of the menu and what it shows, if already read; otherwise they are read here.</param>
     /// <param name="themes">The themes, if already read; otherwise they are read here.</param>
+    /// <param name="agentSettings">The agent panel's settings, if already read; otherwise they are read here.</param>
     public MainViewModel(MachineMonitor monitor, CertificateStore? certificates = null, MqttSettings? mqttSettings = null,
-        NoteStore? notes = null, PasswordSettings? passwordSettings = null, DashboardStore? dashboards = null, MenuLayout? menuLayout = null, ThemeEditor? themes = null)
+        NoteStore? notes = null, PasswordSettings? passwordSettings = null, DashboardStore? dashboards = null, MenuLayout? menuLayout = null, ThemeEditor? themes = null, AgentSettings? agentSettings = null)
     {
         _passwords = new PasswordsViewModel(passwordSettings ?? PasswordSettings.Load(), CredentialStore.Create(CredentialStore.PasswordsService));
         certificates ??= CertificateStore.Load();
@@ -97,18 +101,47 @@ public partial class MainViewModel : ViewModelBase
             Help.HighlightWords = null;
         };
 
+        var overview = new DashboardViewModel(monitor);
+        var messaging = (MessagingViewModel)alertsAndMessages.Page!;
+        var explorer = new TopicExplorerViewModel(mqtt, _topicDashboards);
+        var certificatesPage = new CertificatesViewModel(certificates, mqtt.ClientsUsing);
+
+        // The tools are made when the server first starts, so a run without the agent pays nothing for them.
+        Agent = new AgentViewModel(agentSettings ?? AgentSettings.Load(), () => AgentTools.All(new AgentContext
+        {
+            Menu = MenuItems,
+            Navigate = item => NavigateCommand.Execute(item),
+            CurrentPage = () => CurrentPage?.Title,
+            Overview = overview,
+            Notes = _notes,
+            Passwords = _passwords,
+            Mqtt = mqtt,
+            Inbox = Inbox,
+            Messaging = messaging,
+            Explorer = explorer,
+            Dashboards = _topicDashboards,
+            Certificates = certificatesPage,
+            Api = _apiClient,
+            Containers = _containers,
+            SearchSettings = searchPage,
+            MenuSettings = (MenuSettingsViewModel)menuSettings.Page!,
+            Themes = themes,
+            Backup = _backup,
+            Search = words => _notes.Search(words).Concat(Help.Search(words)).Concat(Inbox.SearchMessages(words)).Concat(Inbox.SearchAlerts(words)),
+        }));
+
         MenuItems =
         [
             new NavItemViewModel("Dashboard", Icons.Dashboard,
-                new NavItemViewModel("Overview") { Page = new DashboardViewModel(monitor), HelpTopic = "dashboard" },
+                new NavItemViewModel("Overview") { Page = overview, HelpTopic = "dashboard" },
                 new NavItemViewModel("MQTT Dashboards") { FormerTitle = "Topic Dashboards", Page = _topicDashboards, HelpTopic = "topic-dashboards" }),
             notesItem,
             passwordsItem,
             new NavItemViewModel("Dev Tools", Icons.DevTools,
                 new NavItemViewModel("Brokers", null,
                     new NavItemViewModel("MQTT") { Page = mqtt, HelpTopic = "mqtt" },
-                    new NavItemViewModel("Topic Explorer") { Page = new TopicExplorerViewModel(mqtt, _topicDashboards), HelpTopic = "topic-explorer" }) { FormerTitle = "Connectivity" },
-                new NavItemViewModel("Certificates") { Page = new CertificatesViewModel(certificates, mqtt.ClientsUsing), HelpTopic = "certificates" },
+                    new NavItemViewModel("Topic Explorer") { Page = explorer, HelpTopic = "topic-explorer" }) { FormerTitle = "Connectivity" },
+                new NavItemViewModel("Certificates") { Page = certificatesPage, HelpTopic = "certificates" },
                 new NavItemViewModel("API Client") { Page = _apiClient, HelpTopic = "api-client" },
                 new NavItemViewModel("Containers") { Page = _containers, HelpTopic = "containers" }),
             new NavItemViewModel("Settings", Icons.Settings,
@@ -119,10 +152,12 @@ public partial class MainViewModel : ViewModelBase
                 new NavItemViewModel("Fonts") { Page = new FontsViewModel(themes, themeBar), HelpTopic = "themes" },
                 new NavItemViewModel("Text Sizes") { Page = new TextSizesViewModel(themes, themeBar), HelpTopic = "themes" },
                 alertsAndMessages,
-                foldersItem) { CanHide = false },
+                foldersItem,
+                new NavItemViewModel("Agent") { Page = new AgentSettingsViewModel(Agent), HelpTopic = "agent" }) { CanHide = false },
         ];
 
         menuSettings.Page = new MenuSettingsViewModel(MenuItems, menuLayout ?? MenuLayout.Load());
+        Agent.Start();
 
         var first = FirstInMenu(MenuItems);
         for (var group = first.Parent; group is not null; group = group.Parent)
@@ -138,6 +173,9 @@ public partial class MainViewModel : ViewModelBase
 
     /// <summary>The Messages and Alerts panels of the top bar.</summary>
     public InboxViewModel Inbox { get; }
+
+    /// <summary>The agent panel, docked or in its own window, and the app's MCP server behind it.</summary>
+    public AgentViewModel Agent { get; }
 
     /// <summary>The search box of the top bar.</summary>
     public SearchViewModel Search { get; }
@@ -182,6 +220,7 @@ public partial class MainViewModel : ViewModelBase
         _passwords.SaveState();
         _apiClient.SaveState();
         _containers.Shutdown();
+        Agent.Dispose();
     }
 
     [RelayCommand]

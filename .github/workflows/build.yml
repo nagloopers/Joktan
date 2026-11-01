@@ -75,7 +75,7 @@ jobs:
         shell: bash
         run: |
           dotnet tool restore
-          dotnet reportgenerator -reports:"TestResults/*.cobertura.xml" -targetdir:TestResults/report -reporttypes:"Html;MarkdownSummaryGithub" -assemblyfilters:"+Joktan*;-*.Tests" -filefilters:"-*.g.cs"
+          dotnet reportgenerator -reports:"TestResults/*.cobertura.xml" -targetdir:TestResults/report -reporttypes:"Html;MarkdownSummaryGithub" -assemblyfilters:"+Joktan*;-*.Tests;-Joktan.Agent" -filefilters:"-*.g.cs"
           cat TestResults/report/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/upload-artifact@v7

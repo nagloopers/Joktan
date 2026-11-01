@@ -117,7 +117,8 @@ Point at a line, an area or a bar to read its values.
 Press **Edit layout**. Each graph then shows a bar across its top and a handle in its bottom corner.
 
 - **Move** a graph by dragging its bar onto another graph, or with **‹** and **›**.
-- **Resize** it by dragging the corner handle. It snaps to whole columns and rows.
+- **Resize** it by dragging the corner handle. It snaps to whole columns and rows. It can be as wide as the columns that fit, so if the
+  window or a docked agent panel leaves room for only one column, it can get shorter but not narrower.
 - **Edit** opens the graph editor again, and **Remove** takes the graph off, after asking. Graphs made from one
   saved graph are moved, resized, edited and removed together.
 - **Details** says what has arrived for the graph, and why any of it was not used.

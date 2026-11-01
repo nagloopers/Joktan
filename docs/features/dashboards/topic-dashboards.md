@@ -58,7 +58,7 @@ the Topic Explorer.
 **Edit layout** adds these to each graph:
 
 - A bar to drag onto another graph, which takes that graph's position. **‹** and **›** do the same in steps.
-- A corner handle that resizes to whole columns and rows, up to 6 rows high.
+- A corner handle that resizes to whole columns and rows, up to 6 rows high, and as wide as the columns that fit. A drag counts from what the graph fills now. Only a drag across changes a width saved wider than fits.
 - **Edit**, and **Remove**, which asks first.
 
 Graphs fill the grid in order, each in the first free place it fits. A narrow window uses fewer columns, so

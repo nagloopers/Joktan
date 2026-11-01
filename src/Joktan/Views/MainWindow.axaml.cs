@@ -4,6 +4,8 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
+using Joktan.Agent.ViewModels;
+using Joktan.Agent.Views;
 using Joktan.Core;
 using Joktan.Mqtt.ViewModels;
 using Joktan.ViewModels;
@@ -12,6 +14,9 @@ namespace Joktan.Views;
 
 public partial class MainWindow : Window
 {
+    private AgentWindow? _agentWindow;
+    private bool _isClosing;
+
     public MainWindow()
     {
         InitializeComponent();
@@ -54,6 +59,13 @@ public partial class MainWindow : Window
         {
             main.Inbox.MessagesPanelRequested += () => MessagesButton.Flyout?.ShowAt(MessagesButton);
             main.Inbox.AlertsPanelRequested += () => AlertsButton.Flyout?.ShowAt(AlertsButton);
+            main.Agent.PropertyChanged += (_, change) =>
+            {
+                if (change.PropertyName is nameof(AgentViewModel.IsOpen) or nameof(AgentViewModel.IsFloating))
+                    ShowAgent(main.Agent);
+            };
+            main.Agent.AttentionRequested += () => _agentWindow?.Activate();
+            ShowAgent(main.Agent);
             main.PropertyChanged += (_, change) =>
             {
                 if (change.PropertyName == nameof(MainViewModel.CurrentPage))
@@ -62,6 +74,63 @@ public partial class MainWindow : Window
                     AlertsButton.Flyout?.Hide();
                 }
             };
+        }
+    }
+
+    // The panel's column takes its width from the settings, and the splitter sets it from there on.
+    private void ShowAgent(AgentViewModel agent)
+    {
+        var column = ContentGrid.ColumnDefinitions[2];
+        if (agent.IsDocked)
+        {
+            column.MinWidth = 300;
+            column.MaxWidth = 900;
+            column.Width = new GridLength(agent.Settings.PanelWidth);
+        }
+        else
+        {
+            if (column.Width.IsAbsolute && column.ActualWidth > 0)
+                agent.Settings.PanelWidth = column.ActualWidth;
+            column.MinWidth = 0;
+            column.Width = new GridLength(0);
+        }
+
+        if (agent.IsInWindow && _agentWindow is null)
+        {
+            var window = _agentWindow = new AgentWindow
+            {
+                DataContext = agent,
+                Width = agent.Settings.WindowWidth,
+                Height = agent.Settings.WindowHeight,
+            };
+            window.Closed += (_, _) =>
+            {
+                agent.Settings.WindowWidth = window.Width;
+                agent.Settings.WindowHeight = window.Height;
+                _agentWindow = null;
+
+                // Closed by its own button rather than by docking, which closes the panel. As the app
+                // closes, the panel is remembered as open.
+                if (agent.IsInWindow && !_isClosing)
+                    agent.IsOpen = false;
+                agent.SaveLayout();
+            };
+            window.Show();
+        }
+        else if (!agent.IsInWindow)
+        {
+            _agentWindow?.Close();
+        }
+    }
+
+    protected override void OnClosing(WindowClosingEventArgs e)
+    {
+        base.OnClosing(e);
+        _isClosing = !e.Cancel;
+        if (_isClosing && DataContext is MainViewModel { Agent: { } agent } && ContentGrid.ColumnDefinitions[2] is { ActualWidth: > 0 } column)
+        {
+            agent.Settings.PanelWidth = column.ActualWidth;
+            agent.SaveLayout();
         }
     }
 

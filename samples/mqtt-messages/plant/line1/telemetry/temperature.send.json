@@ -1,13 +1,30 @@
 {
-  "enabled": false,
+  "enabled": true,
   "group": "Plant/Line 1",
   "qos": 1,
   "retain": false,
-  "schedule": { "type": "interval", "every": 5, "unit": "seconds" },
+  "schedule": {
+    "type": "interval",
+    "every": 5,
+    "unit": "seconds"
+  },
   "fields": {
-    "ts": { "type": "unixSeconds" },
-    "serial": { "type": "guid" },
-    "sequence": { "type": "counter", "start": 1, "step": 1 },
-    "sensor.value": { "type": "randomNumber", "min": 18, "max": 26, "decimals": 1 }
+    "ts": {
+      "type": "unixSeconds"
+    },
+    "serial": {
+      "type": "guid"
+    },
+    "sequence": {
+      "type": "counter",
+      "start": 1,
+      "step": 1
+    },
+    "sensor.value": {
+      "type": "randomNumber",
+      "min": 18,
+      "max": 26,
+      "decimals": 1
+    }
   }
 }

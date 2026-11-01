@@ -60,6 +60,9 @@ public class DashboardGrid : Panel
     /// <summary>The height of a row and the space to the next.</summary>
     public double RowStep => RowHeight + Gap;
 
+    /// <summary>How many columns fit, which can be fewer than <see cref="Columns"/> when there is little room.</summary>
+    public int ShownColumns { get; private set; } = 1;
+
     public static int GetWidthSpan(Control control) => control.GetValue(WidthSpanProperty);
 
     public static void SetWidthSpan(Control control, int value) => control.SetValue(WidthSpanProperty, value);
@@ -84,6 +87,7 @@ public class DashboardGrid : Panel
     {
         var width = double.IsInfinity(availableSize.Width) ? MinColumnWidth * Columns + Gap * (Columns - 1) : availableSize.Width;
         var columns = Math.Clamp((int)((width + Gap) / (MinColumnWidth + Gap)), 1, Math.Max(1, Columns));
+        ShownColumns = columns;
         var columnWidth = (width - Gap * (columns - 1)) / columns;
         ColumnStep = columnWidth + Gap;
 

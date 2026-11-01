@@ -90,12 +90,17 @@ public partial class DashboardTabView : UserControl
 
     private void OnResizeMoved(object? sender, PointerEventArgs e)
     {
-        if (_resizing is not { } card || Grid is not { } grid || DataContext is not DashboardTabViewModel tab)
+        if (_resizing is not { } card || Grid is not { } grid)
             return;
 
         // The graph snaps to whole columns and rows, changing size once past halfway.
         var moved = e.GetPosition(grid) - _resizeStart;
-        card.WidthSpan = Math.Clamp(_startWidth + (int)Math.Round(moved.X / grid.ColumnStep), 1, tab.Columns);
+
+        // Counted from the columns it fills now, as a graph saved wider than will fit would otherwise have
+        // to lose its unseen columns before it looked any different. Without a move across, the saved
+        // width stays, for when there is room again.
+        var across = (int)Math.Round(moved.X / grid.ColumnStep);
+        card.WidthSpan = across == 0 ? _startWidth : Math.Clamp(Math.Min(_startWidth, grid.ShownColumns) + across, 1, grid.ShownColumns);
         card.HeightSpan = Math.Clamp(_startHeight + (int)Math.Round(moved.Y / grid.RowStep), 1, GraphProfile.MaxHeight);
     }
 

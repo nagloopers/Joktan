@@ -1,0 +1,12 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="using:Joktan.Agent.Views"
+        xmlns:core="using:Joktan.Core"
+        x:Class="Joktan.Agent.Views.AgentWindow"
+        Icon="avares://Joktan.Core/Assets/joktan.ico"
+        MinWidth="320" MinHeight="360"
+        Background="{DynamicResource AppBackgroundBrush}"
+        core:HelpContext.Topic="agent"
+        Title="Joktan Agent">
+    <views:AgentPanel />
+</Window>

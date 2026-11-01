@@ -1,0 +1,151 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Joktan.Agent.ViewModels"
+                      xmlns:core="using:Joktan.Core"
+             xmlns:md="using:Joktan.Core.Controls"
+             x:Class="Joktan.Agent.Views.AgentPanel"
+             x:DataType="vm:AgentViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="Grid.panel-header PathIcon">
+            <Setter Property="Width" Value="16" />
+            <Setter Property="Height" Value="16" />
+        </Style>
+        <Style Selector="Border.user-message">
+            <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="10,8" />
+            <Setter Property="Margin" Value="32,0,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+        <Style Selector="Border.tool-call">
+            <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="8,5" />
+        </Style>
+        <Style Selector="Border.approval">
+            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource WarningBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="12" />
+        </Style>
+    </UserControl.Styles>
+
+    <Border Background="{DynamicResource SurfaceBrush}">
+        <DockPanel>
+            <!-- Header -->
+            <Border DockPanel.Dock="Top"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="0,0,0,1"
+                    Padding="10,8">
+                <Grid Classes="panel-header" ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                    <TextBlock VerticalAlignment="Center"
+                               FontWeight="SemiBold"
+                               TextTrimming="CharacterEllipsis"
+                               ToolTip.Tip="Which command-line agent answers. Change it on the Settings / Agent page."
+                               Text="{Binding SelectedClient.DisplayName}" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="2">
+                        <Button Name="ClearButton" Classes="icon-button" ToolTip.Tip="Clear the chat and start again"
+                                IsEnabled="{Binding !IsEmpty}" Command="{Binding ClearCommand}">
+                            <PathIcon Data="{x:Static core:Icons.Trash}" />
+                        </Button>
+                        <Button Classes="icon-button" ToolTip.Tip="Open in its own window"
+                                IsVisible="{Binding !IsFloating}" Command="{Binding PopOutCommand}">
+                            <PathIcon Data="{x:Static core:Icons.WindowRestore}" />
+                        </Button>
+                        <Button Classes="icon-button" ToolTip.Tip="Dock in the main window"
+                                IsVisible="{Binding IsFloating}" Command="{Binding DockCommand}">
+                            <PathIcon Data="{x:Static core:Icons.Dashboard}" />
+                        </Button>
+                        <Button Classes="icon-button" ToolTip.Tip="Close the panel" Command="{Binding CloseCommand}">
+                            <PathIcon Data="{x:Static core:Icons.WindowClose}" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- What to say next -->
+            <Border DockPanel.Dock="Bottom"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="0,1,0,0"
+                    Padding="10">
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                    <TextBox Name="DraftBox"
+                             Text="{Binding Draft}"
+                             PlaceholderText="Ask the agent… (Shift+Enter for a new line)"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             MaxHeight="160" />
+                    <Button Grid.Column="1" VerticalAlignment="Bottom" Classes="small" Content="Send"
+                            IsVisible="{Binding IsIdle}" Command="{Binding SendCommand}" />
+                    <Button Grid.Column="1" VerticalAlignment="Bottom" Classes="small" Content="Stop"
+                            IsVisible="{Binding IsBusy}" Command="{Binding StopCommand}" />
+                </Grid>
+            </Border>
+
+            <Panel>
+                <StackPanel IsVisible="{Binding IsEmpty}" VerticalAlignment="Center" Margin="32" Spacing="8">
+                    <TextBlock Classes="card-title" HorizontalAlignment="Center" Text="Ask the agent" />
+                    <TextBlock Classes="info-label" TextWrapping="Wrap" TextAlignment="Center"
+                               Text="It can do what the pages of this app do, through the app's MCP server. You are asked before it deletes anything, sends anything out, or reads a stored password." />
+                </StackPanel>
+
+                <ScrollViewer Name="Scroller" HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl ItemsSource="{Binding Items}" Margin="12">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Spacing="10" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.DataTemplates>
+                            <DataTemplate DataType="vm:UserMessageViewModel">
+                                <Border Classes="user-message">
+                                    <SelectableTextBlock Foreground="{DynamicResource OnAccentBrush}" TextWrapping="Wrap" Text="{Binding Text}" />
+                                </Border>
+                            </DataTemplate>
+                            <DataTemplate DataType="vm:AgentMessageViewModel">
+                                <md:MarkdownView Markdown="{Binding Text}" />
+                            </DataTemplate>
+                            <DataTemplate DataType="vm:AgentProblemViewModel">
+                                <SelectableTextBlock Foreground="{DynamicResource DangerBrush}" TextWrapping="Wrap" Text="{Binding Text}" />
+                            </DataTemplate>
+                            <DataTemplate DataType="vm:ToolCallViewModel">
+                                <Border Classes="tool-call" ToolTip.Tip="{Binding Description}">
+                                    <StackPanel Spacing="2">
+                                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                                            <Panel VerticalAlignment="Center" Width="10">
+                                                <Ellipse Width="8" Height="8" Fill="{DynamicResource InfoBrush}" IsVisible="{Binding IsRunning}" />
+                                                <Ellipse Width="8" Height="8" Fill="{DynamicResource SuccessBrush}" IsVisible="{Binding IsDone}" />
+                                                <Ellipse Width="8" Height="8" Fill="{DynamicResource DangerBrush}" IsVisible="{Binding IsFailed}" />
+                                            </Panel>
+                                            <TextBlock Grid.Column="1" Classes="code" TextTrimming="CharacterEllipsis" Text="{Binding Name}" />
+                                            <TextBlock Grid.Column="2" Classes="info-label" Text="{Binding CallerText}" IsVisible="{Binding IsFromOutside}" />
+                                        </Grid>
+                                        <TextBlock Classes="info-label" TextWrapping="Wrap" Text="{Binding Problem}" IsVisible="{Binding IsFailed}" />
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                            <DataTemplate DataType="vm:ApprovalViewModel">
+                                <Border Classes="approval">
+                                    <StackPanel Spacing="8">
+                                        <TextBlock FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding Question}" />
+                                        <TextBlock TextWrapping="Wrap" Text="{Binding Description}" />
+                                        <TextBlock Classes="code" TextWrapping="Wrap" Text="{Binding Details}" />
+                                        <WrapPanel IsVisible="{Binding IsWaiting}" ItemSpacing="6" LineSpacing="6">
+                                            <Button Classes="small" Content="Allow" Command="{Binding AllowCommand}" />
+                                            <Button Classes="small" Content="Allow for this conversation"
+                                                    IsVisible="{Binding CanRemember}" Command="{Binding AllowAlwaysCommand}" />
+                                            <Button Classes="small" Content="Decline" Command="{Binding DenyCommand}" />
+                                        </WrapPanel>
+                                        <TextBlock Classes="info-label" Text="{Binding Outcome}" IsVisible="{Binding !IsWaiting}" />
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.DataTemplates>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Panel>
+        </DockPanel>
+    </Border>
+</UserControl>

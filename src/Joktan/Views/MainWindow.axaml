@@ -5,6 +5,7 @@
         xmlns:nav="using:Joktan.Core.ViewModels"
         xmlns:help="using:Joktan.Core.Controls"
         xmlns:inbox="using:Joktan.Mqtt.Views"
+        xmlns:agent="using:Joktan.Agent.Views"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="800"
@@ -159,6 +160,10 @@
                     </Grid>
 
                     <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4">
+                        <Button Name="AgentButton" Classes="icon-button" VerticalAlignment="Center"
+                                ToolTip.Tip="Agent" Command="{Binding Agent.ToggleCommand}">
+                            <PathIcon Data="{x:Static core:Icons.Agent}" />
+                        </Button>
                         <Panel VerticalAlignment="Center">
                             <Button Name="MessagesButton" Classes="icon-button" ToolTip.Tip="{Binding Inbox.MessagesTip}">
                                 <PathIcon Data="{x:Static core:Icons.Message}" />
@@ -201,8 +206,13 @@
                 </Grid>
             </Border>
 
-            <!-- Page content, resolved to a view by ViewLocator -->
-            <ContentControl Content="{Binding CurrentPage}" />
+            <!-- Page content, resolved to a view by ViewLocator, and the docked agent panel beside it -->
+            <Grid Name="ContentGrid" ColumnDefinitions="*,Auto,Auto">
+                <ContentControl MinWidth="320" Content="{Binding CurrentPage}" />
+                <GridSplitter Grid.Column="1" Width="4" ResizeDirection="Columns" Background="{DynamicResource BorderBrush}"
+                              IsVisible="{Binding Agent.IsDocked}" />
+                <agent:AgentPanel Grid.Column="2" DataContext="{Binding Agent}" IsVisible="{Binding IsDocked}" />
+            </Grid>
         </DockPanel>
 
         <!-- Outside the top bar, whose handler would otherwise take presses in the results for moving the window -->

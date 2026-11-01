@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/Joktan.Agent/Joktan.Agent.csproj" />
     <Project Path="src/Joktan.Api/Joktan.Api.csproj" />
     <Project Path="src/Joktan.Certificates/Joktan.Certificates.csproj" />
     <Project Path="src/Joktan.Containers/Joktan.Containers.csproj" />

@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Joktan.Agent\Joktan.Agent.csproj" />
     <ProjectReference Include="..\Joktan.Api\Joktan.Api.csproj" />
     <ProjectReference Include="..\Joktan.Certificates\Joktan.Certificates.csproj" />
     <ProjectReference Include="..\Joktan.Containers\Joktan.Containers.csproj" />

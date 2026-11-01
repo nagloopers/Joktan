@@ -1,0 +1,95 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Joktan.Agent.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1040" d:DesignHeight="736"
+             x:Class="Joktan.Agent.Views.AgentSettingsView"
+             x:DataType="vm:AgentSettingsViewModel">
+
+    <DockPanel>
+        <Border DockPanel.Dock="Top" Classes="page-header">
+            <StackPanel>
+                <TextBlock Classes="page-title" Text="{Binding Title}" />
+                <TextBlock Classes="page-subtitle" Text="{Binding Subtitle}" />
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer>
+            <StackPanel Margin="24" Spacing="16">
+                <Border Classes="card">
+                    <StackPanel Spacing="10">
+                        <TextBlock Classes="card-title" Text="Command-line client" />
+                        <TextBlock Classes="card-subtitle" Text="The agent in the panel runs through one of these programs, under your own account with it. Joktan connects it to the app's tools." />
+
+                        <TextBlock Classes="field-label" Text="Client" />
+                        <ComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding Agent.Clients}" SelectedItem="{Binding Agent.SelectedClient}"
+                                  IsEnabled="{Binding Agent.IsIdle}" />
+
+                        <TextBlock Classes="field-label" Text="Program" />
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <TextBox Text="{Binding ProgramPath}" PlaceholderText="{Binding PathHint}" />
+                            <Button Grid.Column="1" Classes="small" Content="Check" Command="{Binding CheckCommand}" />
+                        </Grid>
+                        <TextBlock Classes="info-label" TextWrapping="Wrap" Text="{Binding ClientStatus}" IsVisible="{Binding ClientFound}" />
+                        <TextBlock Classes="error" TextWrapping="Wrap" Text="{Binding ClientStatus}" IsVisible="{Binding !ClientFound}" />
+
+                        <StackPanel Spacing="4" IsVisible="{Binding IsCustom}">
+                            <TextBlock Classes="field-label" Text="Arguments" />
+                            <TextBox Classes="code" Text="{Binding CustomArguments}" />
+                            <TextBlock Classes="info-label" TextWrapping="Wrap"
+                                       Text="{}{prompt} is what you said, {mcp_config} a file naming the app's server under mcpServers, {mcp_url} and {mcp_token} the server's address and token, and {model} the model below. What the program prints is the reply." />
+                        </StackPanel>
+
+                        <TextBlock Classes="field-label" Text="Model" />
+                        <TextBox Text="{Binding Model}" PlaceholderText="{Binding ModelHint}" />
+
+                        <TextBlock Classes="field-label" Text="More arguments" />
+                        <TextBox Classes="code" Text="{Binding ExtraArguments}" PlaceholderText="Added to the command line each turn" />
+
+                        <Border Classes="table-row">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <StackPanel>
+                                    <TextBlock Classes="table-cell" Text="Also let the agent use the client's own tools" />
+                                    <TextBlock Classes="info-label" TextWrapping="Wrap"
+                                               Text="Such as its shell and file tools. These run outside Joktan, which cannot ask you about them. Left off, the agent can only use the app's tools." />
+                                </StackPanel>
+                                <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding AllowClientTools}" />
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border Classes="card">
+                    <StackPanel Spacing="10">
+                        <TextBlock Classes="card-title" Text="Clients outside the app" />
+                        <TextBlock Classes="card-subtitle" Text="Let another MCP client on this computer, such as an IDE or a CLI you started yourself, use the app's tools. It connects while Joktan is open. Its risky calls still wait for your approval in the agent panel." />
+
+                        <Border Classes="table-row">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <TextBlock Classes="table-cell" Text="Let outside clients connect" />
+                                <ToggleSwitch Grid.Column="1" Classes="compact" IsChecked="{Binding OutsideEnabled}" />
+                            </Grid>
+                        </Border>
+
+                        <TextBlock Classes="error" TextWrapping="Wrap" Text="{Binding Agent.ServerProblem}"
+                                   IsVisible="{Binding Agent.ServerProblem, Converter={x:Static ObjectConverters.IsNotNull}}" />
+
+                        <TextBlock Classes="field-label" Text="Port" />
+                        <TextBox Width="120" HorizontalAlignment="Left" Text="{Binding OutsidePort}" />
+
+                        <StackPanel Spacing="8" IsVisible="{Binding OutsideEnabled}">
+                            <TextBlock Classes="info-label" Text="{Binding OutsideUrl}" />
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button Classes="small" Content="Copy configuration" Command="{Binding CopyConfigurationCommand}" />
+                                <Button Classes="small" Content="Replace token" Command="{Binding ReplaceTokenCommand}" />
+                            </StackPanel>
+                        </StackPanel>
+                        <TextBlock Classes="info-label" TextWrapping="Wrap" Text="{Binding Message}"
+                                   IsVisible="{Binding Message, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

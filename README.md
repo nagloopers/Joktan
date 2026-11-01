@@ -14,6 +14,8 @@ The project is at an early stage. So far it has:
 - developer tools: an MQTT publisher for sending test messages, a topic explorer for watching a
   broker, a page for making the certificates they use for TLS, a REST and gRPC client, and a page
   for running compose files with Docker or Podman;
+- an agent panel that runs Claude Code, OpenCode, GitHub Copilot CLI or a command of your own, docked or in its own
+  window, and an MCP server in the app that lets the agent do what the pages do, asking before anything risky;
 - built-in help on using and configuring each of these: press the question mark beside the search box, or F1;
 - settings for which features the menu shows and in what order, and themes that hold every colour,
   font and text size, with Light, Dark and Green Dark built in.
@@ -55,12 +57,13 @@ Tests of views and controls run in a headless Avalonia application, through `Hea
 local web server, and container tests stand-in `docker` and `podman` scripts, so nothing outside the machine,
 and no broker or container of yours, is touched.
 
-To see code coverage, collect it and turn it into a report at `TestResults/report/index.html`:
+To see code coverage, collect it and turn it into a report at `TestResults/report/index.html`. `Joktan.Agent` has no
+tests of its own and is left out of the report:
 
 ```sh
 dotnet test --solution Joktan.slnx --coverage --coverage-output-format cobertura --results-directory TestResults
 dotnet tool restore
-dotnet reportgenerator -reports:"TestResults/*.cobertura.xml" -targetdir:TestResults/report -reporttypes:Html -assemblyfilters:"+Joktan*;-*.Tests" -filefilters:"-*.g.cs"
+dotnet reportgenerator -reports:"TestResults/*.cobertura.xml" -targetdir:TestResults/report -reporttypes:Html -assemblyfilters:"+Joktan*;-*.Tests;-Joktan.Agent" -filefilters:"-*.g.cs"
 ```
 
 ## Publish

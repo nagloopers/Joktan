@@ -17,6 +17,7 @@ under shared parent folders that follow the menu, such as `dev-tools/`. `dev-too
 | Passwords                               | [passwords/spec.md](passwords/spec.md)                                                         | Implemented                    |
 | Help                                    | [help/spec.md](help/spec.md)                                                                   | Implemented                    |
 | Search                                  | [search/spec.md](search/spec.md)                                                               | Implemented                    |
+| Agent panel and MCP server              | [agent/spec.md](agent/spec.md)                                                                 | Implemented                    |
 | Settings and themes                     | [settings/spec.md](settings/spec.md)                                                           | Implemented                    |
 
 For the visual language shared by all features, see [../design.md](../design.md).

@@ -24,6 +24,7 @@ developers working with MQTT, REST, gRPC and containers.
 - [Containers](help:containers): run compose files with Docker or Podman.
 - [Settings](help:settings-and-data): choose which features the menu shows and in what order, and
   the [theme](help:themes) with its colours, fonts and text sizes.
+- [Agent](help:agent): the sparkle icon in the top bar opens a panel where an AI agent can do these things for you.
 - [Search](help:search): the box in the top bar finds things in notes, help, messages and alerts.
 
 Each page is set up on the page itself, so its help topic covers both using it and configuring it.
